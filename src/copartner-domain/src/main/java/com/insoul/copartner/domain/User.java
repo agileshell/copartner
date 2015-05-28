@@ -38,7 +38,7 @@ public class User extends BaseEntity {
     private String status;
 
     @Column(name = "avatar", nullable = false)
-    private String avatar;
+    private String avatar = "";
 
     @Column(name = "location_id")
     private Long locationId;

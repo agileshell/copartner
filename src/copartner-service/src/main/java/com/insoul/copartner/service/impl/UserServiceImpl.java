@@ -2,10 +2,13 @@ package com.insoul.copartner.service.impl;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +18,19 @@ import com.insoul.copartner.constant.GlobalProperties;
 import com.insoul.copartner.constant.MessageType;
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.constant.UserStatus;
+import com.insoul.copartner.dao.IIndustryDomainDao;
+import com.insoul.copartner.dao.ILocationDao;
 import com.insoul.copartner.dao.IMessageDao;
+import com.insoul.copartner.dao.IStartupRoleDao;
+import com.insoul.copartner.dao.IStartupStatusDao;
 import com.insoul.copartner.dao.IUserAccountConfirmationDao;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.dao.IUserPasswordResetDao;
+import com.insoul.copartner.domain.IndustryDomain;
+import com.insoul.copartner.domain.Location;
 import com.insoul.copartner.domain.Message;
+import com.insoul.copartner.domain.StartupRole;
+import com.insoul.copartner.domain.StartupStatus;
 import com.insoul.copartner.domain.User;
 import com.insoul.copartner.domain.UserAccountConfirmation;
 import com.insoul.copartner.domain.UserAccountConfirmationId;
@@ -27,13 +38,20 @@ import com.insoul.copartner.domain.UserPasswordReset;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.service.IUserService;
+import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.CodeUtil;
 import com.insoul.copartner.util.MD5Encrypt;
 import com.insoul.copartner.util.PasswordUtil;
 import com.insoul.copartner.util.ValidationUtil;
 import com.insoul.copartner.util.mail.MailUtil;
 import com.insoul.copartner.util.sms.SMSUtil;
+import com.insoul.copartner.vo.IndustryDomainVO;
+import com.insoul.copartner.vo.LocationVO;
+import com.insoul.copartner.vo.StartupRoleVO;
+import com.insoul.copartner.vo.StartupStatusVO;
+import com.insoul.copartner.vo.UserDetailVO;
 import com.insoul.copartner.vo.request.UserAddRequest;
+import com.insoul.copartner.vo.request.UserProfileUpdateRequest;
 
 @Service
 public class UserServiceImpl extends BaseServiceImpl implements IUserService {
@@ -49,6 +67,18 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
     @Resource
     private IMessageDao messageDao;
+
+    @Resource
+    private ILocationDao locationDao;
+
+    @Resource
+    private IStartupRoleDao startupRoleDao;
+
+    @Resource
+    private IStartupStatusDao startupStatusDao;
+
+    @Resource
+    private IIndustryDomainDao industryDomainDao;
 
     @Override
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
@@ -255,4 +285,153 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         MailUtil.sendMail(to, subject, content);
     }
 
+    @Override
+    public UserDetailVO getUserProfileDetail() {
+        long userId = getUserId();
+        User user = userDao.get(userId);
+
+        UserDetailVO userDetailVO = new UserDetailVO();
+        userDetailVO.setUserId(userId);
+        userDetailVO.setName(user.getName());
+        userDetailVO.setMobile(user.getMobile());
+        userDetailVO.setEmail(user.getEmail());
+        userDetailVO.setStatus(user.getStatus());
+        userDetailVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+        userDetailVO.setGender(user.getGender());
+        userDetailVO.setAge(user.getAge());
+        userDetailVO.setIntroduction(user.getIntroduction());
+        userDetailVO.setIsMobileVerified(user.getIsMobileVerified());
+        userDetailVO.setIsEmailVerified(user.getIsEmailVerified());
+
+        if (null != user.getLocationId()) {
+            Location location = locationDao.get(user.getLocationId());
+            if (null != location) {
+                LocationVO locationVO = new LocationVO();
+                locationVO.setLocationId(location.getId());
+                locationVO.setParentId(location.getParentId());
+                locationVO.setName(location.getName());
+                locationVO.setPinyin(location.getPinyin());
+                locationVO.setLatitude(location.getLatitude());
+                locationVO.setLongitude(location.getLongitude());
+
+                userDetailVO.setLocation(locationVO);
+
+                StringBuilder fullLocation = new StringBuilder();
+                Location parentLocation = locationDao.get(location.getParentId());
+                if (null != parentLocation) {
+                    fullLocation.append(parentLocation.getName()).append("|");
+                }
+                fullLocation.append(location.getName());
+                userDetailVO.setFullLocation(fullLocation.toString());
+            }
+        }
+
+        if (null != user.getStartupStatusId()) {
+            StartupStatus startupStatus = startupStatusDao.get(user.getStartupStatusId());
+            if (null != startupStatus) {
+                StartupStatusVO startupStatusVO = new StartupStatusVO();
+                startupStatusVO.setId(startupStatus.getId());
+                startupStatusVO.setName(startupStatus.getName());
+
+                userDetailVO.setStartupStatus(startupStatusVO);
+            }
+        }
+        if (null != user.getStartupRoleId()) {
+            StartupRole startupRole = startupRoleDao.get(user.getStartupRoleId());
+            if (null != startupRole) {
+                StartupRoleVO startupRoleVO = new StartupRoleVO();
+                startupRoleVO.setId(startupRole.getId());
+                startupRoleVO.setName(startupRole.getName());
+
+                userDetailVO.setStartupRole(startupRoleVO);
+            }
+        }
+        if (StringUtils.isNoneBlank(user.getDomains())) {
+            Set<IndustryDomainVO> domains = new HashSet<IndustryDomainVO>();
+
+            StringBuilder fullDomains = new StringBuilder();
+            String domainIds[] = user.getDomains().split(",");
+            for (String domainId : domainIds) {
+                if (StringUtils.isNumeric(domainId)) {
+                    IndustryDomain industryDomain = industryDomainDao.get(Long.valueOf(domainId));
+                    if (null != industryDomain) {
+                        IndustryDomainVO industryDomainVO = new IndustryDomainVO();
+                        industryDomainVO.setId(industryDomain.getId());
+                        industryDomainVO.setName(industryDomain.getName());
+
+                        domains.add(industryDomainVO);
+                        fullDomains.append(industryDomain.getName()).append("  ");
+                    }
+                }
+            }
+
+            userDetailVO.setDomains(domains);
+            userDetailVO.setFullDomains(fullDomains.toString().trim());
+        }
+
+        return userDetailVO;
+    }
+
+    @Override
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public void updateProfile(UserProfileUpdateRequest profileUpdateRequest) throws CException {
+        long userId = getUserId();
+        User user = userDao.get(userId);
+
+        if (StringUtils.isNotBlank(profileUpdateRequest.getName())) {
+            user.setName(profileUpdateRequest.getName());
+        }
+        if (StringUtils.isNotBlank(profileUpdateRequest.getAvatar())) {
+            user.setAvatar(profileUpdateRequest.getAvatar());
+        }
+        if (StringUtils.isNotBlank(profileUpdateRequest.getGender())) {
+            user.setGender(profileUpdateRequest.getGender());
+        }
+        if (StringUtils.isNotBlank(profileUpdateRequest.getAge())) {
+            user.setAge(profileUpdateRequest.getAge());
+        }
+        if (StringUtils.isNotBlank(profileUpdateRequest.getIntroduction())) {
+            user.setIntroduction(profileUpdateRequest.getIntroduction());
+        }
+
+        if (null != profileUpdateRequest.getLocationId()) {
+            Location location = locationDao.get(profileUpdateRequest.getLocationId());
+            if (null == location) {
+                throw CExceptionFactory.getException(CException.class, ResponseCode.LOCATION_NOT_EXIST);
+            }
+
+            user.setLocationId(profileUpdateRequest.getLocationId());
+        }
+
+        if (null != profileUpdateRequest.getStartupStatusId()) {
+            StartupStatus startupStatus = startupStatusDao.get(profileUpdateRequest.getStartupStatusId());
+            if (null == startupStatus) {
+                throw CExceptionFactory.getException(CException.class, ResponseCode.STARTUP_STATUS_NOT_EXIST);
+            }
+
+            user.setStartupStatusId(profileUpdateRequest.getStartupStatusId());
+        }
+        if (null != profileUpdateRequest.getStartupRoleId()) {
+            StartupRole startupRole = startupRoleDao.get(profileUpdateRequest.getStartupRoleId());
+            if (null == startupRole) {
+                throw CExceptionFactory.getException(CException.class, ResponseCode.STARTUP_ROLE_NOT_EXIST);
+            }
+
+            user.setStartupRoleId(profileUpdateRequest.getStartupRoleId());
+        }
+
+        Long domainIds[] = profileUpdateRequest.getDomainIds();
+        if (null != domainIds && domainIds.length > 0) {
+            StringBuilder strDomainIds = new StringBuilder();
+
+            for (Long domainId : domainIds) {
+                IndustryDomain industryDomain = industryDomainDao.get(domainId);
+                if (null != industryDomain) {
+                    strDomainIds.append(domainId).append(",");
+                }
+            }
+
+            user.setDomains(strDomainIds.toString());
+        }
+    }
 }

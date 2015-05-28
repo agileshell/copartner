@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.insoul.copartner.security.ContextUtil;
 import com.insoul.copartner.util.IpUtil;
 
 public abstract class BaseServiceImpl {
@@ -12,8 +13,7 @@ public abstract class BaseServiceImpl {
     protected HttpServletRequest request;
 
     protected long getUserId() {
-        return 0L;
-        // return ContextUtil.getUserId();
+        return ContextUtil.getUserId();
     }
 
     protected long getIp() {
