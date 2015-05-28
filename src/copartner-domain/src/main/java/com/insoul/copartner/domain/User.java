@@ -37,6 +37,21 @@ public class User extends BaseEntity {
     @Column(name = "status", nullable = false)
     private String status;
 
+    @Column(name = "avatar", nullable = false)
+    private String avatar;
+
+    @Column(name = "location_id")
+    private Long locationId;
+
+    @Column(name = "gender", nullable = false)
+    private String gender = "F";
+
+    @Column(name = "age", nullable = false)
+    private String age = "0";
+
+    @Column(name = "introduction")
+    private String introduction;
+
     @Column(name = "is_email_verified", nullable = false)
     private Boolean isEmailVerified = false;
 
@@ -52,6 +67,15 @@ public class User extends BaseEntity {
 
     @Column(name = "last_ip", nullable = false)
     private Long lastIp = 0L;
+
+    @Column(name = "startup_status_id")
+    private Long StartupStatusId;
+
+    @Column(name = "startup_role_id")
+    private Long startupRoleId;
+
+    @Column(name = "domains")
+    private String domains;
 
     public String getName() {
         return name;
@@ -101,6 +125,46 @@ public class User extends BaseEntity {
         this.status = status;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
     public Boolean getIsEmailVerified() {
         return isEmailVerified;
     }
@@ -141,20 +205,52 @@ public class User extends BaseEntity {
         this.lastIp = lastIp;
     }
 
+    public Long getStartupStatusId() {
+        return StartupStatusId;
+    }
+
+    public void setStartupStatusId(Long startupStatusId) {
+        StartupStatusId = startupStatusId;
+    }
+
+    public Long getStartupRoleId() {
+        return startupRoleId;
+    }
+
+    public void setStartupRoleId(Long startupRoleId) {
+        this.startupRoleId = startupRoleId;
+    }
+
+    public String getDomains() {
+        return domains;
+    }
+
+    public void setDomains(String domains) {
+        this.domains = domains;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
+        result = prime * result + ((StartupStatusId == null) ? 0 : StartupStatusId.hashCode());
+        result = prime * result + ((age == null) ? 0 : age.hashCode());
+        result = prime * result + ((avatar == null) ? 0 : avatar.hashCode());
         result = prime * result + ((clientIp == null) ? 0 : clientIp.hashCode());
+        result = prime * result + ((domains == null) ? 0 : domains.hashCode());
         result = prime * result + ((email == null) ? 0 : email.hashCode());
+        result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+        result = prime * result + ((introduction == null) ? 0 : introduction.hashCode());
         result = prime * result + ((isEmailVerified == null) ? 0 : isEmailVerified.hashCode());
         result = prime * result + ((isMobileVerified == null) ? 0 : isMobileVerified.hashCode());
         result = prime * result + ((lastIp == null) ? 0 : lastIp.hashCode());
         result = prime * result + ((lastLogin == null) ? 0 : lastLogin.hashCode());
+        result = prime * result + ((locationId == null) ? 0 : locationId.hashCode());
         result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((password == null) ? 0 : password.hashCode());
         result = prime * result + ((salt == null) ? 0 : salt.hashCode());
+        result = prime * result + ((startupRoleId == null) ? 0 : startupRoleId.hashCode());
         result = prime * result + ((status == null) ? 0 : status.hashCode());
         return result;
     }
@@ -168,15 +264,45 @@ public class User extends BaseEntity {
         if (getClass() != obj.getClass())
             return false;
         User other = (User) obj;
+        if (StartupStatusId == null) {
+            if (other.StartupStatusId != null)
+                return false;
+        } else if (!StartupStatusId.equals(other.StartupStatusId))
+            return false;
+        if (age == null) {
+            if (other.age != null)
+                return false;
+        } else if (!age.equals(other.age))
+            return false;
+        if (avatar == null) {
+            if (other.avatar != null)
+                return false;
+        } else if (!avatar.equals(other.avatar))
+            return false;
         if (clientIp == null) {
             if (other.clientIp != null)
                 return false;
         } else if (!clientIp.equals(other.clientIp))
             return false;
+        if (domains == null) {
+            if (other.domains != null)
+                return false;
+        } else if (!domains.equals(other.domains))
+            return false;
         if (email == null) {
             if (other.email != null)
                 return false;
         } else if (!email.equals(other.email))
+            return false;
+        if (gender == null) {
+            if (other.gender != null)
+                return false;
+        } else if (!gender.equals(other.gender))
+            return false;
+        if (introduction == null) {
+            if (other.introduction != null)
+                return false;
+        } else if (!introduction.equals(other.introduction))
             return false;
         if (isEmailVerified == null) {
             if (other.isEmailVerified != null)
@@ -198,6 +324,11 @@ public class User extends BaseEntity {
                 return false;
         } else if (!lastLogin.equals(other.lastLogin))
             return false;
+        if (locationId == null) {
+            if (other.locationId != null)
+                return false;
+        } else if (!locationId.equals(other.locationId))
+            return false;
         if (mobile == null) {
             if (other.mobile != null)
                 return false;
@@ -217,6 +348,11 @@ public class User extends BaseEntity {
             if (other.salt != null)
                 return false;
         } else if (!salt.equals(other.salt))
+            return false;
+        if (startupRoleId == null) {
+            if (other.startupRoleId != null)
+                return false;
+        } else if (!startupRoleId.equals(other.startupRoleId))
             return false;
         if (status == null) {
             if (other.status != null)

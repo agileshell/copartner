@@ -19,7 +19,7 @@ import com.insoul.copartner.util.FileUtil;
 import com.insoul.copartner.util.SystemUtil;
 
 @Service
-public class MediaServiceImpl implements IMediaService {
+public class MediaServiceImpl extends BaseServiceImpl implements IMediaService {
 
     @Override
     public Map<String, String> uploadImage(final MultipartFile image) throws CException {

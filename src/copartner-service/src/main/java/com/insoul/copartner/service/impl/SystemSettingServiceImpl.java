@@ -13,7 +13,7 @@ import com.insoul.copartner.domain.SystemSetting;
 import com.insoul.copartner.service.ISystemSettingService;
 
 @Service
-public class SystemSettingServiceImpl implements ISystemSettingService {
+public class SystemSettingServiceImpl extends BaseServiceImpl implements ISystemSettingService {
 
     @Resource
     private ISystemSettingDao systemSettingDao;

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.insoul.copartner.constant.UserStatus;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.domain.User;
 import com.insoul.copartner.security.model.UserDetailsImpl;
@@ -32,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             user = userDao.getUserByMobile(username);
         }
 
-        if (null == user) {
+        if (null == user || !UserStatus.ACTIVE.getValue().equals(user.getStatus())) {
             throw new UsernameNotFoundException("error_no_user");
         }
 
