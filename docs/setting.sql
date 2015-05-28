@@ -24,7 +24,7 @@ INSERT INTO `system_setting` (`id`, `group`,`key`,`value`,`created`,`updated`) V
 (10,'app_info','ios_downloadURL','http://7xjbd9.com1.z0.glb.clouddn.com/chuangkehui1.0.1.ipa',NOW(),NULL),
 (11,'app_info','android_downloadURL','http://7xjbd9.com1.z0.glb.clouddn.com/chuangkehui1.0.1.apk',NOW(),NULL),
 (12,'image','file_type_limit','JPG,JPEG,GIF,PNG,BMP',NOW(),NULL),
-(13,'image','file_max_size','1KB',NOW(),NULL),
+(13,'image','file_max_size','5MB',NOW(),NULL),
 (14,'image','file_min_size','1KB',NOW(),NULL),
 (15,'image','file_dimension_max_width','1024',NOW(),NULL),
 (16,'image','file_dimension_max_height','1024',NOW(),NULL),

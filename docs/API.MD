@@ -13,8 +13,6 @@
 |   |   |   |    | 
 | serverTime| GET| NO| 获取系统时间| 
 | image| POST| YES| 上传图片|
-| captcha| GET| NO|获取验证码图片|
-| captcha/verify| POST| NO|验证验证码图片|
 
 ## APIs
 
@@ -407,3 +405,69 @@
 |:--------|:----------------|
 | 10000 | 参数错误 |
 | 20100 | 验证码不正确 |
+
+
+### Util API
+
+#### Upload image
+
+上传图片.
+
+- **Request URL**
+    `http://API_DOMAIN/image`
+
+- **Request Method**
+    POST
+
+- **Request Header**
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
+**Note:** The Cookie is required.
+
+- **Request Parameters**
+
+| Name | Requires | Type and Range | Description |
+| :-------- | :-------- | :-------- | :-------- | 
+| image | required | file | 图片文件 |
+
+- **Response**
+
+    ```
+    {
+        "body": {
+            "image_url": "http://7xjbd9.com1.z0.glb.clouddn.com/7557003a-7055-459e-8164-803fa615d068.jpg",
+            "image_path": "7557003a-7055-459e-8164-803fa615d068.jpg"
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 10000 | 参数错误 |
+| 10100 | 文件为空 |
+| 10101 | 文件类型不正确 |
+| 10102 | 文件过大 |
+| 10103 | 文件缺少最小尺寸 |
+| 10104 | 图片过宽 |
+| 10105 | 图片过高 |
+| 10106 | 图片缺少最小宽度 |
+| 10107 | 图片缺少最小高度 |
+| 10108 | 验证图片出错 |
+| 10109 | 上传文件出错 |
