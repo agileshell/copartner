@@ -6,12 +6,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.insoul.copartner.constant.CommonConstant;
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.constant.ResponseStatus;
 
-public final class ResponseUtil {
-
-    public static final String APPLICATION_JSON = "application/json;charset=UTF-8";
+public class ResponseUtil {
 
     public static final String RESPONSE_BODY = "body";
 
@@ -23,22 +22,37 @@ public final class ResponseUtil {
 
     public static final String RESPONSE_ERROR_MSG = "msg";
 
-    private ResponseUtil() {
-        // empty
+    public static ResponseEntity<String> jsonSucceed(Object object, HttpStatus statusCode) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", CommonConstant.APPLICATION_JSON);
+
+        JSONObject jo = jsonSucceed(object);
+
+        return new ResponseEntity<String>(jo.toString(), headers, statusCode);
     }
 
-    public static ResponseEntity<String> jsonSucceed(final Object object, final HttpStatus statusCode) {
+    public static JSONObject jsonSucceed(Object object) {
         JSONObject jo = new JSONObject();
         jo.accumulate(RESPONSE_BODY, object);
-        return wrapResponse(ResponseStatus.SUCCEED, jo, statusCode);
+        jo.accumulate(RESPONSE_STATUS, ResponseStatus.SUCCEED.toString());
+
+        return jo;
     }
 
-    public static ResponseEntity<String> jsonFailed(final String errorMessage, final HttpStatus statusCode) {
+    public static ResponseEntity<String> jsonFailed(String errorMessage, HttpStatus statusCode) {
         return jsonFailed(errorMessage, ResponseCode.SERVER_ERROR, statusCode);
     }
 
-    public static ResponseEntity<String> jsonFailed(final Object errorMessage, final ResponseCode code,
-            final HttpStatus statusCode) {
+    public static ResponseEntity<String> jsonFailed(Object errorMessage, ResponseCode code, HttpStatus statusCode) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", CommonConstant.APPLICATION_JSON);
+
+        JSONObject jo = jsonFailed(errorMessage, code);
+
+        return new ResponseEntity<String>(jo.toString(), headers, statusCode);
+    }
+
+    public static JSONObject jsonFailed(Object errorMessage, ResponseCode code) {
         JSONObject errorObj = new JSONObject();
         errorObj.accumulate(RESPONSE_ERROR_CODE, code.getValue());
         errorObj.accumulate(RESPONSE_ERROR_MSG, errorMessage);
@@ -46,22 +60,10 @@ public final class ResponseUtil {
         JSONObject error = new JSONObject();
         error.accumulate(RESPONSE_ERROR, errorObj);
 
-        JSONObject jo = new JSONObject();
-        jo.accumulate(RESPONSE_BODY, error);
-        return wrapResponse(ResponseStatus.FAILED, jo, statusCode);
-    }
+        JSONObject body = new JSONObject();
+        body.accumulate(RESPONSE_BODY, error);
+        body.accumulate(RESPONSE_STATUS, ResponseStatus.FAILED.toString());
 
-    private static ResponseEntity<String> wrapResponse(final ResponseStatus status, final JSONObject body,
-            final HttpStatus statusCode) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "application/json;charset=UTF-8");
-
-        if (ResponseStatus.SUCCEED.equals(status)) {
-            body.accumulate(RESPONSE_STATUS, ResponseStatus.SUCCEED.toString());
-        } else if (ResponseStatus.FAILED.equals(status)) {
-            body.accumulate(RESPONSE_STATUS, ResponseStatus.FAILED.toString());
-        }
-
-        return new ResponseEntity<String>(body.toString(), headers, statusCode);
+        return body;
     }
 }

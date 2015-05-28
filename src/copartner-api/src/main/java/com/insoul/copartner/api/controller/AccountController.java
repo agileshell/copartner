@@ -37,11 +37,7 @@ public class AccountController extends BaseController {
     @Resource
     private IUserService userService;
 
-    /*
-     * @Resource private UserDetailsService userDetailsService;
-     */
-
-    @RequestMapping(value = "/loginHandle", method = RequestMethod.GET, produces = { "application/json" })
+    @RequestMapping(value = "/loginHandle")
     public ResponseEntity<String> loginHandle() throws CException {
         throw CExceptionFactory.getException(UserNotFoundException.class, ResponseCode.FORBIDDEN);
     }
@@ -56,12 +52,6 @@ public class AccountController extends BaseController {
         long userId = userService.register(userAddRequest);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("userId", userId);
-
-        /*
-         * UserDetails details =
-         * userDetailsService.loadUserByUsername(userAddRequest.getAccount());
-         * SecurityUtil.login(details, request, response, session);
-         */
 
         return ResponseUtil.jsonSucceed(result, HttpStatus.OK);
     }

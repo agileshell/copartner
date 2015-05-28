@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.insoul.copartner.constant.CommonConstant;
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.DataValidationException;
@@ -24,15 +25,13 @@ import com.insoul.copartner.util.ResponseUtil;
 
 public abstract class BaseController {
 
-    String DATE_FORMAT_LONG = "yyyy-MM-dd HH:mm:ss";
-
     @Autowired
     protected HttpServletRequest request;
 
     @InitBinder
     protected final void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder)
             throws Exception {
-        PropertyEditor editor = new CustomDateEditor(new SimpleDateFormat(DATE_FORMAT_LONG), true);
+        PropertyEditor editor = new CustomDateEditor(new SimpleDateFormat(CommonConstant.DATE_FORMAT_LONG), true);
         binder.registerCustomEditor(Date.class, editor);
     }
 
