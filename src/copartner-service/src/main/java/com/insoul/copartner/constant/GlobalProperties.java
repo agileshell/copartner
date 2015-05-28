@@ -1,0 +1,98 @@
+package com.insoul.copartner.constant;
+
+import java.util.Properties;
+
+import com.insoul.copartner.util.PropertiesUtil;
+
+public final class GlobalProperties {
+
+    private static final String PROPERTIES_PATH = "/global.properties";
+
+    public static String CDN_PROVIDER = "local";
+
+    public static String CDN_DOMAIN = "";
+
+    public static String CDN_ACCESS_KEY = "";
+
+    public static String CDN_SECRET_KEY = "";
+
+    public static String CDN_BUCKET_NAME = "";
+
+    public static String CDN_LOCAL_PATH = "";
+
+    public static Boolean SMS_ENABLED = true;
+
+    public static Integer SMS_CODE_LENGTH = 6;
+
+    public static Integer SMS_DAILY_LIMIT = 10;
+
+    public static Integer EMAIL_CODE_LENGTH = 32;
+
+    public static String VERIFY_EMAIL_URL;
+
+    public static String RESET_PASSWORD_URL;
+
+    public static String WEIBO_GET_TOKEN_INFO_URL;
+
+    public static String WEIBO_GET_USER_INFO_URL;
+
+    public static String QQ_GET_TOKEN_INFO_URL;
+
+    public static String QQ_GET_USER_INFO_URL;
+
+    static {
+        Properties globalProperties = PropertiesUtil.getProperties(PROPERTIES_PATH);
+        if (PropertiesUtil.get(globalProperties, "cdn_provider") != null) {
+            CDN_PROVIDER = PropertiesUtil.get(globalProperties, "cdn_provider");
+        }
+        if (PropertiesUtil.get(globalProperties, "cdn_domain") != null) {
+            CDN_DOMAIN = PropertiesUtil.get(globalProperties, "cdn_domain");
+        }
+        if (PropertiesUtil.get(globalProperties, "cdn_access_key") != null) {
+            CDN_ACCESS_KEY = PropertiesUtil.get(globalProperties, "cdn_access_key");
+        }
+        if (PropertiesUtil.get(globalProperties, "cdn_secret_key") != null) {
+            CDN_SECRET_KEY = PropertiesUtil.get(globalProperties, "cdn_secret_key");
+        }
+        if (PropertiesUtil.get(globalProperties, "cdn_bucket_name") != null) {
+            CDN_BUCKET_NAME = PropertiesUtil.get(globalProperties, "cdn_bucket_name");
+        }
+        if (PropertiesUtil.get(globalProperties, "cdn_local_path") != null) {
+            CDN_LOCAL_PATH = PropertiesUtil.get(globalProperties, "cdn_local_path");
+        }
+
+        if (PropertiesUtil.get(globalProperties, "sms_enabled") != null) {
+            SMS_ENABLED = Boolean.parseBoolean(PropertiesUtil.get(globalProperties, "sms_enabled"));
+        }
+        if (PropertiesUtil.get(globalProperties, "sms_code_length") != null) {
+            SMS_CODE_LENGTH = Integer.parseInt(PropertiesUtil.get(globalProperties, "sms_code_length"));
+        }
+        if (PropertiesUtil.get(globalProperties, "sms_daily_limit") != null) {
+            SMS_DAILY_LIMIT = Integer.parseInt(PropertiesUtil.get(globalProperties, "sms_daily_limit"));
+        }
+
+        if (PropertiesUtil.get(globalProperties, "email_code_length") != null) {
+            EMAIL_CODE_LENGTH = Integer.parseInt(PropertiesUtil.get(globalProperties, "email_code_length"));
+        }
+        if (PropertiesUtil.get(globalProperties, "verify_email_url") != null) {
+            VERIFY_EMAIL_URL = PropertiesUtil.get(globalProperties, "verify_email_url");
+        }
+        if (PropertiesUtil.get(globalProperties, "reset_password_url") != null) {
+            RESET_PASSWORD_URL = PropertiesUtil.get(globalProperties, "reset_password_url");
+        }
+
+        if (PropertiesUtil.get(globalProperties, "weibo_get_token_info_url") != null) {
+            WEIBO_GET_TOKEN_INFO_URL = PropertiesUtil.get(globalProperties, "weibo_get_token_info_url");
+        }
+        if (PropertiesUtil.get(globalProperties, "weibo_get_user_info_url") != null) {
+            WEIBO_GET_USER_INFO_URL = PropertiesUtil.get(globalProperties, "weibo_get_user_info_url");
+        }
+        if (PropertiesUtil.get(globalProperties, "qq_get_token_info_url") != null) {
+            QQ_GET_TOKEN_INFO_URL = PropertiesUtil.get(globalProperties, "qq_get_token_info_url");
+        }
+    }
+
+    private GlobalProperties() {
+        // empty
+    }
+}

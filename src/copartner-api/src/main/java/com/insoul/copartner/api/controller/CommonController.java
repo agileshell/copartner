@@ -1,0 +1,44 @@
+package com.insoul.copartner.api.controller;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.httpclient.util.DateUtil;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.insoul.copartner.constant.CommonConstant;
+import com.insoul.copartner.constant.SettingConstant;
+import com.insoul.copartner.service.ISystemSettingService;
+import com.insoul.copartner.util.ResponseUtil;
+
+@Controller
+public class CommonController extends BaseController {
+
+    @Resource
+    private ISystemSettingService systemSettingService;
+
+    @RequestMapping(value = "/serverTime", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> getServerTime() {
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("serverTime", DateUtil.formatDate(new Date(), CommonConstant.DATE_FORMAT_LONG));
+
+        return ResponseUtil.jsonSucceed(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/appVersion", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> getAppVersion() {
+        Map<String, String> result = systemSettingService.getSettings(SettingConstant.GROUP_TYPE_APP_INFO);
+
+        return ResponseUtil.jsonSucceed(result, HttpStatus.OK);
+    }
+}
