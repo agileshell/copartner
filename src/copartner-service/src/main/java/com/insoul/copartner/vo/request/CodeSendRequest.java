@@ -2,7 +2,7 @@ package com.insoul.copartner.vo.request;
 
 import java.io.Serializable;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.insoul.copartner.validate.constraint.StringPattern;
 
@@ -10,10 +10,11 @@ public class CodeSendRequest implements Serializable {
 
     private static final long serialVersionUID = 6364092684106436003L;
 
+    @NotBlank
     @StringPattern(regexp = "^1[0-9]{10}$")
     private String mobile;
 
-    @NotEmpty
+    @NotBlank
     @StringPattern(regexp = "register|retrievePwd")
     private String type;
 
