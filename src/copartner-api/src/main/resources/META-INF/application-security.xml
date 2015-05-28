@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+    <http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint">
+        <custom-filter ref="loginFilter" position="FORM_LOGIN_FILTER"/>
+
+        <intercept-url pattern="/" access="isAuthenticated() or isAnonymous()" />
+        <intercept-url pattern="/account/password/change" access="isAuthenticated()" />
+        <intercept-url pattern="/user/**" access="isAuthenticated()" />
+        <intercept-url pattern="/image" method="POST" access="isAuthenticated()" />
+        <intercept-url pattern="/image" method="DELETE" access="isAuthenticated()" />
+
+        <csrf disabled="true"/>
+        <http-basic/>
+        <logout logout-url="/account/signout" success-handler-ref="logoutHandler"/>
+    </http>
+
+    <beans:bean id="loginFilter" class="com.insoul.copartner.security.filter.CustomUsernamePasswordAuthenticationFilter">
+        <beans:property name="authenticationManager" ref="authenticationManager"/>
+        <beans:property name="authenticationFailureHandler" ref="authenticationFailureHandler"/>
+        <beans:property name="authenticationSuccessHandler" ref="authenticationSuccessHandler"/>
+        <beans:property name="filterProcessesUrl" value="/account/signin"/>
+    </beans:bean>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="daoAuthenticationProvider" />
+    </authentication-manager>
+
+    <beans:bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <beans:property name="userDetailsService" ref="customUserDetailsService" />
+        <beans:property name="passwordEncoder" ref="passwordEncoderBean" />
+        <beans:property name="saltSource" ref="saltSource" />
+    </beans:bean>
+    <beans:bean id="userDao" class="com.insoul.copartner.dao.impl.UserDaoImpl" />
+    <beans:bean id="customUserDetailsService" class="com.insoul.copartner.security.service.impl.UserDetailsServiceImpl">
+        <beans:property name="userDao" ref="userDao" />
+    </beans:bean>
+    <beans:bean id="passwordEncoderBean" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder">
+    </beans:bean>
+    <beans:bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+        <beans:property name="userPropertyToUse" value="getSalt" />
+    </beans:bean>
+
+    <beans:bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <beans:constructor-arg name="loginFormUrl" value="/account/loginHandle" />
+        <beans:property name="useForward" value="true" />
+        <beans:property name="forceHttps" value="false" />
+    </beans:bean>
+
+    <beans:bean id="authenticationSuccessHandler" class="com.insoul.copartner.security.AuthenticationSuccessHandler">
+        <beans:property name="userDao" ref="userDao" />
+    </beans:bean>
+    <beans:bean id="authenticationFailureHandler" class="com.insoul.copartner.security.AuthenticationFailureHandler">
+    </beans:bean>
+    <beans:bean id="logoutHandler" class="com.insoul.copartner.security.CustomLogoutSuccessHandler">
+    </beans:bean>
+
+</beans:beans>
