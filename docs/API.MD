@@ -11,8 +11,16 @@
 | code/send| POST| NO| 发送验证码 |
 | code/verify| POST| NO| 验证验证码| 
 |   |   |   |    | 
+| user/profile| POST| YES| 获取用户基本信息| 
+| user/profile| POST| YES| 修改用户基本信息|
+|   |   |   |    | 
 | serverTime| GET| NO| 获取系统时间| 
 | image| POST| YES| 上传图片|
+| appVersion| GET| NO| 获取app版本信息| 
+| locations/{locationId}| GET| NO| 获取地区列表| 
+| industryDomains| GET| NO| 获取行业领域列表| 
+| startupRoles| GET| NO| 获取创业角色列表| 
+| startupStatus| GET| NO| 获取创业状态列表|
 
 ## APIs
 
@@ -407,6 +415,161 @@
 | 20100 | 验证码不正确 |
 
 
+### User API
+
+#### Get user profile detail
+
+ 获取用户的基本信息。
+
+- **Request URL**
+    `http://API_DOMAIN/user/profile`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+
+| Name | Description |
+| :-------- | :-------- |
+| Cookie    | Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+**Note:** The Cookie is required.
+
+- **Request Parameters**
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": {
+            "age": "25-30",
+            "avatar": "http://www.baidu.com/img/bd_logo1.png",
+            "domains": [
+                {
+                    "id": 2,
+                    "name": "移动互联网"
+                },
+                {
+                    "id": 3,
+                    "name": "电子商务"
+                },
+                {
+                    "id": 1,
+                    "name": "互联网"
+                }
+            ],
+            "email": "",
+            "fullDomains": "互联网  移动互联网  电子商务",
+            "fullLocation": "北京|北京",
+            "gender": "F",
+            "introduction": "HAHAHAHAHA",
+            "isEmailVerified": false,
+            "isMobileVerified": true,
+            "location": {
+                "latitude": 0,
+                "locationId": 35,
+                "longitude": 0,
+                "name": "北京",
+                "parentId": 1,
+                "pinyin": "beijing"
+            },
+            "mobile": "15812345678",
+            "name": "GOGO",
+            "startupRole": {
+                "id": 1,
+                "name": "产品"
+            },
+            "startupStatus": {
+                "id": 1,
+                "name": "有创业意愿"
+            },
+            "status": "active",
+            "userId": 1
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 403,
+                "msg": "Forbidden"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 403  | Forbidden.|
+
+
+#### Update user profile
+
+修改用户资料.
+
+- **Request URL**
+    `http://API_DOMAIN/user/profile`
+
+- **Request Method**
+    POST
+
+- **Request Header**
+
+| Name | Description |
+| :-------- | :-------- |
+| Cookie    | Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+**Note:** The Cookie is required.
+
+- **Request Parameters**
+
+|  Name| Requires| Type and Range| Description|
+|------|:--------|:--------------|:-----------|
+|name     |optional |string(2-64) |昵称|
+|gender   |optional |string |性别， M(男)或者F(女)|
+|age      |optional |string |年龄，<25,25-30,31-35,36-40,41-50,>50|
+|avatar   |optional |string |头像的路径|
+|introduction|optional |string(<=100) |简介|
+|locationId  |optional |Int |地区|
+|domainIds   |optional |Int[] |关注领域，数组，例如1,2,3，或者传多个此参数|
+|startupStatusId |optional |Int |创业状态|
+|startupRoleId   |optional |Int |创业角色|
+
+- **Response**
+
+    ```
+    {
+        "body": null,
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 403   | 无权访问，请重试 |
+| 10000 | 参数错误 |
+| 10200 | 地区不存在 |
+| 10210 | 创业状态不存在 |
+| 10220 | 个人角色不存在 |
+
+
 ### Util API
 
 #### Upload image
@@ -471,3 +634,267 @@
 | 10107 | 图片缺少最小高度 |
 | 10108 | 验证图片出错 |
 | 10109 | 上传文件出错 |
+
+#### Get App Version
+
+获取app版本信息.
+
+- **Request URL**
+    `http://API_DOMAIN/appVersion`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+
+    N/A
+
+- **Request Parameters**
+
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": {
+            "android_version": "1.0.1",
+            "ios_version": "1.0.1",
+            "ios_downloadURL": "http://7xjbd9.com1.z0.glb.clouddn.com/chuangkehui1.0.1.ipa",
+            "android_downloadURL": "http://7xjbd9.com1.z0.glb.clouddn.com/chuangkehui1.0.1.apk"
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+
+    N/A
+    
+#### List Locations
+
+根据location父级ID获取子地区，如果父级ID为0则返回父级location.
+
+- **Request URL**
+    `http://API_DOMAIN/locations/{parentId}`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+
+    N/A
+
+- **Request Parameters**
+
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": [
+            {
+                "latitude": 0,
+                "locationId": 35,
+                "longitude": 0,
+                "name": "北京",
+                "parentId": 1,
+                "pinyin": "beijing"
+            }
+        ],
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+
+    N/A
+
+#### List Industry Domains
+
+获取行业领域列表.
+
+- **Request URL**
+    `http://API_DOMAIN/industryDomains`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+
+    N/A
+
+- **Request Parameters**
+
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": [
+            {
+                "id": 1,
+                "name": "互联网"
+            },
+            {
+                "id": 2,
+                "name": "移动互联网"
+            },
+            {
+                "id": 3,
+                "name": "电子商务"
+            },
+            {
+                "id": 4,
+                "name": "社交"
+            },
+            {
+                "id": 5,
+                "name": "游戏"
+            },
+            {
+                "id": 6,
+                "name": "云计算"
+            },
+            {
+                "id": 7,
+                "name": "IT服务"
+            },
+            {
+                "id": 8,
+                "name": "软件/工具"
+            },
+            {
+                "id": 9,
+                "name": "软硬件"
+            },
+            {
+                "id": 10,
+                "name": "数码电子"
+            },
+            {
+                "id": 11,
+                "name": "其它"
+            }
+        ],
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+
+    N/A
+    
+#### Get Startup Roles
+
+获取创业角色列表.
+
+- **Request URL**
+    `http://API_DOMAIN/startupRoles`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+
+    N/A
+
+- **Request Parameters**
+
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": [
+            {
+                "id": 1,
+                "name": "产品"
+            },
+            {
+                "id": 2,
+                "name": "技术"
+            },
+            {
+                "id": 3,
+                "name": "运营"
+            },
+            {
+                "id": 4,
+                "name": "营销"
+            },
+            {
+                "id": 5,
+                "name": "设计"
+            },
+            {
+                "id": 6,
+                "name": "其它"
+            }
+        ],
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+
+    N/A
+
+#### List Startup Status
+
+获取创业状态列表.
+
+- **Request URL**
+    `http://API_DOMAIN/startupStatus`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+
+    N/A
+
+- **Request Parameters**
+
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": [
+            {
+                "id": 1,
+                "name": "有创业意愿"
+            },
+            {
+                "id": 2,
+                "name": "有创业想法"
+            },
+            {
+                "id": 3,
+                "name": "全职创业中"
+            },
+            {
+                "id": 4,
+                "name": "兼职创业中"
+            },
+            {
+                "id": 5,
+                "name": "投资人"
+            },
+            {
+                "id": 6,
+                "name": "媒体人"
+            }
+        ],
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+
+    N/A
