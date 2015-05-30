@@ -13,6 +13,10 @@
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd
     http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd">
 
+    <!--
+    Druid 数据库连接池连接MySQL中文乱码,修改 /etc/my.cnf,
+    在[client]下添加default-character-set=utf8,在[mysqld]下添加character_set_server=utf8 和 init_connect= SET NAMES utf8 
+    -->
     <bean id="coreDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="${jdbc.url}"/>
