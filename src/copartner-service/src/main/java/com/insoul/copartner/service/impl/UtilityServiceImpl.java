@@ -9,15 +9,18 @@ import org.springframework.stereotype.Service;
 
 import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.ILocationDao;
+import com.insoul.copartner.dao.IProjectPhaseDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IStartupStatusDao;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Location;
+import com.insoul.copartner.domain.ProjectPhase;
 import com.insoul.copartner.domain.StartupRole;
 import com.insoul.copartner.domain.StartupStatus;
 import com.insoul.copartner.service.IUtilityService;
 import com.insoul.copartner.vo.IndustryDomainVO;
 import com.insoul.copartner.vo.LocationVO;
+import com.insoul.copartner.vo.ProjectPhaseVO;
 import com.insoul.copartner.vo.StartupRoleVO;
 import com.insoul.copartner.vo.StartupStatusVO;
 
@@ -35,6 +38,9 @@ public class UtilityServiceImpl extends BaseServiceImpl implements IUtilityServi
 
     @Resource
     private IStartupStatusDao startupStatusDao;
+
+    @Resource
+    private IProjectPhaseDao projectPhaseDao;
 
     @Override
     public List<LocationVO> listByParentId(Long parentId) {
@@ -97,6 +103,22 @@ public class UtilityServiceImpl extends BaseServiceImpl implements IUtilityServi
             StartupStatusVO vo = new StartupStatusVO();
             vo.setId(startupStatus.getId());
             vo.setName(startupStatus.getName());
+
+            vos.add(vo);
+        }
+
+        return vos;
+    }
+
+    @Override
+    public List<ProjectPhaseVO> listProjectPhases() {
+        List<ProjectPhaseVO> vos = new ArrayList<ProjectPhaseVO>();
+
+        List<ProjectPhase> entities = projectPhaseDao.getAllListed();
+        for (ProjectPhase projectPhase : entities) {
+            ProjectPhaseVO vo = new ProjectPhaseVO();
+            vo.setId(projectPhase.getId());
+            vo.setName(projectPhase.getName());
 
             vos.add(vo);
         }

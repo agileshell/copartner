@@ -14,7 +14,8 @@ import javax.persistence.TemporalType;
 @Table(name = "user", catalog = "copartner")
 @NamedQueries({
         @NamedQuery(name = "User.findByEmail", query = "FROM User u WHERE u.email = :email AND u.email <> '' AND u.email IS NOT NULL"),
-        @NamedQuery(name = "User.findByMobile", query = "FROM User u WHERE u.mobile = :mobile AND u.mobile <> '' AND u.mobile IS NOT NULL") })
+        @NamedQuery(name = "User.findByMobile", query = "FROM User u WHERE u.mobile = :mobile AND u.mobile <> '' AND u.mobile IS NOT NULL"),
+        @NamedQuery(name = "User.findByIds", query = "FROM User WHERE id IN(:userIds)") })
 public class User extends BaseEntity {
 
     private static final long serialVersionUID = 6718859190782978249L;
@@ -42,6 +43,9 @@ public class User extends BaseEntity {
 
     @Column(name = "location_id")
     private Long locationId;
+
+    @Column(name = "full_location")
+    private String fullLocation;
 
     @Column(name = "gender", nullable = false)
     private String gender = "F";
@@ -139,6 +143,14 @@ public class User extends BaseEntity {
 
     public void setLocationId(Long locationId) {
         this.locationId = locationId;
+    }
+
+    public String getFullLocation() {
+        return fullLocation;
+    }
+
+    public void setFullLocation(String fullLocation) {
+        this.fullLocation = fullLocation;
     }
 
     public String getGender() {
@@ -239,6 +251,7 @@ public class User extends BaseEntity {
         result = prime * result + ((clientIp == null) ? 0 : clientIp.hashCode());
         result = prime * result + ((domains == null) ? 0 : domains.hashCode());
         result = prime * result + ((email == null) ? 0 : email.hashCode());
+        result = prime * result + ((fullLocation == null) ? 0 : fullLocation.hashCode());
         result = prime * result + ((gender == null) ? 0 : gender.hashCode());
         result = prime * result + ((introduction == null) ? 0 : introduction.hashCode());
         result = prime * result + ((isEmailVerified == null) ? 0 : isEmailVerified.hashCode());
@@ -293,6 +306,11 @@ public class User extends BaseEntity {
             if (other.email != null)
                 return false;
         } else if (!email.equals(other.email))
+            return false;
+        if (fullLocation == null) {
+            if (other.fullLocation != null)
+                return false;
+        } else if (!fullLocation.equals(other.fullLocation))
             return false;
         if (gender == null) {
             if (other.gender != null)

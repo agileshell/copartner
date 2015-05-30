@@ -316,13 +316,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
                 userDetailVO.setLocation(locationVO);
 
-                StringBuilder fullLocation = new StringBuilder();
-                Location parentLocation = locationDao.get(location.getParentId());
-                if (null != parentLocation) {
-                    fullLocation.append(parentLocation.getName()).append("|");
-                }
-                fullLocation.append(location.getName());
-                userDetailVO.setFullLocation(fullLocation.toString());
+                userDetailVO.setFullLocation(user.getFullLocation());
             }
         }
 
@@ -399,6 +393,15 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
             if (null == location) {
                 throw CExceptionFactory.getException(CException.class, ResponseCode.LOCATION_NOT_EXIST);
             }
+
+            // 缓存地区全名
+            StringBuilder fullLocation = new StringBuilder();
+            Location parentLocation = locationDao.get(location.getParentId());
+            if (null != parentLocation) {
+                fullLocation.append(parentLocation.getName()).append("|");
+            }
+            fullLocation.append(location.getName());
+            user.setFullLocation(fullLocation.toString());
 
             user.setLocationId(profileUpdateRequest.getLocationId());
         }

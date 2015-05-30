@@ -20,6 +20,7 @@ import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.DataValidationException;
 import com.insoul.copartner.exception.UserNotFoundException;
+import com.insoul.copartner.security.ContextUtil;
 import com.insoul.copartner.util.ExceptionMessageUtil;
 import com.insoul.copartner.util.ResponseUtil;
 
@@ -59,5 +60,9 @@ public abstract class BaseController {
         }
 
         return ResponseUtil.jsonFailed(errorMessage, code, httpStatus);
+    }
+
+    protected long getCurrentUserId() {
+        return ContextUtil.getUserId();
     }
 }

@@ -80,4 +80,11 @@ public class CommonController extends BaseController {
 
         return ResponseUtil.jsonSucceed(utilityService.listStartupStatus(), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "projectPhases", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> listProjectPhases() {
+
+        return ResponseUtil.jsonSucceed(utilityService.listProjectPhases(), HttpStatus.OK);
+    }
 }

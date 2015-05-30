@@ -64,6 +64,10 @@ public enum ResponseCode {
 
     OLD_PASSWORD_INCORRECT(20200),
 
+    DEMAND_NOT_EXIST(30000),
+
+    DEMAND_NOT_BELONG_CURRENTUSER(30001),
+
     ;
 
     private int value;
