@@ -20,6 +20,7 @@ import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.dao.IDemandCommentsDao;
 import com.insoul.copartner.dao.IDemandDao;
 import com.insoul.copartner.dao.IDemandLikersDao;
+import com.insoul.copartner.dao.IProjectDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.dao.criteria.DemandCriteria;
@@ -27,11 +28,13 @@ import com.insoul.copartner.domain.Demand;
 import com.insoul.copartner.domain.DemandComments;
 import com.insoul.copartner.domain.DemandLikers;
 import com.insoul.copartner.domain.DemandLikersId;
+import com.insoul.copartner.domain.Project;
 import com.insoul.copartner.domain.StartupRole;
 import com.insoul.copartner.domain.User;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.service.IDemandService;
+import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.ContentUtil;
 import com.insoul.copartner.vo.DemandDetailVO;
 import com.insoul.copartner.vo.DemandVO;
@@ -59,6 +62,9 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
 
     @Resource
     private IDemandLikersDao demandLikersDao;
+
+    @Resource
+    private IProjectDao projectDao;
 
     @Override
     public Pagination<DemandVO> listDemands(DemandListRequest requestData) {
@@ -117,7 +123,7 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             UserLeanVO userVO = new UserLeanVO();
             userVO.setUserId(user.getId());
             userVO.setName(user.getName());
-            userVO.setAvatar(user.getAvatar());
+            userVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
         }
         demandVO.setLikers(likers);
 
@@ -129,11 +135,20 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
     @Override
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
     public void createDemand(DemandAddRequest requestData) throws CException {
+        long userId = getUserId();
         Demand demand = new Demand();
-        demand.setUserId(getUserId());
+        demand.setUserId(userId);
         demand.setContent(requestData.getContent());
         demand.setType(requestData.getType());
         if (requestData.getType() > 1) {
+            Project project = projectDao.get(requestData.getProjectId());
+            if (null == project) {
+                throw CExceptionFactory.getException(CException.class, ResponseCode.PROJECT_NOT_EXIST);
+            }
+            if (!(project.getUserId().equals(userId))) {
+                throw CExceptionFactory.getException(CException.class, ResponseCode.PROJECT_NOT_BELONG_CURRENTUSER);
+            }
+
             demand.setProjectId(requestData.getProjectId());
         }
         demand.setCreated(new Date());
@@ -205,6 +220,7 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
     }
 
     @Override
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
     public void unlikeDemand(Long demandId) throws CException {
         Demand demand = demandDao.get(demandId);
         if (null == demand) {
@@ -239,10 +255,10 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             UserBriefVO userVO = new UserBriefVO();
             userVO.setUserId(user.getId());
             userVO.setName(user.getName());
-            userVO.setAvatar(user.getAvatar());
+            userVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
             userVO.setLocation(user.getFullLocation());
 
-            if (null != user.getStartupRoleId() && startupRoles.contains(user.getStartupRoleId())) {
+            if (null != user.getStartupRoleId() && roleIdMapName.containsKey(user.getStartupRoleId())) {
                 userVO.setRole(roleIdMapName.get(user.getStartupRoleId()));
             }
 

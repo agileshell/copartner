@@ -70,6 +70,10 @@ public enum ResponseCode {
 
     DEMAND_NOT_BELONG_CURRENTUSER(30001),
 
+    PROJECT_NOT_EXIST(30100),
+
+    PROJECT_NOT_BELONG_CURRENTUSER(30101),
+
     ;
 
     private int value;
