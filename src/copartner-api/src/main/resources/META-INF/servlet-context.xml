@@ -9,8 +9,6 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
 
-    <resources mapping="/resources/**" location="/resources/" />
-
     <beans:bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <beans:property name="messageConverters">
             <beans:list>

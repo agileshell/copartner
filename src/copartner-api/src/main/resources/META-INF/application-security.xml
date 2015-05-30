@@ -6,6 +6,8 @@
     http://www.springframework.org/schema/security
     http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
+     <http pattern="/druid/**" security="none"/>
+
     <http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint">
         <custom-filter ref="loginFilter" position="FORM_LOGIN_FILTER"/>
 
