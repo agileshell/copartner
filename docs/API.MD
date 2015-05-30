@@ -1,27 +1,27 @@
 # API Description
 ## Overview
 
-|  URI| method| need session |description| 
-| ----| :-------| :------------| 
-| [account/signin](#signin)| POST| NO| µÇÂ¼| 
-| [account/signup](#signup)| POST| NO| ×¢²á| 
-| [account/signout](#signout)| GET| YES| µÇ³ö| 
-| [account/password/retrieve](#retrieve-password)| POST| NO| ÕÒ»ØÃÜÂë|
-| [account/password/reset](#reset-password)| POST| NO| ÖØÖÃÃÜÂë|
-| [account/password/change](#change-password)| POST| YES| ĞŞ¸ÄÃÜÂë| 
-| [code/send](#send-verify-code)| POST| NO| ·¢ËÍÑéÖ¤Âë |
-| [code/verify](#verify-code)| POST| NO| ÑéÖ¤ÑéÖ¤Âë| 
+|  URI| Method| Need Session| Description|
+|------|:--------|:--------------|:-----------|
+| [account/signin](#signin)| POST| NO| ç™»å½•|
+| [account/signup](#signup)| POST| NO|æ³¨å†Œ|
+| [account/signout](#signout)| GET| YES| ç™»å‡º|
+| [account/password/retrieve](#retrieve-password)| POST| NO| æ‰¾å›å¯†ç |
+| [account/password/reset](#reset-password)| POST| NO| é‡ç½®å¯†ç |
+| [account/password/change](#change-password)| POST| YES| ä¿®æ”¹å¯†ç |
+| [code/send](#send-verify-code)| POST| NO| å‘é€éªŒè¯ç  |
+| [code/verify](#verify-code)| POST| NO| éªŒè¯éªŒè¯ç |
+|   |   |   |    |
+| [user/profile](#get-user-profile-detail)| GET| YES| è·å–ç”¨æˆ·åŸºæœ¬ä¿¡æ¯|
+| [user/profile](#update-user-profile)| POST| YES| ä¿®æ”¹ç”¨æˆ·åŸºæœ¬ä¿¡æ¯|
 |   |   |   |    | 
-| [user/profile](#get-user-profile_detail)| GET| YES| »ñÈ¡ÓÃ»§»ù±¾ĞÅÏ¢| 
-| [user/profile](#update-user-profile)| POST| YES| ĞŞ¸ÄÓÃ»§»ù±¾ĞÅÏ¢|
-|   |   |   |    | 
-| serverTime| GET| NO| »ñÈ¡ÏµÍ³Ê±¼ä| 
-| [image](#upload-image)| POST| YES| ÉÏ´«Í¼Æ¬|
-| [appVersion](#get-app-version)| GET| NO| »ñÈ¡app°æ±¾ĞÅÏ¢| 
-| [locations/{parentId}](#list-locations)| GET| NO| »ñÈ¡µØÇøÁĞ±í| 
-| [industryDomains](#list-industry-domains)| GET| NO| »ñÈ¡ĞĞÒµÁìÓòÁĞ±í| 
-| [startupRoles](#list-startup-roles)| GET| NO| »ñÈ¡´´Òµ½ÇÉ«ÁĞ±í| 
-| [startupStatus](#list-startup-status)| GET| NO| »ñÈ¡´´Òµ×´Ì¬ÁĞ±í|
+| serverTime| GET| NO| è·å–ç³»ç»Ÿæ—¶é—´|
+| [image](#upload-image)| POST| YES| ä¸Šä¼ å›¾ç‰‡|
+| [appVersion](#get-app-version)| GET| NO| è·å–appç‰ˆæœ¬ä¿¡æ¯|
+| [locations/{parentId}](#list-locations)| GET| NO| è·å–åœ°åŒºåˆ—è¡¨|
+| [industryDomains](#list-industry-domains)| GET| NO| è·å–è¡Œä¸šé¢†åŸŸåˆ—è¡¨|
+| [startupRoles](#list-startup-roles)| GET| NO| è·å–åˆ›ä¸šè§’è‰²åˆ—è¡¨|
+| [startupStatus](#list-startup-status)| GET| NO| è·å–åˆ›ä¸šçŠ¶æ€åˆ—è¡¨|
 
 ## APIs
 
@@ -29,7 +29,7 @@
 
 #### Signin
 
- ÓÃ»§Í¨¹ıÕË»§ºÍÃÜÂëµÇÈëÏµÍ³¡£
+ ç”¨æˆ·é€šè¿‡è´¦æˆ·å’Œå¯†ç ç™»å…¥ç³»ç»Ÿã€‚
 
 - **Request URL**
     `http://API_DOMAIN/account/signin`
@@ -44,8 +44,8 @@
 
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
-|account  |required |string |ÓÊÏä»òÕßÊÖ»úºÅÂë |
-|password |required |string |ÃÜÂë|
+|account  |required |string |é‚®ç®±æˆ–è€…æ‰‹æœºå·ç  |
+|password |required |string |å¯†ç |
 
 - **Response**
 
@@ -61,7 +61,7 @@
 | :-------- | :-------- |
 | Set-Cookies | the value contains "JSESSIONID=*" |
 
-**Note:** ÓĞĞ©APIĞèÒªÓÃ»§µÇÂ¼²ÅÄÜ²Ù×÷£¬°Ñ "JSESSIONID=*" Ìí¼Óµ½ĞèÒªµÇÂ¼²ÅÄÜ·ÃÎÊµÄAPIµÄHEADERÖĞ.
+**Note:** æœ‰äº›APIéœ€è¦ç”¨æˆ·ç™»å½•æ‰èƒ½æ“ä½œï¼ŒæŠŠ "JSESSIONID=*" æ·»åŠ åˆ°éœ€è¦ç™»å½•æ‰èƒ½è®¿é—®çš„APIçš„HEADERä¸­.
 
 - **Error**
     ```
@@ -69,7 +69,7 @@
         "body": {
             "error": {
                 "code": 20001,
-                "msg": "ÕËºÅ»òÃÜÂë´íÎó"
+                "msg": "è´¦å·æˆ–å¯†ç é”™è¯¯"
             }
         },
         "status": "FAILED"
@@ -78,12 +78,12 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 10000 | ²ÎÊı´íÎó |
-| 20001 | ÕËºÅ»òÃÜÂë´íÎó |
+| 10000 | å‚æ•°é”™è¯¯ |
+| 20001 | è´¦å·æˆ–å¯†ç é”™è¯¯ |
 
 #### Signup
 
- ÓÃ»§Í¨¹ıÊÖ»ú»òÕßÓÊÏä×¢²á¡£Èç¹ûÊÇÊ¹ÓÃÊÖ»ú×¢²á£¬Ê×ÏÈÒªÍ¨¹ı code/send API ·¢ËÍÑéÖ¤Âë£»Èç¹ûÊ¹ÓÃÓÊÏä×¢²áÔò²»ĞèÒªcode£¬Í¨¹ıÓÊÏä×¢²áºó»á·¢ËÍÒ»·âÓÊ¼ş£¬ÌáĞÑÓÃ»§È¥ÑéÖ¤ÕË»§£¬Èç¹ûÓÃ»§²»ÑéÖ¤Ò²²»Ó°ÏìÓÃ»§µÇÂ¼¡£
+ ç”¨æˆ·é€šè¿‡æ‰‹æœºæˆ–è€…é‚®ç®±æ³¨å†Œã€‚å¦‚æœæ˜¯ä½¿ç”¨æ‰‹æœºæ³¨å†Œï¼Œé¦–å…ˆè¦é€šè¿‡ code/send API å‘é€éªŒè¯ç ï¼›å¦‚æœä½¿ç”¨é‚®ç®±æ³¨å†Œåˆ™ä¸éœ€è¦codeï¼Œé€šè¿‡é‚®ç®±æ³¨å†Œåä¼šå‘é€ä¸€å°é‚®ä»¶ï¼Œæé†’ç”¨æˆ·å»éªŒè¯è´¦æˆ·ï¼Œå¦‚æœç”¨æˆ·ä¸éªŒè¯ä¹Ÿä¸å½±å“ç”¨æˆ·ç™»å½•ã€‚
 
 - **Request URL**
     `http://API_DOMAIN/account/signup`
@@ -98,9 +98,9 @@
 
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
-|account  |required |string |ÓÊÏä»òÕßÊÖ»úºÅÂë |
-|password |required |string |ÃÜÂë|
-|code     |optional |string |ÑéÖ¤Âë£¬Èç¹ûÊ¹ÓÃÓÊÏä×¢²á£¬²»ĞèÒª |
+|account  |required |string |é‚®ç®±æˆ–è€…æ‰‹æœºå·ç  |
+|password |required |string |å¯†ç |
+|code     |optional |string |éªŒè¯ç ï¼Œå¦‚æœä½¿ç”¨é‚®ç®±æ³¨å†Œï¼Œä¸éœ€è¦ |
 
 - **Response**
     ```
@@ -119,7 +119,7 @@
         "body": {
             "error": {
                 "code": 10000,
-                "msg": "²ÎÊı´íÎó"
+                "msg": "å‚æ•°é”™è¯¯"
             }
         },
         "status": "FAILED"
@@ -128,14 +128,14 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-|10000 |²ÎÊı´íÎó |
-|20003 |´Ëµç×ÓÓÊ¼şÒÑ±»×¢²á |
-|20004 |´ËÊÖ»úºÅÂëÒÑ±»×¢²á |
-|20100 |ÑéÖ¤Âë²»ÕıÈ· |
+|10000 |å‚æ•°é”™è¯¯ |
+|20003 |æ­¤ç”µå­é‚®ä»¶å·²è¢«æ³¨å†Œ |
+|20004 |æ­¤æ‰‹æœºå·ç å·²è¢«æ³¨å†Œ |
+|20100 |éªŒè¯ç ä¸æ­£ç¡® |
 
 #### Signout
 
- µÇ³ö¡£
+ ç™»å‡ºã€‚
 - **Request URL**
     `http://API_DOMAIN/account/signout`
 
@@ -165,7 +165,7 @@
 
 #### Retrieve Password
 
- ÓÃ»§Í¨¹ıÕËºÅ£¨ÊÖ»úºÅÂë»òÕßÓÊÏä£©ÕÒ»ØÃÜÂë£¬´ËAPIÖ»ÊÇ·¢ËÍÑéÖ¤Âë»òÕßÓÊ¼ş£¬ĞèÒªÅäºÏpassword/reset API ²ÅÄÜÕÒ»ØÃÜÂë¡£
+ ç”¨æˆ·é€šè¿‡è´¦å·ï¼ˆæ‰‹æœºå·ç æˆ–è€…é‚®ç®±ï¼‰æ‰¾å›å¯†ç ï¼Œæ­¤APIåªæ˜¯å‘é€éªŒè¯ç æˆ–è€…é‚®ä»¶ï¼Œéœ€è¦é…åˆpassword/reset API æ‰èƒ½æ‰¾å›å¯†ç ã€‚
 
 - **Request URL**
     `http://API_DOMAIN/account/password/retrieve`
@@ -180,7 +180,7 @@
 
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
-|account  |required |string |ÓÊÏä»òÕßÊÖ»úºÅÂë |
+|account  |required |string |é‚®ç®±æˆ–è€…æ‰‹æœºå·ç  |
 
 - **Response**
 
@@ -197,7 +197,7 @@
         "body": {
             "error": {
                 "code": 20000,
-                "msg": "ÕËºÅ²»´æÔÚ"
+                "msg": "è´¦å·ä¸å­˜åœ¨"
             }
         },
         "status": "FAILED"
@@ -206,15 +206,15 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 10000 | ²ÎÊı´íÎó |
-| 20000 | ÕËºÅ²»´æÔÚ |
-| 20002 | ÕËºÅ²»¿ÉÓÃ |
-| 20101 | ¶ÌĞÅ·¢ËÍÌõÊı³¬¹ıÈÕÉÏÏŞ |
-| 20102 | ¶ÌĞÅ·¢ËÍÊ§°Ü |
+| 10000 | å‚æ•°é”™è¯¯ |
+| 20000 | è´¦å·ä¸å­˜åœ¨ |
+| 20002 | è´¦å·ä¸å¯ç”¨ |
+| 20101 | çŸ­ä¿¡å‘é€æ¡æ•°è¶…è¿‡æ—¥ä¸Šé™ |
+| 20102 | çŸ­ä¿¡å‘é€å¤±è´¥ |
 
 #### Reset Password
 
- ÓÃ»§ÔÚÎ´µÇÂ¼µÄÇé¿öÏÂÖØÖÃÃÜÂë¡£
+ ç”¨æˆ·åœ¨æœªç™»å½•çš„æƒ…å†µä¸‹é‡ç½®å¯†ç ã€‚
 
 - **Request URL**
     `http://API_DOMAIN/account/password/reset`
@@ -229,9 +229,9 @@
 
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
-|account  |required |string |ÓÊÏä»òÕßÊÖ»úºÅÂë |
-|password |required |string |ÃÜÂë|
-|code     |optional |string |ÑéÖ¤Âë£¬Èç¹ûÊ¹ÓÃÓÊÏäÖØÖÃÃÜÂë£¬²»ĞèÒª |
+|account  |required |string |é‚®ç®±æˆ–è€…æ‰‹æœºå·ç  |
+|password |required |string |å¯†ç |
+|code     |optional |string |éªŒè¯ç ï¼Œå¦‚æœä½¿ç”¨é‚®ç®±é‡ç½®å¯†ç ï¼Œä¸éœ€è¦ |
 
 - **Response**
 
@@ -248,7 +248,7 @@
         "body": {
             "error": {
                 "code": 20000,
-                "msg": "ÕËºÅ²»´æÔÚ"
+                "msg": "è´¦å·ä¸å­˜åœ¨"
             }
         },
         "status": "FAILED"
@@ -257,15 +257,15 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 10000 | ²ÎÊı´íÎó |
-| 20000 | ÕËºÅ²»´æÔÚ |
-| 20002 | ÕËºÅ²»¿ÉÓÃ |
-| 20100 | ÑéÖ¤Âë²»ÕıÈ· |
+| 10000 | å‚æ•°é”™è¯¯ |
+| 20000 | è´¦å·ä¸å­˜åœ¨ |
+| 20002 | è´¦å·ä¸å¯ç”¨ |
+| 20100 | éªŒè¯ç ä¸æ­£ç¡® |
 
 
 #### Change Password
 
- ÓÃ»§ÔÚµÇÂ¼µÄÇé¿öÏÂĞŞ¸ÄÃÜÂë¡£
+ ç”¨æˆ·åœ¨ç™»å½•çš„æƒ…å†µä¸‹ä¿®æ”¹å¯†ç ã€‚
 
 - **Request URL**
     `http://API_DOMAIN/account/password/change`
@@ -284,8 +284,8 @@
 
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
-|oldPassword  |required |string |Ô­Ê¼ÃÜÂë |
-|password     |required |string |ĞÂÃÜÂë |
+|oldPassword  |required |string |åŸå§‹å¯†ç  |
+|password     |required |string |æ–°å¯†ç  |
 
 - **Response**
 
@@ -302,7 +302,7 @@
         "body": {
             "error": {
                 "code": 20200,
-                "msg": "¾ÉÃÜÂë²»ÕıÈ·"
+                "msg": "æ—§å¯†ç ä¸æ­£ç¡®"
             }
         },
         "status": "FAILED"
@@ -311,14 +311,14 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 403   | ÎŞÈ¨·ÃÎÊ£¬ÇëÖØÊÔ |
-| 10000 | ²ÎÊı´íÎó |
-| 20200 | ¾ÉÃÜÂë²»ÕıÈ· |
+| 403   | æ— æƒè®¿é—®ï¼Œè¯·é‡è¯• |
+| 10000 | å‚æ•°é”™è¯¯ |
+| 20200 | æ—§å¯†ç ä¸æ­£ç¡® |
 
 
 #### Send verify code
 
-¸ù¾İ²»Í¬µÄtype£¨register/retrievePwd£©·¢ËÍÑéÖ¤Âë¡£
+æ ¹æ®ä¸åŒçš„typeï¼ˆregister/retrievePwdï¼‰å‘é€éªŒè¯ç ã€‚
 
 - **Request URL**
     `http://API_DOMAIN/code/send`
@@ -333,8 +333,8 @@
 
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
-|mobile |required |string |Ô­Ê¼ÃÜÂë |
-|type   |required |string |ÀàĞÍ£¬ register£¨×¢²á£© »òÕß retrievePwd£¨ÕÒ»ØÃÜÂë£©|
+|mobile |required |string |åŸå§‹å¯†ç  |
+|type   |required |string |ç±»å‹ï¼Œ registerï¼ˆæ³¨å†Œï¼‰ æˆ–è€… retrievePwdï¼ˆæ‰¾å›å¯†ç ï¼‰|
 
 - **Response**
 
@@ -360,16 +360,16 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 10000 | ²ÎÊı´íÎó |
-| 20000 | ÕËºÅ²»´æÔÚ |
-| 20002 | ÕËºÅ²»¿ÉÓÃ |
-| 20004 | ´ËÊÖ»úºÅÂëÒÑ±»×¢²á |
-| 20101 | ¶ÌĞÅ·¢ËÍÌõÊı³¬¹ıÈÕÉÏÏŞ |
-| 20102 | ¶ÌĞÅ·¢ËÍÊ§°Ü |
+| 10000 | å‚æ•°é”™è¯¯ |
+| 20000 | è´¦å·ä¸å­˜åœ¨ |
+| 20002 | è´¦å·ä¸å¯ç”¨ |
+| 20004 | æ­¤æ‰‹æœºå·ç å·²è¢«æ³¨å†Œ |
+| 20101 | çŸ­ä¿¡å‘é€æ¡æ•°è¶…è¿‡æ—¥ä¸Šé™ |
+| 20102 | çŸ­ä¿¡å‘é€å¤±è´¥ |
 
 #### Verify Code
 
- ÑéÖ¤ÑéÖ¤ÂëÊÇ·ñÕıÈ·£¬´ËAPIÍ¨³£ÔÚÓÃ»§ÊäÈëÑéÖ¤Âëºó´¥·¢¡£
+ éªŒè¯éªŒè¯ç æ˜¯å¦æ­£ç¡®ï¼Œæ­¤APIé€šå¸¸åœ¨ç”¨æˆ·è¾“å…¥éªŒè¯ç åè§¦å‘ã€‚
 
 - **Request URL**
     `http://API_DOMAIN/code/verify`
@@ -384,9 +384,9 @@
 
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
-|mobile |required |string |Ô­Ê¼ÃÜÂë |
-|type   |required |string |ÀàĞÍ£¬ register£¨×¢²á£© »òÕß retrievePwd£¨ÕÒ»ØÃÜÂë£©|
-|code   |optional |string |ÑéÖ¤Âë |
+|mobile |required |string |åŸå§‹å¯†ç  |
+|type   |required |string |ç±»å‹ï¼Œ registerï¼ˆæ³¨å†Œï¼‰ æˆ–è€… retrievePwdï¼ˆæ‰¾å›å¯†ç ï¼‰|
+|code   |optional |string |éªŒè¯ç  |
 
 - **Response**
 
@@ -403,7 +403,7 @@
         "body": {
             "error": {
                 "code": 20100,
-                "msg": "ÑéÖ¤Âë²»ÕıÈ·"
+                "msg": "éªŒè¯ç ä¸æ­£ç¡®"
             }
         },
         "status": "FAILED"
@@ -412,15 +412,15 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 10000 | ²ÎÊı´íÎó |
-| 20100 | ÑéÖ¤Âë²»ÕıÈ· |
+| 10000 | å‚æ•°é”™è¯¯ |
+| 20100 | éªŒè¯ç ä¸æ­£ç¡® |
 
 
 ### User API
 
 #### Get user profile detail
 
- »ñÈ¡ÓÃ»§µÄ»ù±¾ĞÅÏ¢¡£
+ è·å–ç”¨æˆ·çš„åŸºæœ¬ä¿¡æ¯ã€‚
 
 - **Request URL**
     `http://API_DOMAIN/user/profile`
@@ -448,20 +448,20 @@
             "domains": [
                 {
                     "id": 2,
-                    "name": "ÒÆ¶¯»¥ÁªÍø"
+                    "name": "ç§»åŠ¨äº’è”ç½‘"
                 },
                 {
                     "id": 3,
-                    "name": "µç×ÓÉÌÎñ"
+                    "name": "ç”µå­å•†åŠ¡"
                 },
                 {
                     "id": 1,
-                    "name": "»¥ÁªÍø"
+                    "name": "äº’è”ç½‘"
                 }
             ],
             "email": "",
-            "fullDomains": "»¥ÁªÍø  ÒÆ¶¯»¥ÁªÍø  µç×ÓÉÌÎñ",
-            "fullLocation": "±±¾©|±±¾©",
+            "fullDomains": "äº’è”ç½‘  ç§»åŠ¨äº’è”ç½‘  ç”µå­å•†åŠ¡",
+            "fullLocation": "åŒ—äº¬|åŒ—äº¬",
             "gender": "F",
             "introduction": "HAHAHAHAHA",
             "isEmailVerified": false,
@@ -470,7 +470,7 @@
                 "latitude": 0,
                 "locationId": 35,
                 "longitude": 0,
-                "name": "±±¾©",
+                "name": "åŒ—äº¬",
                 "parentId": 1,
                 "pinyin": "beijing"
             },
@@ -478,11 +478,11 @@
             "name": "GOGO",
             "startupRole": {
                 "id": 1,
-                "name": "²úÆ·"
+                "name": "äº§å“"
             },
             "startupStatus": {
                 "id": 1,
-                "name": "ÓĞ´´ÒµÒâÔ¸"
+                "name": "æœ‰åˆ›ä¸šæ„æ„¿"
             },
             "status": "active",
             "userId": 1
@@ -511,7 +511,7 @@
 
 #### Update user profile
 
-ĞŞ¸ÄÓÃ»§×ÊÁÏ.
+ä¿®æ”¹ç”¨æˆ·èµ„æ–™.
 
 - **Request URL**
     `http://API_DOMAIN/user/profile`
@@ -530,15 +530,15 @@
 
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
-|name     |optional |string(2-64) |êÇ³Æ|
-|gender   |optional |string |ĞÔ±ğ£¬ M(ÄĞ)»òÕßF(Å®)|
-|age      |optional |string |ÄêÁä£¬<25,25-30,31-35,36-40,41-50,>50|
-|avatar   |optional |string |Í·ÏñµÄÂ·¾¶|
-|introduction|optional |string(<=100) |¼ò½é|
-|locationId  |optional |Int |µØÇø|
-|domainIds   |optional |Int[] |¹Ø×¢ÁìÓò£¬Êı×é£¬ÀıÈç1,2,3£¬»òÕß´«¶à¸ö´Ë²ÎÊı|
-|startupStatusId |optional |Int |´´Òµ×´Ì¬|
-|startupRoleId   |optional |Int |´´Òµ½ÇÉ«|
+|name     |optional |string(2-64) |æ˜µç§°|
+|gender   |optional |string |æ€§åˆ«ï¼Œ M(ç”·)æˆ–è€…F(å¥³)|
+|age      |optional |string |å¹´é¾„ï¼Œ<25,25-30,31-35,36-40,41-50,>50|
+|avatar   |optional |string |å¤´åƒçš„è·¯å¾„|
+|introduction|optional |string(<=100) |ç®€ä»‹|
+|locationId  |optional |Int |åœ°åŒº|
+|domainIds   |optional |Int[] |å…³æ³¨é¢†åŸŸï¼Œæ•°ç»„ï¼Œä¾‹å¦‚1,2,3ï¼Œæˆ–è€…ä¼ å¤šä¸ªæ­¤å‚æ•°|
+|startupStatusId |optional |Int |åˆ›ä¸šçŠ¶æ€|
+|startupRoleId   |optional |Int |åˆ›ä¸šè§’è‰²|
 
 - **Response**
 
@@ -555,7 +555,7 @@
         "body": {
             "error": {
                 "code": 10000,
-                "msg": "²ÎÊı´íÎó"
+                "msg": "å‚æ•°é”™è¯¯"
             }
         },
         "status": "FAILED"
@@ -564,18 +564,18 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 403   | ÎŞÈ¨·ÃÎÊ£¬ÇëÖØÊÔ |
-| 10000 | ²ÎÊı´íÎó |
-| 10200 | µØÇø²»´æÔÚ |
-| 10210 | ´´Òµ×´Ì¬²»´æÔÚ |
-| 10220 | ¸öÈË½ÇÉ«²»´æÔÚ |
+| 403   | æ— æƒè®¿é—®ï¼Œè¯·é‡è¯• |
+| 10000 | å‚æ•°é”™è¯¯ |
+| 10200 | åœ°åŒºä¸å­˜åœ¨ |
+| 10210 | åˆ›ä¸šçŠ¶æ€ä¸å­˜åœ¨ |
+| 10220 | ä¸ªäººè§’è‰²ä¸å­˜åœ¨ |
 
 
 ### Util API
 
 #### Upload image
 
-ÉÏ´«Í¼Æ¬.
+ä¸Šä¼ å›¾ç‰‡.
 
 - **Request URL**
     `http://API_DOMAIN/image`
@@ -595,7 +595,7 @@
 
 | Name | Requires | Type and Range | Description |
 | :-------- | :-------- | :-------- | :-------- | 
-| image | required | file | Í¼Æ¬ÎÄ¼ş |
+| image | required | file | å›¾ç‰‡æ–‡ä»¶ |
 
 - **Response**
 
@@ -615,7 +615,7 @@
         "body": {
             "error": {
                 "code": 10000,
-                "msg": "²ÎÊı´íÎó"
+                "msg": "å‚æ•°é”™è¯¯"
             }
         },
         "status": "FAILED"
@@ -624,21 +624,21 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 10000 | ²ÎÊı´íÎó |
-| 10100 | ÎÄ¼şÎª¿Õ |
-| 10101 | ÎÄ¼şÀàĞÍ²»ÕıÈ· |
-| 10102 | ÎÄ¼ş¹ı´ó |
-| 10103 | ÎÄ¼şÈ±ÉÙ×îĞ¡³ß´ç |
-| 10104 | Í¼Æ¬¹ı¿í |
-| 10105 | Í¼Æ¬¹ı¸ß |
-| 10106 | Í¼Æ¬È±ÉÙ×îĞ¡¿í¶È |
-| 10107 | Í¼Æ¬È±ÉÙ×îĞ¡¸ß¶È |
-| 10108 | ÑéÖ¤Í¼Æ¬³ö´í |
-| 10109 | ÉÏ´«ÎÄ¼ş³ö´í |
+| 10000 | å‚æ•°é”™è¯¯ |
+| 10100 | æ–‡ä»¶ä¸ºç©º |
+| 10101 | æ–‡ä»¶ç±»å‹ä¸æ­£ç¡® |
+| 10102 | æ–‡ä»¶è¿‡å¤§ |
+| 10103 | æ–‡ä»¶ç¼ºå°‘æœ€å°å°ºå¯¸ |
+| 10104 | å›¾ç‰‡è¿‡å®½ |
+| 10105 | å›¾ç‰‡è¿‡é«˜ |
+| 10106 | å›¾ç‰‡ç¼ºå°‘æœ€å°å®½åº¦ |
+| 10107 | å›¾ç‰‡ç¼ºå°‘æœ€å°é«˜åº¦ |
+| 10108 | éªŒè¯å›¾ç‰‡å‡ºé”™ |
+| 10109 | ä¸Šä¼ æ–‡ä»¶å‡ºé”™ |
 
 #### Get App Version
 
-»ñÈ¡app°æ±¾ĞÅÏ¢.
+è·å–appç‰ˆæœ¬ä¿¡æ¯.
 
 - **Request URL**
     `http://API_DOMAIN/appVersion`
@@ -674,7 +674,7 @@
     
 #### List Locations
 
-¸ù¾İlocation¸¸¼¶ID»ñÈ¡×ÓµØÇø£¬Èç¹û¸¸¼¶IDÎª0Ôò·µ»Ø¸¸¼¶location.
+æ ¹æ®locationçˆ¶çº§IDè·å–å­åœ°åŒºï¼Œå¦‚æœçˆ¶çº§IDä¸º0åˆ™è¿”å›çˆ¶çº§location.
 
 - **Request URL**
     `http://API_DOMAIN/locations/{parentId}`
@@ -699,7 +699,7 @@
                 "latitude": 0,
                 "locationId": 35,
                 "longitude": 0,
-                "name": "±±¾©",
+                "name": "åŒ—äº¬",
                 "parentId": 1,
                 "pinyin": "beijing"
             }
@@ -714,7 +714,7 @@
 
 #### List Industry Domains
 
-»ñÈ¡ĞĞÒµÁìÓòÁĞ±í.
+è·å–è¡Œä¸šé¢†åŸŸåˆ—è¡¨.
 
 - **Request URL**
     `http://API_DOMAIN/industryDomains`
@@ -737,47 +737,47 @@
         "body": [
             {
                 "id": 1,
-                "name": "»¥ÁªÍø"
+                "name": "äº’è”ç½‘"
             },
             {
                 "id": 2,
-                "name": "ÒÆ¶¯»¥ÁªÍø"
+                "name": "ç§»åŠ¨äº’è”ç½‘"
             },
             {
                 "id": 3,
-                "name": "µç×ÓÉÌÎñ"
+                "name": "ç”µå­å•†åŠ¡"
             },
             {
                 "id": 4,
-                "name": "Éç½»"
+                "name": "ç¤¾äº¤"
             },
             {
                 "id": 5,
-                "name": "ÓÎÏ·"
+                "name": "æ¸¸æˆ"
             },
             {
                 "id": 6,
-                "name": "ÔÆ¼ÆËã"
+                "name": "äº‘è®¡ç®—"
             },
             {
                 "id": 7,
-                "name": "IT·şÎñ"
+                "name": "ITæœåŠ¡"
             },
             {
                 "id": 8,
-                "name": "Èí¼ş/¹¤¾ß"
+                "name": "è½¯ä»¶/å·¥å…·"
             },
             {
                 "id": 9,
-                "name": "ÈíÓ²¼ş"
+                "name": "è½¯ç¡¬ä»¶"
             },
             {
                 "id": 10,
-                "name": "ÊıÂëµç×Ó"
+                "name": "æ•°ç ç”µå­"
             },
             {
                 "id": 11,
-                "name": "ÆäËü"
+                "name": "å…¶å®ƒ"
             }
         ],
         "status": "SUCCEED"
@@ -788,9 +788,9 @@
 
     N/A
     
-#### Get Startup Roles
+#### List Startup Roles
 
-»ñÈ¡´´Òµ½ÇÉ«ÁĞ±í.
+è·å–åˆ›ä¸šè§’è‰²åˆ—è¡¨.
 
 - **Request URL**
     `http://API_DOMAIN/startupRoles`
@@ -813,27 +813,27 @@
         "body": [
             {
                 "id": 1,
-                "name": "²úÆ·"
+                "name": "äº§å“"
             },
             {
                 "id": 2,
-                "name": "¼¼Êõ"
+                "name": "æŠ€æœ¯"
             },
             {
                 "id": 3,
-                "name": "ÔËÓª"
+                "name": "è¿è¥"
             },
             {
                 "id": 4,
-                "name": "ÓªÏú"
+                "name": "è¥é”€"
             },
             {
                 "id": 5,
-                "name": "Éè¼Æ"
+                "name": "è®¾è®¡"
             },
             {
                 "id": 6,
-                "name": "ÆäËü"
+                "name": "å…¶å®ƒ"
             }
         ],
         "status": "SUCCEED"
@@ -846,7 +846,7 @@
 
 #### List Startup Status
 
-»ñÈ¡´´Òµ×´Ì¬ÁĞ±í.
+è·å–åˆ›ä¸šçŠ¶æ€åˆ—è¡¨.
 
 - **Request URL**
     `http://API_DOMAIN/startupStatus`
@@ -869,27 +869,27 @@
         "body": [
             {
                 "id": 1,
-                "name": "ÓĞ´´ÒµÒâÔ¸"
+                "name": "æœ‰åˆ›ä¸šæ„æ„¿"
             },
             {
                 "id": 2,
-                "name": "ÓĞ´´ÒµÏë·¨"
+                "name": "æœ‰åˆ›ä¸šæƒ³æ³•"
             },
             {
                 "id": 3,
-                "name": "È«Ö°´´ÒµÖĞ"
+                "name": "å…¨èŒåˆ›ä¸šä¸­"
             },
             {
                 "id": 4,
-                "name": "¼æÖ°´´ÒµÖĞ"
+                "name": "å…¼èŒåˆ›ä¸šä¸­"
             },
             {
                 "id": 5,
-                "name": "Í¶×ÊÈË"
+                "name": "æŠ•èµ„äºº"
             },
             {
                 "id": 6,
-                "name": "Ã½ÌåÈË"
+                "name": "åª’ä½“äºº"
             }
         ],
         "status": "SUCCEED"
