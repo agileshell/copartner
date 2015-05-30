@@ -3,6 +3,7 @@ package com.insoul.copartner.service.impl;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -113,13 +114,14 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         }
 
         Date now = new Date();
-        user.setStatus(UserStatus.ACTIVE.getValue());
         user.setName(account);
         user.setClientIp(getIp());
         user.setCreated(now);
         String salt = PasswordUtil.genSalt();
         user.setSalt(salt);
         user.setPassword(PasswordUtil.encodePassword(userAddRequest.getPassword(), salt));
+
+        setDefaultValue(user);
 
         userDao.save(user);
 
@@ -149,6 +151,39 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         }
 
         return userId;
+    }
+
+    private void setDefaultValue(User user) {
+        user.setStatus(UserStatus.ACTIVE.getValue());
+
+        List<StartupRole> roles = startupRoleDao.findAll();
+        if (null != roles && roles.size() > 0) {
+            user.setStartupRoleId(roles.get(0).getId());
+        }
+
+        List<StartupStatus> statuses = startupStatusDao.findAll();
+        if (null != statuses && statuses.size() > 0) {
+            user.setStartupStatusId(statuses.get(0).getId());
+        }
+
+        Long locationId = GlobalProperties.DEFAULT_LOCATION_ID.longValue();
+        if (0 != locationId) {
+            Location location = locationDao.get(locationId);
+            if (null != location) {
+                user.setLocationId(locationId);
+
+                // 缓存地区全名
+                StringBuilder fullLocation = new StringBuilder();
+                fullLocation.append(location.getName());
+
+                Location parentLocation = locationDao.get(location.getParentId());
+                if (null != parentLocation) {
+                    fullLocation.append("|").append(parentLocation.getName());
+                }
+                user.setFullLocation(fullLocation.toString());
+            }
+        }
+
     }
 
     @Override
@@ -286,12 +321,98 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
     }
 
     @Override
-    public UserDetailVO getUserProfileDetail() {
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public void updateProfile(UserProfileUpdateRequest profileUpdateRequest) throws CException {
         long userId = getUserId();
         User user = userDao.get(userId);
 
+        if (StringUtils.isNotBlank(profileUpdateRequest.getName())) {
+            user.setName(profileUpdateRequest.getName());
+        }
+        if (StringUtils.isNotBlank(profileUpdateRequest.getAvatar())) {
+            user.setAvatar(profileUpdateRequest.getAvatar());
+        }
+        if (StringUtils.isNotBlank(profileUpdateRequest.getGender())) {
+            user.setGender(profileUpdateRequest.getGender());
+        }
+        if (StringUtils.isNotBlank(profileUpdateRequest.getAge())) {
+            user.setAge(profileUpdateRequest.getAge());
+        }
+        if (StringUtils.isNotBlank(profileUpdateRequest.getIntroduction())) {
+            user.setIntroduction(profileUpdateRequest.getIntroduction());
+        }
+
+        if (null != profileUpdateRequest.getLocationId()) {
+            Location location = locationDao.get(profileUpdateRequest.getLocationId());
+            if (null == location) {
+                throw CExceptionFactory.getException(CException.class, ResponseCode.LOCATION_NOT_EXIST);
+            }
+
+            // 缓存地区全名
+            StringBuilder fullLocation = new StringBuilder();
+            fullLocation.append(location.getName());
+            Location parentLocation = locationDao.get(location.getParentId());
+            if (null != parentLocation) {
+                fullLocation.append("|").append(parentLocation.getName());
+            }
+            user.setFullLocation(fullLocation.toString());
+
+            user.setLocationId(profileUpdateRequest.getLocationId());
+        }
+
+        if (null != profileUpdateRequest.getStartupStatusId()) {
+            StartupStatus startupStatus = startupStatusDao.get(profileUpdateRequest.getStartupStatusId());
+            if (null == startupStatus) {
+                throw CExceptionFactory.getException(CException.class, ResponseCode.STARTUP_STATUS_NOT_EXIST);
+            }
+
+            user.setStartupStatusId(profileUpdateRequest.getStartupStatusId());
+        }
+        if (null != profileUpdateRequest.getStartupRoleId()) {
+            StartupRole startupRole = startupRoleDao.get(profileUpdateRequest.getStartupRoleId());
+            if (null == startupRole) {
+                throw CExceptionFactory.getException(CException.class, ResponseCode.STARTUP_ROLE_NOT_EXIST);
+            }
+
+            user.setStartupRoleId(profileUpdateRequest.getStartupRoleId());
+        }
+
+        Long domainIds[] = profileUpdateRequest.getDomainIds();
+        if (null != domainIds && domainIds.length > 0) {
+            StringBuilder strDomainIds = new StringBuilder();
+
+            for (Long domainId : domainIds) {
+                IndustryDomain industryDomain = industryDomainDao.get(domainId);
+                if (null != industryDomain) {
+                    strDomainIds.append(domainId).append(",");
+                }
+            }
+
+            user.setDomains(strDomainIds.toString());
+        }
+    }
+
+    @Override
+    public UserDetailVO getUserProfileDetail() {
+        User user = userDao.get(getUserId());
+
+        return getUserProfile(user);
+    }
+
+    @Override
+    public UserDetailVO getUserProfileDetail(Long userId) throws CException {
+        User user = userDao.get(userId);
+        if (null == user) {
+            throw CExceptionFactory.getException(CException.class, ResponseCode.USER_NOT_EXIST);
+        }
+
+        return getUserProfile(user);
+    }
+
+    private UserDetailVO getUserProfile(User user) {
+
         UserDetailVO userDetailVO = new UserDetailVO();
-        userDetailVO.setUserId(userId);
+        userDetailVO.setUserId(user.getId());
         userDetailVO.setName(user.getName());
         userDetailVO.setMobile(user.getMobile());
         userDetailVO.setEmail(user.getEmail());
@@ -366,75 +487,4 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         return userDetailVO;
     }
 
-    @Override
-    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-    public void updateProfile(UserProfileUpdateRequest profileUpdateRequest) throws CException {
-        long userId = getUserId();
-        User user = userDao.get(userId);
-
-        if (StringUtils.isNotBlank(profileUpdateRequest.getName())) {
-            user.setName(profileUpdateRequest.getName());
-        }
-        if (StringUtils.isNotBlank(profileUpdateRequest.getAvatar())) {
-            user.setAvatar(profileUpdateRequest.getAvatar());
-        }
-        if (StringUtils.isNotBlank(profileUpdateRequest.getGender())) {
-            user.setGender(profileUpdateRequest.getGender());
-        }
-        if (StringUtils.isNotBlank(profileUpdateRequest.getAge())) {
-            user.setAge(profileUpdateRequest.getAge());
-        }
-        if (StringUtils.isNotBlank(profileUpdateRequest.getIntroduction())) {
-            user.setIntroduction(profileUpdateRequest.getIntroduction());
-        }
-
-        if (null != profileUpdateRequest.getLocationId()) {
-            Location location = locationDao.get(profileUpdateRequest.getLocationId());
-            if (null == location) {
-                throw CExceptionFactory.getException(CException.class, ResponseCode.LOCATION_NOT_EXIST);
-            }
-
-            // 缓存地区全名
-            StringBuilder fullLocation = new StringBuilder();
-            Location parentLocation = locationDao.get(location.getParentId());
-            if (null != parentLocation) {
-                fullLocation.append(parentLocation.getName()).append("|");
-            }
-            fullLocation.append(location.getName());
-            user.setFullLocation(fullLocation.toString());
-
-            user.setLocationId(profileUpdateRequest.getLocationId());
-        }
-
-        if (null != profileUpdateRequest.getStartupStatusId()) {
-            StartupStatus startupStatus = startupStatusDao.get(profileUpdateRequest.getStartupStatusId());
-            if (null == startupStatus) {
-                throw CExceptionFactory.getException(CException.class, ResponseCode.STARTUP_STATUS_NOT_EXIST);
-            }
-
-            user.setStartupStatusId(profileUpdateRequest.getStartupStatusId());
-        }
-        if (null != profileUpdateRequest.getStartupRoleId()) {
-            StartupRole startupRole = startupRoleDao.get(profileUpdateRequest.getStartupRoleId());
-            if (null == startupRole) {
-                throw CExceptionFactory.getException(CException.class, ResponseCode.STARTUP_ROLE_NOT_EXIST);
-            }
-
-            user.setStartupRoleId(profileUpdateRequest.getStartupRoleId());
-        }
-
-        Long domainIds[] = profileUpdateRequest.getDomainIds();
-        if (null != domainIds && domainIds.length > 0) {
-            StringBuilder strDomainIds = new StringBuilder();
-
-            for (Long domainId : domainIds) {
-                IndustryDomain industryDomain = industryDomainDao.get(domainId);
-                if (null != industryDomain) {
-                    strDomainIds.append(domainId).append(",");
-                }
-            }
-
-            user.setDomains(strDomainIds.toString());
-        }
-    }
 }

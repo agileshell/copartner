@@ -14,7 +14,9 @@ public interface IUserService {
 
     void changePassword(String oldPassword, String password) throws CException;
 
+    void updateProfile(UserProfileUpdateRequest profileUpdateRequest) throws CException;
+
     UserDetailVO getUserProfileDetail();
 
-    void updateProfile(UserProfileUpdateRequest profileUpdateRequest) throws CException;
+    UserDetailVO getUserProfileDetail(Long userId) throws CException;
 }

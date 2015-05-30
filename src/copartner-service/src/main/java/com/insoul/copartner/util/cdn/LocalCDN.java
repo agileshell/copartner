@@ -29,7 +29,6 @@ public final class LocalCDN implements CDN {
         return fileName;
     }
 
-
     @Override
     public boolean deleteFile(final String path) {
         File file = new File(GlobalProperties.CDN_LOCAL_PATH.trim() + CommonConstant.SEPARATOR + path);
@@ -41,7 +40,6 @@ public final class LocalCDN implements CDN {
         }
     }
 
-
     @Override
     public String getHttpPath(final String path) {
         String url = null;
@@ -51,7 +49,10 @@ public final class LocalCDN implements CDN {
             url = GlobalProperties.CDN_DOMAIN.concat(
                     GlobalProperties.CDN_DOMAIN.endsWith(CommonConstant.SEPARATOR) ? "" : CommonConstant.SEPARATOR)
                     .concat(path);
+        } else {
+            url = GlobalProperties.DEFAULT_AVATAR_URL;
         }
+
         return url;
     }
 

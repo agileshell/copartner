@@ -57,6 +57,8 @@ public final class QiniuCDN implements CDN {
             url = GlobalProperties.CDN_DOMAIN.concat(
                     GlobalProperties.CDN_DOMAIN.endsWith(CommonConstant.SEPARATOR) ? "" : CommonConstant.SEPARATOR)
                     .concat(path);
+        } else {
+            url = GlobalProperties.DEFAULT_AVATAR_URL;
         }
 
         return url;

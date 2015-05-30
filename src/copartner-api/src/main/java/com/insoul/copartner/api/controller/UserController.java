@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,6 +45,13 @@ public class UserController extends BaseController {
         userService.updateProfile(profileUpdateRequest);
 
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{userId}/profile", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> getProfileDetail(@PathVariable Long userId) throws CException {
+
+        return ResponseUtil.jsonSucceed(userService.getUserProfileDetail(userId), HttpStatus.OK);
     }
 
 }

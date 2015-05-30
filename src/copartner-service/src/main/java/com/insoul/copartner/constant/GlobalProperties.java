@@ -32,6 +32,8 @@ public final class GlobalProperties {
 
     public static String RESET_PASSWORD_URL;
 
+    public static String DEFAULT_AVATAR_URL;
+
     public static String WEIBO_GET_TOKEN_INFO_URL;
 
     public static String WEIBO_GET_USER_INFO_URL;
@@ -39,6 +41,8 @@ public final class GlobalProperties {
     public static String QQ_GET_TOKEN_INFO_URL;
 
     public static String QQ_GET_USER_INFO_URL;
+
+    public static Integer DEFAULT_LOCATION_ID = 0;
 
     static {
         Properties globalProperties = PropertiesUtil.getProperties(PROPERTIES_PATH);
@@ -80,6 +84,9 @@ public final class GlobalProperties {
         if (PropertiesUtil.get(globalProperties, "reset_password_url") != null) {
             RESET_PASSWORD_URL = PropertiesUtil.get(globalProperties, "reset_password_url");
         }
+        if (PropertiesUtil.get(globalProperties, "default_avatar_url") != null) {
+            DEFAULT_AVATAR_URL = PropertiesUtil.get(globalProperties, "default_avatar_url");
+        }
 
         if (PropertiesUtil.get(globalProperties, "weibo_get_token_info_url") != null) {
             WEIBO_GET_TOKEN_INFO_URL = PropertiesUtil.get(globalProperties, "weibo_get_token_info_url");
@@ -89,6 +96,10 @@ public final class GlobalProperties {
         }
         if (PropertiesUtil.get(globalProperties, "qq_get_token_info_url") != null) {
             QQ_GET_TOKEN_INFO_URL = PropertiesUtil.get(globalProperties, "qq_get_token_info_url");
+        }
+
+        if (PropertiesUtil.get(globalProperties, "default_location_id") != null) {
+            DEFAULT_LOCATION_ID = Integer.parseInt(PropertiesUtil.get(globalProperties, "default_location_id"));
         }
     }
 
