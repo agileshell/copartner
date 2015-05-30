@@ -105,6 +105,13 @@ INSERT INTO `system_setting` (`id`, `group`,`key`,`value`,`created`,`updated`) V
 (17,'image','file_dimension_min_width','50',NOW(),NULL),
 (18,'image','file_dimension_min_height','50',NOW(),NULL);
 
+TRUNCATE `project_phase`;
+INSERT INTO `project_phase` (`id`, `name`, `is_listed`, `created`) VALUES
+(1, '原型构建阶段', 1, NOW()),
+(2, 'Beta测试阶段', 1, NOW()),
+(3, '已运营', 1, NOW()),
+(4, '已收益', 1, NOW());
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
