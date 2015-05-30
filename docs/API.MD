@@ -14,6 +14,7 @@
 |   |   |   |    |
 | [user/profile](#get-user-profile-detail)| GET| YES| 获取用户基本信息|
 | [user/profile](#update-user-profile)| POST| YES| 修改用户基本信息|
+| [user/{userId}/profile](#view-user-profile)| GET| NO| 查看用户信息|
 |   |   |   |    | 
 | serverTime| GET| NO| 获取系统时间|
 | [image](#upload-image)| POST| YES| 上传图片|
@@ -22,6 +23,19 @@
 | [industryDomains](#list-industry-domains)| GET| NO| 获取行业领域列表|
 | [startupRoles](#list-startup-roles)| GET| NO| 获取创业角色列表|
 | [startupStatus](#list-startup-status)| GET| NO| 获取创业状态列表|
+| [projectPhases](#list-project-phases)| GET| NO| 获取项目阶段列表|
+|   |   |   |    |
+| [demands](#list-demand)| GET| NO| 获取需求列表|
+| [user/{userId}/demands](#list-user-demand)| POST| NO| 获取用户创建的需求列表|
+| [demand/{demandId}](#get-demand-detail)| GET| NO| 获取需求详情|
+| [demand](#create-demand)| POST| YES| 创建需求|
+| [demand/{demandId}](#delete-demand)| DELETE| YES| 删除需求|
+| [demand/{demandId}/like](#like-demand)| POST| YES| 关注需求|
+| [demand/{demandId}/like](#unlike-demand)| DELETE| YES| 取消关注需求|
+| [demand/{demandId}/comment](#comment-demand)| POST| YES| 评论需求|
+
+
+
 
 ## APIs
 
@@ -506,7 +520,7 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 403  | Forbidden.|
+| 403  | 无权访问，请重试|
 
 
 #### Update user profile
@@ -569,6 +583,92 @@
 | 10200 | 地区不存在 |
 | 10210 | 创业状态不存在 |
 | 10220 | 个人角色不存在 |
+
+#### View User Profile
+
+ 通过用户ID获取用户信息。
+
+- **Request URL**
+    `http://API_DOMAIN/user/{userId}/profile`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": {
+            "age": "0",
+            "avatar": "http://192.168.1.8:8080/copartner-api/resources/images/default_avatar.png",
+            "domains": [
+                {
+                    "id": 2,
+                    "name": "移动互联网"
+                },
+                {
+                    "id": 3,
+                    "name": "电子商务"
+                },
+                {
+                    "id": 1,
+                    "name": "互联网"
+                }
+            ],
+            "email": "",
+            "fullDomains": "互联网  移动互联网  电子商务",
+            "fullLocation": "上海|上海",
+            "gender": "F",
+            "introduction": "12354689",
+            "isEmailVerified": false,
+            "isMobileVerified": true,
+            "location": {
+                "latitude": 0,
+                "locationId": 36,
+                "longitude": 0,
+                "name": "上海",
+                "parentId": 2,
+                "pinyin": "shanghai"
+            },
+            "mobile": "15815161718",
+            "name": "test2",
+            "startupRole": {
+                "id": 1,
+                "name": "产品"
+            },
+            "startupStatus": {
+                "id": 1,
+                "name": "有创业意愿"
+            },
+            "status": "active",
+            "userId": 2
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 20300,
+                "msg": "用户不存在"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 20300  | 用户不存在|
 
 
 ### Util API
@@ -787,7 +887,7 @@
 - **Error**
 
     N/A
-    
+
 #### List Startup Roles
 
 获取创业角色列表.
@@ -899,3 +999,472 @@
 - **Error**
 
     N/A
+
+#### List Project Phases
+
+获取项目阶段列表.
+
+- **Request URL**
+    `http://API_DOMAIN/projectPhases`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+
+    N/A
+
+- **Request Parameters**
+
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": [
+            {
+                "id": 1,
+                "name": "原型构建阶段"
+            },
+            {
+                "id": 2,
+                "name": "Beta测试阶段"
+            },
+            {
+                "id": 3,
+                "name": "已运营"
+            },
+            {
+                "id": 4,
+                "name": "已收益"
+            }
+        ],
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+
+    N/A
+
+
+### Demand API
+
+#### List Demand
+
+获取需求列表.
+
+- **Request URL**
+    `http://API_DOMAIN/demands`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+
+|  Name| Requires| Type and Range| Description|
+|------|:--------|:--------------|:-----------|
+| type  | optional | int | 根据type过滤 |
+| offset| optional | int | 每次获取的起始点，limit * 当前页码 或者 limit * (下一页码 - 1)， 默认值是0 |
+| limit | optional | int | 每次获取的数量，默认值是10|
+
+- **Response**
+    ```
+    {
+        "body": {
+            "count": 1,
+            "list": [
+                {
+                    "commentCount": 0,
+                    "comments": [],
+                    "content": "123456789",
+                    "created": "2015-05-30 12:53:59",
+                    "likeCount": 0,
+                    "likers": [],
+                    "status": "active",
+                    "type": 1,
+                    "user": {
+                        "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png",
+                        "location": "上海|上海",
+                        "name": "15821512816",
+                        "role": "产品",
+                        "userId": 2
+                    }
+                }
+            ]
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 10000 | 参数错误 |
+
+#### List User Demand
+
+获取用户创建的需求列表.
+
+- **Request URL**
+    `http://API_DOMAIN/user/{userId}/demands`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+
+|  Name| Requires| Type and Range| Description|
+|------|:--------|:--------------|:-----------|
+| type  | optional | int | 根据type过滤 |
+| offset| optional | int | 每次获取的起始点，limit * 当前页码 或者 limit * (下一页码 - 1)， 默认值是0 |
+| limit | optional | int | 每次获取的数量，默认值是10|
+
+- **Response**
+    ```
+    {
+        "body": {
+            "count": 1,
+            "list": [
+                {
+                    "commentCount": 0,
+                    "comments": [],
+                    "content": "123456789",
+                    "created": "2015-05-30 12:53:59",
+                    "likeCount": 0,
+                    "likers": [],
+                    "status": "active",
+                    "type": 1,
+                    "user": {
+                        "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png",
+                        "location": "上海|上海",
+                        "name": "15821512816",
+                        "role": "产品",
+                        "userId": 2
+                    }
+                }
+            ]
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 10000 | 参数错误 |
+
+
+#### Get Demand Detail
+
+获取需求详情.
+
+- **Request URL**
+    `http://API_DOMAIN/demand/{demandId}`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": {
+            "commentCount": 0,
+            "content": "123456789",
+            "created": "2015-05-30 12:53:59",
+            "likeCount": 0,
+            "likers": [],
+            "project": null,
+            "status": "active",
+            "type": 1,
+            "user": {
+                "avatar": "",
+                "location": "上海|上海",
+                "name": "15821512816",
+                "role": "产品",
+                "userId": 2
+            }
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 30000,
+                "msg": "该需求不存在"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 30000 | 该需求不存在 |
+
+#### Create Demand
+
+ 创建需求.
+
+- **Request URL**
+    `http://API_DOMAIN/demand`
+
+- **Request Method**
+    POST
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+
+|  Name| Requires| Type and Range| Description|
+|------|:--------|:--------------|:-----------|
+|content   |required |string |内容|
+|type      |required |int |需求分类，1.创意交流 2.寻求搭档 3.寻求投资 |
+|projectId |optional |int |所关联的项目 |
+
+- **Response**
+
+    ```
+    {
+        "body": null,
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 10000 | 参数错误|
+| 30100 | 该项目不存在|
+| 30101 | 无权操作该项目|
+
+#### Delete Demand
+
+ 删除需求.
+
+- **Request URL**
+    `http://API_DOMAIN/demand/{demandId}`
+
+- **Request Method**
+    DELETE
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": null,
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 30000,
+                "msg": "该需求不存在"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 30000 | 该需求不存在|
+| 30001 | 无权操作该需求|
+
+#### Like Demand
+
+ 关注需求.
+
+- **Request URL**
+    `http://API_DOMAIN/demand/{demandId}/like`
+
+- **Request Method**
+    POST
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": null,
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 30000,
+                "msg": "该需求不存在"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 30000 | 该需求不存在|
+
+#### unlike Demand
+
+ 取消关注需求.
+
+- **Request URL**
+    `http://API_DOMAIN/demand/{demandId}/like`
+
+- **Request Method**
+    DELETE
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": null,
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 30000,
+                "msg": "该需求不存在"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 30000 | 该需求不存在|
+
+#### Comment Demand
+
+ 评论需求.
+
+- **Request URL**
+    `http://API_DOMAIN/demand/{demandId}/comment`
+
+- **Request Method**
+    POST
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+
+|  Name| Requires| Type and Range| Description|
+|------|:--------|:--------------|:-----------|
+|demandId  |required |int |要评论的需求ID |
+|content   |required |string |评论内容|
+|parentId  |optional |int |父级评论ID，用作评论的评论 |
+
+- **Response**
+
+    ```
+    {
+        "body": null,
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 10000 | 参数错误|
+| 30000 | 该需求不存在|
+
