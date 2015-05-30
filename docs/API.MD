@@ -1,26 +1,27 @@
 # API Description
 ## Overview
+
 |  URI| method| need session |description| 
 | ----| :-------| :------------| 
 | [account/signin](#signin)| POST| NO| 登录| 
 | [account/signup](#signup)| POST| NO| 注册| 
 | [account/signout](#signout)| GET| YES| 登出| 
-| [account/password/retrieve](#retrieve_password)| POST| NO| 找回密码|
-| [account/password/reset](#reset_password)| POST| NO| 重置密码|
-| [account/password/change](#change_password)| POST| YES| 修改密码| 
-| [code/send](#send_verify_code)| POST| NO| 发送验证码 |
-| [code/verify](#verify_code)| POST| NO| 验证验证码| 
+| [account/password/retrieve](#retrieve-password)| POST| NO| 找回密码|
+| [account/password/reset](#reset-password)| POST| NO| 重置密码|
+| [account/password/change](#change-password)| POST| YES| 修改密码| 
+| [code/send](#send-verify-code)| POST| NO| 发送验证码 |
+| [code/verify](#verify-code)| POST| NO| 验证验证码| 
 |   |   |   |    | 
-| [user/profile](#get_user_profile_detail)| GET| YES| 获取用户基本信息| 
-| [user/profile](#update_user_profile)| POST| YES| 修改用户基本信息|
+| [user/profile](#get-user-profile_detail)| GET| YES| 获取用户基本信息| 
+| [user/profile](#update-user-profile)| POST| YES| 修改用户基本信息|
 |   |   |   |    | 
 | serverTime| GET| NO| 获取系统时间| 
-| [image](#upload_image)| POST| YES| 上传图片|
-| [appVersion](#get_app_version)| GET| NO| 获取app版本信息| 
-| [locations/{parentId}](#list_locations)| GET| NO| 获取地区列表| 
-| [industryDomains](#list_industry_domains)| GET| NO| 获取行业领域列表| 
-| [startupRoles](#list_startup_roles)| GET| NO| 获取创业角色列表| 
-| [startupStatus](#list_startup_status)| GET| NO| 获取创业状态列表|
+| [image](#upload-image)| POST| YES| 上传图片|
+| [appVersion](#get-app-version)| GET| NO| 获取app版本信息| 
+| [locations/{parentId}](#list-locations)| GET| NO| 获取地区列表| 
+| [industryDomains](#list-industry-domains)| GET| NO| 获取行业领域列表| 
+| [startupRoles](#list-startup-roles)| GET| NO| 获取创业角色列表| 
+| [startupStatus](#list-startup-status)| GET| NO| 获取创业状态列表|
 
 ## APIs
 
