@@ -19,6 +19,7 @@
 | serverTime| GET| NO| 获取系统时间|
 | [image](#upload-image)| POST| YES| 上传图片|
 | [appVersion](#get-app-version)| GET| NO| 获取app版本信息|
+| [feedback](#feedback)| POST| YES| 意见反馈|
 | [locations/{parentId}](#list-locations)| GET| NO| 获取地区列表|
 | [industryDomains](#list-industry-domains)| GET| NO| 获取行业领域列表|
 | [startupRoles](#list-startup-roles)| GET| NO| 获取创业角色列表|
@@ -775,7 +776,54 @@
 - **Error**
 
     N/A
-    
+
+#### Feedback
+
+意见反馈.
+
+- **Request URL**
+    `http://API_DOMAIN/feedback`
+
+- **Request Method**
+    POST
+
+- **Request Header**
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
+**Note:** The Cookie is required.
+
+- **Request Parameters**
+
+| Name | Requires | Type and Range | Description |
+| :-------- | :-------- | :-------- | :-------- | 
+| text | required | string | 意见内容 |
+
+- **Response**
+
+    ```
+    {"body":null,"status":"SUCCEED"}
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 10000 | 参数错误 |
+
 #### List Locations
 
 根据location父级ID获取子地区，如果父级ID为0则返回父级location.
