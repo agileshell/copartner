@@ -79,4 +79,8 @@
         <servlet-name>DruidStatView</servlet-name>
         <url-pattern>/druid/*</url-pattern>
     </servlet-mapping>
+
+    <session-config>
+        <session-timeout>43200</session-timeout>
+    </session-config>
 </web-app>
