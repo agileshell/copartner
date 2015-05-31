@@ -33,8 +33,12 @@
 | [demand/{demandId}/like](#like-demand)| POST| YES| 关注需求|
 | [demand/{demandId}/like](#unlike-demand)| DELETE| YES| 取消关注需求|
 | [demand/{demandId}/comment](#comment-demand)| POST| YES| 评论需求|
-
-
+|   |   |   |    |
+| [projects](#list-project)| GET| NO| 获取项目列表|
+| [user/{userId}/projects](#list-user-project)| POST| NO| 获取用户创建的项目列表|
+| [project](#create-project)| POST| YES| 创建项目|
+| [project/{projectId}/like](#like-project)| POST| YES| 关注项目|
+| [project/{projectId}/like](#unlike-project)| DELETE| YES| 取消关注项目|
 
 
 ## APIs
@@ -1185,7 +1189,6 @@
 |:--------|:----------------|
 | 10000 | 参数错误 |
 
-
 #### Get Demand Detail
 
 获取需求详情.
@@ -1261,7 +1264,7 @@
 
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
-|content   |required |string |内容|
+|content   |required |string |内容，<=200字|
 |type      |required |int |需求分类，1.创意交流 2.寻求搭档 3.寻求投资 |
 |projectId |optional |int |所关联的项目 |
 
@@ -1468,3 +1471,272 @@
 | 10000 | 参数错误|
 | 30000 | 该需求不存在|
 
+
+### Project API
+
+#### List Project
+
+获取项目列表.
+
+- **Request URL**
+    `http://API_DOMAIN/projects`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+
+|  Name| Requires| Type and Range| Description|
+|------|:--------|:--------------|:-----------|
+| offset| optional | int | 每次获取的起始点，limit * 当前页码 或者 limit * (下一页码 - 1)， 默认值是0 |
+| limit | optional | int | 每次获取的数量，默认值是10|
+
+- **Response**
+    ```
+    {
+        "body": {
+            "count": 2,
+            "list": [
+                {
+                    "commentCount": 0,
+                    "content": "这个项目很好",
+                    "industryDomain": "互联网",
+                    "likeCount": 1,
+                    "location": "上海|上海",
+                    "logo": "http://h.hiphotos.baidu.com/imgad/pic/item/77094b36acaf2edd9cc64f4c881001e93901935b.jpg",
+                    "name": "项目1",
+                    "projectPhase": "原型构建阶段"
+                },
+                {
+                    "commentCount": 0,
+                    "content": "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
+                    "industryDomain": "互联网",
+                    "likeCount": 0,
+                    "location": "上海|上海",
+                    "logo": "http://h.hiphotos.baidu.com/imgad/pic/item/77094b36acaf2edd9cc64f4c881001e93901935b.jpg",
+                    "name": "NB的项目",
+                    "projectPhase": "原型构建阶段"
+                }
+            ]
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 10000 | 参数错误 |
+
+#### List User Project
+
+获取用户创建的项目列表.
+
+- **Request URL**
+    `http://API_DOMAIN/user/{userId}/projects`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+
+|  Name| Requires| Type and Range| Description|
+|------|:--------|:--------------|:-----------|
+| offset| optional | int | 每次获取的起始点，limit * 当前页码 或者 limit * (下一页码 - 1)， 默认值是0 |
+| limit | optional | int | 每次获取的数量，默认值是10|
+
+- **Response**
+    ```
+    {
+        "body": {
+            "count": 1,
+            "list": [
+                {
+                    "commentCount": 0,
+                    "content": "这个项目很好",
+                    "industryDomain": "互联网",
+                    "likeCount": 1,
+                    "location": "上海|上海",
+                    "logo": "http://h.hiphotos.baidu.com/imgad/pic/item/77094b36acaf2edd9cc64f4c881001e93901935b.jpg",
+                    "name": "项目1",
+                    "projectPhase": "原型构建阶段"
+                }
+            ]
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 10000 | 参数错误 |
+
+
+#### Create Project
+
+ 创建项目.
+
+- **Request URL**
+    `http://API_DOMAIN/project`
+
+- **Request Method**
+    POST
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+
+|  Name| Requires| Type and Range| Description|
+|------|:--------|:--------------|:-----------|
+|name   |required |string |项目名称，<=50字|
+|content|required |string |项目内容，<=200字|
+|logo   |optional |string |项目LOGO|
+|projectPhaseId  |required |long |项目阶段|
+|industryDomainId|required |long |项目所属领域|
+|locationId |required |long |项目所在地区|
+|initDate   |required |string |项目启动时间， 格式yyyy-MM|
+
+- **Response**
+
+    ```
+    {
+        "body": null,
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 10000 | 地区不存在|
+| 10200 | 该项目不存在|
+| 10230 | 行业领域不存在|
+| 10240 | 项目阶段不存在|
+
+#### Like Project
+
+ 关注项目.
+
+- **Request URL**
+    `http://API_DOMAIN/project/{projectId}/like`
+
+- **Request Method**
+    POST
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": null,
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 30100,
+                "msg": "该项目不存在"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 30100 | 该项目不存在|
+
+#### unlike Project
+
+ 取消关注项目.
+
+- **Request URL**
+    `http://API_DOMAIN/project/{projectId}/like`
+
+- **Request Method**
+    DELETE
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": null,
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 30100,
+                "msg": "该项目不存在"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 30100 | 该项目不存在|
