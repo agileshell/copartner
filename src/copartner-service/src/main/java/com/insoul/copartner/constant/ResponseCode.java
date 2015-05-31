@@ -41,6 +41,8 @@ public enum ResponseCode {
 
     INDUSTRY_DOMAIN_NOT_EXIST(10230),
 
+    PROJECT_PHASE_NOT_EXIST(10240),
+
     /* account related error code 20000-29999 */
     ACCOUNT_NOT_EXIST(20000),
 

@@ -124,6 +124,8 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             userVO.setUserId(user.getId());
             userVO.setName(user.getName());
             userVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+
+            likers.add(userVO);
         }
         demandVO.setLikers(likers);
 

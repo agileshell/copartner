@@ -16,6 +16,9 @@ public class DemandLikersId implements Serializable {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
+    public DemandLikersId() {
+    }
+
     public DemandLikersId(Long demandId, Long userId) {
         this.demandId = demandId;
         this.userId = userId;

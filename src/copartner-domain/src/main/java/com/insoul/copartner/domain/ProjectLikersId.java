@@ -16,6 +16,9 @@ public class ProjectLikersId implements Serializable {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
+    public ProjectLikersId() {
+    }
+
     public ProjectLikersId(Long projectId, Long userId) {
         this.projectId = projectId;
         this.userId = userId;

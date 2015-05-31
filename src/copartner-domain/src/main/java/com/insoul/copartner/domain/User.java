@@ -38,8 +38,8 @@ public class User extends BaseEntity {
     @Column(name = "status", nullable = false)
     private String status;
 
-    @Column(name = "avatar", nullable = false)
-    private String avatar = "";
+    @Column(name = "avatar")
+    private String avatar;
 
     @Column(name = "location_id")
     private Long locationId;

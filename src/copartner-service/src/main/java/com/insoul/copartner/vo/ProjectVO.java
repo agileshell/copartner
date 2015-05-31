@@ -14,7 +14,7 @@ public class ProjectVO implements Serializable {
 
     private String projectPhase;
 
-    private String locationId;
+    private String location;
 
     private String industryDomain;
 
@@ -54,12 +54,12 @@ public class ProjectVO implements Serializable {
         this.projectPhase = projectPhase;
     }
 
-    public String getLocationId() {
-        return locationId;
+    public String getLocation() {
+        return location;
     }
 
-    public void setLocationId(String locationId) {
-        this.locationId = locationId;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getIndustryDomain() {

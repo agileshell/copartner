@@ -36,6 +36,9 @@ public class Project extends BaseEntity {
     @Column(name = "location_id", nullable = false)
     private Long locationId;
 
+    @Column(name = "full_location", nullable = true)
+    private String fullLocation;
+
     @Column(name = "industry_domain_id", nullable = false)
     private Long industryDomainId;
 
@@ -112,6 +115,14 @@ public class Project extends BaseEntity {
         this.locationId = locationId;
     }
 
+    public String getFullLocation() {
+        return fullLocation;
+    }
+
+    public void setFullLocation(String fullLocation) {
+        this.fullLocation = fullLocation;
+    }
+
     public Long getIndustryDomainId() {
         return industryDomainId;
     }
@@ -150,6 +161,7 @@ public class Project extends BaseEntity {
         int result = super.hashCode();
         result = prime * result + ((commentCount == null) ? 0 : commentCount.hashCode());
         result = prime * result + ((content == null) ? 0 : content.hashCode());
+        result = prime * result + ((fullLocation == null) ? 0 : fullLocation.hashCode());
         result = prime * result + ((industryDomainId == null) ? 0 : industryDomainId.hashCode());
         result = prime * result + ((initDate == null) ? 0 : initDate.hashCode());
         result = prime * result + ((keyWords == null) ? 0 : keyWords.hashCode());
@@ -181,6 +193,11 @@ public class Project extends BaseEntity {
             if (other.content != null)
                 return false;
         } else if (!content.equals(other.content))
+            return false;
+        if (fullLocation == null) {
+            if (other.fullLocation != null)
+                return false;
+        } else if (!fullLocation.equals(other.fullLocation))
             return false;
         if (industryDomainId == null) {
             if (other.industryDomainId != null)
