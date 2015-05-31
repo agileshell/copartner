@@ -1,5 +1,7 @@
 package com.insoul.copartner.api.controller;
 
+import java.util.Arrays;
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
@@ -10,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.insoul.copartner.constant.ResponseCode;
@@ -18,6 +21,7 @@ import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.exception.DataValidationException;
 import com.insoul.copartner.service.IUserService;
 import com.insoul.copartner.util.ResponseUtil;
+import com.insoul.copartner.vo.request.ResumeRequest;
 import com.insoul.copartner.vo.request.UserProfileUpdateRequest;
 
 @Controller
@@ -54,4 +58,47 @@ public class UserController extends BaseController {
         return ResponseUtil.jsonSucceed(userService.getUserProfileDetail(userId), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/educationResumes", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> listEducationResume() {
+
+        return ResponseUtil.jsonSucceed(userService.listUserEducationResume(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/educationResume", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> updateEducationResume(@RequestParam String resumes) throws DataValidationException {
+        ResumeRequest[] array = null;
+        try {
+            array = jacksonObjectMapper.readValue(resumes, ResumeRequest[].class);
+        } catch (Exception e) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+
+        userService.updateEducationResume(Arrays.asList(array));
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/workResumes", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> listWorkResume() {
+
+        return ResponseUtil.jsonSucceed(userService.listUserWorkResume(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/workResume", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> updateWorkResume(@RequestParam String resumes) throws DataValidationException {
+        ResumeRequest[] array = null;
+        try {
+            array = jacksonObjectMapper.readValue(resumes, ResumeRequest[].class);
+        } catch (Exception e) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+
+        userService.updateWorkResume(Arrays.asList(array));
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
 }

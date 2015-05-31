@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.insoul.copartner.constant.CommonConstant;
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.exception.CException;
@@ -28,6 +29,8 @@ public abstract class BaseController {
 
     @Autowired
     protected HttpServletRequest request;
+
+    protected final ObjectMapper jacksonObjectMapper = new ObjectMapper();
 
     @InitBinder
     protected final void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder)

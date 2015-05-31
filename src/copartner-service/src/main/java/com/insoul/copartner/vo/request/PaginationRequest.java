@@ -11,7 +11,11 @@ public class PaginationRequest implements Serializable {
     private Integer limit;
 
     public Integer getOffset() {
-        return offset;
+        if (null == offset) {
+            return 0;
+        } else {
+            return offset;
+        }
     }
 
     public void setOffset(Integer offset) {
@@ -19,15 +23,15 @@ public class PaginationRequest implements Serializable {
     }
 
     public Integer getLimit() {
-        return limit;
+        if (null == limit || limit <= 0) {
+            return 10;
+        } else {
+            return limit;
+        }
     }
 
     public void setLimit(Integer limit) {
-        if (null == limit || limit <= 0) {
-            this.limit = 10;
-        } else {
-            this.limit = limit;
-        }
+        this.limit = limit;
     }
 
 }

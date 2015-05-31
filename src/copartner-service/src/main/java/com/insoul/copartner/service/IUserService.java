@@ -1,7 +1,12 @@
 package com.insoul.copartner.service;
 
+import java.util.List;
+import java.util.Set;
+
 import com.insoul.copartner.exception.CException;
+import com.insoul.copartner.vo.ResumeVO;
 import com.insoul.copartner.vo.UserDetailVO;
+import com.insoul.copartner.vo.request.ResumeRequest;
 import com.insoul.copartner.vo.request.UserAddRequest;
 import com.insoul.copartner.vo.request.UserProfileUpdateRequest;
 
@@ -19,4 +24,13 @@ public interface IUserService {
     UserDetailVO getUserProfileDetail();
 
     UserDetailVO getUserProfileDetail(Long userId) throws CException;
+
+    void updateEducationResume(List<ResumeRequest> requestDatas);
+
+    void updateWorkResume(List<ResumeRequest> requestDatas);
+
+    Set<ResumeVO> listUserEducationResume();
+
+    Set<ResumeVO> listUserWorkResume();
+
 }

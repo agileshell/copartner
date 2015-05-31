@@ -41,6 +41,10 @@ public class UserDetailVO implements Serializable {
 
     private String fullDomains;
 
+    private Set<ResumeVO> educationResumes;
+
+    private Set<ResumeVO> workResumes;
+
     public Long getUserId() {
         return userId;
     }
@@ -175,6 +179,22 @@ public class UserDetailVO implements Serializable {
 
     public void setFullDomains(String fullDomains) {
         this.fullDomains = fullDomains;
+    }
+
+    public Set<ResumeVO> getEducationResumes() {
+        return educationResumes;
+    }
+
+    public void setEducationResumes(Set<ResumeVO> educationResumes) {
+        this.educationResumes = educationResumes;
+    }
+
+    public Set<ResumeVO> getWorkResumes() {
+        return workResumes;
+    }
+
+    public void setWorkResumes(Set<ResumeVO> workResumes) {
+        this.workResumes = workResumes;
     }
 
 }

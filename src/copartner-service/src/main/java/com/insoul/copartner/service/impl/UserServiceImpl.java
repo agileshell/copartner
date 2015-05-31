@@ -22,6 +22,7 @@ import com.insoul.copartner.constant.UserStatus;
 import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.ILocationDao;
 import com.insoul.copartner.dao.IMessageDao;
+import com.insoul.copartner.dao.IResumeDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IStartupStatusDao;
 import com.insoul.copartner.dao.IUserAccountConfirmationDao;
@@ -30,6 +31,7 @@ import com.insoul.copartner.dao.IUserPasswordResetDao;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Location;
 import com.insoul.copartner.domain.Message;
+import com.insoul.copartner.domain.Resume;
 import com.insoul.copartner.domain.StartupRole;
 import com.insoul.copartner.domain.StartupStatus;
 import com.insoul.copartner.domain.User;
@@ -48,9 +50,11 @@ import com.insoul.copartner.util.mail.MailUtil;
 import com.insoul.copartner.util.sms.SMSUtil;
 import com.insoul.copartner.vo.IndustryDomainVO;
 import com.insoul.copartner.vo.LocationVO;
+import com.insoul.copartner.vo.ResumeVO;
 import com.insoul.copartner.vo.StartupRoleVO;
 import com.insoul.copartner.vo.StartupStatusVO;
 import com.insoul.copartner.vo.UserDetailVO;
+import com.insoul.copartner.vo.request.ResumeRequest;
 import com.insoul.copartner.vo.request.UserAddRequest;
 import com.insoul.copartner.vo.request.UserProfileUpdateRequest;
 
@@ -80,6 +84,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
     @Resource
     private IIndustryDomainDao industryDomainDao;
+
+    @Resource
+    private IResumeDao resumeDao;
 
     @Override
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
@@ -484,7 +491,69 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
             userDetailVO.setFullDomains(fullDomains.toString().trim());
         }
 
+        List<Resume> educationResumes = resumeDao.getByUserIdAndType(user.getId(), (byte) 1);
+        userDetailVO.setEducationResumes(formatResumes(educationResumes));
+
+        List<Resume> workResumes = resumeDao.getByUserIdAndType(user.getId(), (byte) 2);
+        userDetailVO.setWorkResumes(formatResumes(workResumes));
+
         return userDetailVO;
     }
 
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    @Override
+    public void updateEducationResume(List<ResumeRequest> requestDatas) {
+        updateResume(requestDatas, (byte) 1);
+    }
+
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    @Override
+    public void updateWorkResume(List<ResumeRequest> requestDatas) {
+        updateResume(requestDatas, (byte) 2);
+    }
+
+    public void updateResume(List<ResumeRequest> requestDatas, Byte type) {
+        Long currentUserId = getUserId();
+
+        resumeDao.deleteByUserIdAndType(currentUserId, type);
+
+        Date now = new Date();
+        for (ResumeRequest resumeRequest : requestDatas) {
+            Resume resume = new Resume();
+            resume.setUserId(currentUserId);
+            resume.setName(resumeRequest.getName());
+            resume.setMajor(resumeRequest.getMajor());
+            resume.setType(type);
+            resume.setCreated(now);
+
+            resumeDao.save(resume);
+        }
+    }
+
+    @Override
+    public Set<ResumeVO> listUserEducationResume() {
+        List<Resume> resumes = resumeDao.getByUserIdAndType(getUserId(), (byte) 1);
+
+        return formatResumes(resumes);
+    }
+
+    @Override
+    public Set<ResumeVO> listUserWorkResume() {
+        List<Resume> resumes = resumeDao.getByUserIdAndType(getUserId(), (byte) 2);
+
+        return formatResumes(resumes);
+    }
+
+    private Set<ResumeVO> formatResumes(List<Resume> resumes) {
+        Set<ResumeVO> resumeVOs = new HashSet<ResumeVO>();
+        for (Resume resume : resumes) {
+            ResumeVO vo = new ResumeVO();
+            vo.setName(resume.getName());
+            vo.setMajor(resume.getMajor());
+
+            resumeVOs.add(vo);
+        }
+
+        return resumeVOs;
+    }
 }
