@@ -23,6 +23,7 @@
         <intercept-url pattern="/demand/**" method="POST" access="isAuthenticated()" />
         <intercept-url pattern="/project/**" method="DELETE" access="isAuthenticated()" />
         <intercept-url pattern="/project/**" method="POST" access="isAuthenticated()" />
+        <intercept-url pattern="/feedback" method="POST" access="isAuthenticated()" />
 
         <csrf disabled="true"/>
         <http-basic/>

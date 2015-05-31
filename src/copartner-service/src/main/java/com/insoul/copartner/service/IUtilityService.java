@@ -20,4 +20,6 @@ public interface IUtilityService {
 
     List<ProjectPhaseVO> listProjectPhases();
 
+    void feedback(String text);
+
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.httpclient.util.DateUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -86,5 +87,17 @@ public class CommonController extends BaseController {
     public ResponseEntity<String> listProjectPhases() {
 
         return ResponseUtil.jsonSucceed(utilityService.listProjectPhases(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "feedback", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> addFeedback(String text) throws DataValidationException {
+        if (!StringUtils.isNotBlank(text)) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+
+        utilityService.feedback(text);
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
     }
 }

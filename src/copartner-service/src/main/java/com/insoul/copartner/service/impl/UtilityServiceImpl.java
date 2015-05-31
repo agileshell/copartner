@@ -1,17 +1,21 @@
 package com.insoul.copartner.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.insoul.copartner.dao.IFeedbackDao;
 import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.ILocationDao;
 import com.insoul.copartner.dao.IProjectPhaseDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IStartupStatusDao;
+import com.insoul.copartner.domain.Feedback;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Location;
 import com.insoul.copartner.domain.ProjectPhase;
@@ -41,6 +45,9 @@ public class UtilityServiceImpl extends BaseServiceImpl implements IUtilityServi
 
     @Resource
     private IProjectPhaseDao projectPhaseDao;
+
+    @Resource
+    private IFeedbackDao feedbackDao;
 
     @Override
     public List<LocationVO> listByParentId(Long parentId) {
@@ -124,6 +131,17 @@ public class UtilityServiceImpl extends BaseServiceImpl implements IUtilityServi
         }
 
         return vos;
+    }
+
+    @Override
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public void feedback(String text) {
+        Feedback feedback = new Feedback();
+        feedback.setUserId(getUserId());
+        feedback.setText(text);
+        feedback.setCreated(new Date());
+
+        feedbackDao.save(feedback);
     }
 
 }
