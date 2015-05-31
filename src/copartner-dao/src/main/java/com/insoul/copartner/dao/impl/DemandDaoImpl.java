@@ -51,7 +51,7 @@ public class DemandDaoImpl extends BaseDaoImpl<Demand, Long> implements IDemandD
             hql.append("SELECT COUNT(*) FROM Demand WHERE 1=1").append(conditionStr);
             query = createQuery(hql.toString(), params);
         } else {
-            hql.append("FROM Demand WHERE 1=1").append(conditionStr);
+            hql.append("FROM Demand WHERE 1=1").append(conditionStr).append(" ORDER BY created DESC");
             query = createQuery(hql.toString(), params);
             if ((criteria.getLimit() != null) && (criteria.getLimit() != 0)) {
                 query.setMaxResults(criteria.getLimit());

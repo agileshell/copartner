@@ -23,7 +23,11 @@ public class PaginationRequest implements Serializable {
     }
 
     public void setLimit(Integer limit) {
-        this.limit = limit;
+        if (null == limit || limit <= 0) {
+            this.limit = 10;
+        } else {
+            this.limit = limit;
+        }
     }
 
 }

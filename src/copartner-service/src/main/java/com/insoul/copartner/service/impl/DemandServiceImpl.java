@@ -39,6 +39,7 @@ import com.insoul.copartner.util.ContentUtil;
 import com.insoul.copartner.vo.DemandDetailVO;
 import com.insoul.copartner.vo.DemandVO;
 import com.insoul.copartner.vo.Pagination;
+import com.insoul.copartner.vo.ProjectVO;
 import com.insoul.copartner.vo.UserBriefVO;
 import com.insoul.copartner.vo.UserLeanVO;
 import com.insoul.copartner.vo.request.DemandAddRequest;
@@ -104,13 +105,26 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         UserBriefVO ownerVO = new UserBriefVO();
         ownerVO.setUserId(owner.getId());
         ownerVO.setName(owner.getName());
-        ownerVO.setAvatar(owner.getAvatar());
+        ownerVO.setAvatar(CDNUtil.getFullPath(owner.getAvatar()));
         ownerVO.setLocation(owner.getFullLocation());
         if (null != owner.getStartupRoleId()) {
             StartupRole startupRole = startupRoleDao.get(owner.getStartupRoleId());
             ownerVO.setRole(startupRole.getName());
         }
         demandVO.setUser(ownerVO);
+
+        if (null != demand.getProjectId()) {
+            Project project = projectDao.get(demand.getProjectId());
+            if (null != project) {
+                ProjectVO projectVO = new ProjectVO();
+                projectVO.setName(project.getName());
+                projectVO.setLogo(CDNUtil.getFullPath(project.getLogo()));
+                projectVO.setContent(ContentUtil.splitAndFilterString(project.getContent(), 80));
+                projectVO.setLocation(project.getFullLocation());
+
+                demandVO.setProject(projectVO);
+            }
+        }
 
         List<DemandLikers> demandLikers = demandLikersDao.findByDemandId(demandId);
         Set<Long> likerIds = new HashSet<Long>();

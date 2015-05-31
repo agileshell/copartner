@@ -32,6 +32,7 @@ import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.exception.DataValidationException;
 import com.insoul.copartner.service.IProjectService;
+import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.ContentUtil;
 import com.insoul.copartner.vo.Pagination;
 import com.insoul.copartner.vo.ProjectVO;
@@ -181,7 +182,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         for (Project project : projects) {
             ProjectVO projectVO = new ProjectVO();
             projectVO.setName(project.getName());
-            projectVO.setLogo(project.getLogo());
+            projectVO.setLogo(CDNUtil.getFullPath(project.getLogo()));
             projectVO.setContent(ContentUtil.splitAndFilterString(project.getContent(), 80));
             projectVO.setCommentCount(project.getCommentCount());
             projectVO.setLikeCount(project.getLikeCount());
