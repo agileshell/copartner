@@ -11,6 +11,8 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,7 @@ import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.exception.DataValidationException;
 import com.insoul.copartner.exception.UserNotFoundException;
+import com.insoul.copartner.security.SecurityUtil;
 import com.insoul.copartner.service.IUserService;
 import com.insoul.copartner.util.ResponseUtil;
 import com.insoul.copartner.util.ValidationUtil;
@@ -36,6 +39,9 @@ public class AccountController extends BaseController {
 
     @Resource
     private IUserService userService;
+
+    @Resource
+    private UserDetailsService userDetailsService;
 
     @RequestMapping(value = "/loginHandle")
     public ResponseEntity<String> loginHandle() throws CException {
@@ -52,6 +58,9 @@ public class AccountController extends BaseController {
         long userId = userService.register(userAddRequest);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("userId", userId);
+
+        UserDetails details = userDetailsService.loadUserByUsername(userAddRequest.getAccount());
+        SecurityUtil.login(details, request, response, session);
 
         return ResponseUtil.jsonSucceed(result, HttpStatus.OK);
     }
