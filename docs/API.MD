@@ -15,6 +15,10 @@
 | [user/profile](#get-user-profile-detail)| GET| YES| 获取用户基本信息|
 | [user/profile](#update-user-profile)| POST| YES| 修改用户基本信息|
 | [user/{userId}/profile](#view-user-profile)| GET| NO| 查看用户信息|
+| [educationResumes](#list-education-resume)| GET| YES| 获取教育经历列表|
+| [educationResume](#update-education-resume)| GET| YES| 更新教育经历|
+| [workResumes](#list-work-resume)| GET| YES| 获取工作经历列表|
+| [workResume](#update-work-resume)| GET| YES| 更新工作经历|
 |   |   |   |    | 
 | serverTime| GET| NO| 获取系统时间|
 | [image](#upload-image)| POST| YES| 上传图片|
@@ -478,6 +482,16 @@
                     "name": "互联网"
                 }
             ],
+            "educationResumes": [
+                {
+                    "name": "上海交通大学",
+                    "major": "计算机专业"
+                },
+                {
+                    "name": "清华大学",
+                    "major": "计算机专业"
+                }
+            ],
             "email": "",
             "fullDomains": "互联网  移动互联网  电子商务",
             "fullLocation": "北京|北京",
@@ -504,7 +518,13 @@
                 "name": "有创业意愿"
             },
             "status": "active",
-            "userId": 1
+            "userId": 1,
+            "workResumes": [
+                {
+                    "name": "百度",
+                    "major": "高级开发工程师"
+                }
+            ]
         },
         "status": "SUCCEED"
     }
@@ -610,8 +630,8 @@
     ```
     {
         "body": {
-            "age": "0",
-            "avatar": "http://192.168.1.8:8080/copartner-api/resources/images/default_avatar.png",
+            "age": "25-30",
+            "avatar": "http://www.baidu.com/img/bd_logo1.png",
             "domains": [
                 {
                     "id": 2,
@@ -626,23 +646,33 @@
                     "name": "互联网"
                 }
             ],
+            "educationResumes": [
+                {
+                    "name": "上海交通大学",
+                    "major": "计算机专业"
+                },
+                {
+                    "name": "清华大学",
+                    "major": "计算机专业"
+                }
+            ],
             "email": "",
             "fullDomains": "互联网  移动互联网  电子商务",
-            "fullLocation": "上海|上海",
+            "fullLocation": "北京|北京",
             "gender": "F",
-            "introduction": "12354689",
+            "introduction": "HAHAHAHAHA",
             "isEmailVerified": false,
             "isMobileVerified": true,
             "location": {
                 "latitude": 0,
-                "locationId": 36,
+                "locationId": 35,
                 "longitude": 0,
-                "name": "上海",
-                "parentId": 2,
-                "pinyin": "shanghai"
+                "name": "北京",
+                "parentId": 1,
+                "pinyin": "beijing"
             },
-            "mobile": "15815161718",
-            "name": "test2",
+            "mobile": "15812345678",
+            "name": "GOGO",
             "startupRole": {
                 "id": 1,
                 "name": "产品"
@@ -652,7 +682,13 @@
                 "name": "有创业意愿"
             },
             "status": "active",
-            "userId": 2
+            "userId": 1,
+            "workResumes": [
+                {
+                    "name": "百度",
+                    "major": "高级开发工程师"
+                }
+            ]
         },
         "status": "SUCCEED"
     }
@@ -674,6 +710,182 @@
 | Code    |   Description   |
 |:--------|:----------------|
 | 20300  | 用户不存在|
+
+#### List Education Resume
+
+获取教育经历列表.
+
+- **Request URL**
+    `http://API_DOMAIN/educationResumes`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
+- **Request Parameters**
+
+    N/A
+
+- **Response**
+    ```
+    {
+        "body": [
+          {
+            "name": "上海交通大学",
+            "major": "计算机专业"
+          },
+          {
+            "name": "清华大学",
+            "major": "计算机专业"
+          }
+        ],
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+
+    N/A
+
+#### Update Education Resume
+
+ 更新教育经历.
+
+- **Request URL**
+    `http://API_DOMAIN/educationResume`
+
+- **Request Method**
+    POST
+
+- **Request Header**
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
+
+- **Request Parameters**
+
+|  Name| Requires| Type and Range| Description|
+|------|:--------|:--------------|:-----------|
+|resumes   |required |string |JSON字符串，[{"name":"上海交通大学","major":"计算机专业"},{"name":"清华大学","major":"计算机专业"}]|
+
+- **Response**
+
+    ```
+    {
+        "body": null,
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 10000 | 参数错误|
+
+#### List Work Resume
+
+获取工作经历列表.
+
+- **Request URL**
+    `http://API_DOMAIN/workResumes`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
+- **Request Parameters**
+
+    N/A
+
+- **Response**
+    ```
+    {
+        "body": [
+          {
+            "name": "百度",
+            "major": "高级工程师"
+          }
+        ],
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+
+    N/A
+
+#### Update Work Resume
+
+ 更新工作经历.
+
+- **Request URL**
+    `http://API_DOMAIN/workResume`
+
+- **Request Method**
+    POST
+
+- **Request Header**
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
+
+- **Request Parameters**
+
+|  Name| Requires| Type and Range| Description|
+|------|:--------|:--------------|:-----------|
+|resumes   |required |string |JSON字符串，[{"name":"百度","major":"软件工程师"}]|
+
+- **Response**
+
+    ```
+    {
+        "body": null,
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 10000 | 参数错误|
 
 
 ### Util API
@@ -1306,7 +1518,11 @@
     POST
 
 - **Request Header**
-    N/A
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
 
 - **Request Parameters**
 
@@ -1355,7 +1571,11 @@
     DELETE
 
 - **Request Header**
-    N/A
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
 
 - **Request Parameters**
     N/A
@@ -1398,7 +1618,11 @@
     POST
 
 - **Request Header**
-    N/A
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
 
 - **Request Parameters**
     N/A
@@ -1440,7 +1664,11 @@
     DELETE
 
 - **Request Header**
-    N/A
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
 
 - **Request Parameters**
     N/A
@@ -1482,7 +1710,11 @@
     POST
 
 - **Request Header**
-    N/A
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
 
 - **Request Parameters**
 
@@ -1662,7 +1894,11 @@
     POST
 
 - **Request Header**
-    N/A
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
 
 - **Request Parameters**
 
@@ -1700,8 +1936,8 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 10000 | 地区不存在|
-| 10200 | 该项目不存在|
+| 10000 | 参数错误|
+| 10200 | 地区不存在|
 | 10230 | 行业领域不存在|
 | 10240 | 项目阶段不存在|
 
@@ -1716,7 +1952,11 @@
     POST
 
 - **Request Header**
-    N/A
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
 
 - **Request Parameters**
     N/A
@@ -1758,7 +1998,11 @@
     DELETE
 
 - **Request Header**
-    N/A
+
+| Name | Description | 
+| :-------- | :-------- | 
+| Cookie	| Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+
 
 - **Request Parameters**
     N/A
