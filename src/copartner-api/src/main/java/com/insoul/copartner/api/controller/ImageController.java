@@ -47,8 +47,8 @@ public class ImageController extends BaseController {
 
     @RequestMapping(value = "/image", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> uploadImg(@Valid ImageAddRequest imageAddRequest, BindingResult validResult)
-            throws CException {
+    public ResponseEntity<Map<String, Object>> uploadImg(@Valid ImageAddRequest imageAddRequest,
+            BindingResult validResult) throws CException {
         if (validResult.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
@@ -59,7 +59,7 @@ public class ImageController extends BaseController {
 
     @RequestMapping(value = "/image", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<String> deleteImg(@RequestParam String image) throws CException {
+    public ResponseEntity<Map<String, Object>> deleteImg(@RequestParam String image) throws CException {
         if (StringUtils.isBlank(image)) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
@@ -69,7 +69,7 @@ public class ImageController extends BaseController {
     }
 
     @RequestMapping(value = "image/{path:.+}", method = RequestMethod.GET)
-    public ResponseEntity<String> getInventoryStatusList(@PathVariable("path") String path, HttpServletRequest request,
+    public void getInventoryStatusList(@PathVariable("path") String path, HttpServletRequest request,
             HttpServletResponse response) throws CException {
         String fileType = FileUtil.getFileType(path);
         StringBuilder basePath = new StringBuilder(GlobalProperties.CDN_LOCAL_PATH.trim())
@@ -123,8 +123,6 @@ public class ImageController extends BaseController {
                 throw CExceptionFactory.getException(CException.class, ResponseCode.SERVER_ERROR);
             }
         }
-
-        return null;
     }
 
     private String getContentType(String fileType) {

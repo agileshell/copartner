@@ -1,7 +1,11 @@
 package com.insoul.copartner.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.insoul.copartner.util.CustomDateSerializer;
 
 public class DemandDetailVO implements Serializable {
 
@@ -23,7 +27,8 @@ public class DemandDetailVO implements Serializable {
 
     private Set<UserLeanVO> likers;
 
-    private String created;
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date created;
 
     public UserBriefVO getUser() {
         return user;
@@ -89,11 +94,11 @@ public class DemandDetailVO implements Serializable {
         this.likers = likers;
     }
 
-    public String getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 

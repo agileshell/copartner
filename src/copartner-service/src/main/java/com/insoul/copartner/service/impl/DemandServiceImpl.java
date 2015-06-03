@@ -10,11 +10,9 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
-import org.apache.http.impl.cookie.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.insoul.copartner.constant.CommonConstant;
 import com.insoul.copartner.constant.DemandStatus;
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.dao.IDemandCommentsDao;
@@ -99,7 +97,7 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         demandVO.setType(demand.getType());
         demandVO.setCommentCount(demand.getCommentCount());
         demandVO.setLikeCount(demand.getLikeCount());
-        demandVO.setCreated(DateUtils.formatDate(demand.getCreated(), CommonConstant.DATE_FORMAT_LONG));
+        demandVO.setCreated(demand.getCreated());
 
         User owner = userDao.get(demand.getUserId());
         UserBriefVO ownerVO = new UserBriefVO();
@@ -290,7 +288,7 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             demandVO.setType(demand.getType());
             demandVO.setCommentCount(demand.getCommentCount());
             demandVO.setLikeCount(demand.getLikeCount());
-            demandVO.setCreated(DateUtils.formatDate(demand.getCreated(), CommonConstant.DATE_FORMAT_LONG));
+            demandVO.setCreated(demand.getCreated());
 
             // TODO setLikers
 

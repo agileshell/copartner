@@ -1,5 +1,7 @@
 package com.insoul.copartner.api.controller;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
@@ -29,8 +31,8 @@ public class ProjectController extends BaseController {
 
     @RequestMapping(value = "/user/{userId}/projects", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> listProjects(@PathVariable Long userId, @Valid ProjectListRequest requestData,
-            BindingResult result) {
+    public ResponseEntity<Map<String, Object>> listProjects(@PathVariable Long userId,
+            @Valid ProjectListRequest requestData, BindingResult result) {
         requestData.setUserId(userId);
 
         return ResponseUtil.jsonSucceed(projectService.listProjects(requestData), HttpStatus.OK);
@@ -38,7 +40,7 @@ public class ProjectController extends BaseController {
 
     @RequestMapping(value = "/projects", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> listProjects(@Valid ProjectListRequest requestData, BindingResult result)
+    public ResponseEntity<Map<String, Object>> listProjects(@Valid ProjectListRequest requestData, BindingResult result)
             throws DataValidationException {
         if (result.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
@@ -49,7 +51,7 @@ public class ProjectController extends BaseController {
 
     @RequestMapping(value = "/project", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> createProject(@Valid ProjectAddRequest requestData, BindingResult result)
+    public ResponseEntity<Map<String, Object>> createProject(@Valid ProjectAddRequest requestData, BindingResult result)
             throws CException {
         if (result.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
@@ -62,7 +64,7 @@ public class ProjectController extends BaseController {
 
     @RequestMapping(value = "/project/{projectId}/like", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> likeProject(@PathVariable Long projectId) throws CException {
+    public ResponseEntity<Map<String, Object>> likeProject(@PathVariable Long projectId) throws CException {
         projectService.likeProject(projectId);
 
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
@@ -70,7 +72,7 @@ public class ProjectController extends BaseController {
 
     @RequestMapping(value = "/project/{projectId}/like", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<String> unlikeProject(@PathVariable Long projectId) throws CException {
+    public ResponseEntity<Map<String, Object>> unlikeProject(@PathVariable Long projectId) throws CException {
         projectService.unlikeProject(projectId);
 
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);

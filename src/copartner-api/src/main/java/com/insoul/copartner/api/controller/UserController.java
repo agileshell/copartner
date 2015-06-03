@@ -1,6 +1,7 @@
 package com.insoul.copartner.api.controller;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -33,14 +34,14 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> getProfileDetail() {
+    public ResponseEntity<Map<String, Object>> getProfileDetail() {
 
         return ResponseUtil.jsonSucceed(userService.getUserProfileDetail(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> updateProfile(@Valid UserProfileUpdateRequest profileUpdateRequest,
+    public ResponseEntity<Map<String, Object>> updateProfile(@Valid UserProfileUpdateRequest profileUpdateRequest,
             BindingResult result) throws CException {
         if (result.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
@@ -53,21 +54,22 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/{userId}/profile", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> getProfileDetail(@PathVariable Long userId) throws CException {
+    public ResponseEntity<Map<String, Object>> getProfileDetail(@PathVariable Long userId) throws CException {
 
         return ResponseUtil.jsonSucceed(userService.getUserProfileDetail(userId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/educationResumes", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> listEducationResume() {
+    public ResponseEntity<Map<String, Object>> listEducationResume() {
 
         return ResponseUtil.jsonSucceed(userService.listUserEducationResume(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/educationResume", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> updateEducationResume(@RequestParam String resumes) throws DataValidationException {
+    public ResponseEntity<Map<String, Object>> updateEducationResume(@RequestParam String resumes)
+            throws DataValidationException {
         ResumeRequest[] array = null;
         try {
             array = jacksonObjectMapper.readValue(resumes, ResumeRequest[].class);
@@ -82,14 +84,15 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/workResumes", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> listWorkResume() {
+    public ResponseEntity<Map<String, Object>> listWorkResume() {
 
         return ResponseUtil.jsonSucceed(userService.listUserWorkResume(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/workResume", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> updateWorkResume(@RequestParam String resumes) throws DataValidationException {
+    public ResponseEntity<Map<String, Object>> updateWorkResume(@RequestParam String resumes)
+            throws DataValidationException {
         ResumeRequest[] array = null;
         try {
             array = jacksonObjectMapper.readValue(resumes, ResumeRequest[].class);

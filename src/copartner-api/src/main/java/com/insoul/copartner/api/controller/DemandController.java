@@ -1,5 +1,7 @@
 package com.insoul.copartner.api.controller;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
@@ -30,8 +32,8 @@ public class DemandController extends BaseController {
 
     @RequestMapping(value = "/user/{userId}/demands", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> listDemand(@PathVariable Long userId, @Valid DemandListRequest requestData,
-            BindingResult result) {
+    public ResponseEntity<Map<String, Object>> listDemand(@PathVariable Long userId,
+            @Valid DemandListRequest requestData, BindingResult result) {
         requestData.setUserId(userId);
 
         return ResponseUtil.jsonSucceed(demandService.listDemands(requestData), HttpStatus.OK);
@@ -39,7 +41,7 @@ public class DemandController extends BaseController {
 
     @RequestMapping(value = "/demands", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> listDemand(@Valid DemandListRequest requestData, BindingResult result)
+    public ResponseEntity<Map<String, Object>> listDemand(@Valid DemandListRequest requestData, BindingResult result)
             throws DataValidationException {
         if (result.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
@@ -50,13 +52,13 @@ public class DemandController extends BaseController {
 
     @RequestMapping(value = "/demand/{demandId}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> getDemand(@PathVariable Long demandId) throws CException {
+    public ResponseEntity<Map<String, Object>> getDemand(@PathVariable Long demandId) throws CException {
         return ResponseUtil.jsonSucceed(demandService.getDemand(demandId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/demand", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> createDemand(@Valid DemandAddRequest requestData, BindingResult result)
+    public ResponseEntity<Map<String, Object>> createDemand(@Valid DemandAddRequest requestData, BindingResult result)
             throws CException {
         if (result.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
@@ -69,7 +71,7 @@ public class DemandController extends BaseController {
 
     @RequestMapping(value = "/demand/{demandId}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<String> deleteDemand(@PathVariable Long demandId) throws CException {
+    public ResponseEntity<Map<String, Object>> deleteDemand(@PathVariable Long demandId) throws CException {
         demandService.deleteDemand(demandId);
 
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
@@ -77,8 +79,8 @@ public class DemandController extends BaseController {
 
     @RequestMapping(value = "/demand/{demandId}/comment", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> commentDemand(@PathVariable Long demandId, @Valid DemandCommentRequest requestData,
-            BindingResult result) throws CException {
+    public ResponseEntity<Map<String, Object>> commentDemand(@PathVariable Long demandId,
+            @Valid DemandCommentRequest requestData, BindingResult result) throws CException {
         if (result.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
@@ -90,7 +92,7 @@ public class DemandController extends BaseController {
 
     @RequestMapping(value = "/demand/{demandId}/like", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> likeDemand(@PathVariable Long demandId) throws CException {
+    public ResponseEntity<Map<String, Object>> likeDemand(@PathVariable Long demandId) throws CException {
 
         demandService.likeDemand(demandId);
 
@@ -99,7 +101,7 @@ public class DemandController extends BaseController {
 
     @RequestMapping(value = "/demand/{demandId}/like", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<String> unlikeDemand(@PathVariable Long demandId) throws CException {
+    public ResponseEntity<Map<String, Object>> unlikeDemand(@PathVariable Long demandId) throws CException {
 
         demandService.unlikeDemand(demandId);
 

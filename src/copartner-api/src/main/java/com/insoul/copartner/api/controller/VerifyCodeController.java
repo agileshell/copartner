@@ -1,5 +1,7 @@
 package com.insoul.copartner.api.controller;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
@@ -29,8 +31,8 @@ public class VerifyCodeController extends BaseController {
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> sendCode(@Valid CodeSendRequest codeSendRequest, BindingResult validResult)
-            throws CException {
+    public ResponseEntity<Map<String, Object>> sendCode(@Valid CodeSendRequest codeSendRequest,
+            BindingResult validResult) throws CException {
         if (validResult.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
@@ -42,8 +44,8 @@ public class VerifyCodeController extends BaseController {
 
     @RequestMapping(value = "/verify", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> verifyCode(@Valid CodeVerifyRequest codeVerifyRequest, BindingResult validResult)
-            throws CException {
+    public ResponseEntity<Map<String, Object>> verifyCode(@Valid CodeVerifyRequest codeVerifyRequest,
+            BindingResult validResult) throws CException {
         if (validResult.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }

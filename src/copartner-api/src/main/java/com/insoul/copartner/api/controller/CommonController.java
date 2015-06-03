@@ -36,7 +36,7 @@ public class CommonController extends BaseController {
 
     @RequestMapping(value = "/serverTime", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> getServerTime() {
+    public ResponseEntity<Map<String, Object>> getServerTime() {
         Map<String, String> result = new HashMap<String, String>();
         result.put("serverTime", DateUtil.formatDate(new Date(), CommonConstant.DATE_FORMAT_LONG));
 
@@ -45,7 +45,7 @@ public class CommonController extends BaseController {
 
     @RequestMapping(value = "/appVersion", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> getAppVersion() {
+    public ResponseEntity<Map<String, Object>> getAppVersion() {
         Map<String, String> result = systemSettingService.getSettings(SettingConstant.GROUP_TYPE_APP_INFO);
 
         return ResponseUtil.jsonSucceed(result, HttpStatus.OK);
@@ -53,7 +53,8 @@ public class CommonController extends BaseController {
 
     @RequestMapping(value = "locations/{parentId}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> listLocations(@PathVariable Long parentId) throws DataValidationException {
+    public ResponseEntity<Map<String, Object>> listLocations(@PathVariable Long parentId)
+            throws DataValidationException {
         if (parentId < 0) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
@@ -63,35 +64,35 @@ public class CommonController extends BaseController {
 
     @RequestMapping(value = "industryDomains", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> listIndustryDomains() {
+    public ResponseEntity<Map<String, Object>> listIndustryDomains() {
 
         return ResponseUtil.jsonSucceed(utilityService.listIndustryDomains(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "startupRoles", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> listStartupRoles() {
+    public ResponseEntity<Map<String, Object>> listStartupRoles() {
 
         return ResponseUtil.jsonSucceed(utilityService.listStartupRoles(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "startupStatus", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> listStartupStatus() {
+    public ResponseEntity<Map<String, Object>> listStartupStatus() {
 
         return ResponseUtil.jsonSucceed(utilityService.listStartupStatus(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "projectPhases", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> listProjectPhases() {
+    public ResponseEntity<Map<String, Object>> listProjectPhases() {
 
         return ResponseUtil.jsonSucceed(utilityService.listProjectPhases(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "feedback", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addFeedback(String text) throws DataValidationException {
+    public ResponseEntity<Map<String, Object>> addFeedback(String text) throws DataValidationException {
         if (!StringUtils.isNotBlank(text)) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }

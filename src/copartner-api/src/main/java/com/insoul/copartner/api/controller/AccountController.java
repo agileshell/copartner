@@ -50,8 +50,9 @@ public class AccountController extends BaseController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> register(@Valid UserAddRequest userAddRequest, BindingResult validResult,
-            HttpServletRequest request, HttpServletResponse response, HttpSession session) throws CException {
+    public ResponseEntity<Map<String, Object>> register(@Valid UserAddRequest userAddRequest,
+            BindingResult validResult, HttpServletRequest request, HttpServletResponse response, HttpSession session)
+            throws CException {
         if (validResult.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
@@ -67,8 +68,8 @@ public class AccountController extends BaseController {
 
     @RequestMapping(value = "/password/retrieve", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> retrievePassword(@RequestParam(value = "account", required = false) String account)
-            throws CException {
+    public ResponseEntity<Map<String, Object>> retrievePassword(
+            @RequestParam(value = "account", required = false) String account) throws CException {
         if (ValidationUtil.isMobilePhoneNumber(account) || ValidationUtil.isEmail(account)) {
             userService.retrievePassword(account);
 
@@ -81,8 +82,8 @@ public class AccountController extends BaseController {
 
     @RequestMapping(value = "/password/reset", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> resetPassword(@Valid PasswordRestRequest request, BindingResult validResult)
-            throws CException {
+    public ResponseEntity<Map<String, Object>> resetPassword(@Valid PasswordRestRequest request,
+            BindingResult validResult) throws CException {
         if (validResult.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
@@ -93,8 +94,8 @@ public class AccountController extends BaseController {
 
     @RequestMapping(value = "/password/change", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> changePassword(@Valid PasswordChangeRequest request, BindingResult validResult)
-            throws CException {
+    public ResponseEntity<Map<String, Object>> changePassword(@Valid PasswordChangeRequest request,
+            BindingResult validResult) throws CException {
         if (validResult.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }

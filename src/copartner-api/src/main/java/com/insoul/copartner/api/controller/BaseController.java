@@ -3,6 +3,7 @@ package com.insoul.copartner.api.controller;
 import java.beans.PropertyEditor;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,15 +34,14 @@ public abstract class BaseController {
     protected final ObjectMapper jacksonObjectMapper = new ObjectMapper();
 
     @InitBinder
-    protected final void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder)
-            throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         PropertyEditor editor = new CustomDateEditor(new SimpleDateFormat(CommonConstant.DATE_FORMAT_LONG), true);
         binder.registerCustomEditor(Date.class, editor);
     }
 
     @ExceptionHandler(Throwable.class)
     @ResponseBody
-    public final ResponseEntity<String> handleException(final Throwable ex) {
+    public ResponseEntity<Map<String, Object>> handleException(Throwable ex) {
         Object errorMessage = null;
         ResponseCode code = ResponseCode.SERVER_ERROR;
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
