@@ -18,26 +18,38 @@ import com.insoul.copartner.constant.DemandStatus;
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.ILocationDao;
+import com.insoul.copartner.dao.IProjectCommentsDao;
 import com.insoul.copartner.dao.IProjectDao;
 import com.insoul.copartner.dao.IProjectLikersDao;
 import com.insoul.copartner.dao.IProjectPhaseDao;
+import com.insoul.copartner.dao.IUserDao;
+import com.insoul.copartner.dao.criteria.PaginationCriteria;
+import com.insoul.copartner.dao.criteria.ProjectCommentCriteria;
 import com.insoul.copartner.dao.criteria.ProjectCriteria;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Location;
 import com.insoul.copartner.domain.Project;
+import com.insoul.copartner.domain.ProjectComments;
 import com.insoul.copartner.domain.ProjectLikers;
 import com.insoul.copartner.domain.ProjectLikersId;
 import com.insoul.copartner.domain.ProjectPhase;
+import com.insoul.copartner.domain.User;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.exception.DataValidationException;
 import com.insoul.copartner.service.IProjectService;
 import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.ContentUtil;
+import com.insoul.copartner.vo.CommentVO;
 import com.insoul.copartner.vo.Pagination;
+import com.insoul.copartner.vo.ProjectDetailVO;
 import com.insoul.copartner.vo.ProjectVO;
+import com.insoul.copartner.vo.UserLeanVO;
+import com.insoul.copartner.vo.request.PaginationRequest;
 import com.insoul.copartner.vo.request.ProjectAddRequest;
+import com.insoul.copartner.vo.request.ProjectCommentRequest;
 import com.insoul.copartner.vo.request.ProjectListRequest;
+import com.insoul.copartner.vo.request.ProjectUpdateRequest;
 
 @Service
 public class ProjectServiceImpl extends BaseServiceImpl implements IProjectService {
@@ -56,6 +68,12 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
 
     @Resource
     private IProjectLikersDao projectLikersDao;
+
+    @Resource
+    private IProjectCommentsDao projectCommentsDao;
+
+    @Resource
+    private IUserDao userDao;
 
     @Override
     public Pagination<ProjectVO> listProjects(ProjectListRequest requestData) {
@@ -163,8 +181,10 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
     private List<ProjectVO> formatProjects(List<Project> projects) {
 
         Set<Long> userIds = new HashSet<Long>();
+        Set<Long> projectIds = new HashSet<Long>();
         for (Project project : projects) {
             userIds.add(project.getUserId());
+            projectIds.add(project.getId());
         }
         List<ProjectPhase> projectPhases = projectPhaseDao.findAll();
         Map<Long, String> phaseIdMapName = new HashMap<Long, String>();
@@ -176,6 +196,33 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         Map<Long, String> domainIdMapName = new HashMap<Long, String>();
         for (IndustryDomain industryDomain : industryDomains) {
             domainIdMapName.put(industryDomain.getId(), industryDomain.getName());
+        }
+
+        PaginationCriteria pagination = new PaginationCriteria();
+        pagination.setOffset(0);
+        pagination.setLimit(10);
+        List<ProjectLikers> projectLikeres = projectLikersDao.findByProjectIdsAndPagination(projectIds, pagination);
+        Set<Long> likerIds = new HashSet<Long>();
+        Map<Long, Set<Long>> projectIdMapLikerIds = new HashMap<Long, Set<Long>>();
+        for (ProjectLikers projectLiker : projectLikeres) {
+            Long userId = projectLiker.getId().getUserId();
+            Long projectId = projectLiker.getId().getProjectId();
+            Set<Long> ids = projectIdMapLikerIds.containsKey(projectId) ? projectIdMapLikerIds.get(projectId)
+                    : new HashSet<Long>();
+            ids.add(userId);
+            projectIdMapLikerIds.put(projectId, ids);
+
+            likerIds.add(userId);
+        }
+        Map<Long, UserLeanVO> userIdMapUser = new HashMap<Long, UserLeanVO>();
+        List<User> likerUsers = userDao.getUserByIds(likerIds);
+        for (User user : likerUsers) {
+            UserLeanVO userVO = new UserLeanVO();
+            userVO.setUserId(user.getId());
+            userVO.setName(user.getName());
+            userVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+
+            userIdMapUser.put(user.getId(), userVO);
         }
 
         List<ProjectVO> projectVOs = new ArrayList<ProjectVO>();
@@ -191,10 +238,98 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
             projectVO.setProjectPhase(phaseIdMapName.get(project.getProjectPhaseId()));
             projectVO.setIndustryDomain(domainIdMapName.get(project.getIndustryDomainId()));
 
+            Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
+            Set<Long> ids = projectIdMapLikerIds.get(project.getId());
+            for (Long id : ids) {
+                likers.add(userIdMapUser.get(id));
+            }
+            projectVO.setLikers(likers);
+
             projectVOs.add(projectVO);
         }
 
         return projectVOs;
+
+    }
+
+    @Override
+    public void commentProject(ProjectCommentRequest requestData) throws CException {
+        Project project = projectDao.get(requestData.getProjectId());
+        if (null == project) {
+            throw CExceptionFactory.getException(CException.class, ResponseCode.PROJECT_NOT_EXIST);
+        }
+
+        ProjectComments comment = new ProjectComments();
+        comment.setUserId(getUserId());
+        comment.setProjectId(requestData.getProjectId());
+        comment.setContent(requestData.getContent());
+
+        if (null != requestData.getParentId() && requestData.getParentId() > 0) {
+            ProjectComments parent = projectCommentsDao.get(requestData.getParentId());
+            if (null != parent && parent.getProjectId().longValue() == requestData.getProjectId()) {
+                comment.setParentId(requestData.getParentId());
+            }
+        }
+
+        comment.setCreated(new Date());
+
+        projectCommentsDao.save(comment);
+
+        project.setCommentCount(project.getCommentCount() + 1);
+    }
+
+    @Override
+    public Pagination<CommentVO> listComments(Long projectId, PaginationRequest requestData) {
+        ProjectCommentCriteria criteria = new ProjectCommentCriteria();
+        criteria.setOffset(requestData.getOffset());
+        criteria.setLimit(requestData.getLimit());
+        criteria.setProjectId(projectId);
+
+        List<ProjectComments> comments = projectCommentsDao.queryComments(criteria);
+        Long count = projectCommentsDao.countComments(criteria);
+        return new Pagination<CommentVO>(formatComments(comments), count);
+    }
+
+    private List<CommentVO> formatComments(List<ProjectComments> comments) {
+        List<CommentVO> commentVOs = new ArrayList<CommentVO>();
+
+        Set<Long> commentorIds = new HashSet<Long>();
+        for (ProjectComments comment : comments) {
+            commentorIds.add(comment.getUserId());
+        }
+        Map<Long, UserLeanVO> userIdMapUser = new HashMap<Long, UserLeanVO>();
+        List<User> users = userDao.getUserByIds(commentorIds);
+        for (User user : users) {
+            UserLeanVO userVO = new UserLeanVO();
+            userVO.setUserId(user.getId());
+            userVO.setName(user.getName());
+            userVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+
+            userIdMapUser.put(user.getId(), userVO);
+        }
+
+        for (ProjectComments comment : comments) {
+            CommentVO commentVO = new CommentVO();
+            commentVO.setId(comment.getId());
+            commentVO.setParentId(comment.getParentId());
+            commentVO.setContent(comment.getContent());
+            commentVO.setCommentor(userIdMapUser.get(comment.getUserId()));
+
+            commentVOs.add(commentVO);
+        }
+
+        return commentVOs;
+    }
+
+    @Override
+    public ProjectDetailVO getProject(Long projectId) throws CException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void updateProject(ProjectUpdateRequest requestData) throws CException {
+        // TODO Auto-generated method stub
 
     }
 }

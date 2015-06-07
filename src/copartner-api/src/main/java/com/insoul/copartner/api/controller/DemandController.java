@@ -93,7 +93,7 @@ public class DemandController extends BaseController {
 
     @RequestMapping(value = "/demand/{demandId}/comments", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> listDemands(@PathVariable Long demandId, PaginationRequest requestData)
+    public ResponseEntity<Map<String, Object>> listComments(@PathVariable Long demandId, PaginationRequest requestData)
             throws CException {
         if (null == demandId || demandId <= 0) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);

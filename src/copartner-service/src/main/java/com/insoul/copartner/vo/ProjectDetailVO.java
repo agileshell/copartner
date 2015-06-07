@@ -1,17 +1,26 @@
 package com.insoul.copartner.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
-public class ProjectVO implements Serializable {
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.insoul.copartner.util.CustomDateSerializer;
 
-    private static final long serialVersionUID = -4435427359292836901L;
+public class ProjectDetailVO implements Serializable {
+
+    private static final long serialVersionUID = -9070163501160902318L;
 
     private String name;
 
     private String logo;
 
     private String content;
+
+    private String status;
+
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date initDate;
 
     private String projectPhase;
 
@@ -47,6 +56,22 @@ public class ProjectVO implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Date getInitDate() {
+        return initDate;
+    }
+
+    public void setInitDate(Date initDate) {
+        this.initDate = initDate;
     }
 
     public String getProjectPhase() {

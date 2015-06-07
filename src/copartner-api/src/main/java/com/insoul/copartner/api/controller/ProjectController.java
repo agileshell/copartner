@@ -20,8 +20,11 @@ import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.exception.DataValidationException;
 import com.insoul.copartner.service.IProjectService;
 import com.insoul.copartner.util.ResponseUtil;
+import com.insoul.copartner.vo.request.PaginationRequest;
 import com.insoul.copartner.vo.request.ProjectAddRequest;
+import com.insoul.copartner.vo.request.ProjectCommentRequest;
 import com.insoul.copartner.vo.request.ProjectListRequest;
+import com.insoul.copartner.vo.request.ProjectUpdateRequest;
 
 @Controller
 public class ProjectController extends BaseController {
@@ -62,6 +65,26 @@ public class ProjectController extends BaseController {
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/project/{projectId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getDemand(@PathVariable Long projectId) throws CException {
+        return ResponseUtil.jsonSucceed(projectService.getProject(projectId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/project/{projectId}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> updateProject(@PathVariable Long projectId,
+            @Valid ProjectUpdateRequest requestData, BindingResult result) throws CException {
+        if (null == projectId || projectId <= 0 || result.hasErrors()) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+
+        requestData.setProjectId(projectId);
+        projectService.updateProject(requestData);
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/project/{projectId}/like", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> likeProject(@PathVariable Long projectId) throws CException {
@@ -76,5 +99,29 @@ public class ProjectController extends BaseController {
         projectService.unlikeProject(projectId);
 
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/project/{projectId}/comment", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> commentProject(@PathVariable Long projectId,
+            @Valid ProjectCommentRequest requestData, BindingResult result) throws CException {
+        if (result.hasErrors()) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+
+        projectService.commentProject(requestData);
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/project/{projectId}/comments", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> listComments(@PathVariable Long projectId, PaginationRequest requestData)
+            throws CException {
+        if (null == projectId || projectId <= 0) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+
+        return ResponseUtil.jsonSucceed(projectService.listComments(projectId, requestData), HttpStatus.OK);
     }
 }

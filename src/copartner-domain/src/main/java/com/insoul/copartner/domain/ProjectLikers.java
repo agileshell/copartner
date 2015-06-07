@@ -14,7 +14,9 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "project_likers", catalog = "copartner")
-@NamedQueries({ @NamedQuery(name = "ProjectLikers.getByIds", query = "FROM ProjectLikers WHERE id.projectId = :projectId AND id.userId = :userId") })
+@NamedQueries({
+        @NamedQuery(name = "ProjectLikers.getByIds", query = "FROM ProjectLikers WHERE id.projectId = :projectId AND id.userId = :userId"),
+        @NamedQuery(name = "ProjectLikers.getByProjectId", query = "FROM ProjectLikers WHERE id.projectId = :projectId ORDER BY created DESC") })
 public class ProjectLikers implements Serializable {
 
     private static final long serialVersionUID = 4973597206777136869L;
