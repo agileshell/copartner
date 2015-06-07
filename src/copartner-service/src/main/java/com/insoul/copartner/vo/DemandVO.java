@@ -25,8 +25,6 @@ public class DemandVO implements Serializable {
 
     private Set<UserLeanVO> likers;
 
-    private Set<DemandCommentVO> comments;
-
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
 
@@ -84,14 +82,6 @@ public class DemandVO implements Serializable {
 
     public void setLikers(Set<UserLeanVO> likers) {
         this.likers = likers;
-    }
-
-    public Set<DemandCommentVO> getComments() {
-        return comments;
-    }
-
-    public void setComments(Set<DemandCommentVO> comments) {
-        this.comments = comments;
     }
 
     public Date getCreated() {

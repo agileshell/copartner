@@ -23,6 +23,7 @@ import com.insoul.copartner.util.ResponseUtil;
 import com.insoul.copartner.vo.request.DemandAddRequest;
 import com.insoul.copartner.vo.request.DemandCommentRequest;
 import com.insoul.copartner.vo.request.DemandListRequest;
+import com.insoul.copartner.vo.request.PaginationRequest;
 
 @Controller
 public class DemandController extends BaseController {
@@ -88,6 +89,17 @@ public class DemandController extends BaseController {
         demandService.commentDemand(requestData);
 
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/demand/{demandId}/comments", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> listDemands(@PathVariable Long demandId, PaginationRequest requestData)
+            throws CException {
+        if (null == demandId || demandId <= 0) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+
+        return ResponseUtil.jsonSucceed(demandService.listComments(demandId, requestData), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/demand/{demandId}/like", method = RequestMethod.POST)

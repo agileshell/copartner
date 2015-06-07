@@ -1,12 +1,14 @@
 package com.insoul.copartner.service;
 
 import com.insoul.copartner.exception.CException;
+import com.insoul.copartner.vo.CommentVO;
 import com.insoul.copartner.vo.DemandDetailVO;
 import com.insoul.copartner.vo.DemandVO;
 import com.insoul.copartner.vo.Pagination;
 import com.insoul.copartner.vo.request.DemandAddRequest;
 import com.insoul.copartner.vo.request.DemandCommentRequest;
 import com.insoul.copartner.vo.request.DemandListRequest;
+import com.insoul.copartner.vo.request.PaginationRequest;
 
 public interface IDemandService {
 
@@ -24,4 +26,5 @@ public interface IDemandService {
 
     void unlikeDemand(Long demandId) throws CException;
 
+    Pagination<CommentVO> listComments(Long demandId, PaginationRequest requestData);
 }

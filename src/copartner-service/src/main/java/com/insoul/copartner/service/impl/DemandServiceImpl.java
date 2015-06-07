@@ -21,7 +21,9 @@ import com.insoul.copartner.dao.IDemandLikersDao;
 import com.insoul.copartner.dao.IProjectDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IUserDao;
+import com.insoul.copartner.dao.criteria.DemandCommentCriteria;
 import com.insoul.copartner.dao.criteria.DemandCriteria;
+import com.insoul.copartner.dao.criteria.PaginationCriteria;
 import com.insoul.copartner.domain.Demand;
 import com.insoul.copartner.domain.DemandComments;
 import com.insoul.copartner.domain.DemandLikers;
@@ -34,6 +36,7 @@ import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.service.IDemandService;
 import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.ContentUtil;
+import com.insoul.copartner.vo.CommentVO;
 import com.insoul.copartner.vo.DemandDetailVO;
 import com.insoul.copartner.vo.DemandVO;
 import com.insoul.copartner.vo.Pagination;
@@ -43,6 +46,7 @@ import com.insoul.copartner.vo.UserLeanVO;
 import com.insoul.copartner.vo.request.DemandAddRequest;
 import com.insoul.copartner.vo.request.DemandCommentRequest;
 import com.insoul.copartner.vo.request.DemandListRequest;
+import com.insoul.copartner.vo.request.PaginationRequest;
 
 @Service
 public class DemandServiceImpl extends BaseServiceImpl implements IDemandService {
@@ -140,8 +144,6 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             likers.add(userVO);
         }
         demandVO.setLikers(likers);
-
-        // TODO set comments
 
         return demandVO;
     }
@@ -252,8 +254,10 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
 
     private List<DemandVO> formatDemands(List<Demand> demands) {
 
+        Set<Long> demandIds = new HashSet<Long>();
         Set<Long> userIds = new HashSet<Long>();
         for (Demand demand : demands) {
+            demandIds.add(demand.getId());
             userIds.add(demand.getUserId());
         }
 
@@ -279,6 +283,33 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             userIdMapUserVO.put(user.getId(), userVO);
         }
 
+        PaginationCriteria pagination = new PaginationCriteria();
+        pagination.setOffset(0);
+        pagination.setLimit(10);
+        List<DemandLikers> demandLikers = demandLikersDao.findByDemandIdsAndPagination(demandIds, pagination);
+        Set<Long> likerIds = new HashSet<Long>();
+        Map<Long, Set<Long>> demandIdMapLikerIds = new HashMap<Long, Set<Long>>();
+        for (DemandLikers demandLiker : demandLikers) {
+            Long userId = demandLiker.getId().getUserId();
+            Long demandId = demandLiker.getId().getDemandId();
+            Set<Long> ids = demandIdMapLikerIds.containsKey(demandId) ? demandIdMapLikerIds.get(demandId)
+                    : new HashSet<Long>();
+            ids.add(userId);
+            demandIdMapLikerIds.put(demandId, ids);
+
+            likerIds.add(userId);
+        }
+        Map<Long, UserLeanVO> userIdMapUser = new HashMap<Long, UserLeanVO>();
+        List<User> likerUsers = userDao.getUserByIds(likerIds);
+        for (User user : likerUsers) {
+            UserLeanVO userVO = new UserLeanVO();
+            userVO.setUserId(user.getId());
+            userVO.setName(user.getName());
+            userVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+
+            userIdMapUser.put(user.getId(), userVO);
+        }
+
         List<DemandVO> demandVOs = new ArrayList<DemandVO>();
         for (Demand demand : demands) {
             DemandVO demandVO = new DemandVO();
@@ -290,7 +321,12 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             demandVO.setLikeCount(demand.getLikeCount());
             demandVO.setCreated(demand.getCreated());
 
-            // TODO setLikers
+            Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
+            Set<Long> ids = demandIdMapLikerIds.get(demand.getId());
+            for (Long id : ids) {
+                likers.add(userIdMapUser.get(id));
+            }
+            demandVO.setLikers(likers);
 
             demandVOs.add(demandVO);
         }
@@ -298,4 +334,46 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         return demandVOs;
     }
 
+    @Override
+    public Pagination<CommentVO> listComments(Long demandId, PaginationRequest requestData) {
+        DemandCommentCriteria criteria = new DemandCommentCriteria();
+        criteria.setOffset(requestData.getOffset());
+        criteria.setLimit(requestData.getLimit());
+        criteria.setDemandId(demandId);
+
+        List<DemandComments> comments = demandCommentsDao.queryComments(criteria);
+        Long count = demandCommentsDao.countComments(criteria);
+        return new Pagination<CommentVO>(formatComments(comments), count);
+    }
+
+    private List<CommentVO> formatComments(List<DemandComments> comments) {
+        List<CommentVO> commentVOs = new ArrayList<CommentVO>();
+
+        Set<Long> commentorIds = new HashSet<Long>();
+        for (DemandComments comment : comments) {
+            commentorIds.add(comment.getUserId());
+        }
+        Map<Long, UserLeanVO> userIdMapUser = new HashMap<Long, UserLeanVO>();
+        List<User> users = userDao.getUserByIds(commentorIds);
+        for (User user : users) {
+            UserLeanVO userVO = new UserLeanVO();
+            userVO.setUserId(user.getId());
+            userVO.setName(user.getName());
+            userVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+
+            userIdMapUser.put(user.getId(), userVO);
+        }
+
+        for (DemandComments comment : comments) {
+            CommentVO commentVO = new CommentVO();
+            commentVO.setId(comment.getId());
+            commentVO.setParentId(comment.getParentId());
+            commentVO.setContent(comment.getContent());
+            commentVO.setCommentor(userIdMapUser.get(comment.getUserId()));
+
+            commentVOs.add(commentVO);
+        }
+
+        return commentVOs;
+    }
 }
