@@ -45,6 +45,8 @@ public class UserDetailVO implements Serializable {
 
     private Set<ResumeVO> workResumes;
 
+    private Long imId;
+
     public Long getUserId() {
         return userId;
     }
@@ -195,6 +197,14 @@ public class UserDetailVO implements Serializable {
 
     public void setWorkResumes(Set<ResumeVO> workResumes) {
         this.workResumes = workResumes;
+    }
+
+    public Long getImId() {
+        return imId;
+    }
+
+    public void setImId(Long imId) {
+        this.imId = imId;
     }
 
 }

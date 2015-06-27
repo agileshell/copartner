@@ -504,6 +504,7 @@
             "introduction": "HAHAHAHAHA",
             "isEmailVerified": false,
             "isMobileVerified": true,
+            "imId": 1,
             "location": {
                 "latitude": 0,
                 "locationId": 35,
@@ -668,6 +669,7 @@
             "introduction": "HAHAHAHAHA",
             "isEmailVerified": false,
             "isMobileVerified": true,
+            "imId": 1,
             "location": {
                 "latitude": 0,
                 "locationId": 35,

@@ -437,6 +437,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         userDetailVO.setIntroduction(user.getIntroduction());
         userDetailVO.setIsMobileVerified(user.getIsMobileVerified());
         userDetailVO.setIsEmailVerified(user.getIsEmailVerified());
+        userDetailVO.setImId(user.getImId());
 
         if (null != user.getLocationId()) {
             Location location = locationDao.get(user.getLocationId());
