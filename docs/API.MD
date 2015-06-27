@@ -44,6 +44,11 @@
 | [project](#create-project)| POST| YES| 创建项目|
 | [project/{projectId}/like](#like-project)| POST| YES| 关注项目|
 | [project/{projectId}/like](#unlike-project)| DELETE| YES| 取消关注项目|
+|   |   |   |    |
+| [user/friend/{friendId}](#add-friend)| POST| YES| 添加好友请求|
+| [user/friend/{friendId}/accept](#accept-friend)| POST| YES| 接受好友请求|
+| [user/friends](#list-friends)| GET| YES|获取好友列表|
+| [user/newFriends](#list-new-friends)| GET| YES| 获取好友请求列表|
 
 
 ## APIs
@@ -2032,3 +2037,210 @@
 | Code    |   Description   |
 |:--------|:----------------|
 | 30100 | 该项目不存在|
+
+
+#### Add Friend
+
+ 添加好友请求。
+
+- **Request URL**
+    `http://API_DOMAIN/user/friend/{friendId}`
+
+- **Request Method**
+    POST
+
+- **Request Header**
+
+| Name | Description |
+| :-------- | :-------- |
+| Cookie    | Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+**Note:** The Cookie is required.
+
+- **Request Parameters**
+
+N/A
+
+- **Response**
+
+    ```
+    {
+        "body": null,
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 20300,
+                "msg": "用户不存在"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 403   | 无权访问，请重试 |
+| 20300 | 用户不存在 |
+
+
+#### Accept Friend
+
+ 接受好友请求。
+
+- **Request URL**
+    `http://API_DOMAIN/user/friend/{friendId}/accept`
+
+- **Request Method**
+    POST
+
+- **Request Header**
+
+| Name | Description |
+| :-------- | :-------- |
+| Cookie    | Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+**Note:** The Cookie is required.
+
+- **Request Parameters**
+
+N/A
+
+- **Response**
+
+    ```
+    {
+        "body": {
+            "friendId": 2,
+            "name": "test2",
+            "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png",
+            "imId": 2
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 20300,
+                "msg": "用户不存在"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 403   | 无权访问，请重试 |
+| 20300 | 用户不存在 |
+
+#### List Friends
+ 获取好友列表。
+
+- **Request URL**
+    `http://API_DOMAIN/user/friends`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+
+| Name | Description |
+| :-------- | :-------- |
+| Cookie    | Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+**Note:** The Cookie is required.
+
+- **Request Parameters**
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": [
+            {
+                "friendId": 2,
+                "name": "test2",
+                "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png",
+                "imId": 2
+            }
+        ],
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 403,
+                "msg": "Forbidden"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 403  | 无权访问，请重试|
+
+#### List New Friends
+ 获取好友请求列表。
+
+- **Request URL**
+    `http://API_DOMAIN/user/newFriends`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+
+| Name | Description |
+| :-------- | :-------- |
+| Cookie    | Add the cookie, it's value are from the response of  Sigh in api. The value is like "JSESSIONID=*" |
+**Note:** The Cookie is required.
+
+- **Request Parameters**
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": [
+            {
+                "friendId": 2,
+                "name": "test2",
+                "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png",
+                "imId": 2
+            }
+        ],
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 403,
+                "msg": "Forbidden"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 403  | 无权访问，请重试|
