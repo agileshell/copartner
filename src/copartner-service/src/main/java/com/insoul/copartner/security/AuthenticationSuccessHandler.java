@@ -3,6 +3,7 @@ package com.insoul.copartner.security;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -41,7 +42,12 @@ public class AuthenticationSuccessHandler implements
         try {
             out = response.getWriter();
 
-            Map<String, Object> json = ResponseUtil.jsonSucceed(null);
+            Map<String, Object> result = new HashMap<String, Object>();
+            result.put("userId", user.getId());
+            result.put("name", user.getName());
+            result.put("avatar", user.getAvatar());
+            result.put("imId", user.getImId());
+            Map<String, Object> json = ResponseUtil.jsonSucceed(result);
 
             out.append(JsonUtil.serialize(json));
         } finally {

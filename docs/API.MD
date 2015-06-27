@@ -79,7 +79,12 @@
 
     ```
     {
-        "body": null,
+        "body": {
+            "userId": 1,
+            "imId": 1,
+            "name": "GOGO",
+            "avatar": "http://www.baidu.com/img/bd_logo1.png"
+        },
         "status": "SUCCEED"
     }
     ```
@@ -134,7 +139,10 @@
     ```
     {
         "body": {
-            "userId": 2
+            "userId": 1,
+            "imId": 1,
+            "name": "GOGO",
+            "avatar": "http://www.baidu.com/img/bd_logo1.png"
         },
         "status": "SUCCEED"
     }

@@ -29,6 +29,7 @@ import com.insoul.copartner.security.SecurityUtil;
 import com.insoul.copartner.service.IUserService;
 import com.insoul.copartner.util.ResponseUtil;
 import com.insoul.copartner.util.ValidationUtil;
+import com.insoul.copartner.vo.UserDetailVO;
 import com.insoul.copartner.vo.request.PasswordChangeRequest;
 import com.insoul.copartner.vo.request.PasswordRestRequest;
 import com.insoul.copartner.vo.request.UserAddRequest;
@@ -56,9 +57,12 @@ public class AccountController extends BaseController {
         if (validResult.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
-        long userId = userService.register(userAddRequest);
+        UserDetailVO userDetailVO = userService.register(userAddRequest);
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("userId", userId);
+        result.put("userId", userDetailVO.getUserId());
+        result.put("name", userDetailVO.getName());
+        result.put("avatar", userDetailVO.getAvatar());
+        result.put("imId", userDetailVO.getImId());
 
         UserDetails details = userDetailsService.loadUserByUsername(userAddRequest.getAccount());
         SecurityUtil.login(details, request, response, session);

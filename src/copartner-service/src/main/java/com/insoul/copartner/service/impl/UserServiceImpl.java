@@ -91,7 +91,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
     @Override
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-    public long register(final UserAddRequest userAddRequest) throws CException {
+    public UserDetailVO register(final UserAddRequest userAddRequest) throws CException {
         String account = userAddRequest.getAccount();
         boolean isMobile = ValidationUtil.isMobilePhoneNumber(account);
         User user = new User();
@@ -158,13 +158,19 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
             sendMail(userId, MessageType.REGISTER.getValue(), account, params);
         }
 
-        Long imId = IMUtils.register(userId, account, null);
+        Long imId = IMUtils.register(userId, account, GlobalProperties.DEFAULT_AVATAR_URL);
         if (0 != imId) {
             user.setImId(imId);
             userDao.update(user);
         }
 
-        return userId;
+        UserDetailVO userDetailVO = new UserDetailVO();
+        userDetailVO.setUserId(userId);
+        userDetailVO.setName(account);
+        userDetailVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+        userDetailVO.setImId(imId);
+
+        return userDetailVO;
     }
 
     private void setDefaultValue(User user) {

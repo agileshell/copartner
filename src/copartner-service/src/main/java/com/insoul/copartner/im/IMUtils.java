@@ -16,8 +16,7 @@ public class IMUtils {
         inregister.setParty_id(userId + "");
         inregister.setNick(nick);
         inregister.setPasswd(CommonConstant.IM_DEFAULT_PWD);
-        // TODO
-        inregister.setAvatar("http://img0.bdstatic.com/img/image/shouye/dongman0401.jpg");
+        inregister.setAvatar(avatar);
 
         String msg = JsonUtil.serialize(inregister);
         String returnMsg = IMSocketClient.sendMsg(msg);

@@ -11,7 +11,7 @@ import com.insoul.copartner.vo.request.UserAddRequest;
 import com.insoul.copartner.vo.request.UserProfileUpdateRequest;
 
 public interface IUserService {
-    long register(UserAddRequest userAddRequest) throws CException;
+    UserDetailVO register(UserAddRequest userAddRequest) throws CException;
 
     void retrievePassword(String account) throws CException;
 
