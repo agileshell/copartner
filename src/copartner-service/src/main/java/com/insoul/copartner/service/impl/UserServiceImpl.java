@@ -40,6 +40,7 @@ import com.insoul.copartner.domain.UserAccountConfirmationId;
 import com.insoul.copartner.domain.UserPasswordReset;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
+import com.insoul.copartner.im.IMUtils;
 import com.insoul.copartner.service.IUserService;
 import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.CodeUtil;
@@ -155,6 +156,12 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
             params.put("verifyEmailURL", verifyEmailURL);
 
             sendMail(userId, MessageType.REGISTER.getValue(), account, params);
+        }
+
+        Long imId = IMUtils.register(userId, account, null);
+        if (0 != imId) {
+            user.setImId(imId);
+            userDao.update(user);
         }
 
         return userId;

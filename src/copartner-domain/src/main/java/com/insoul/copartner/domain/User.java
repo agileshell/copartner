@@ -81,6 +81,9 @@ public class User extends BaseEntity {
     @Column(name = "domains")
     private String domains;
 
+    @Column(name = "im_id")
+    private Long imId;
+
     public String getName() {
         return name;
     }
@@ -241,6 +244,14 @@ public class User extends BaseEntity {
         this.domains = domains;
     }
 
+    public Long getImId() {
+        return imId;
+    }
+
+    public void setImId(Long imId) {
+        this.imId = imId;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -253,6 +264,7 @@ public class User extends BaseEntity {
         result = prime * result + ((email == null) ? 0 : email.hashCode());
         result = prime * result + ((fullLocation == null) ? 0 : fullLocation.hashCode());
         result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+        result = prime * result + ((imId == null) ? 0 : imId.hashCode());
         result = prime * result + ((introduction == null) ? 0 : introduction.hashCode());
         result = prime * result + ((isEmailVerified == null) ? 0 : isEmailVerified.hashCode());
         result = prime * result + ((isMobileVerified == null) ? 0 : isMobileVerified.hashCode());
@@ -316,6 +328,11 @@ public class User extends BaseEntity {
             if (other.gender != null)
                 return false;
         } else if (!gender.equals(other.gender))
+            return false;
+        if (imId == null) {
+            if (other.imId != null)
+                return false;
+        } else if (!imId.equals(other.imId))
             return false;
         if (introduction == null) {
             if (other.introduction != null)

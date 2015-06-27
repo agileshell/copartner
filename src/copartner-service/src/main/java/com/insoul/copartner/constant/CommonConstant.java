@@ -28,4 +28,6 @@ public interface CommonConstant {
 
     String APPLICATION_XML = "application/xml;charset=UTF-8";
 
+    String IM_DEFAULT_PWD = "123456";
+
 }

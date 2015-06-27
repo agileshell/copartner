@@ -20,6 +20,7 @@ import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.exception.DataValidationException;
+import com.insoul.copartner.service.IUserFriendsService;
 import com.insoul.copartner.service.IUserService;
 import com.insoul.copartner.util.ResponseUtil;
 import com.insoul.copartner.vo.request.ResumeRequest;
@@ -31,6 +32,9 @@ public class UserController extends BaseController {
 
     @Resource
     private IUserService userService;
+
+    @Resource
+    private IUserFriendsService userFriendsService;
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     @ResponseBody
@@ -103,5 +107,33 @@ public class UserController extends BaseController {
         userService.updateWorkResume(Arrays.asList(array));
 
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/friend/{friendId}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> addFriend(@PathVariable Long friendId) throws CException {
+        userFriendsService.addFriend(friendId);
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/friend/{friendId}/accept", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> acceptFriend(@PathVariable Long friendId) throws CException {
+        return ResponseUtil.jsonSucceed(userFriendsService.acceptFriend(friendId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/friends", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> listFriends() {
+
+        return ResponseUtil.jsonSucceed(userFriendsService.listFriends(true), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/newFriends", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> listNewFriends() {
+
+        return ResponseUtil.jsonSucceed(userFriendsService.listFriends(false), HttpStatus.OK);
     }
 }
