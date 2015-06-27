@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.insoul.copartner.constant.CommonConstant;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.domain.User;
+import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.IpUtil;
 import com.insoul.copartner.util.JsonUtil;
 import com.insoul.copartner.util.ResponseUtil;
@@ -45,7 +46,7 @@ public class AuthenticationSuccessHandler implements
             Map<String, Object> result = new HashMap<String, Object>();
             result.put("userId", user.getId());
             result.put("name", user.getName());
-            result.put("avatar", user.getAvatar());
+            result.put("avatar", CDNUtil.getFullPath(user.getAvatar()));
             result.put("imId", user.getImId());
             Map<String, Object> json = ResponseUtil.jsonSucceed(result);
 
