@@ -17,7 +17,7 @@
 	<!--[if lt IE 9]>
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
-	<link rel="Shortcut Icon" href="http://www.andpay.me/favicon.ico" />
+	<link rel="Shortcut Icon" href="${cdn}image/shoseicon64px.png" />
 </head>
 <body>
 	<div class="admin-form">

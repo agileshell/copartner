@@ -1,4 +1,4 @@
-package me.oss.ti;
+package com.insoul.ti;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -16,10 +16,10 @@ import com.insoul.copartner.dao.INewsDao;
 import com.insoul.copartner.dao.ISystemSettingDao;
 
 /**
- * @author 刘飞
+ * @author 刘飞 E-mail:liufei_it@126.com
  * 
  * @version 1.0.0
- * @since 2015年3月26日 下午4:07:31
+ * @since 2015年7月4日 下午11:38:04
  */
 public class WebBase implements ServletContextAware {
 

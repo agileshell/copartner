@@ -1,4 +1,4 @@
-package me.oss.ti.controller;
+package com.insoul.ti.controller;
 
 import java.util.Date;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,16 +19,16 @@ import com.insoul.copartner.dao.criteria.ContentCriteria;
 import com.insoul.copartner.domain.Content;
 import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.FileUtil;
-
-import me.oss.ti.WebBase;
-import me.oss.ti.req.ContentListRequest;
-import me.oss.ti.req.ContentRequest;
+import com.insoul.ti.WebBase;
+import com.insoul.ti.req.ContentListRequest;
+import com.insoul.ti.req.ContentRequest;
+import com.insoul.ti.req.PageQuery;
 
 /**
- * @author 刘飞
+ * @author 刘飞 E-mail:liufei_it@126.com
  * 
  * @version 1.0.0
- * @since 2015年3月26日 下午4:10:58
+ * @since 2015年7月4日 下午11:37:15
  */
 @Controller
 @RequestMapping("/content")
@@ -36,25 +37,46 @@ public class ContentController extends WebBase {
 	@RequestMapping("/list")
 	public ModelAndView list(@Valid ContentListRequest request, BindingResult result) {
 		ModelAndView mv = createModelView("content_list");
+		PageQuery query = request.init().getQuery();
 		ContentCriteria criteria = new ContentCriteria();
-		criteria.setLimit(request.getLimit());
-		criteria.setOffset(request.getOffset());
+		criteria.setLimit(query.getPage_size());
+		criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
 		criteria.setType(request.getType());
 		List<Content> list = contentDAO.queryContent(criteria);
+		mv.addObject("query", query);
 		mv.addObject("contentList", list);
+		mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		return mv;
 	}
 
 	@RequestMapping("/detail/{contentId}")
 	public ModelAndView detail(@PathVariable Long contentId) {
 		ModelAndView mv = createModelView("content_detail");
+		try {
+			Content content = contentDAO.get(contentId);
+			mv.addObject("content", content);
+			mv.addObject("success", content != null);
+		} catch (Exception e) {
+			mv.addObject("success", false);
+		}
+		return mv;
+	}
+
+	@RequestMapping("/add")
+	public ModelAndView add() {
+		return createModelView("content_add");
+	}
+
+	@RequestMapping("/edit/{contentId}")
+	public ModelAndView edit(@PathVariable Long contentId) {
+		ModelAndView mv = createModelView("content_edit");
 		Content content = contentDAO.get(contentId);
 		mv.addObject("content", content);
 		return mv;
 	}
 
-	@RequestMapping("/edit/{contentId}")
-	public ModelAndView edit(@PathVariable Long contentId, @Valid ContentRequest request, BindingResult result) {
+	@RequestMapping("/update/{contentId}")
+	public ModelAndView update(@PathVariable Long contentId, @Valid ContentRequest request, BindingResult result) {
 		Content content = contentDAO.get(contentId);
 		MultipartFile image = request.getCoverImg();
 		if (image != null) {
@@ -77,8 +99,8 @@ public class ContentController extends WebBase {
 		return new ModelAndView("redirect:/content/detail/" + contentId);
 	}
 
-	@RequestMapping("/add")
-	public ModelAndView add(@Valid ContentRequest request, BindingResult result) {
+	@RequestMapping("/save")
+	public ModelAndView save(@Valid ContentRequest request, BindingResult result) {
 		MultipartFile image = request.getCoverImg();
 		String path = StringUtils.EMPTY;
 		if (image != null) {

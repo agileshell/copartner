@@ -1,4 +1,4 @@
-package me.oss.ti.listener;
+package com.insoul.ti.listener;
 
 import java.io.IOException;
 
@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.filter.GenericFilterBean;
 
 /**
- * @author 刘飞
+ * @author 刘飞 E-mail:liufei_it@126.com
  * 
  * @version 1.0.0
- * @since 2015年3月26日 下午4:06:06
+ * @since 2015年7月4日 下午11:37:41
  */
 public class AccessPrivilegedFilter extends GenericFilterBean {
 

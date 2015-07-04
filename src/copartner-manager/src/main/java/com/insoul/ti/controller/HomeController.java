@@ -1,16 +1,16 @@
-package me.oss.ti.controller;
+package com.insoul.ti.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import me.oss.ti.WebBase;
+import com.insoul.ti.WebBase;
 
 /**
- * @author 刘飞
+ * @author 刘飞 E-mail:liufei_it@126.com
  * 
  * @version 1.0.0
- * @since 2015年3月26日 下午4:10:58
+ * @since 2015年7月4日 下午11:37:23
  */
 @Controller
 @RequestMapping("/")

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="oss-manager">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
+        <dependent-module archiveName="copartner-domain-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/copartner-domain/copartner-domain">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="copartner-dao-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/copartner-dao/copartner-dao">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="copartner-service-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/copartner-service/copartner-service">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ocs-apns-1.0.0.Beta7-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ocs-apns/ocs-apns">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ocs-comm-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ocs-comm/ocs-comm">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ocs-oauth-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ocs-oauth/ocs-oauth">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ocs-oss-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ocs-oss/ocs-oss">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/oss-manager/target/classes"/>
+        <property name="context-root" value="copartner-manager"/>
+    </wb-module>
+</project-modules>

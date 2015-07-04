@@ -9,9 +9,8 @@
 	<meta name="keywords" content="dap" />
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="author" content="andpay.me" />
-	<title>SSO管理平台--文章详情</title>
-
+	<title>创客管理平台--文章列表</title>
+	
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
 	<link rel="stylesheet" href="${cdn}css/jquery-ui.css"></link>
@@ -28,92 +27,97 @@
 	<!--[if lt IE 9]>
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
-
+	
 	<link rel="Shortcut Icon" href="${cdn}image/shoseicon64px.png" />
 
 </head>
 <body>
-	<jsp:include page="control/header.jsp" />
+	<jsp:include page="control/header.jsp"/>
 	<div class="content">
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">文章详情</h2>
+				<h2 class="pull-left">文章列表</h2>
 				<div class="bread-crumb pull-right">
-					<a href="/article/list"><i class="icon-home"></i>首页</a><span class="divider">/</span>文章详情
+					<a href="/content/list"><i class="icon-home"></i>首页</a><span class="divider">/</span>文章列表
 				</div>
 				<div class="clearfix"></div>
 			</div>
 			<div class="matter">
 				<div class="container">
-					<!--row start-->
+					<!-- row start -->
 					<div class="row">
 						<div class="col-md-12">
-							<div class="widget wgreen">
+							<div class="widget">
 								<div class="widget-head">
-									<div class="pull-left">文章详情</div>
+									<div class="pull-left">文章列表</div>
 									<div class="widget-icons pull-right">
 										<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
 									</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
-									<div class="padd form-horizontal">
-										<c:if test="${!success}">
-											<div class="form-group">
-												<div class="col-lg-12" style="text-align: center;">文章不存在!!!</div>
-											</div>
-										</c:if>
-										<c:if test="${success}">
-											<div class="form-group">
-												<label class="col-lg-5 control-label" >文章名称:</label>
-												<div class="col-lg-7">${article.title}</div>
-											</div>
-											
-											<div class="form-group">
-												<label class="col-lg-5 control-label">文章内容:</label>
-												<div class="col-lg-7">${article.content}</div>
-											</div>
-											
-											<div class="form-group">
-												<label class="col-lg-5 control-label">文章图片:</label>
-												<div class="col-lg-7">
-												<img alt="${article.title}" src="/image/${article.avatar}"  width="500">
-												</div>
-											</div>
-											
-											<div class="form-group">
-												<label class="col-lg-5 control-label">文章背景图:</label>
-												<div class="col-lg-7">
-												<img alt="${article.title}" src="/image/${article.background}"  width="500">
-												</div>
-											</div>
-											
-											<hr />
-											
-											<div class="form-group">
-												<div class="col-lg-offset-1 col-lg-9">
-													<a class="btn btn-default btn-sm" href="/article/list">返回</a>
-												</div>
-											</div>
-										</c:if>
-									</div>
+									<table class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<th>ID</th>
+												<th>类型</th>
+												<th>标题</th>
+												<th>内容摘要</th>
+												<th>状态</th>
+												<th>浏览次数</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:if test="${!success}">
+												<tr><td colspan="6" style="text-align: center;">空空如也!!!</td></tr>
+												<tr><td colspan="6" style="text-align: center;"><a class="btn btn-default btn-sm" href="/content/add">新建文章</a></td></tr>
+											</c:if>
+											<c:if test="${success}">
+												<c:forEach var="c" items="${contentList}" varStatus="status">
+													<tr>
+														<td>${c.id}</td>
+														<td>
+															<c:if test="${c.type == 1}"> 政策解读 </c:if>
+															<c:if test="${c.type == 2}"> 公共资源 </c:if>
+														</td>
+														<td>${c.title}</td>
+														<td>${c.synopsis}</td>
+														<td>
+															<c:if test="${c.status == 'active'}"> 激活 </c:if>
+															<c:if test="${c.status == 'inactive'}"> 无效 </c:if>
+															<c:if test="${c.status == 'deleted'}"> 已删除 </c:if>
+														</td>
+														<td>${c.clicks}次</td>
+														<td>
+															<div class="btn-group">
+																<a class="btn btn-xs btn-default" href="detail/${c.id}">
+																	详情
+																</a>
+															</div>
+														</td>
+													</tr>
+												</c:forEach>
+											</c:if>
+										</tbody>
+									</table>
+									<jsp:include page="control/pagination.jsp"/>
 								</div>
-								<div class="widget-foot"></div>
 							</div>
 						</div>
 					</div>
-					<!--row end-->
+					<!-- row end -->
 				</div>
 			</div>
 		</div>
 		<div class="clearfix"></div>
 	</div>
-
+	
 	<!--
-	<jsp:include page="control/copy-rights.jsp" />
+	<jsp:include page="control/copy-rights.jsp"/>
 	-->
-
+	
 	<script src="${cdn}js/jquery.js"></script>
 	<script src="${cdn}js/bootstrap.js"></script>
 	<script src="${cdn}js/jquery-ui-1.9.2.custom.min.js"></script>
@@ -138,6 +142,6 @@
 	<script src="${cdn}js/filter.js"></script>
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
-
+	
 </body>
 </html>

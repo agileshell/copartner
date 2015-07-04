@@ -1,4 +1,4 @@
-package me.oss.ti.req;
+package com.insoul.ti.req;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -9,6 +9,16 @@ package me.oss.ti.req;
 public class ContentListRequest extends PageRequest {
 	
 	private Integer type;// 1 政策解读, 2 公共资源
+
+	@Override
+	protected ContentListRequest Q() {
+		StringBuilder sb = new StringBuilder();
+		if (type != null) {
+			sb.append("type").append("=").append(type);
+		}
+		getQuery().setQueryString(sb.toString());
+		return this;
+	}
 
 	public Integer getType() {
 		return type;

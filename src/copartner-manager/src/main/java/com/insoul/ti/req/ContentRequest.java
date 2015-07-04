@@ -1,4 +1,4 @@
-package me.oss.ti.req;
+package com.insoul.ti.req;
 
 import javax.validation.constraints.NotNull;
 

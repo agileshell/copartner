@@ -10,7 +10,7 @@
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="author" content="andpay.me" />
-	<title>SSO管理平台--错误提示</title>
+	<title>创客管理平台--错误提示</title>
 	
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
@@ -36,17 +36,6 @@
 							<div class="padd error">
 								<h1>出错啦!!! 错误码 ${status}</h1>
 								<p>${message}</p>
-								<br />
-								<form class="form-inline" action="/article/list" method="get">
-									<div class="form-group">
-										<input name="title" type="text" class="form-control" placeholder="文章标题">
-									</div>
-									<button type="submit" class="btn btn-default">搜索</button>
-								</form>
-								<br />
-								<div class="horizontal-links">
-									<a href="/article/list">文章列表</a> | <a href="/style/list">主题列表</a>
-								</div>
 							</div>
 							<div class="widget-foot">
 							</div>

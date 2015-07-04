@@ -31,11 +31,11 @@
 		"
 	default-lazy-init="false" default-autowire="byName">
 
-	<bean class="me.oss.ti.handler.GlobalExceptionHandler" />
+	<bean class="com.insoul.ti.handler.GlobalExceptionHandler" />
 
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 	<context:annotation-config />
-	<context:component-scan base-package="me.oss.ti.controller"/>
+	<context:component-scan base-package="com.insoul.ti.controller"/>
 	<mvc:annotation-driven />
 
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
@@ -67,7 +67,7 @@
 		</mvc:interceptor>
 	</mvc:interceptors>
 	
-	<bean id="authInterceptor" class="me.oss.ti.handler.AuthInterceptor"/>
+	<bean id="authInterceptor" class="com.insoul.ti.handler.AuthInterceptor"/>
 
 	<mvc:resources location="/WEB-INF/assets/images/" mapping="/assets/image/**" cache-period="315569262" />
 	<mvc:resources location="/WEB-INF/assets/js/" mapping="/assets/js/**" cache-period="315569261" />
