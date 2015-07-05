@@ -43,7 +43,7 @@ public class WebBase implements ServletContextAware {
 	protected ModelAndView createModelView(String viewName) {
 		ModelAndView mv = new ModelAndView(viewName);
 		mv.addObject("cdn", "/assets/");
-		mv.addObject("viewname", "/assets/");
+		mv.addObject("viewname", viewName);
 		return mv;
 	}
 

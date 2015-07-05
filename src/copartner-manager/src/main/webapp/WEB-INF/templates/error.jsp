@@ -20,7 +20,7 @@
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
 
-	<link rel="Shortcut Icon" href="${cdn}image/shoseicon64px.png" />
+	<link rel="Shortcut Icon" href="${cdn}image/icon.png" />
 
 </head>
 <body>

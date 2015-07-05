@@ -28,7 +28,7 @@
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
 	
-	<link rel="Shortcut Icon" href="${cdn}image/shoseicon64px.png" />
+	<link rel="Shortcut Icon" href="${cdn}image/icon.png" />
 
 </head>
 <body>
@@ -49,11 +49,46 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="widget">
+								<div class="widget-content">
+									<div class="padd">
+										<form class="form-horizontal" role="form" action="/content/list" method="get">
+											<div class="form-group">
+												<label class="col-lg-2 control-label" for="id">ID:</label>
+												<div class="col-lg-4">
+													<input name="id" id="id" value="${req.id}" type="text" class="form-control" placeholder="文章ID">
+												</div>
+												<label class="col-lg-2 control-label" for="title">标题:</label>
+												<div class="col-lg-4">
+													<input name="title" id="title" value="${req.title}" type="text" class="form-control" placeholder="标题">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-2 control-label" for="type">状态:</label>
+												<div class="col-lg-4">
+													<jsp:include page="control/content-status.jsp">
+														<jsp:param value="${req.status}" name="status"/>
+														<jsp:param value="true" name="has_all"/>
+													</jsp:include>
+												</div>
+												<label class="col-lg-2 control-label" for="type">类型:</label>
+												<div class="col-lg-4">
+													<jsp:include page="control/content-type.jsp">
+														<jsp:param value="${req.type}" name="status"/>
+														<jsp:param value="true" name="has_all"/>
+													</jsp:include>
+												</div>
+												<div class="col-lg-2">
+													<button type="submit" class="btn btn-default">提交</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+							
+							<div class="widget">
 								<div class="widget-head">
 									<div class="pull-left">文章列表</div>
-									<div class="widget-icons pull-right">
-										<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
-									</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
@@ -108,6 +143,7 @@
 									<jsp:include page="control/pagination.jsp"/>
 								</div>
 							</div>
+							
 						</div>
 					</div>
 					<!-- row end -->

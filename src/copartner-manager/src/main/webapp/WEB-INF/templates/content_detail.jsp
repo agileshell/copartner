@@ -28,7 +28,7 @@
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
 
-	<link rel="Shortcut Icon" href="${cdn}image/shoseicon64px.png" />
+	<link rel="Shortcut Icon" href="${cdn}image/icon.png" />
 
 </head>
 <body>
@@ -51,9 +51,6 @@
 							<div class="widget wgreen">
 								<div class="widget-head">
 									<div class="pull-left">文章详情</div>
-									<div class="widget-icons pull-right">
-										<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
-									</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
@@ -88,7 +85,7 @@
 											<div class="form-group">
 												<div class="col-lg-offset-1 col-lg-9">
 													<a class="btn btn-default btn-sm" href="/content/list">列表</a>
-													<a class="btn btn-default btn-sm" href="/content/edit/${content.id} }">编辑</a>
+													<a class="btn btn-default btn-sm" href="/content/edit/${content.id}">编辑</a>
 												</div>
 											</div>
 										</c:if>

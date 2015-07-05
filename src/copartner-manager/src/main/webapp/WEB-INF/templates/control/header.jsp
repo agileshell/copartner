@@ -5,9 +5,9 @@
 		<div class="navbar-header">
 			<button class="navbar-toggle btn-navbar" type="button"
 				data-toggle="collapse" data-target=".bs-navbar-collapse">
-				<span>SSO</span>
+				<span>创客汇</span>
 			</button>
-			<a href="#" class="navbar-brand hidden-lg">SSO</a>
+			<a href="#" class="navbar-brand hidden-lg">创客汇</a>
 		</div>
 		<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 			<ul class="nav navbar-nav">
@@ -17,12 +17,6 @@
 					</i>
 				</li>
 			</ul>
-
-			<form class="navbar-form navbar-left" role="search" action="/article/list" method="get">
-				<div class="form-group">
-					<input name="id" type="text" class="form-control" placeholder="输入ID搜索文章">
-				</div>
-			</form>
 			
 			<ul class="nav navbar-nav pull-right">
 				<li class="dropdown pull-right">

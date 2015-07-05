@@ -43,10 +43,18 @@ public class ContentController extends WebBase {
 		criteria.setLimit(query.getPage_size());
 		criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
 		criteria.setType(request.getType());
+		String[] status = null;
+		if (StringUtils.isNotBlank(request.getStatus())) {
+			status = new String[] { request.getStatus() };
+		}
+		criteria.setStatus(status);
+		criteria.setId(request.getId());
+		criteria.setTitle(request.getTitle());
 		List<Content> list = contentDAO.queryContent(criteria);
 		mv.addObject("query", query);
 		mv.addObject("contentList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));
+		mv.addObject("req", request);
 		return mv;
 	}
 
@@ -77,7 +85,7 @@ public class ContentController extends WebBase {
 	}
 
 	@RequestMapping("/update/{contentId}")
-    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
 	public ModelAndView update(@PathVariable Long contentId, @Valid ContentRequest request, BindingResult result) {
 		Content content = contentDAO.get(contentId);
 		MultipartFile image = request.getCoverImg();
@@ -102,7 +110,7 @@ public class ContentController extends WebBase {
 	}
 
 	@RequestMapping("/save")
-    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
 	public ModelAndView save(@Valid ContentRequest request, BindingResult result) {
 		MultipartFile image = request.getCoverImg();
 		String path = StringUtils.EMPTY;

@@ -29,7 +29,7 @@
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
 
-	<link rel="Shortcut Icon" href="${cdn}image/shoseicon64px.png" />
+	<link rel="Shortcut Icon" href="${cdn}image/icon.png" />
 
 </head>
 <body>
@@ -52,9 +52,6 @@
 							<div class="widget wgreen">
 								<div class="widget-head">
 									<div class="pull-left">编辑文章</div>
-									<div class="widget-icons pull-right">
-										<a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
-									</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
@@ -69,20 +66,19 @@
 											<div class="form-group">
 												<label class="col-lg-5 control-label" for="type">类型:</label>
 												<div class="col-lg-7">
-													<select id="type" class="form-control" name="type">
-													  <option value="1">政策解读</option>
-													  <option value="2">公共资源</option>
-													</select>
+													<jsp:include page="control/content-type.jsp">
+														<jsp:param value="${content.type}" name="type"/>
+														<jsp:param value="false" name="has_all"/>
+													</jsp:include>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="col-lg-5 control-label" for="status">状态:</label>
 												<div class="col-lg-7">
-													<select id="status" class="form-control" name="status">
-													  <option value="active">激活</option>
-													  <option value="inactive">无效</option>
-													  <option value="deleted">已删除</option>
-													</select>
+													<jsp:include page="control/content-status.jsp">
+														<jsp:param value="${content.status}" name="status"/>
+														<jsp:param value="false" name="has_all"/>
+													</jsp:include>
 												</div>
 											</div>
 											<div class="form-group">
