@@ -76,6 +76,8 @@ public enum ResponseCode {
 
     PROJECT_NOT_BELONG_CURRENTUSER(30101),
 
+    CONTENT_NOT_EXIST(30200),
+
     ;
 
     private int value;

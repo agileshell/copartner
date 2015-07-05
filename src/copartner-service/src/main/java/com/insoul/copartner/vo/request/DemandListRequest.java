@@ -1,8 +1,7 @@
 package com.insoul.copartner.vo.request;
 
-import java.io.Serializable;
 
-public class DemandListRequest extends PaginationRequest implements Serializable {
+public class DemandListRequest extends PaginationRequest {
 
     private static final long serialVersionUID = -7650378463719813280L;
 
