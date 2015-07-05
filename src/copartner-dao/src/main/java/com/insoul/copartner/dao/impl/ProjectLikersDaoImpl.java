@@ -1,5 +1,6 @@
 package com.insoul.copartner.dao.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,19 +38,25 @@ public class ProjectLikersDaoImpl extends BaseDaoImpl<ProjectLikers, ProjectLike
     @SuppressWarnings("unchecked")
     @Override
     public List<ProjectLikers> findByProjectIdsAndPagination(Set<Long> projectIds, PaginationCriteria pagination) {
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("projectIds", projectIds);
+        List<ProjectLikers> projectLikers = new ArrayList<ProjectLikers>();
 
-        Query query = createQuery("FROM ProjectLikers WHERE id.projectId IN :projectIds ORDER BY created DESC",
-                parameters);
-        if ((pagination.getLimit() != null) && (pagination.getLimit() != 0)) {
-            query.setMaxResults(pagination.getLimit());
-            if (pagination.getOffset() != null) {
-                query.setFirstResult(pagination.getOffset());
+        if (null != projectIds && projectIds.size() > 0) {
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            parameters.put("projectIds", projectIds);
+
+            Query query = createQuery("FROM ProjectLikers WHERE id.projectId IN :projectIds ORDER BY created DESC",
+                    parameters);
+            if ((pagination.getLimit() != null) && (pagination.getLimit() != 0)) {
+                query.setMaxResults(pagination.getLimit());
+                if (pagination.getOffset() != null) {
+                    query.setFirstResult(pagination.getOffset());
+                }
             }
+
+            projectLikers = query.getResultList();
         }
 
-        return query.getResultList();
+        return projectLikers;
     }
 
 }

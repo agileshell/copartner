@@ -184,6 +184,10 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
     }
 
     private List<ProjectVO> formatProjects(List<Project> projects) {
+        List<ProjectVO> projectVOs = new ArrayList<ProjectVO>();
+        if (projects == null || projects.isEmpty()) {
+            return projectVOs;
+        }
 
         Set<Long> userIds = new HashSet<Long>();
         Set<Long> projectIds = new HashSet<Long>();
@@ -235,7 +239,6 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
             userIdMapUser.put(user.getId(), userVO);
         }
 
-        List<ProjectVO> projectVOs = new ArrayList<ProjectVO>();
         for (Project project : projects) {
             ProjectVO projectVO = new ProjectVO();
             projectVO.setName(project.getName());
@@ -305,6 +308,9 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
 
     private List<CommentVO> formatComments(List<ProjectComments> comments) {
         List<CommentVO> commentVOs = new ArrayList<CommentVO>();
+        if (comments == null || comments.isEmpty()) {
+            return commentVOs;
+        }
 
         Set<Long> commentorIds = new HashSet<Long>();
         for (ProjectComments comment : comments) {
