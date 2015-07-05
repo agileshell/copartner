@@ -2,6 +2,7 @@ package com.insoul.copartner.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
@@ -25,7 +26,8 @@ public class News extends BaseEntity {
     @Column(name = "cover_img")
     private String coverImg;// 封皮
 
-    @Column(name = "article", nullable = false)
+    @Lob
+    @Column(name = "article", nullable = false, columnDefinition = "TEXT")
     private String article;// 内容
 
     @Column(name = "status", nullable = false)
