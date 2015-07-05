@@ -6,16 +6,10 @@
 	</div>
 	<ul id="nav">
 		<li>
-			<a <c:if test="${viewname == 'article-list'}"> class="open" </c:if> href="/article/list"><i class="icon-bar-chart"></i>文章列表</a>
+			<a <c:if test="${viewname == 'content_list'}"> class="open" </c:if> href="/content/list"><i class="icon-bar-chart"></i>文章列表</a>
 		</li>
         <li>
-			<a <c:if test="${viewname == 'article-create'}"> class="open" </c:if> href="/article/create"><i class="icon-list-alt"></i>创建文章</a>
-        </li>
-        <li>
-			<a <c:if test="${viewname == 'style-list'}"> class="open" </c:if> href="/style/list"><i class="icon-magnet"></i>主题列表</a>
-        </li>
-        <li>
-			<a <c:if test="${ViewName == 'style-create'}"> class="open" </c:if> href="/style/create"><i class="icon-group"></i>创建主题</a>
+			<a <c:if test="${viewname == 'content_add'}"> class="open" </c:if> href="/content/add"><i class="icon-list-alt"></i>新建文章</a>
         </li>
 	</ul>
 </div>
