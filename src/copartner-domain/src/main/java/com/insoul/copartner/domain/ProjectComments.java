@@ -4,6 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * 项目评论
+ */
 @Entity
 @Table(name = "project_comments", catalog = "copartner")
 public class ProjectComments extends BaseEntity {
@@ -11,19 +14,19 @@ public class ProjectComments extends BaseEntity {
     private static final long serialVersionUID = -8417698441177932601L;
 
     @Column(name = "project_id", nullable = false)
-    private Long projectId;
+    private Long projectId; // 项目ID
 
     @Column(name = "user_id", nullable = false)
-    private Long userId;
+    private Long userId;// 评论人
 
     @Column(name = "parent_id", nullable = false)
-    private Long parentId = 0L;
+    private Long parentId = 0L;// 父级评论节点
 
     @Column(nullable = false)
-    private String content;
+    private String content;// 内容
 
     @Column(nullable = false)
-    private String status = "active";
+    private String status = "active";// 状态 active 可用，inactive不可用
 
     public Long getProjectId() {
         return projectId;

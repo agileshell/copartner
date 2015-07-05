@@ -10,7 +10,6 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +21,7 @@ import com.insoul.copartner.dao.IProjectCommentsDao;
 import com.insoul.copartner.dao.IProjectDao;
 import com.insoul.copartner.dao.IProjectLikersDao;
 import com.insoul.copartner.dao.IProjectPhaseDao;
+import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.dao.criteria.PaginationCriteria;
 import com.insoul.copartner.dao.criteria.ProjectCommentCriteria;
@@ -33,10 +33,10 @@ import com.insoul.copartner.domain.ProjectComments;
 import com.insoul.copartner.domain.ProjectLikers;
 import com.insoul.copartner.domain.ProjectLikersId;
 import com.insoul.copartner.domain.ProjectPhase;
+import com.insoul.copartner.domain.TeamSize;
 import com.insoul.copartner.domain.User;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
-import com.insoul.copartner.exception.DataValidationException;
 import com.insoul.copartner.service.IProjectService;
 import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.ContentUtil;
@@ -75,6 +75,9 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
     @Resource
     private IUserDao userDao;
 
+    @Resource
+    private ITeamSizeDao teamSizeDao;
+
     @Override
     public Pagination<ProjectVO> listProjects(ProjectListRequest requestData) {
         ProjectCriteria criteria = new ProjectCriteria();
@@ -98,13 +101,6 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
     public void createProject(ProjectAddRequest requestData) throws CException {
         Project project = new Project();
 
-        try {
-            Date initDate = DateUtils.parseDate(requestData.getInitDate(), "yyyy-MM");
-            project.setInitDate(initDate);
-        } catch (Exception e) {
-            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
-        }
-
         ProjectPhase projectPhase = projectPhaseDao.get(requestData.getProjectPhaseId());
         if (null == projectPhase) {
             throw CExceptionFactory.getException(CException.class, ResponseCode.PROJECT_PHASE_NOT_EXIST);
@@ -116,6 +112,12 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
             throw CExceptionFactory.getException(CException.class, ResponseCode.INDUSTRY_DOMAIN_NOT_EXIST);
         }
         project.setIndustryDomainId(requestData.getIndustryDomainId());
+
+        TeamSize teamSize = teamSizeDao.get(requestData.getTeamSizeId());
+        if (null == teamSize) {
+            throw CExceptionFactory.getException(CException.class, ResponseCode.TEAM_SIZE_NOT_EXIST);
+        }
+        project.setTeamSizeId(requestData.getTeamSizeId());
 
         Location location = locationDao.get(requestData.getLocationId());
         if (null == location) {
@@ -134,7 +136,10 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         project.setUserId(getUserId());
         project.setName(requestData.getName());
         project.setLogo(requestData.getLogo());
+        project.setAdvantage(requestData.getAdvantage());
         project.setContent(requestData.getContent());
+        project.setContactPerson(requestData.getContactPerson());
+        project.setContact(requestData.getContact());
         project.setCreated(new Date());
 
         projectDao.save(project);
@@ -197,6 +202,11 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         for (IndustryDomain industryDomain : industryDomains) {
             domainIdMapName.put(industryDomain.getId(), industryDomain.getName());
         }
+        List<TeamSize> teamSizes = teamSizeDao.findAll();
+        Map<Long, String> teamSizeIdMapName = new HashMap<Long, String>();
+        for (TeamSize teamSize : teamSizes) {
+            teamSizeIdMapName.put(teamSize.getId(), teamSize.getName());
+        }
 
         PaginationCriteria pagination = new PaginationCriteria();
         pagination.setOffset(0);
@@ -237,11 +247,14 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
 
             projectVO.setProjectPhase(phaseIdMapName.get(project.getProjectPhaseId()));
             projectVO.setIndustryDomain(domainIdMapName.get(project.getIndustryDomainId()));
+            projectVO.setTeamSize(teamSizeIdMapName.get(project.getTeamSizeId()));
 
             Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
             Set<Long> ids = projectIdMapLikerIds.get(project.getId());
-            for (Long id : ids) {
-                likers.add(userIdMapUser.get(id));
+            if (null != ids) {
+                for (Long id : ids) {
+                    likers.add(userIdMapUser.get(id));
+                }
             }
             projectVO.setLikers(likers);
 

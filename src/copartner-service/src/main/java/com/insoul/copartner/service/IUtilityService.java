@@ -7,6 +7,7 @@ import com.insoul.copartner.vo.LocationVO;
 import com.insoul.copartner.vo.ProjectPhaseVO;
 import com.insoul.copartner.vo.StartupRoleVO;
 import com.insoul.copartner.vo.StartupStatusVO;
+import com.insoul.copartner.vo.TeamSizeVO;
 
 public interface IUtilityService {
 
@@ -22,4 +23,5 @@ public interface IUtilityService {
 
     void feedback(String text);
 
+    List<TeamSizeVO> listTeamSizes();
 }

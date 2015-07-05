@@ -15,18 +15,21 @@ import com.insoul.copartner.dao.ILocationDao;
 import com.insoul.copartner.dao.IProjectPhaseDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IStartupStatusDao;
+import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.domain.Feedback;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Location;
 import com.insoul.copartner.domain.ProjectPhase;
 import com.insoul.copartner.domain.StartupRole;
 import com.insoul.copartner.domain.StartupStatus;
+import com.insoul.copartner.domain.TeamSize;
 import com.insoul.copartner.service.IUtilityService;
 import com.insoul.copartner.vo.IndustryDomainVO;
 import com.insoul.copartner.vo.LocationVO;
 import com.insoul.copartner.vo.ProjectPhaseVO;
 import com.insoul.copartner.vo.StartupRoleVO;
 import com.insoul.copartner.vo.StartupStatusVO;
+import com.insoul.copartner.vo.TeamSizeVO;
 
 @Service
 public class UtilityServiceImpl extends BaseServiceImpl implements IUtilityService {
@@ -48,6 +51,9 @@ public class UtilityServiceImpl extends BaseServiceImpl implements IUtilityServi
 
     @Resource
     private IFeedbackDao feedbackDao;
+
+    @Resource
+    private ITeamSizeDao teamSizeDao;
 
     @Override
     public List<LocationVO> listByParentId(Long parentId) {
@@ -142,6 +148,22 @@ public class UtilityServiceImpl extends BaseServiceImpl implements IUtilityServi
         feedback.setCreated(new Date());
 
         feedbackDao.save(feedback);
+    }
+
+    @Override
+    public List<TeamSizeVO> listTeamSizes() {
+        List<TeamSizeVO> vos = new ArrayList<TeamSizeVO>();
+
+        List<TeamSize> entities = teamSizeDao.getAllListed();
+        for (TeamSize teamSize : entities) {
+            TeamSizeVO vo = new TeamSizeVO();
+            vo.setId(teamSize.getId());
+            vo.setName(teamSize.getName());
+
+            vos.add(vo);
+        }
+
+        return vos;
     }
 
 }

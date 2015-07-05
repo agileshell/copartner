@@ -8,6 +8,6 @@ import com.insoul.copartner.domain.ProjectPhase;
 public interface IProjectPhaseDao extends IBaseDao<ProjectPhase, Long> {
 
     List<ProjectPhase> getAllListed();
-    
+
     List<ProjectPhase> query(ProjectPhaseCriteria criteria);
 }

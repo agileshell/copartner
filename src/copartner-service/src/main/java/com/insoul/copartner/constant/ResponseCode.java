@@ -43,6 +43,8 @@ public enum ResponseCode {
 
     PROJECT_PHASE_NOT_EXIST(10240),
 
+    TEAM_SIZE_NOT_EXIST(10250),
+
     /* account related error code 20000-29999 */
     ACCOUNT_NOT_EXIST(20000),
 

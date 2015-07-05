@@ -14,25 +14,34 @@ public class ProjectAddRequest implements Serializable {
 
     @NotBlank
     @StringLength(max = 50)
-    private String name;
+    private String name;// 项目名称
+
+    private String logo;// 项目LOGO
+
+    @NotNull
+    private Long projectPhaseId;// 阶段
+
+    @NotNull
+    private Long locationId;// 所属地区
+
+    @NotNull
+    private Long industryDomainId;// 行业
 
     @NotBlank
     @StringLength(max = 200)
-    private String content;
+    private String content;// 实施条件
 
-    private String logo;
-
-    @NotNull
-    private Long projectPhaseId;
+    @StringLength(max = 200)
+    private String advantage;// 优势
 
     @NotNull
-    private Long locationId;
+    private Long teamSizeId;// 团队规模
 
-    @NotNull
-    private Long industryDomainId;
+    @StringLength(max = 30)
+    private String contactPerson;// 联系人
 
-    @NotBlank
-    private String initDate;
+    @StringLength(max = 30)
+    private String contact;// 联系方式
 
     public String getName() {
         return name;
@@ -40,14 +49,6 @@ public class ProjectAddRequest implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getLogo() {
@@ -82,12 +83,44 @@ public class ProjectAddRequest implements Serializable {
         this.industryDomainId = industryDomainId;
     }
 
-    public String getInitDate() {
-        return initDate;
+    public String getContent() {
+        return content;
     }
 
-    public void setInitDate(String initDate) {
-        this.initDate = initDate;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getAdvantage() {
+        return advantage;
+    }
+
+    public void setAdvantage(String advantage) {
+        this.advantage = advantage;
+    }
+
+    public Long getTeamSizeId() {
+        return teamSizeId;
+    }
+
+    public void setTeamSizeId(Long teamSizeId) {
+        this.teamSizeId = teamSizeId;
+    }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
 }
