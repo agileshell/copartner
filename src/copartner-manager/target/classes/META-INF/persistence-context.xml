@@ -19,9 +19,9 @@
     -->
     <bean id="coreDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://120.24.228.100:3306/copartner?useUnicode=yes&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;useServerPrepStmts=true&amp;useCursorFetch=true"/>
-        <property name="username" value="root"/>
-        <property name="password" value="abc123_"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
         <property name="initialSize" value="1"/>
         <property name="minIdle" value="1"/>
         <property name="maxActive" value="20"/>

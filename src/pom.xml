@@ -13,6 +13,7 @@
         <module>copartner-dao</module>
         <module>copartner-service</module>
         <module>copartner-api</module>
+        <module>copartner-manager</module>
     </modules>
 
     <properties>
