@@ -49,6 +49,11 @@
 | [user/friend/{friendId}/accept](#accept-friend)| POST| YES| 接受好友请求|
 | [user/friends](#list-friends)| GET| YES|获取好友列表|
 | [user/newFriends](#list-new-friends)| GET| YES| 获取好友请求列表|
+|   |   |   |    |
+| [contents](#list-content)| GET| NO| 获取文档列表|
+| [content/{contentId}](#get-content-detail)| GET| NO| 获取文档详情|
+| [news](#list-news)| GET| NO| 获取最新动态列表|
+| [news/{newsId}](#get-news-detail)| GET| NO| 获取最新动态详情|
 
 
 ## APIs
@@ -2254,3 +2259,224 @@ N/A
 | Code    |   Description   |
 |:--------|:----------------|
 | 403  | 无权访问，请重试|
+
+### Content API
+
+#### List Content
+
+获取文档列表.
+
+- **Request URL**
+    `http://API_DOMAIN/contents`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+
+|  Name| Requires| Type and Range| Description|
+|------|:--------|:--------------|:-----------|
+| type  | optional | int | 根据type过滤， 1 政策解读，2 公共资源，默认值1。|
+| offset| optional | int | 每次获取的起始点，limit * 当前页码 或者 limit * (下一页码 - 1)， 默认值是0 |
+| limit | optional | int | 每次获取的数量，默认值是10|
+
+- **Response**
+    ```
+    {
+        "body": {
+            "list": [
+                {
+                    "contentId": 1,
+                    "type": 1,
+                    "title": "政策解读1",
+                    "synopsis": "政策解读的摘要",
+                    "coverImg": "http://7xjbd9.com1.z0.glb.clouddn.com/bbbb.PNG",
+                    "clicks": 1
+                }
+            ],
+            "count": 1
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 10000 | 参数错误 |
+
+#### Get Content Detail
+
+获取文档详情.
+
+- **Request URL**
+    `http://API_DOMAIN/content/{contentId}`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": {
+            "contentId": 1,
+            "type": 1,
+            "title": "政策解读1",
+            "synopsis": "政策解读的摘要",
+            "coverImg": "http://7xjbd9.com1.z0.glb.clouddn.com/bbbb.PNG",
+            "article": "政策解读的内容呀",
+            "clicks": 1,
+            "created": 1436093512000
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 30200,
+                "msg": "该文章不存在"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 30200 | 该文章不存在 |
+
+
+#### List News
+
+获取最新动态列表.
+
+- **Request URL**
+    `http://API_DOMAIN/news`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+
+|  Name| Requires| Type and Range| Description|
+|------|:--------|:--------------|:-----------|
+| type  | optional | int | 根据type过滤， 1 行业, 2 地方，默认值1。|
+| offset| optional | int | 每次获取的起始点，limit * 当前页码 或者 limit * (下一页码 - 1)， 默认值是0 |
+| limit | optional | int | 每次获取的数量，默认值是10|
+
+- **Response**
+    ```
+    {
+        "body": {
+            "list": [
+                {
+                    "newsId": 1,
+                    "type": 1,
+                    "title": "最新动态1",
+                    "synopsis": "最新动态的摘要",
+                    "coverImg": "http://7xjbd9.com1.z0.glb.clouddn.com/bbbb.PNG",
+                    "clicks": 1
+                }
+            ],
+            "count": 1
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 10000,
+                "msg": "参数错误"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 10000 | 参数错误 |
+
+#### Get News Detail
+
+获取最新动态详情.
+
+- **Request URL**
+    `http://API_DOMAIN/news/{newsId}`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+    N/A
+
+- **Request Parameters**
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": {
+            "newsId": 1,
+            "type": 1,
+            "title": "最新动态1",
+            "synopsis": "最新动态的摘要",
+            "coverImg": "http://7xjbd9.com1.z0.glb.clouddn.com/bbbb.PNG",
+            "article": "最新动态的内容呀",
+            "clicks": 1,
+            "created": 1436093512000
+        },
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+    ```
+    {
+        "body": {
+            "error": {
+                "code": 30200,
+                "msg": "该文章不存在"
+            }
+        },
+        "status": "FAILED"
+    }
+    ```
+
+| Code    |   Description   |
+|:--------|:----------------|
+| 30200 | 该文章不存在 |
