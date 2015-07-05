@@ -87,8 +87,8 @@
 											<hr />
 											<div class="form-group">
 												<div class="col-lg-offset-1 col-lg-9">
-													<a class="btn btn-default btn-sm" href="list">列表</a>
-													<a class="btn btn-default btn-sm" href="edit/${content.id} }">编辑</a>
+													<a class="btn btn-default btn-sm" href="/content/list">列表</a>
+													<a class="btn btn-default btn-sm" href="/content/edit/${content.id} }">编辑</a>
 												</div>
 											</div>
 										</c:if>
