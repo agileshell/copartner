@@ -29,6 +29,7 @@
 | [startupRoles](#list-startup-roles)| GET| NO| 获取创业角色列表|
 | [startupStatus](#list-startup-status)| GET| NO| 获取创业状态列表|
 | [projectPhases](#list-project-phases)| GET| NO| 获取项目阶段列表|
+| [teamSizes](#list-team-sizes)| GET| NO| 获取团队规模列表|
 |   |   |   |    |
 | [demands](#list-demand)| GET| NO| 获取需求列表|
 | [user/{userId}/demands](#list-user-demand)| POST| NO| 获取用户创建的需求列表|
@@ -1332,6 +1333,58 @@
 
     N/A
 
+#### List Team Sizes
+
+获取团队规模列表.
+
+- **Request URL**
+    `http://API_DOMAIN/teamSizes`
+
+- **Request Method**
+    GET
+
+- **Request Header**
+
+    N/A
+
+- **Request Parameters**
+
+    N/A
+
+- **Response**
+
+    ```
+    {
+        "body": [
+            {
+                "id": 1,
+                "name": "少于50人"
+            },
+            {
+                "id": 2,
+                "name": "50-99人"
+            },
+            {
+                "id": 3,
+                "name": "100-499人"
+            },
+            {
+                "id": 4,
+                "name": "500-999人"
+            },
+            {
+                "id": 5,
+                "name": "1000人以上"
+            }
+        ],
+        "status": "SUCCEED"
+    }
+    ```
+
+- **Error**
+
+    N/A
+
 
 ### Demand API
 
@@ -1808,7 +1861,8 @@
                     "location": "上海|上海",
                     "logo": "http://h.hiphotos.baidu.com/imgad/pic/item/77094b36acaf2edd9cc64f4c881001e93901935b.jpg",
                     "name": "项目1",
-                    "projectPhase": "原型构建阶段"
+                    "projectPhase": "原型构建阶段",
+                    "teamSize": "50-99人"
                 },
                 {
                     "commentCount": 0,
@@ -1818,7 +1872,8 @@
                     "location": "上海|上海",
                     "logo": "http://h.hiphotos.baidu.com/imgad/pic/item/77094b36acaf2edd9cc64f4c881001e93901935b.jpg",
                     "name": "NB的项目",
-                    "projectPhase": "原型构建阶段"
+                    "projectPhase": "原型构建阶段",
+                    "teamSize": "50-99人"
                 }
             ]
         },
@@ -1877,7 +1932,8 @@
                     "location": "上海|上海",
                     "logo": "http://h.hiphotos.baidu.com/imgad/pic/item/77094b36acaf2edd9cc64f4c881001e93901935b.jpg",
                     "name": "项目1",
-                    "projectPhase": "原型构建阶段"
+                    "projectPhase": "原型构建阶段",
+                    "teamSize": "50-99人"
                 }
             ]
         },
@@ -1925,12 +1981,15 @@
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
 |name   |required |string |项目名称，<=50字|
-|content|required |string |项目内容，<=200字|
+|content|required |string |实施条件，<=200字|
+|advantage|optional |string |项目优势，<=200字|
 |logo   |optional |string |项目LOGO|
 |projectPhaseId  |required |long |项目阶段|
 |industryDomainId|required |long |项目所属领域|
 |locationId |required |long |项目所在地区|
-|initDate   |required |string |项目启动时间， 格式yyyy-MM|
+|teamSize   |required |long |团队规模|
+|contactPerson|optional |string |联系人，<=30字|
+|contact|optional |string |联系方式，<=30字|
 
 - **Response**
 
@@ -1960,6 +2019,7 @@
 | 10200 | 地区不存在|
 | 10230 | 行业领域不存在|
 | 10240 | 项目阶段不存在|
+| 10250 | 团队规模不存在|
 
 #### Like Project
 

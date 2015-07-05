@@ -448,6 +448,14 @@ INSERT INTO `project_phase` (`id`, `name`, `is_listed`, `created`) VALUES
 (3, '已运营', 1, NOW()),
 (4, '已收益', 1, NOW());
 
+TRUNCATE `team_size`;
+INSERT INTO `team_size` (`id`, `name`, `is_listed`, `created`) VALUES
+(1, '少于50人', 1, NOW()),
+(2, '50-99人', 1, NOW()),
+(3, '100-499人', 1, NOW()),
+(4, '500-999人', 1, NOW()),
+(5, '1000人以上', 1, NOW());
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
