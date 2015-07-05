@@ -34,6 +34,7 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
         contentCriteria.setType(requestData.getType());
         contentCriteria.setOffset(requestData.getOffset());
         contentCriteria.setLimit(requestData.getLimit());
+        contentCriteria.setStatus(new String[] { "active" });
 
         Long count = contentDao.countContent(contentCriteria);
         List<Content> contents = contentDao.queryContent(contentCriteria);

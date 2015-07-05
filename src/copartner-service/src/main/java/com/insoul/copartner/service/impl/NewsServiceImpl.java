@@ -34,6 +34,7 @@ public class NewsServiceImpl extends BaseServiceImpl implements INewsService {
         newsCriteria.setType(requestData.getType());
         newsCriteria.setOffset(requestData.getOffset());
         newsCriteria.setLimit(requestData.getLimit());
+        newsCriteria.setStatus(new String[] { "active" });
 
         Long count = newsDao.countNews(newsCriteria);
         List<News> newses = newsDao.queryNews(newsCriteria);
