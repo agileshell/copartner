@@ -6,6 +6,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+/**
+ * 领域
+ */
 @Entity
 @Table(name = "industry_domain", catalog = "copartner")
 @NamedQueries({ @NamedQuery(name = "IndustryDomain.getAllListed", query = "FROM IndustryDomain WHERE isListed = true") })
@@ -17,7 +20,7 @@ public class IndustryDomain extends BaseEntity {
     private String name;
 
     @Column(name = "is_listed", nullable = false)
-    private Boolean isListed;
+    private Boolean isListed;// 是否显示
 
     public String getName() {
         return name;

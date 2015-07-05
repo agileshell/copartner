@@ -6,6 +6,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+/**
+ * 项目阶段
+ */
 @Entity
 @Table(name = "project_phase", catalog = "copartner")
 @NamedQueries({ @NamedQuery(name = "ProjectPhase.getAllListed", query = "FROM ProjectPhase WHERE isListed = true") })
@@ -17,7 +20,7 @@ public class ProjectPhase extends BaseEntity {
     private String name;
 
     @Column(name = "is_listed", nullable = false)
-    private Boolean isListed;
+    private Boolean isListed;// 是否显示
 
     public String getName() {
         return name;

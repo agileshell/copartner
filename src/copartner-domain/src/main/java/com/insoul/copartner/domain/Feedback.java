@@ -4,6 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * 意见反馈
+ */
 @Entity
 @Table(name = "feedback")
 public class Feedback extends BaseEntity {
@@ -11,10 +14,10 @@ public class Feedback extends BaseEntity {
     private static final long serialVersionUID = -9074095790133985128L;
 
     @Column(name = "user_id", nullable = false)
-    private Long userId;
+    private Long userId;// 反馈人
 
     @Column(nullable = false)
-    private String text;
+    private String text;// 内容
 
     public Long getUserId() {
         return userId;

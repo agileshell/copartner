@@ -6,6 +6,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+/**
+ * 履历
+ */
 @Entity
 @Table(name = "resume")
 @NamedQueries({
@@ -16,13 +19,13 @@ public class Resume extends BaseEntity {
     private static final long serialVersionUID = -975726121638770113L;
 
     @Column(name = "user_id", nullable = false)
-    private Long userId;
+    private Long userId;// 所属人
 
     @Column(nullable = false)
-    private String name;
+    private String name;// 名称
 
     @Column(nullable = false)
-    private String major;
+    private String major;// 专业/岗位
 
     // 1.教育经历 2.工作经历
     @Column(nullable = false)

@@ -6,6 +6,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+/**
+ * 目前状态
+ */
 @Entity
 @Table(name = "startup_status", catalog = "copartner")
 @NamedQueries({ @NamedQuery(name = "StartupStatus.getAllListed", query = "FROM StartupStatus WHERE isListed = true") })
@@ -17,7 +20,7 @@ public class StartupStatus extends BaseEntity {
     private String name;
 
     @Column(name = "is_listed", nullable = false)
-    private Boolean isListed;
+    private Boolean isListed;// 是否显示
 
     public String getName() {
         return name;

@@ -10,6 +10,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ * 用户
+ */
 @Entity
 @Table(name = "user", catalog = "copartner")
 @NamedQueries({
@@ -21,68 +24,68 @@ public class User extends BaseEntity {
     private static final long serialVersionUID = 6718859190782978249L;
 
     @Column(name = "name", nullable = false)
-    private String name;
+    private String name;// 姓名
 
     @Column(name = "email", unique = true)
-    private String email;
+    private String email;// 邮箱
 
     @Column(name = "mobile", unique = true)
-    private String mobile;
+    private String mobile;// 电话
 
     @Column(name = "password", nullable = false)
-    private String password;
+    private String password;// 密码
 
     @Column(name = "salt", nullable = false)
     private String salt;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    private String status;// 状态
 
     @Column(name = "avatar")
-    private String avatar;
+    private String avatar;// 头像
 
     @Column(name = "location_id")
-    private Long locationId;
+    private Long locationId;// 所在地区
 
     @Column(name = "full_location")
-    private String fullLocation;
+    private String fullLocation;// 地区缓存
 
     @Column(name = "gender", nullable = false)
-    private String gender = "F";
+    private String gender = "F";// 性别 F男 M女
 
     @Column(name = "age", nullable = false)
-    private String age = "0";
+    private String age = "0";// 年龄
 
     @Column(name = "introduction")
-    private String introduction;
+    private String introduction;// 简介
 
     @Column(name = "is_email_verified", nullable = false)
-    private Boolean isEmailVerified = false;
+    private Boolean isEmailVerified = false;// 邮箱是否已验证
 
     @Column(name = "is_mobile_verified", nullable = false)
-    private Boolean isMobileVerified = false;
+    private Boolean isMobileVerified = false;// 电话是否已验证
 
     @Column(name = "client_ip", nullable = false)
-    private Long clientIp;
+    private Long clientIp;// 注册时所在的ip
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_login")
-    private Date lastLogin;
+    private Date lastLogin;// 最后登录时间
 
     @Column(name = "last_ip", nullable = false)
-    private Long lastIp = 0L;
+    private Long lastIp = 0L;// 最后登录时所在的ip
 
     @Column(name = "startup_status_id")
-    private Long StartupStatusId;
+    private Long StartupStatusId;// 目前状况
 
     @Column(name = "startup_role_id")
-    private Long startupRoleId;
+    private Long startupRoleId;// 角色
 
     @Column(name = "domains")
-    private String domains;
+    private String domains;// 行业
 
     @Column(name = "im_id")
-    private Long imId;
+    private Long imId;// 聊天ID
 
     public String getName() {
         return name;

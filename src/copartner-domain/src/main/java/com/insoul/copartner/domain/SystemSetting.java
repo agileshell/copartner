@@ -6,6 +6,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+/**
+ * 系统设置
+ */
 @Entity
 @Table(name = "system_setting", catalog = "copartner")
 @NamedQueries({ @NamedQuery(name = "SystemSetting.getByGroup", query = "FROM SystemSetting ss WHERE ss.group = :group") })

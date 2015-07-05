@@ -4,6 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * 政策解读
+ */
 @Entity
 @Table(name = "content", catalog = "copartner")
 public class Content extends BaseEntity {

@@ -8,6 +8,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+/**
+ * 地区
+ */
 @Entity
 @Table(name = "location", catalog = "copartner")
 @NamedQueries({ @NamedQuery(name = "Location.getByParentId", query = "FROM Location l WHERE l.parentId = :parentId AND l.isListed = true") })
