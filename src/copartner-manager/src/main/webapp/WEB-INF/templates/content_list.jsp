@@ -94,7 +94,7 @@
 															<div class="btn-group">
 																<a class="btn btn-xs btn-default" href="detail/${c.id}">
 																	详情
-																</a> | 
+																</a>
 																<a class="btn btn-xs btn-default" href="edit/${c.id}">
 																	编辑
 																</a>

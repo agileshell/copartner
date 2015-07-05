@@ -59,7 +59,7 @@
 								</div>
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="save" method="post" enctype="multipart/form-data">
+										<form class="form-horizontal" role="form" action="/content/save" method="post" enctype="multipart/form-data">
 											<div class="form-group">
 												<label class="col-lg-5 control-label" for="title">标题:</label>
 												<div class="col-lg-7">
@@ -70,7 +70,7 @@
 												<label class="col-lg-5 control-label" for="type">类型:</label>
 												<div class="col-lg-7">
 													<select id="type" class="form-control" name="type">
-													  <option value="1">政策解读</option>
+													  <option value="1" selected="selected">政策解读</option>
 													  <option value="2">公共资源</option>
 													</select>
 												</div>
@@ -79,7 +79,7 @@
 												<label class="col-lg-5 control-label" for="status">状态:</label>
 												<div class="col-lg-7">
 													<select id="status" class="form-control" name="status">
-													  <option value="active">激活</option>
+													  <option value="active" selected="selected">激活</option>
 													  <option value="inactive">无效</option>
 													  <option value="deleted">已删除</option>
 													</select>
@@ -89,13 +89,6 @@
 												<label class="col-lg-5 control-label" for="synopsis">摘要:</label>
 												<div class="col-lg-7">
 													<input name="synopsis" id="synopsis" type="text" class="form-control" placeholder="摘要"></input>
-												</div>
-											</div>
-											
-											<div class="form-group">
-												<label class="col-lg-5 control-label">封皮:</label>
-												<div class="col-lg-7">
-												<img alt="${content.title}" src="${content.coverImg}"  width="500">
 												</div>
 											</div>
 											<div class="form-group">

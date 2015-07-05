@@ -59,7 +59,7 @@
 								</div>
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="update/${content.id}" method="post" enctype="multipart/form-data">
+										<form class="form-horizontal" role="form" action="/content/update/${content.id}" method="post" enctype="multipart/form-data">
 											<div class="form-group">
 												<label class="col-lg-5 control-label" for="title">标题:</label>
 												<div class="col-lg-7">
@@ -95,7 +95,7 @@
 											<div class="form-group">
 												<label class="col-lg-5 control-label">封皮:</label>
 												<div class="col-lg-7">
-												<img alt="${content.title}" src="${content.coverImg}"  width="500">
+												<img alt="${content.title}" src="http://7xjbd9.com1.z0.glb.clouddn.com/${content.coverImg}"  width="500">
 												</div>
 											</div>
 											<div class="form-group">

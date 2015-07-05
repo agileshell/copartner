@@ -76,7 +76,7 @@
 											<div class="form-group">
 												<label class="col-lg-5 control-label">封皮:</label>
 												<div class="col-lg-7">
-												<img alt="${content.title}" src="${content.coverImg}"  width="500">
+												<img alt="${content.title}" src="http://7xjbd9.com1.z0.glb.clouddn.com/${content.coverImg}"  width="500">
 												</div>
 											</div>
 											
@@ -87,7 +87,7 @@
 											<hr />
 											<div class="form-group">
 												<div class="col-lg-offset-1 col-lg-9">
-													<a class="btn btn-default btn-sm" href="list">列表</a> | 
+													<a class="btn btn-default btn-sm" href="list">列表</a>
 													<a class="btn btn-default btn-sm" href="edit/${content.id} }">编辑</a>
 												</div>
 											</div>

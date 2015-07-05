@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,6 +77,7 @@ public class ContentController extends WebBase {
 	}
 
 	@RequestMapping("/update/{contentId}")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
 	public ModelAndView update(@PathVariable Long contentId, @Valid ContentRequest request, BindingResult result) {
 		Content content = contentDAO.get(contentId);
 		MultipartFile image = request.getCoverImg();
@@ -100,6 +102,7 @@ public class ContentController extends WebBase {
 	}
 
 	@RequestMapping("/save")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
 	public ModelAndView save(@Valid ContentRequest request, BindingResult result) {
 		MultipartFile image = request.getCoverImg();
 		String path = StringUtils.EMPTY;
@@ -120,7 +123,7 @@ public class ContentController extends WebBase {
 		Date time = new Date();
 		content.setCreated(time);
 		content.setUpdated(time);
-		content.setStatus("inactive");
+		content.setStatus(request.getStatus());
 		content.setSynopsis(request.getSynopsis());
 		content.setTitle(request.getTitle());
 		content.setType(request.getType());
