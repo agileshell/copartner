@@ -13,7 +13,7 @@
 			<ul class="nav navbar-nav">
 				<li class="dropdown dropdown-big">
 					<i>
-						<img width="30px" height="30px" style="margin-left: 1px;margin-top: 10px" alt="SSO" src="${cdn}image/shoseicon64px.png">
+						<img width="30px" height="30px" style="margin-left: 1px;margin-top: 10px" alt="SSO" src="${cdn}image/icon.png">
 					</i>
 				</li>
 			</ul>
