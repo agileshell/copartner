@@ -65,24 +65,24 @@
 										</c:if>
 										<c:if test="${success}">
 											<div class="form-group">
-												<label class="col-lg-5 control-label" >文章名称:</label>
+												<label class="col-lg-5 control-label" >标题:</label>
 												<div class="col-lg-7">${content.title}</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" >文章名称:</label>
-												<div class="col-lg-7">${content.title}</div>
+												<label class="col-lg-5 control-label" >摘要:</label>
+												<div class="col-lg-7">${content.synopsis}</div>
 											</div>
 											
 											<div class="form-group">
-												<label class="col-lg-5 control-label">文章内容:</label>
-												<div class="col-lg-7">${content.article}</div>
-											</div>
-											
-											<div class="form-group">
-												<label class="col-lg-5 control-label">文章图片:</label>
+												<label class="col-lg-5 control-label">封皮:</label>
 												<div class="col-lg-7">
 												<img alt="${content.title}" src="${content.coverImg}"  width="500">
 												</div>
+											</div>
+											
+											<div class="form-group">
+												<label class="col-lg-5 control-label">内容:</label>
+												<div class="col-lg-7">${content.article}</div>
 											</div>
 											<hr />
 											<div class="form-group">

@@ -40,7 +40,7 @@
 			<div class="page-head">
 				<h2 class="pull-left">新建文章</h2>
 				<div class="bread-crumb pull-right">
-					<a href="/article/list"><i class="icon-home"></i>首页</a><span class="divider">/</span>新建文章
+					<a href="/content/list"><i class="icon-home"></i>首页</a><span class="divider">/</span>新建文章
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -59,39 +59,55 @@
 								</div>
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/article/create" method="post" enctype="multipart/form-data">
-											<input type="hidden" name="enter" value="false"></input>
+										<form class="form-horizontal" role="form" action="save" method="post" enctype="multipart/form-data">
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="title">文章标题:</label>
+												<label class="col-lg-5 control-label" for="title">标题:</label>
 												<div class="col-lg-7">
-													<input name="title" id="title" value="${req.title}" type="text" class="form-control" placeholder="文章标题"></input>
+													<input name="title" id="title" type="text" class="form-control" placeholder="标题"></input>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="content">文章内容:</label>
+												<label class="col-lg-5 control-label" for="type">类型:</label>
 												<div class="col-lg-7">
-													<textarea name="content" id="content" class="form-control" rows="3" placeholder="文章内容">${req.content}</textarea>
+													<select id="type" class="form-control" name="type">
+													  <option value="1">政策解读</option>
+													  <option value="2">公共资源</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-5 control-label" for="status">状态:</label>
+												<div class="col-lg-7">
+													<select id="status" class="form-control" name="status">
+													  <option value="active">激活</option>
+													  <option value="inactive">无效</option>
+													  <option value="deleted">已删除</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-5 control-label" for="synopsis">摘要:</label>
+												<div class="col-lg-7">
+													<input name="synopsis" id="synopsis" type="text" class="form-control" placeholder="摘要"></input>
 												</div>
 											</div>
 											
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="gzip">文章压缩包:</label>
+												<label class="col-lg-5 control-label">封皮:</label>
 												<div class="col-lg-7">
-													<input name="gzip" id="gzip" type="file" class="form-control" placeholder="文章压缩包"></input>
+												<img alt="${content.title}" src="${content.coverImg}"  width="500">
 												</div>
 											</div>
-											
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="avatar">文章图片:</label>
+												<label class="col-lg-5 control-label" for="coverImg">封皮:</label>
 												<div class="col-lg-7">
-													<input name="avatar" id="avatar" type="file" class="form-control" placeholder="文章图片"></input>
+													<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
 												</div>
 											</div>
-											
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="background">文章背景图:</label>
+												<label class="col-lg-5 control-label" for="article">内容:</label>
 												<div class="col-lg-7">
-													<input name="background" id="background" type="file" class="form-control" placeholder="文章背景图"></input>
+													<textarea name="article" id="article" class="form-control" rows="3" placeholder="内容"></textarea>
 												</div>
 											</div>
 											
@@ -147,9 +163,6 @@
 	
 	<script type="text/javascript">
 	$(document).ready(function(){
-		$("#cron_expression_select").click(function(){
-			$("#cron_expression").val($(this).val());
-		});
 	});
 	</script>
 

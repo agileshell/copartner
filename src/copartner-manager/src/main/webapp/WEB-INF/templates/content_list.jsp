@@ -63,7 +63,7 @@
 												<th>ID</th>
 												<th>类型</th>
 												<th>标题</th>
-												<th>内容摘要</th>
+												<th>摘要</th>
 												<th>状态</th>
 												<th>浏览次数</th>
 												<th>操作</th>
@@ -72,7 +72,7 @@
 										<tbody>
 											<c:if test="${!success}">
 												<tr><td colspan="6" style="text-align: center;">空空如也!!!</td></tr>
-												<tr><td colspan="6" style="text-align: center;"><a class="btn btn-default btn-sm" href="/content/add">新建文章</a></td></tr>
+												<tr><td colspan="6" style="text-align: center;"><a class="btn btn-default btn-sm" href="add">新建文章</a></td></tr>
 											</c:if>
 											<c:if test="${success}">
 												<c:forEach var="c" items="${contentList}" varStatus="status">
@@ -94,6 +94,9 @@
 															<div class="btn-group">
 																<a class="btn btn-xs btn-default" href="detail/${c.id}">
 																	详情
+																</a> | 
+																<a class="btn btn-xs btn-default" href="edit/${c.id}">
+																	编辑
 																</a>
 															</div>
 														</td>
