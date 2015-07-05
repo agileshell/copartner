@@ -6,10 +6,13 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.springframework.stereotype.Repository;
+
 import com.insoul.copartner.dao.INewsDao;
 import com.insoul.copartner.dao.criteria.NewsCriteria;
 import com.insoul.copartner.domain.News;
 
+@Repository
 public class NewsDaoImpl extends BaseDaoImpl<News, Long> implements INewsDao {
 
     @SuppressWarnings("unchecked")
