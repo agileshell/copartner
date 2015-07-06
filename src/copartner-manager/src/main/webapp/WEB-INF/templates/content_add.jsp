@@ -75,7 +75,7 @@
 											<div class="form-group">
 												<label class="col-lg-5 control-label" for="status">状态:</label>
 												<div class="col-lg-7">
-													<jsp:include page="control/content-status.jsp">
+													<jsp:include page="control/commons-status.jsp">
 														<jsp:param value="active" name="status"/>
 														<jsp:param value="false" name="has_all"/>
 													</jsp:include>

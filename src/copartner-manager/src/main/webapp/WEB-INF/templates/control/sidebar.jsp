@@ -11,5 +11,11 @@
         <li>
 			<a <c:if test="${viewname == 'content_add'}"> class="open" </c:if> href="/content/add"><i class="icon-list-alt"></i>新建文章</a>
         </li>
+        <li>
+			<a <c:if test="${viewname == 'news_list'}"> class="open" </c:if> href="/news/list"><i class="icon-bar-chart"></i>新闻列表</a>
+		</li>
+        <li>
+			<a <c:if test="${viewname == 'news_add'}"> class="open" </c:if> href="/news/add"><i class="icon-list-alt"></i>新建新闻</a>
+        </li>
 	</ul>
 </div>

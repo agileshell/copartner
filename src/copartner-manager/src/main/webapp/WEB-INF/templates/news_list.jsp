@@ -9,7 +9,7 @@
 	<meta name="keywords" content="dap" />
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>创客管理平台--文章列表</title>
+	<title>创客管理平台--新闻列表</title>
 	
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
@@ -37,9 +37,9 @@
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">文章列表</h2>
+				<h2 class="pull-left">新闻列表</h2>
 				<div class="bread-crumb pull-right">
-					<a href="/content/list"><i class="icon-home"></i>首页</a><span class="divider">/</span>文章列表
+					<a href="/news/list"><i class="icon-home"></i>首页</a><span class="divider">/</span>新闻列表
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -51,11 +51,11 @@
 							<div class="widget">
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/content/list" method="get">
+										<form class="form-horizontal" role="form" action="/news/list" method="get">
 											<div class="form-group">
 												<label class="col-lg-2 control-label" for="id">ID:</label>
 												<div class="col-lg-4">
-													<input name="id" id="id" value="${req.id}" type="text" class="form-control" placeholder="文章ID">
+													<input name="id" id="id" value="${req.id}" type="text" class="form-control" placeholder="新闻ID">
 												</div>
 												<label class="col-lg-2 control-label" for="title">标题:</label>
 												<div class="col-lg-4">
@@ -88,7 +88,7 @@
 							
 							<div class="widget">
 								<div class="widget-head">
-									<div class="pull-left">文章列表</div>
+									<div class="pull-left">新闻列表</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
@@ -107,15 +107,15 @@
 										<tbody>
 											<c:if test="${!success}">
 												<tr><td colspan="7" style="text-align: center;">空空如也!!!</td></tr>
-												<tr><td colspan="7" style="text-align: center;"><a class="btn btn-default btn-sm" href="add">新建文章</a></td></tr>
+												<tr><td colspan="7" style="text-align: center;"><a class="btn btn-default btn-sm" href="add">新建新闻</a></td></tr>
 											</c:if>
 											<c:if test="${success}">
-												<c:forEach var="c" items="${contentList}" varStatus="status">
+												<c:forEach var="c" items="${newsList}" varStatus="status">
 													<tr>
 														<td>${c.id}</td>
 														<td>
-															<c:if test="${c.type == 1}"> 政策解读 </c:if>
-															<c:if test="${c.type == 2}"> 公共资源 </c:if>
+															<c:if test="${c.type == 1}"> 行业新闻 </c:if>
+															<c:if test="${c.type == 2}"> 地方新闻 </c:if>
 														</td>
 														<td>${c.title}</td>
 														<td>${c.synopsis}</td>

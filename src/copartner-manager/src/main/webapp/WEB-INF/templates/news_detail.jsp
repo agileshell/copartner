@@ -9,8 +9,7 @@
 	<meta name="keywords" content="dap" />
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="author" content="andpay.me" />
-	<title>创客管理平台--文章编辑</title>
+	<title>创客管理平台--新闻详情</title>
 
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
@@ -38,9 +37,9 @@
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">编辑文章</h2>
+				<h2 class="pull-left">新闻详情</h2>
 				<div class="bread-crumb pull-right">
-					<a href="/content/list"><i class="icon-home"></i>首页</a><span class="divider">/</span>编辑文章
+					<a href="/news/list"><i class="icon-home"></i>首页</a><span class="divider">/</span>新闻详情
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -51,70 +50,45 @@
 						<div class="col-md-12">
 							<div class="widget wgreen">
 								<div class="widget-head">
-									<div class="pull-left">编辑文章</div>
+									<div class="pull-left">新闻详情</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
-									<div class="padd">
-										<form class="form-horizontal" role="form" action="/content/update/${content.id}" method="post" enctype="multipart/form-data">
+									<div class="padd form-horizontal">
+										<c:if test="${!success}">
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="title">标题:</label>
-												<div class="col-lg-7">
-													<input name="title" id="title" value="${content.title}" type="text" class="form-control" placeholder="标题"></input>
-												</div>
+												<div class="col-lg-12" style="text-align: center;">新闻不存在!!!</div>
+											</div>
+										</c:if>
+										<c:if test="${success}">
+											<div class="form-group">
+												<label class="col-lg-5 control-label" >标题:</label>
+												<div class="col-lg-7">${news.title}</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="type">类型:</label>
-												<div class="col-lg-7">
-													<jsp:include page="control/content-type.jsp">
-														<jsp:param value="${content.type}" name="type"/>
-														<jsp:param value="false" name="has_all"/>
-													</jsp:include>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-lg-5 control-label" for="status">状态:</label>
-												<div class="col-lg-7">
-													<jsp:include page="control/commons-status.jsp">
-														<jsp:param value="${content.status}" name="status"/>
-														<jsp:param value="false" name="has_all"/>
-													</jsp:include>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-lg-5 control-label" for="synopsis">摘要:</label>
-												<div class="col-lg-7">
-													<input name="synopsis" id="synopsis" value="${content.synopsis}" type="text" class="form-control" placeholder="摘要"></input>
-												</div>
+												<label class="col-lg-5 control-label" >摘要:</label>
+												<div class="col-lg-7">${news.synopsis}</div>
 											</div>
 											
 											<div class="form-group">
 												<label class="col-lg-5 control-label">封皮:</label>
 												<div class="col-lg-7">
-												<img alt="${content.title}" src="http://7xjbd9.com1.z0.glb.clouddn.com/${content.coverImg}"  width="500">
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-lg-5 control-label" for="coverImg">封皮:</label>
-												<div class="col-lg-7">
-													<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-lg-5 control-label" for="article">内容:</label>
-												<div class="col-lg-7">
-													<textarea name="article" id="article" class="form-control" rows="3" placeholder="内容">${content.article}</textarea>
+												<img alt="${news.title}" src="http://7xjbd9.com1.z0.glb.clouddn.com/${news.coverImg}"  width="500">
 												</div>
 											</div>
 											
+											<div class="form-group">
+												<label class="col-lg-5 control-label">内容:</label>
+												<div class="col-lg-7">${news.article}</div>
+											</div>
 											<hr />
-											
 											<div class="form-group">
 												<div class="col-lg-offset-1 col-lg-9">
-													<button type="submit" class="btn btn-default">提交</button>
+													<a class="btn btn-default btn-sm" href="/news/list">列表</a>
+													<a class="btn btn-default btn-sm" href="/news/edit/${news.id}">编辑</a>
 												</div>
 											</div>
-										</form>
+										</c:if>
 									</div>
 								</div>
 								<div class="widget-foot"></div>
@@ -156,11 +130,6 @@
 	<script src="${cdn}js/filter.js"></script>
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
-	
-	<script type="text/javascript">
-	$(document).ready(function(){
-	});
-	</script>
 
 </body>
 </html>

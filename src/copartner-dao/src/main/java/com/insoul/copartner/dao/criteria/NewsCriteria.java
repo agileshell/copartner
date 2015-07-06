@@ -2,27 +2,47 @@ package com.insoul.copartner.dao.criteria;
 
 public class NewsCriteria extends PaginationCriteria {
 
-    private Integer type;
+	private Long id;
 
-    private String[] status;
+	private String title;
 
-    public Integer getType() {
-        return type;
-    }
+	private Integer type;
 
-    public void setType(Integer type) {
-        this.type = type;
-    }
+	private String[] status;
 
-    public String[] getStatus() {
-        if (null == status || status.length <= 0) {
-            status = new String[] { "active", "inactive" };
-        }
+	public Integer getType() {
+		return type;
+	}
 
-        return status;
-    }
+	public void setType(Integer type) {
+		this.type = type;
+	}
 
-    public void setStatus(String[] status) {
-        this.status = status;
-    }
+	public String[] getStatus() {
+		if (null == status || status.length <= 0) {
+			status = new String[] { "active", "inactive" };
+		}
+
+		return status;
+	}
+
+	public void setStatus(String[] status) {
+		this.status = status;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 }

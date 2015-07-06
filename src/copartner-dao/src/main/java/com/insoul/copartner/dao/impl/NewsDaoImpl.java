@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.insoul.copartner.dao.INewsDao;
@@ -34,7 +35,7 @@ public class NewsDaoImpl extends BaseDaoImpl<News, Long> implements INewsDao {
     private Query generateQuery(NewsCriteria criteria, boolean isCount) {
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
-        if (null != criteria.getType()) {
+        if (null != criteria.getType() && criteria.getType() > 0) {
             conditionStr.append(" AND type = :type");
             params.put("type", criteria.getType());
         }
@@ -42,7 +43,14 @@ public class NewsDaoImpl extends BaseDaoImpl<News, Long> implements INewsDao {
             conditionStr.append(" AND status IN :status");
             params.put("status", new HashSet(Arrays.asList(criteria.getStatus())));
         }
-
+        if (null != criteria.getId() && criteria.getId() > 0) {
+            conditionStr.append(" AND id = :id");
+            params.put("id", criteria.getId());
+        }
+        if (StringUtils.isNotBlank(criteria.getTitle())) {
+            conditionStr.append(" AND title like :title");
+            params.put("title", "%" + criteria.getTitle() + "%");
+        }
         Query query = null;
         StringBuilder hql = new StringBuilder();
         if (isCount) {
