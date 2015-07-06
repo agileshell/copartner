@@ -48,7 +48,7 @@
 			<a <c:if test="${viewname == 'status_add'}"> class="open" </c:if> href="/status/add"><i class="icon-list-alt"></i>新建状态</a>
         </li>
         <li>
-			<a <c:if test="${viewname == 'feedback_list'}"> class="open" </c:if> href="/feedback/add"><i class="icon-list-alt"></i>意见反馈</a>
+			<a <c:if test="${viewname == 'feedback_list'}"> class="open" </c:if> href="/feedback/list"><i class="icon-list-alt"></i>意见反馈</a>
         </li>
 	</ul>
 </div>
