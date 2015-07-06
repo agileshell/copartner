@@ -23,5 +23,8 @@
         <li>
 			<a <c:if test="${viewname == 'news_add'}"> class="open" </c:if> href="/news/add"><i class="icon-list-alt"></i>新建新闻</a>
         </li>
+        <li>
+			<a <c:if test="${viewname == 'feedback_list'}"> class="open" </c:if> href="/feedback/add"><i class="icon-list-alt"></i>意见反馈</a>
+        </li>
 	</ul>
 </div>
