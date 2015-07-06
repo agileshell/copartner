@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<select id="status" class="form-control" name="status">
+<select id="listed" class="form-control" name="listed">
 	<c:if test="${param.has_all}">
 		<option value="0">全部</option>
 	</c:if>

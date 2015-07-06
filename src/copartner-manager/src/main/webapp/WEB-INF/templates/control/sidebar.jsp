@@ -24,6 +24,12 @@
 			<a <c:if test="${viewname == 'news_add'}"> class="open" </c:if> href="/news/add"><i class="icon-list-alt"></i>新建新闻</a>
         </li>
         <li>
+			<a <c:if test="${viewname == 'industry_list'}"> class="open" </c:if> href="/industry/list"><i class="icon-bar-chart"></i>行业列表</a>
+		</li>
+        <li>
+			<a <c:if test="${viewname == 'industry_add'}"> class="open" </c:if> href="/industry/add"><i class="icon-list-alt"></i>新建行业</a>
+        </li>
+        <li>
 			<a <c:if test="${viewname == 'feedback_list'}"> class="open" </c:if> href="/feedback/add"><i class="icon-list-alt"></i>意见反馈</a>
         </li>
 	</ul>
