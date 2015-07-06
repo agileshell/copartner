@@ -9,9 +9,8 @@
 	<meta name="keywords" content="dap" />
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="author" content="andpay.me" />
-	<title>创客管理平台--新闻编辑</title>
-
+	<title>创客管理平台--用户列表</title>
+	
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
 	<link rel="stylesheet" href="${cdn}css/jquery-ui.css"></link>
@@ -28,110 +27,131 @@
 	<!--[if lt IE 9]>
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
-
+	
 	<link rel="Shortcut Icon" href="${cdn}image/icon.png" />
 
 </head>
 <body>
-	<jsp:include page="control/header.jsp" />
+	<jsp:include page="control/header.jsp"/>
 	<div class="content">
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">编辑新闻</h2>
+				<h2 class="pull-left">用户列表</h2>
 				<div class="bread-crumb pull-right">
-					<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>编辑新闻
+					<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>用户列表
 				</div>
 				<div class="clearfix"></div>
 			</div>
 			<div class="matter">
 				<div class="container">
-					<!--row start-->
+					<!-- row start -->
 					<div class="row">
 						<div class="col-md-12">
-							<div class="widget wgreen">
-								<div class="widget-head">
-									<div class="pull-left">编辑新闻</div>
-									<div class="clearfix"></div>
-								</div>
+							<div class="widget">
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/news/update/${news.id}" method="post" enctype="multipart/form-data">
+										<form class="form-horizontal" role="form" action="/user/list" method="get">
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="title">标题:</label>
-												<div class="col-lg-7">
-													<input name="title" id="title" value="${news.title}" type="text" class="form-control" placeholder="标题"></input>
+												<label class="col-lg-2 control-label" for="id">ID:</label>
+												<div class="col-lg-4">
+													<input name="id" id="id" value="${req.id}" type="text" class="form-control" placeholder="用户ID">
+												</div>
+												<label class="col-lg-2 control-label" for="title">姓名:</label>
+												<div class="col-lg-4">
+													<input name="name" id="name" value="${req.name}" type="text" class="form-control" placeholder="用户姓名">
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="type">类型:</label>
-												<div class="col-lg-7">
-													<jsp:include page="control/news-type.jsp">
-														<jsp:param value="${news.type}" name="type"/>
-														<jsp:param value="false" name="has_all"/>
-													</jsp:include>
+												<label class="col-lg-2 control-label" for="type">邮箱:</label>
+												<div class="col-lg-4">
+													<input name="email" id="email" value="${req.email}" type="text" class="form-control" placeholder="用户邮箱">
 												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-lg-5 control-label" for="status">状态:</label>
-												<div class="col-lg-7">
-													<jsp:include page="control/commons-status.jsp">
-														<jsp:param value="${news.status}" name="status"/>
-														<jsp:param value="false" name="has_all"/>
-													</jsp:include>
+												<label class="col-lg-2 control-label" for="type">手机号:</label>
+												<div class="col-lg-4">
+													<input name="mobile" id="mobile" value="${req.mobile}" type="text" class="form-control" placeholder="用户手机号">
 												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-lg-5 control-label" for="synopsis">摘要:</label>
-												<div class="col-lg-7">
-													<input name="synopsis" id="synopsis" value="${news.synopsis}" type="text" class="form-control" placeholder="摘要"></input>
-												</div>
-											</div>
-											
-											<div class="form-group">
-												<label class="col-lg-5 control-label">封皮:</label>
-												<div class="col-lg-7">
-												<img alt="${news.title}" src="http://7xjbd9.com1.z0.glb.clouddn.com/${news.coverImg}"  width="500">
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-lg-5 control-label" for="coverImg">封皮:</label>
-												<div class="col-lg-7">
-													<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-lg-5 control-label" for="article">内容:</label>
-												<div class="col-lg-7">
-													<textarea name="article" id="article" class="form-control" rows="3" placeholder="内容">${news.article}</textarea>
-												</div>
-											</div>
-											
-											<hr />
-											
-											<div class="form-group">
-												<div class="col-lg-offset-1 col-lg-9">
+												<div class="col-lg-2">
 													<button type="submit" class="btn btn-default">提交</button>
 												</div>
 											</div>
 										</form>
 									</div>
 								</div>
-								<div class="widget-foot"></div>
 							</div>
+							<div class="widget">
+								<div class="widget-head">
+									<div class="pull-left">用户列表</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="widget-content">
+									<table class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<th>ID</th>
+												<th>姓名</th>
+												<th>邮箱</th>
+												<th>手机号</th>
+												<th>地址</th>
+												<th>性别</th>
+												<th>年龄</th>
+												<th>状态</th>
+												<th>注册时间</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:if test="${!success}">
+												<tr><td colspan="10" style="text-align: center;">空空如也!!!</td></tr>
+											</c:if>
+											<c:if test="${success}">
+												<c:forEach var="c" items="${userList}" varStatus="status">
+													<tr>
+														<td>${c.id}</td>
+														<td>${c.name}</td>
+														<td>${c.email}</td>
+														<td>${c.mobile}</td>
+														<td>${c.fullLocation}</td>
+														<td>
+															<c:if test="${c.gender == 'F'}"> 女 </c:if>
+															<c:if test="${c.gender == 'M'}"> 男 </c:if>
+														</td>
+														<td>${c.age}</td>
+														<td>
+															<c:if test="${c.status == 'active'}"> 激活 </c:if>
+															<c:if test="${c.status == 'inactive'}"> 无效 </c:if>
+															<c:if test="${c.status == 'deleted'}"> 已删除 </c:if>
+														</td>
+														<td>${c.gmtcreated}</td>
+														<td>
+															<div class="btn-group">
+																<a class="btn btn-xs btn-default" href="detail/${c.id}">
+																	详情
+																</a>
+															</div>
+														</td>
+													</tr>
+												</c:forEach>
+											</c:if>
+										</tbody>
+									</table>
+									<jsp:include page="control/pagination.jsp"/>
+								</div>
+							</div>
+							
 						</div>
 					</div>
-					<!--row end-->
+					<!-- row end -->
 				</div>
 			</div>
 		</div>
 		<div class="clearfix"></div>
 	</div>
-
+	
 	<!--
-	<jsp:include page="control/copy-rights.jsp" />
+	<jsp:include page="control/copy-rights.jsp"/>
 	-->
-
+	
 	<script src="${cdn}js/jquery.js"></script>
 	<script src="${cdn}js/bootstrap.js"></script>
 	<script src="${cdn}js/jquery-ui-1.9.2.custom.min.js"></script>
@@ -156,12 +176,6 @@
 	<script src="${cdn}js/filter.js"></script>
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
-	<script src="${cdn}js/ckeditor/ckeditor.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	    $(function() {
-	        CKEDITOR.replace("article");
-	    });
-	</script>
-
+	
 </body>
 </html>

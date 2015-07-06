@@ -9,7 +9,7 @@
 	<meta name="keywords" content="dap" />
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>创客管理平台--文章详情</title>
+	<title>创客管理平台--用户详情</title>
 
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
@@ -37,9 +37,9 @@
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">文章详情</h2>
+				<h2 class="pull-left">用户详情</h2>
 				<div class="bread-crumb pull-right">
-					<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>文章详情
+					<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>用户详情
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -50,42 +50,61 @@
 						<div class="col-md-12">
 							<div class="widget wgreen">
 								<div class="widget-head">
-									<div class="pull-left">文章详情</div>
+									<div class="pull-left">用户详情</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
 									<div class="padd form-horizontal">
 										<c:if test="${!success}">
 											<div class="form-group">
-												<div class="col-lg-12" style="text-align: center;">文章不存在!!!</div>
+												<div class="col-lg-12" style="text-align: center;">用户不存在!!!</div>
 											</div>
 										</c:if>
 										<c:if test="${success}">
 											<div class="form-group">
-												<label class="col-lg-5 control-label" >标题:</label>
-												<div class="col-lg-7">${content.title}</div>
-											</div>
-											<div class="form-group">
-												<label class="col-lg-5 control-label" >摘要:</label>
-												<div class="col-lg-7">${content.synopsis}</div>
+												<label class="col-lg-5 control-label" >姓名:</label>
+												<div class="col-lg-7">${user.name}</div>
 											</div>
 											
 											<div class="form-group">
-												<label class="col-lg-5 control-label">封皮:</label>
+												<label class="col-lg-5 control-label">头像:</label>
 												<div class="col-lg-7">
-												<img alt="${content.title}" src="http://7xjbd9.com1.z0.glb.clouddn.com/${content.coverImg}"  width="500">
+												<img alt="${user.name}" src="http://7xjbd9.com1.z0.glb.clouddn.com/${user.avatar}"  width="500">
 												</div>
 											</div>
+											<div class="form-group">
+												<label class="col-lg-5 control-label" >邮箱:</label>
+												<div class="col-lg-7">${user.email}</div>
+											</div>
 											
 											<div class="form-group">
-												<label class="col-lg-5 control-label">内容:</label>
-												<div class="col-lg-7">${content.article}</div>
+												<label class="col-lg-5 control-label">手机号:</label>
+												<div class="col-lg-7">${user.mobile}</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-5 control-label">领域:</label>
+												<div class="col-lg-7">${domains}</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-5 control-label">创业角色:</label>
+												<div class="col-lg-7">${startupRole}</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-5 control-label">创业状态:</label>
+												<div class="col-lg-7">${startupStatus}</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-5 control-label">地址:</label>
+												<div class="col-lg-7">${user.fullLocation}</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-5 control-label">简介:</label>
+												<div class="col-lg-7">${user.introduction}</div>
 											</div>
 											<hr />
 											<div class="form-group">
 												<div class="col-lg-offset-1 col-lg-9">
-													<a class="btn btn-default btn-sm" href="/content/list">列表</a>
-													<a class="btn btn-default btn-sm" href="/content/edit/${content.id}">编辑</a>
+													<a class="btn btn-default btn-sm" href="/user/list">列表</a>
 												</div>
 											</div>
 										</c:if>

@@ -6,6 +6,12 @@
 	</div>
 	<ul id="nav">
 		<li>
+			<a <c:if test="${viewname == 'h'}"> class="open" </c:if> href="/home"><i class="icon-bar-chart"></i>首页</a>
+		</li>
+		<li>
+			<a <c:if test="${viewname == 'user_list'}"> class="open" </c:if> href="/user/list"><i class="icon-bar-chart"></i>用户列表</a>
+		</li>
+		<li>
 			<a <c:if test="${viewname == 'content_list'}"> class="open" </c:if> href="/content/list"><i class="icon-bar-chart"></i>文章列表</a>
 		</li>
         <li>

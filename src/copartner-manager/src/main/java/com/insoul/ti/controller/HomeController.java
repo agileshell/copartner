@@ -22,4 +22,9 @@ public class HomeController extends WebBase {
 
 		return mv;
 	}
+
+	@RequestMapping("/home")
+	public ModelAndView home() {
+		return new ModelAndView("redirect:/user/list?limit=10&v=h");
+	}
 }

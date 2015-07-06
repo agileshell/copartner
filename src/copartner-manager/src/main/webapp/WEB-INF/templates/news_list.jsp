@@ -39,7 +39,7 @@
 			<div class="page-head">
 				<h2 class="pull-left">新闻列表</h2>
 				<div class="bread-crumb pull-right">
-					<a href="/news/list"><i class="icon-home"></i>首页</a><span class="divider">/</span>新闻列表
+					<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>新闻列表
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -100,14 +100,15 @@
 												<th>标题</th>
 												<th>摘要</th>
 												<th>状态</th>
+												<th>创建时间</th>
 												<th>浏览次数</th>
 												<th>操作</th>
 											</tr>
 										</thead>
 										<tbody>
 											<c:if test="${!success}">
-												<tr><td colspan="7" style="text-align: center;">空空如也!!!</td></tr>
-												<tr><td colspan="7" style="text-align: center;"><a class="btn btn-default btn-sm" href="add">新建新闻</a></td></tr>
+												<tr><td colspan="8" style="text-align: center;">空空如也!!!</td></tr>
+												<tr><td colspan="8" style="text-align: center;"><a class="btn btn-default btn-sm" href="add">新建新闻</a></td></tr>
 											</c:if>
 											<c:if test="${success}">
 												<c:forEach var="c" items="${newsList}" varStatus="status">
@@ -124,6 +125,7 @@
 															<c:if test="${c.status == 'inactive'}"> 无效 </c:if>
 															<c:if test="${c.status == 'deleted'}"> 已删除 </c:if>
 														</td>
+														<td>${c.gmtcreated}</td>
 														<td>${c.clicks}次</td>
 														<td>
 															<div class="btn-group">

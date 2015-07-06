@@ -24,6 +24,7 @@ import com.insoul.ti.WebBase;
 import com.insoul.ti.req.NewsListRequest;
 import com.insoul.ti.req.NewsRequest;
 import com.insoul.ti.req.PageQuery;
+import com.insoul.ti.req.ViewRequest;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -37,7 +38,7 @@ public class NewsController extends WebBase {
 
 	@RequestMapping("/list")
 	public ModelAndView list(@Valid NewsListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView("news_list");
+		ModelAndView mv = createModelView("news_list", request);
 		PageQuery query = request.init().getQuery();
 		NewsCriteria criteria = new NewsCriteria();
 		criteria.setLimit(query.getPage_size());
@@ -59,8 +60,8 @@ public class NewsController extends WebBase {
 	}
 
 	@RequestMapping("/detail/{newsId}")
-	public ModelAndView detail(@PathVariable Long newsId) {
-		ModelAndView mv = createModelView("news_detail");
+	public ModelAndView detail(@PathVariable Long newsId, ViewRequest req) {
+		ModelAndView mv = createModelView("news_detail", req);
 		try {
 			News news = newsDAO.get(newsId);
 			mv.addObject("news", news);
@@ -72,13 +73,13 @@ public class NewsController extends WebBase {
 	}
 
 	@RequestMapping("/add")
-	public ModelAndView add() {
-		return createModelView("news_add");
+	public ModelAndView add(ViewRequest req) {
+		return createModelView("news_add", req);
 	}
 
 	@RequestMapping("/edit/{newsId}")
-	public ModelAndView edit(@PathVariable Long newsId) {
-		ModelAndView mv = createModelView("news_edit");
+	public ModelAndView edit(@PathVariable Long newsId, ViewRequest req) {
+		ModelAndView mv = createModelView("news_edit", req);
 		News news = newsDAO.get(newsId);
 		mv.addObject("news", news);
 		return mv;

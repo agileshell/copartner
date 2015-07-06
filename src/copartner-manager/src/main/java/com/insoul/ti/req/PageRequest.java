@@ -6,24 +6,27 @@ package com.insoul.ti.req;
  * @version 1.0.0
  * @since 2015年7月4日 下午7:02:30
  */
-public abstract class PageRequest {
-	
+public abstract class PageRequest extends ViewRequest {
+
 	public static final int DEFAULT_PAGE_LIMIT = 20;
-	
+
 	private PageQuery query;
 
 	private int page = 1;
 
-	private int limit = DEFAULT_PAGE_LIMIT;
-	
+	private int limit;
+
 	public PageRequest init() {
+		if (limit <= 0) {
+			limit = DEFAULT_PAGE_LIMIT;
+		}
 		query = new PageQuery(limit, page);
 		Q();
 		return this;
 	}
-	
+
 	protected abstract PageRequest Q();
-	
+
 	public PageQuery getQuery() {
 		return query;
 	}

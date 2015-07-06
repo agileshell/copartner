@@ -24,6 +24,7 @@ import com.insoul.ti.WebBase;
 import com.insoul.ti.req.ContentListRequest;
 import com.insoul.ti.req.ContentRequest;
 import com.insoul.ti.req.PageQuery;
+import com.insoul.ti.req.ViewRequest;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -37,7 +38,7 @@ public class ContentController extends WebBase {
 
 	@RequestMapping("/list")
 	public ModelAndView list(@Valid ContentListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView("content_list");
+		ModelAndView mv = createModelView("content_list", request);
 		PageQuery query = request.init().getQuery();
 		ContentCriteria criteria = new ContentCriteria();
 		criteria.setLimit(query.getPage_size());
@@ -59,8 +60,8 @@ public class ContentController extends WebBase {
 	}
 
 	@RequestMapping("/detail/{contentId}")
-	public ModelAndView detail(@PathVariable Long contentId) {
-		ModelAndView mv = createModelView("content_detail");
+	public ModelAndView detail(@PathVariable Long contentId, ViewRequest req) {
+		ModelAndView mv = createModelView("content_detail", req);
 		try {
 			Content content = contentDAO.get(contentId);
 			mv.addObject("content", content);
@@ -72,13 +73,13 @@ public class ContentController extends WebBase {
 	}
 
 	@RequestMapping("/add")
-	public ModelAndView add() {
-		return createModelView("content_add");
+	public ModelAndView add(ViewRequest req) {
+		return createModelView("content_add", req);
 	}
 
 	@RequestMapping("/edit/{contentId}")
-	public ModelAndView edit(@PathVariable Long contentId) {
-		ModelAndView mv = createModelView("content_edit");
+	public ModelAndView edit(@PathVariable Long contentId, ViewRequest req) {
+		ModelAndView mv = createModelView("content_edit", req);
 		Content content = contentDAO.get(contentId);
 		mv.addObject("content", content);
 		return mv;
