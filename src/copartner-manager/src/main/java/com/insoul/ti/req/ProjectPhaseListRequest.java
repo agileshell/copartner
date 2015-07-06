@@ -15,7 +15,7 @@ public class ProjectPhaseListRequest extends PageRequest {
 	private Integer listed;
 
 	@Override
-	protected IndustryListRequest Q() {
+	protected ProjectPhaseListRequest Q() {
 		StringBuilder sb = new StringBuilder();
 		boolean appended = false;
 		if (name != null) {

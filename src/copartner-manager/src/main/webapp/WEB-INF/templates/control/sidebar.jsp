@@ -30,6 +30,24 @@
 			<a <c:if test="${viewname == 'industry_add'}"> class="open" </c:if> href="/industry/add"><i class="icon-list-alt"></i>新建行业</a>
         </li>
         <li>
+			<a <c:if test="${viewname == 'pro_list'}"> class="open" </c:if> href="/pro/list"><i class="icon-bar-chart"></i>项目列表</a>
+		</li>
+        <li>
+			<a <c:if test="${viewname == 'pro_add'}"> class="open" </c:if> href="/pro/add"><i class="icon-list-alt"></i>新建项目</a>
+        </li>
+        <li>
+			<a <c:if test="${viewname == 'role_list'}"> class="open" </c:if> href="/role/list"><i class="icon-bar-chart"></i>角色列表</a>
+		</li>
+        <li>
+			<a <c:if test="${viewname == 'role_add'}"> class="open" </c:if> href="/role/add"><i class="icon-list-alt"></i>新建角色</a>
+        </li>
+        <li>
+			<a <c:if test="${viewname == 'status_list'}"> class="open" </c:if> href="/status/list"><i class="icon-bar-chart"></i>状态列表</a>
+		</li>
+        <li>
+			<a <c:if test="${viewname == 'status_add'}"> class="open" </c:if> href="/status/add"><i class="icon-list-alt"></i>新建状态</a>
+        </li>
+        <li>
 			<a <c:if test="${viewname == 'feedback_list'}"> class="open" </c:if> href="/feedback/add"><i class="icon-list-alt"></i>意见反馈</a>
         </li>
 	</ul>
