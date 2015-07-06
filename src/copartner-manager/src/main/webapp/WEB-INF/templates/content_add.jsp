@@ -149,11 +149,11 @@
 	<script src="${cdn}js/filter.js"></script>
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
-	
+	<script src="${cdn}js/ckeditor/ckeditor.js" type="text/javascript"></script>
 	<script type="text/javascript">
-	$(document).ready(function(){
-	});
+	    $(function() {
+	        CKEDITOR.replace("article");
+	    });
 	</script>
-
 </body>
 </html>

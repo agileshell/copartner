@@ -73,7 +73,7 @@
 												<label class="col-lg-2 control-label" for="type">类型:</label>
 												<div class="col-lg-4">
 													<jsp:include page="control/content-type.jsp">
-														<jsp:param value="${req.type}" name="status"/>
+														<jsp:param value="${req.type}" name="type"/>
 														<jsp:param value="true" name="has_all"/>
 													</jsp:include>
 												</div>
