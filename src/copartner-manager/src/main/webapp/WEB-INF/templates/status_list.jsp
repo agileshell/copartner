@@ -37,9 +37,9 @@
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">创业状态列表</h2>
+				<h2 class="pull-left">创业状态管理</h2>
 				<div class="bread-crumb pull-right">
-					<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>创业状态列表
+					<a class="btn btn-default btn-sm" href="add">新建创业状态</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>
