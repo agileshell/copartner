@@ -56,7 +56,7 @@
 								</div>
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/industry/update/${industry.id}" method="post" enctype="multipart/form-data">
+										<form class="form-horizontal" role="form" action="/industry/update/${industry.id}" method="post">
 											<div class="form-group">
 												<label class="col-lg-5 control-label" for="name">行业名称:</label>
 												<div class="col-lg-7">

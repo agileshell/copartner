@@ -56,7 +56,7 @@
 								</div>
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/pro/update/${phase.id}" method="post" enctype="multipart/form-data">
+										<form class="form-horizontal" role="form" action="/pro/update/${phase.id}" method="post">
 											<div class="form-group">
 												<label class="col-lg-5 control-label" for="name">项目名称:</label>
 												<div class="col-lg-7">

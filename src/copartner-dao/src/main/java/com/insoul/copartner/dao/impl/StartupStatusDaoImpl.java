@@ -26,15 +26,15 @@ public class StartupStatusDaoImpl extends BaseDaoImpl<StartupStatus, Long>implem
 		StringBuilder conditionStr = new StringBuilder();
 		Map<String, Object> params = new HashMap<String, Object>();
 		if (null != criteria.getId() && criteria.getId() > 0L) {
-			conditionStr.append(" AND id = :id");
+			conditionStr.append(" AND id = :id ");
 			params.put("id", criteria.getId());
 		}
 		if (StringUtils.isNotBlank(criteria.getName())) {
-			conditionStr.append(" AND name like :name");
+			conditionStr.append(" AND name like :name ");
 			params.put("name", "%" + criteria.getName() + "%");
 		}
 		if (criteria.getListed() != null) {
-			conditionStr.append(" AND isListed = :isListed");
+			conditionStr.append(" AND isListed = :isListed ");
 			params.put("isListed", criteria.getListed());
 		}
 		Query query = null;
