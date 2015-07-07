@@ -13,7 +13,7 @@ public class StatusRequest {
 	@NotNull
 	private String name;
 
-	private Integer listed;
+	private Integer listed = 1;
 
 	public String getName() {
 		return name;

@@ -12,7 +12,7 @@ public class StatusListRequest extends PageRequest {
 
 	private String name;
 
-	private Integer listed;
+	private Integer listed = 1;
 
 	@Override
 	protected StatusListRequest Q() {
