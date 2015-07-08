@@ -21,7 +21,7 @@
 			<a <c:if test="${viewname == 'industry_list'}"> class="open" </c:if> href="/industry/list"><i class="icon-bar-chart"></i>行业管理</a>
 		</li>
         <li>
-			<a <c:if test="${viewname == 'pro_list'}"> class="open" </c:if> href="/pro/list"><i class="icon-bar-chart"></i>项目管理</a>
+			<a <c:if test="${viewname == 'phase_list'}"> class="open" </c:if> href="/pro/list"><i class="icon-bar-chart"></i>阶段管理</a>
 		</li>
         <li>
 			<a <c:if test="${viewname == 'role_list'}"> class="open" </c:if> href="/role/list"><i class="icon-bar-chart"></i>角色管理</a>

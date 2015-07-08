@@ -9,7 +9,7 @@
 	<meta name="keywords" content="dap" />
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>创客管理平台--项目列表</title>
+	<title>创客管理平台--项目阶段列表</title>
 	
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
@@ -37,9 +37,9 @@
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">项目管理</h2>
+				<h2 class="pull-left">项目阶段管理</h2>
 				<div class="bread-crumb pull-right">
-					<a class="btn btn-default btn-sm" href="add">新建项目</a>
+					<a class="btn btn-default btn-sm" href="add">新建项目阶段</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -51,15 +51,15 @@
 							<div class="widget">
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/pro/list" method="get">
+										<form class="form-horizontal" role="form" action="/phase/list" method="get">
 											<div class="form-group">
 												<label class="col-lg-2 control-label" for="id">ID:</label>
 												<div class="col-lg-4">
-													<input name="id" id="id" value="${req.id}" type="text" class="form-control" placeholder="项目ID">
+													<input name="id" id="id" value="${req.id}" type="text" class="form-control" placeholder="阶段ID">
 												</div>
-												<label class="col-lg-2 control-label" for="name">项目名称:</label>
+												<label class="col-lg-2 control-label" for="name">阶段名称:</label>
 												<div class="col-lg-4">
-													<input name="name" id="name" value="${req.name}" type="text" class="form-control" placeholder="项目名称">
+													<input name="name" id="name" value="${req.name}" type="text" class="form-control" placeholder="项目阶段名称">
 												</div>
 											</div>
 											<div class="form-group">
@@ -78,10 +78,9 @@
 									</div>
 								</div>
 							</div>
-							
 							<div class="widget">
 								<div class="widget-head">
-									<div class="pull-left">项目列表</div>
+									<div class="pull-left">项目阶段列表</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
@@ -89,7 +88,7 @@
 										<thead>
 											<tr>
 												<th>ID</th>
-												<th>项目名称</th>
+												<th>项目阶段名称</th>
 												<th>显示</th>
 												<th>创建时间</th>
 												<th>操作</th>
@@ -98,7 +97,7 @@
 										<tbody>
 											<c:if test="${!success}">
 												<tr><td colspan="5" style="text-align: center;">空空如也!!!</td></tr>
-												<tr><td colspan="5" style="text-align: center;"><a class="btn btn-default btn-sm" href="add">新建项目</a></td></tr>
+												<tr><td colspan="5" style="text-align: center;"><a class="btn btn-default btn-sm" href="add">新建项目阶段</a></td></tr>
 											</c:if>
 											<c:if test="${success}">
 												<c:forEach var="c" items="${phaseList}" varStatus="status">
@@ -134,11 +133,9 @@
 		</div>
 		<div class="clearfix"></div>
 	</div>
-	
 	<!--
 	<jsp:include page="control/copy-rights.jsp"/>
 	-->
-	
 	<script src="${cdn}js/jquery.js"></script>
 	<script src="${cdn}js/bootstrap.js"></script>
 	<script src="${cdn}js/jquery-ui-1.9.2.custom.min.js"></script>
@@ -163,6 +160,5 @@
 	<script src="${cdn}js/filter.js"></script>
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
-	
 </body>
 </html>

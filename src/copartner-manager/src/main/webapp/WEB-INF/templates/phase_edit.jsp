@@ -10,7 +10,7 @@
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="author" content="andpay.me" />
-	<title>创客管理平台--项目编辑</title>
+	<title>创客管理平台--项目阶段编辑</title>
 
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
@@ -38,9 +38,9 @@
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">项目管理</h2>
+				<h2 class="pull-left">项目阶段管理</h2>
 				<div class="bread-crumb pull-right">
-					<a class="btn btn-default btn-sm" href="add">新建项目</a>
+					<a class="btn btn-default btn-sm" href="add">新建项目阶段</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -51,16 +51,16 @@
 						<div class="col-md-12">
 							<div class="widget wgreen">
 								<div class="widget-head">
-									<div class="pull-left">编辑项目</div>
+									<div class="pull-left">编辑项目阶段</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/pro/update/${phase.id}" method="post">
+										<form class="form-horizontal" role="form" action="/phase/update/${phase.id}" method="post">
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="name">项目名称:</label>
+												<label class="col-lg-5 control-label" for="name">项目阶段名称:</label>
 												<div class="col-lg-7">
-													<input name="name" id="name" value="${phase.name}" type="text" class="form-control" placeholder="项目名称"></input>
+													<input name="name" id="name" value="${phase.name}" type="text" class="form-control" placeholder="项目阶段名称"></input>
 												</div>
 											</div>
 											<div class="form-group">
@@ -91,11 +91,9 @@
 		</div>
 		<div class="clearfix"></div>
 	</div>
-
 	<!--
 	<jsp:include page="control/copy-rights.jsp" />
 	-->
-
 	<script src="${cdn}js/jquery.js"></script>
 	<script src="${cdn}js/bootstrap.js"></script>
 	<script src="${cdn}js/jquery-ui-1.9.2.custom.min.js"></script>
@@ -120,12 +118,5 @@
 	<script src="${cdn}js/filter.js"></script>
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
-	<script src="${cdn}js/ckeditor/ckeditor.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	    $(function() {
-	        CKEDITOR.replace("article");
-	    });
-	</script>
-
 </body>
 </html>

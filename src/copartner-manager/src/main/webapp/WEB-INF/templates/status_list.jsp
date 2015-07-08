@@ -10,7 +10,6 @@
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>创客管理平台--创业状态列表</title>
-	
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
 	<link rel="stylesheet" href="${cdn}css/jquery-ui.css"></link>
@@ -23,13 +22,10 @@
 	<link rel="stylesheet" href="${cdn}css/bootstrap-switch.css"></link>
 	<link rel="stylesheet" href="${cdn}css/style.css"></link>
 	<link rel="stylesheet" href="${cdn}css/widgets.css"></link>
-	
 	<!--[if lt IE 9]>
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
-	
 	<link rel="Shortcut Icon" href="${cdn}image/icon.png" />
-
 </head>
 <body>
 	<jsp:include page="control/header.jsp"/>
@@ -78,7 +74,6 @@
 									</div>
 								</div>
 							</div>
-							
 							<div class="widget">
 								<div class="widget-head">
 									<div class="pull-left">创业状态列表</div>
@@ -125,7 +120,6 @@
 									<jsp:include page="control/pagination.jsp"/>
 								</div>
 							</div>
-							
 						</div>
 					</div>
 					<!-- row end -->
@@ -134,11 +128,9 @@
 		</div>
 		<div class="clearfix"></div>
 	</div>
-	
 	<!--
 	<jsp:include page="control/copy-rights.jsp"/>
 	-->
-	
 	<script src="${cdn}js/jquery.js"></script>
 	<script src="${cdn}js/bootstrap.js"></script>
 	<script src="${cdn}js/jquery-ui-1.9.2.custom.min.js"></script>
@@ -163,6 +155,5 @@
 	<script src="${cdn}js/filter.js"></script>
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
-	
 </body>
 </html>

@@ -29,12 +29,14 @@ import com.insoul.ti.req.ViewRequest;
  * @since 2015年7月4日 下午11:37:15
  */
 @Controller
-@RequestMapping("/pro")
+@RequestMapping("/phase")
 public class ProjectController extends WebBase {
+
+	private static final String PHASE_LIST = "phase_list";
 
 	@RequestMapping("/list")
 	public ModelAndView list(@Valid ProjectPhaseListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView("pro_list", request);
+		ModelAndView mv = createModelView(PHASE_LIST, request);
 		PageQuery query = request.init().getQuery();
 		ProjectPhaseCriteria criteria = new ProjectPhaseCriteria();
 		criteria.setLimit(query.getPage_size());
@@ -52,17 +54,17 @@ public class ProjectController extends WebBase {
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
-		ModelAndView mv = createModelView("pro_add", req);
-		mv.addObject("viewname", "pro_list");
+		ModelAndView mv = createModelView("phase_add", req);
+		mv.addObject("viewname", PHASE_LIST);
 		return mv;
 	}
 
 	@RequestMapping("/edit/{proId}")
 	public ModelAndView edit(@PathVariable Long proId, ViewRequest req) {
-		ModelAndView mv = createModelView("pro_edit", req);
+		ModelAndView mv = createModelView("phase_edit", req);
 		ProjectPhase phase = projectPhaseDAO.get(proId);
 		mv.addObject("phase", phase);
-		mv.addObject("viewname", "pro_list");
+		mv.addObject("viewname", PHASE_LIST);
 		return mv;
 	}
 
@@ -74,7 +76,7 @@ public class ProjectController extends WebBase {
 		phase.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
 		phase.setName(request.getName());
 		projectPhaseDAO.update(phase);
-		return new ModelAndView("redirect:/pro/list?id=" + proId);
+		return new ModelAndView("redirect:/phase/list?id=" + proId);
 	}
 
 	@RequestMapping("/save")
@@ -87,6 +89,6 @@ public class ProjectController extends WebBase {
 		phase.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
 		phase.setName(request.getName());
 		projectPhaseDAO.save(phase);
-		return new ModelAndView("redirect:/pro/list?id=" + phase.getId());
+		return new ModelAndView("redirect:/phase/list?id=" + phase.getId());
 	}
 }
