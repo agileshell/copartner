@@ -52,7 +52,9 @@ public class ProjectController extends WebBase {
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
-		return createModelView("pro_add", req);
+		ModelAndView mv = createModelView("pro_add", req);
+		mv.addObject("viewname", "pro_list");
+		return mv;
 	}
 
 	@RequestMapping("/edit/{proId}")
@@ -60,6 +62,7 @@ public class ProjectController extends WebBase {
 		ModelAndView mv = createModelView("pro_edit", req);
 		ProjectPhase phase = projectPhaseDAO.get(proId);
 		mv.addObject("phase", phase);
+		mv.addObject("viewname", "pro_list");
 		return mv;
 	}
 

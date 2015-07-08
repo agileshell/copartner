@@ -62,6 +62,7 @@ public class NewsController extends WebBase {
 	@RequestMapping("/detail/{newsId}")
 	public ModelAndView detail(@PathVariable Long newsId, ViewRequest req) {
 		ModelAndView mv = createModelView("news_detail", req);
+		mv.addObject("viewname", "news_list");
 		try {
 			News news = newsDAO.get(newsId);
 			mv.addObject("news", news);
@@ -74,7 +75,9 @@ public class NewsController extends WebBase {
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
-		return createModelView("news_add", req);
+		ModelAndView mv = createModelView("news_add", req);
+		mv.addObject("viewname", "news_list");
+		return mv;
 	}
 
 	@RequestMapping("/edit/{newsId}")
@@ -82,6 +85,7 @@ public class NewsController extends WebBase {
 		ModelAndView mv = createModelView("news_edit", req);
 		News news = newsDAO.get(newsId);
 		mv.addObject("news", news);
+		mv.addObject("viewname", "news_list");
 		return mv;
 	}
 

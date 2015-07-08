@@ -52,7 +52,9 @@ public class IndustryController extends WebBase {
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
-		return createModelView("industry_add", req);
+		ModelAndView mv = createModelView("industry_add", req);
+		mv.addObject("viewname", "industry_list");
+		return mv;
 	}
 
 	@RequestMapping("/edit/{industryId}")
@@ -60,6 +62,7 @@ public class IndustryController extends WebBase {
 		ModelAndView mv = createModelView("industry_edit", req);
 		IndustryDomain industry = industryDomainDAO.get(industryId);
 		mv.addObject("industry", industry);
+		mv.addObject("viewname", "industry_list");
 		return mv;
 	}
 

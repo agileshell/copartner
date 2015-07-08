@@ -53,6 +53,7 @@ public class UserController extends WebBase {
 	@RequestMapping("/detail/{userId}")
 	public ModelAndView detail(@PathVariable Long userId, ViewRequest req) {
 		ModelAndView mv = createModelView("user_detail", req);
+		mv.addObject("viewname", "user_list");
 		try {
 			User user = userDAO.get(userId);
 			mv.addObject("user", user);

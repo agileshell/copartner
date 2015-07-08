@@ -62,6 +62,7 @@ public class ContentController extends WebBase {
 	@RequestMapping("/detail/{contentId}")
 	public ModelAndView detail(@PathVariable Long contentId, ViewRequest req) {
 		ModelAndView mv = createModelView("content_detail", req);
+		mv.addObject("viewname", "content_list");
 		try {
 			Content content = contentDAO.get(contentId);
 			mv.addObject("content", content);
@@ -74,7 +75,9 @@ public class ContentController extends WebBase {
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
-		return createModelView("content_add", req);
+		ModelAndView mv = createModelView("content_add", req);
+		mv.addObject("viewname", "content_list");
+		return mv;
 	}
 
 	@RequestMapping("/edit/{contentId}")
@@ -82,6 +85,7 @@ public class ContentController extends WebBase {
 		ModelAndView mv = createModelView("content_edit", req);
 		Content content = contentDAO.get(contentId);
 		mv.addObject("content", content);
+		mv.addObject("viewname", "content_list");
 		return mv;
 	}
 

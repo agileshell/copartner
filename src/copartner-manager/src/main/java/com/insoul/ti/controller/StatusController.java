@@ -52,7 +52,9 @@ public class StatusController extends WebBase {
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
-		return createModelView("status_add", req);
+		ModelAndView mv = createModelView("status_add", req);
+		mv.addObject("viewname", "status_list");
+		return mv;
 	}
 
 	@RequestMapping("/edit/{statusId}")
@@ -60,6 +62,7 @@ public class StatusController extends WebBase {
 		ModelAndView mv = createModelView("status_edit", req);
 		StartupStatus status = startupStatusDAO.get(statusId);
 		mv.addObject("status", status);
+		mv.addObject("viewname", "status_list");
 		return mv;
 	}
 

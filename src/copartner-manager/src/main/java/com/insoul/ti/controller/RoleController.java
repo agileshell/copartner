@@ -52,7 +52,9 @@ public class RoleController extends WebBase {
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
-		return createModelView("role_add", req);
+		ModelAndView mv = createModelView("role_add", req);
+		mv.addObject("viewname", "role_list");
+		return mv;
 	}
 
 	@RequestMapping("/edit/{roleId}")
@@ -60,6 +62,7 @@ public class RoleController extends WebBase {
 		ModelAndView mv = createModelView("role_edit", req);
 		StartupRole role = startupRoleDAO.get(roleId);
 		mv.addObject("role", role);
+		mv.addObject("viewname", "role_list");
 		return mv;
 	}
 
