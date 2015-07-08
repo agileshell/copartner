@@ -11,4 +11,6 @@ public interface IContentDao extends IBaseDao<Content, Long> {
 
     Long countContent(ContentCriteria criteria);
 
+	long count();
+
 }

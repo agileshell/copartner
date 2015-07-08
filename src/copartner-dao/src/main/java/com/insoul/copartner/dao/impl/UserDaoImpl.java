@@ -51,6 +51,11 @@ public class UserDaoImpl extends BaseDaoImpl<User, Long>implements IUserDao {
 		return generateQuery(criteria, false).getResultList();
 	}
 
+	@Override
+	public long count() {
+		return ((java.math.BigInteger) createNativeQuery("SELECT COUNT(1) FROM user", new HashMap<String, Object>()).getSingleResult()).longValue();
+	}
+
 	private Query generateQuery(UserCriteria criteria, boolean isCount) {
 		StringBuilder conditionStr = new StringBuilder();
 		Map<String, Object> params = new HashMap<String, Object>();

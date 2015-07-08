@@ -28,6 +28,11 @@ public class ProjectDaoImpl extends BaseDaoImpl<Project, Long> implements IProje
 
         return count;
     }
+    
+    @Override
+	public long count() {
+		return ((java.math.BigInteger) createNativeQuery("SELECT COUNT(1) FROM project", new HashMap<String, Object>()).getSingleResult()).longValue();
+	}
 
     private Query generateQuery(ProjectCriteria criteria, boolean isCount) {
         StringBuilder conditionStr = new StringBuilder();

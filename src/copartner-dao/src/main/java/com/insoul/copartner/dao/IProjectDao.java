@@ -10,4 +10,6 @@ public interface IProjectDao extends IBaseDao<Project, Long> {
     List<Project> queryProject(ProjectCriteria criteria);
 
     Long countProject(ProjectCriteria criteria);
+
+	long count();
 }

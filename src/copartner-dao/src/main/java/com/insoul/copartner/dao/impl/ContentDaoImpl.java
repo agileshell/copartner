@@ -30,6 +30,11 @@ public class ContentDaoImpl extends BaseDaoImpl<Content, Long> implements IConte
 
         return count;
     }
+    
+    @Override
+	public long count() {
+		return ((java.math.BigInteger) createNativeQuery("SELECT COUNT(1) FROM content", new HashMap<String, Object>()).getSingleResult()).longValue();
+	}
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private Query generateQuery(ContentCriteria criteria, boolean isCount) {
