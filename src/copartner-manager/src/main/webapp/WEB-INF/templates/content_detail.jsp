@@ -10,7 +10,6 @@
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>创客管理平台--文章详情</title>
-
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
 	<link rel="stylesheet" href="${cdn}css/jquery-ui.css"></link>
@@ -23,13 +22,10 @@
 	<link rel="stylesheet" href="${cdn}css/bootstrap-switch.css"></link>
 	<link rel="stylesheet" href="${cdn}css/style.css"></link>
 	<link rel="stylesheet" href="${cdn}css/widgets.css"></link>
-	
 	<!--[if lt IE 9]>
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
-
 	<link rel="Shortcut Icon" href="${cdn}image/icon.png" />
-
 </head>
 <body>
 	<jsp:include page="control/header.jsp" />
@@ -73,7 +69,7 @@
 											<div class="form-group">
 												<label class="col-lg-5 control-label">封皮:</label>
 												<div class="col-lg-7">
-												<img alt="${content.title}" src="http://7xjbd9.com1.z0.glb.clouddn.com/${content.coverImg}"  width="500">
+												<img alt="${content.title}" src="http://7xjbd9.com1.z0.glb.clouddn.com/${content.coverImg}"></img>
 												</div>
 											</div>
 											
