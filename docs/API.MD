@@ -31,14 +31,14 @@
 | [projectPhases](#list-project-phases)| GET| NO| 获取项目阶段列表|
 | [teamSizes](#list-team-sizes)| GET| NO| 获取团队规模列表|
 |   |   |   |    |
-| [demands](#list-demand)| GET| NO| 获取需求列表|
-| [user/{userId}/demands](#list-user-demand)| POST| NO| 获取用户创建的需求列表|
-| [demand/{demandId}](#get-demand-detail)| GET| NO| 获取需求详情|
-| [demand](#create-demand)| POST| YES| 创建需求|
-| [demand/{demandId}](#delete-demand)| DELETE| YES| 删除需求|
-| [demand/{demandId}/like](#like-demand)| POST| YES| 关注需求|
-| [demand/{demandId}/like](#unlike-demand)| DELETE| YES| 取消关注需求|
-| [demand/{demandId}/comment](#comment-demand)| POST| YES| 评论需求|
+| [demands](#list-demand)| GET| NO| 获取融资/融智列表|
+| [user/{userId}/demands](#list-user-demand)| POST| NO| 获取用户创建的融资/融智列表|
+| [demand/{demandId}](#get-demand-detail)| GET| NO| 获取融资/融智详情|
+| [demand](#create-demand)| POST| YES| 创建融资/融智|
+| [demand/{demandId}](#delete-demand)| DELETE| YES| 删除融资/融智|
+| [demand/{demandId}/like](#like-demand)| POST| YES| 关注融资/融智|
+| [demand/{demandId}/like](#unlike-demand)| DELETE| YES| 取消关注融资/融智|
+| [demand/{demandId}/comment](#comment-demand)| POST| YES| 评论融资/融智|
 |   |   |   |    |
 | [projects](#list-project)| GET| NO| 获取项目列表|
 | [user/{userId}/projects](#list-user-project)| POST| NO| 获取用户创建的项目列表|
@@ -1390,7 +1390,7 @@
 
 #### List Demand
 
-获取需求列表.
+获取融资/融智列表.
 
 - **Request URL**
     `http://API_DOMAIN/demands`
@@ -1405,37 +1405,66 @@
 
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
-| type  | optional | int | 根据type过滤 |
+| type  | optional | int | 根据type过滤（默认），1融资 2融智 |
 | offset| optional | int | 每次获取的起始点，limit * 当前页码 或者 limit * (下一页码 - 1)， 默认值是0 |
 | limit | optional | int | 每次获取的数量，默认值是10|
 
 - **Response**
     ```
-    {
-        "body": {
-            "count": 1,
-            "list": [
-                {
-                    "commentCount": 0,
-                    "comments": [],
-                    "content": "123456789",
-                    "created": "2015-05-30 12:53:59",
-                    "likeCount": 0,
-                    "likers": [],
-                    "status": "active",
-                    "type": 1,
-                    "user": {
-                        "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png",
-                        "location": "上海|上海",
-                        "name": "15821512816",
-                        "role": "产品",
-                        "userId": 2
+ {
+    "body": {
+        "list": [
+            {
+                "projectName": "测试测试2",
+                "location": "宁夏",
+                "industryDomain": "互联网",
+                "teamSize": "100-499人",
+                "content": "内容就是内容",
+                "user": {
+                    "userId": 3,
+                    "name": "15821512816",
+                    "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png",
+                    "location": "上海|上海",
+                    "role": "产品"
+                },
+                "type": 2,
+                "status": "active",
+                "likeCount": 0,
+                "commentCount": 0,
+                "likers": [],
+                "created": "2015-07-12 22:02:21"
+            },
+            {
+                "projectName": "123456",
+                "location": "宁夏",
+                "industryDomain": "互联网",
+                "teamSize": "少于50人",
+                "content": "1111",
+                "user": {
+                    "userId": 3,
+                    "name": "15821512816",
+                    "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png",
+                    "location": "上海|上海",
+                    "role": "产品"
+                },
+                "type": 1,
+                "status": "active",
+                "likeCount": 0,
+                "commentCount": 0,
+                "likers": [
+                    {
+                        "userId": 2,
+                        "name": "test2",
+                        "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png"
                     }
-                }
-            ]
-        },
-        "status": "SUCCEED"
-    }
+                ],
+                "created": "2015-07-12 19:26:09"
+            }
+        ],
+        "count": 2
+    },
+    "status": "SUCCEED"
+}
     ```
 
 - **Error**
@@ -1457,7 +1486,7 @@
 
 #### List User Demand
 
-获取用户创建的需求列表.
+获取用户创建的融资/融智列表.
 
 - **Request URL**
     `http://API_DOMAIN/user/{userId}/demands`
@@ -1472,37 +1501,66 @@
 
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
-| type  | optional | int | 根据type过滤 |
+| type  | optional | int | 根据type过滤，1融资（默认） 2融智|
 | offset| optional | int | 每次获取的起始点，limit * 当前页码 或者 limit * (下一页码 - 1)， 默认值是0 |
 | limit | optional | int | 每次获取的数量，默认值是10|
 
 - **Response**
     ```
-    {
-        "body": {
-            "count": 1,
-            "list": [
-                {
-                    "commentCount": 0,
-                    "comments": [],
-                    "content": "123456789",
-                    "created": "2015-05-30 12:53:59",
-                    "likeCount": 0,
-                    "likers": [],
-                    "status": "active",
-                    "type": 1,
-                    "user": {
-                        "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png",
-                        "location": "上海|上海",
-                        "name": "15821512816",
-                        "role": "产品",
-                        "userId": 2
+{
+    "body": {
+        "list": [
+            {
+                "projectName": "测试测试2",
+                "location": "宁夏",
+                "industryDomain": "互联网",
+                "teamSize": "100-499人",
+                "content": "内容就是内容",
+                "user": {
+                    "userId": 3,
+                    "name": "15821512816",
+                    "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png",
+                    "location": "上海|上海",
+                    "role": "产品"
+                },
+                "type": 2,
+                "status": "active",
+                "likeCount": 0,
+                "commentCount": 0,
+                "likers": [],
+                "created": "2015-07-12 22:02:21"
+            },
+            {
+                "projectName": "123456",
+                "location": "宁夏",
+                "industryDomain": "互联网",
+                "teamSize": "少于50人",
+                "content": "1111",
+                "user": {
+                    "userId": 3,
+                    "name": "15821512816",
+                    "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png",
+                    "location": "上海|上海",
+                    "role": "产品"
+                },
+                "type": 1,
+                "status": "active",
+                "likeCount": 0,
+                "commentCount": 0,
+                "likers": [
+                    {
+                        "userId": 2,
+                        "name": "test2",
+                        "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png"
                     }
-                }
-            ]
-        },
-        "status": "SUCCEED"
-    }
+                ],
+                "created": "2015-07-12 19:26:09"
+            }
+        ],
+        "count": 2
+    },
+    "status": "SUCCEED"
+}
     ```
 
 - **Error**
@@ -1522,9 +1580,10 @@
 |:--------|:----------------|
 | 10000 | 参数错误 |
 
+
 #### Get Demand Detail
 
-获取需求详情.
+获取融资/融智详情.
 
 - **Request URL**
     `http://API_DOMAIN/demand/{demandId}`
@@ -1541,26 +1600,36 @@
 - **Response**
 
     ```
-    {
-        "body": {
-            "commentCount": 0,
-            "content": "123456789",
-            "created": "2015-05-30 12:53:59",
-            "likeCount": 0,
-            "likers": [],
-            "project": null,
-            "status": "active",
-            "type": 1,
-            "user": {
-                "avatar": "",
-                "location": "上海|上海",
-                "name": "15821512816",
-                "role": "产品",
-                "userId": 2
-            }
+{
+    "body": {
+        "user": {
+            "userId": 3,
+            "name": "15821512816",
+            "avatar": "http://120.24.228.100:8080/copartner/resources/images/default_avatar.png",
+            "location": "上海|上海",
+            "role": "产品"
         },
-        "status": "SUCCEED"
-    }
+        "type": 2,
+        "status": "active",
+        "projectName": "测试测试2",
+        "projectPhaseId": 1,
+        "projectPhase": "原型构建阶段",
+        "locationId": 31,
+        "location": "宁夏",
+        "industryDomainId": 1,
+        "industryDomain": "互联网",
+        "teamSizeId": 3,
+        "teamSize": "100-499人",
+        "advantage": "优势就是优势",
+        "content": "内容就是内容",
+        "contactPerson": "和禾",
+        "contact": "031-12345678",
+        "likeCount": 0,
+        "commentCount": 0,
+        "likers": []
+    },
+    "status": "SUCCEED"
+}
     ```
 
 - **Error**
@@ -1569,7 +1638,7 @@
         "body": {
             "error": {
                 "code": 30000,
-                "msg": "该需求不存在"
+                "msg": "该融资/融智不存在"
             }
         },
         "status": "FAILED"
@@ -1578,11 +1647,11 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 30000 | 该需求不存在 |
+| 30000 | 该融资/融智不存在 |
 
 #### Create Demand
 
- 创建需求.
+ 创建融资/融智.
 
 - **Request URL**
     `http://API_DOMAIN/demand`
@@ -1601,9 +1670,16 @@
 
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
-|content   |required |string |内容，<=200字|
-|type      |required |int |需求分类，1.创意交流 2.寻求搭档 3.寻求投资 |
-|projectId |optional |int |所关联的项目 |
+|type      |required |int |需求分类，1.融资 2.融智|
+|projectName   |required |string |项目名称，<=50字|
+|advantage|optional |string |项目优势，<=200字|
+|content|required |string |融资/融智要求，<=200字|
+|projectPhaseId  |required |long |项目阶段|
+|industryDomainId|required |long |项目所属领域|
+|locationId |required |long |项目所在地区|
+|teamSizeId   |required |long |团队规模|
+|contactPerson|optional |string |联系人，<=30字|
+|contact|optional |string |联系方式，<=30字|
 
 - **Response**
 
@@ -1630,12 +1706,10 @@
 | Code    |   Description   |
 |:--------|:----------------|
 | 10000 | 参数错误|
-| 30100 | 该项目不存在|
-| 30101 | 无权操作该项目|
 
 #### Delete Demand
 
- 删除需求.
+ 删除融资/融智.
 
 - **Request URL**
     `http://API_DOMAIN/demand/{demandId}`
@@ -1668,7 +1742,7 @@
         "body": {
             "error": {
                 "code": 30000,
-                "msg": "该需求不存在"
+                "msg": "该融资/融智不存在"
             }
         },
         "status": "FAILED"
@@ -1677,8 +1751,8 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 30000 | 该需求不存在|
-| 30001 | 无权操作该需求|
+| 30000 | 该融资/融智不存在|
+| 30001 | 无权操作该融资/融智|
 
 #### Like Demand
 
@@ -1715,7 +1789,7 @@
         "body": {
             "error": {
                 "code": 30000,
-                "msg": "该需求不存在"
+                "msg": "该融资/融智不存在"
             }
         },
         "status": "FAILED"
@@ -1724,11 +1798,11 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 30000 | 该需求不存在|
+| 30000 | 该融资/融智不存在|
 
 #### unlike Demand
 
- 取消关注需求.
+ 取消关注融资/融智.
 
 - **Request URL**
     `http://API_DOMAIN/demand/{demandId}/like`
@@ -1770,11 +1844,11 @@
 
 | Code    |   Description   |
 |:--------|:----------------|
-| 30000 | 该需求不存在|
+| 30000 | 该融资/融智不存在|
 
 #### Comment Demand
 
- 评论需求.
+ 评论融资/融智.
 
 - **Request URL**
     `http://API_DOMAIN/demand/{demandId}/comment`
@@ -1793,7 +1867,7 @@
 
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
-|demandId  |required |int |要评论的需求ID |
+|demandId  |required |int |要评论的融资/融智ID |
 |content   |required |string |评论内容|
 |parentId  |optional |int |父级评论ID，用作评论的评论 |
 
@@ -1822,7 +1896,7 @@
 | Code    |   Description   |
 |:--------|:----------------|
 | 10000 | 参数错误|
-| 30000 | 该需求不存在|
+| 30000 | 该融资/融智不存在|
 
 
 ### Project API
@@ -1987,7 +2061,7 @@
 |projectPhaseId  |required |long |项目阶段|
 |industryDomainId|required |long |项目所属领域|
 |locationId |required |long |项目所在地区|
-|teamSize   |required |long |团队规模|
+|teamSizeId   |required |long |团队规模|
 |contactPerson|optional |string |联系人，<=30字|
 |contact|optional |string |联系方式，<=30字|
 
