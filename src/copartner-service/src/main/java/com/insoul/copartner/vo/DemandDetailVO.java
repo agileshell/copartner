@@ -1,11 +1,7 @@
 package com.insoul.copartner.vo;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.insoul.copartner.util.CustomDateSerializer;
 
 public class DemandDetailVO implements Serializable {
 
@@ -13,22 +9,41 @@ public class DemandDetailVO implements Serializable {
 
     private UserBriefVO user;
 
-    private String content;
-
     private Byte type;
 
     private String status;
+
+    private String projectName;
+
+    private Long projectPhaseId;
+
+    private String projectPhase;
+
+    private Long locationId;
+
+    private String location;
+
+    private Long industryDomainId;
+
+    private String industryDomain;
+
+    private Long teamSizeId;
+
+    private String teamSize;
+
+    private String advantage;
+
+    private String content;
+
+    private String contactPerson;
+
+    private String contact;
 
     private Long likeCount;
 
     private Long commentCount;
 
-    private ProjectVO project;
-
     private Set<UserLeanVO> likers;
-
-    @JsonSerialize(using = CustomDateSerializer.class)
-    private Date created;
 
     public UserBriefVO getUser() {
         return user;
@@ -36,14 +51,6 @@ public class DemandDetailVO implements Serializable {
 
     public void setUser(UserBriefVO user) {
         this.user = user;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public Byte getType() {
@@ -62,6 +69,110 @@ public class DemandDetailVO implements Serializable {
         this.status = status;
     }
 
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public Long getProjectPhaseId() {
+        return projectPhaseId;
+    }
+
+    public void setProjectPhaseId(Long projectPhaseId) {
+        this.projectPhaseId = projectPhaseId;
+    }
+
+    public String getProjectPhase() {
+        return projectPhase;
+    }
+
+    public void setProjectPhase(String projectPhase) {
+        this.projectPhase = projectPhase;
+    }
+
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Long getIndustryDomainId() {
+        return industryDomainId;
+    }
+
+    public void setIndustryDomainId(Long industryDomainId) {
+        this.industryDomainId = industryDomainId;
+    }
+
+    public String getIndustryDomain() {
+        return industryDomain;
+    }
+
+    public void setIndustryDomain(String industryDomain) {
+        this.industryDomain = industryDomain;
+    }
+
+    public Long getTeamSizeId() {
+        return teamSizeId;
+    }
+
+    public void setTeamSizeId(Long teamSizeId) {
+        this.teamSizeId = teamSizeId;
+    }
+
+    public String getTeamSize() {
+        return teamSize;
+    }
+
+    public void setTeamSize(String teamSize) {
+        this.teamSize = teamSize;
+    }
+
+    public String getAdvantage() {
+        return advantage;
+    }
+
+    public void setAdvantage(String advantage) {
+        this.advantage = advantage;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
     public Long getLikeCount() {
         return likeCount;
     }
@@ -78,28 +189,12 @@ public class DemandDetailVO implements Serializable {
         this.commentCount = commentCount;
     }
 
-    public ProjectVO getProject() {
-        return project;
-    }
-
-    public void setProject(ProjectVO project) {
-        this.project = project;
-    }
-
     public Set<UserLeanVO> getLikers() {
         return likers;
     }
 
     public void setLikers(Set<UserLeanVO> likers) {
         this.likers = likers;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
     }
 
 }

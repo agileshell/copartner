@@ -18,8 +18,12 @@ import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.dao.IDemandCommentsDao;
 import com.insoul.copartner.dao.IDemandDao;
 import com.insoul.copartner.dao.IDemandLikersDao;
+import com.insoul.copartner.dao.IIndustryDomainDao;
+import com.insoul.copartner.dao.ILocationDao;
 import com.insoul.copartner.dao.IProjectDao;
+import com.insoul.copartner.dao.IProjectPhaseDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
+import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.dao.criteria.DemandCommentCriteria;
 import com.insoul.copartner.dao.criteria.DemandCriteria;
@@ -28,8 +32,11 @@ import com.insoul.copartner.domain.Demand;
 import com.insoul.copartner.domain.DemandComments;
 import com.insoul.copartner.domain.DemandLikers;
 import com.insoul.copartner.domain.DemandLikersId;
-import com.insoul.copartner.domain.Project;
+import com.insoul.copartner.domain.IndustryDomain;
+import com.insoul.copartner.domain.Location;
+import com.insoul.copartner.domain.ProjectPhase;
 import com.insoul.copartner.domain.StartupRole;
+import com.insoul.copartner.domain.TeamSize;
 import com.insoul.copartner.domain.User;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
@@ -40,7 +47,6 @@ import com.insoul.copartner.vo.CommentVO;
 import com.insoul.copartner.vo.DemandDetailVO;
 import com.insoul.copartner.vo.DemandVO;
 import com.insoul.copartner.vo.Pagination;
-import com.insoul.copartner.vo.ProjectVO;
 import com.insoul.copartner.vo.UserBriefVO;
 import com.insoul.copartner.vo.UserLeanVO;
 import com.insoul.copartner.vo.request.DemandAddRequest;
@@ -69,6 +75,18 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
     @Resource
     private IProjectDao projectDao;
 
+    @Resource
+    private ILocationDao locationDao;
+
+    @Resource
+    private IProjectPhaseDao projectPhaseDao;
+
+    @Resource
+    private IIndustryDomainDao industryDomainDao;
+
+    @Resource
+    private ITeamSizeDao teamSizeDao;
+
     @Override
     public Pagination<DemandVO> listDemands(DemandListRequest requestData) {
         DemandCriteria criteria = new DemandCriteria();
@@ -96,12 +114,31 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         }
 
         DemandDetailVO demandVO = new DemandDetailVO();
-        demandVO.setStatus(demand.getStatus());
-        demandVO.setContent(demand.getContent());
+        demandVO.setProjectName(demand.getProjectName());
         demandVO.setType(demand.getType());
+        demandVO.setStatus(demand.getStatus());
+
+        IndustryDomain industryDomain = industryDomainDao.get(demand.getIndustryDomainId());
+        demandVO.setIndustryDomain(industryDomain.getName());
+        demandVO.setIndustryDomainId(demand.getIndustryDomainId());
+
+        ProjectPhase projectPhase = projectPhaseDao.get(demand.getProjectPhaseId());
+        demandVO.setProjectPhaseId(demand.getProjectPhaseId());
+        demandVO.setProjectPhase(projectPhase.getName());
+
+        TeamSize teamSize = teamSizeDao.get(demand.getTeamSizeId());
+        demandVO.setTeamSizeId(demand.getTeamSizeId());
+        demandVO.setTeamSize(teamSize.getName());
+
+        demandVO.setLocationId(demand.getLocationId());
+        demandVO.setLocation(demand.getFullLocation());
+
+        demandVO.setAdvantage(demand.getAdvantage());
+        demandVO.setContent(demand.getContent());
         demandVO.setCommentCount(demand.getCommentCount());
         demandVO.setLikeCount(demand.getLikeCount());
-        demandVO.setCreated(demand.getCreated());
+        demandVO.setContactPerson(demand.getContactPerson());
+        demandVO.setContact(demand.getContact());
 
         User owner = userDao.get(demand.getUserId());
         UserBriefVO ownerVO = new UserBriefVO();
@@ -114,19 +151,6 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             ownerVO.setRole(startupRole.getName());
         }
         demandVO.setUser(ownerVO);
-
-        if (null != demand.getProjectId()) {
-            Project project = projectDao.get(demand.getProjectId());
-            if (null != project) {
-                ProjectVO projectVO = new ProjectVO();
-                projectVO.setName(project.getName());
-                projectVO.setLogo(CDNUtil.getFullPath(project.getLogo()));
-                projectVO.setContent(ContentUtil.splitAndFilterString(project.getContent(), 80));
-                projectVO.setLocation(project.getFullLocation());
-
-                demandVO.setProject(projectVO);
-            }
-        }
 
         List<DemandLikers> demandLikers = demandLikersDao.findByDemandId(demandId);
         Set<Long> likerIds = new HashSet<Long>();
@@ -153,20 +177,46 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
     public void createDemand(DemandAddRequest requestData) throws CException {
         long userId = getUserId();
         Demand demand = new Demand();
-        demand.setUserId(userId);
-        demand.setContent(requestData.getContent());
-        demand.setType(requestData.getType());
-        if (requestData.getType() > 1) {
-            Project project = projectDao.get(requestData.getProjectId());
-            if (null == project) {
-                throw CExceptionFactory.getException(CException.class, ResponseCode.PROJECT_NOT_EXIST);
-            }
-            if (!(project.getUserId().equals(userId))) {
-                throw CExceptionFactory.getException(CException.class, ResponseCode.PROJECT_NOT_BELONG_CURRENTUSER);
-            }
 
-            demand.setProjectId(requestData.getProjectId());
+        ProjectPhase projectPhase = projectPhaseDao.get(requestData.getProjectPhaseId());
+        if (null == projectPhase) {
+            throw CExceptionFactory.getException(CException.class, ResponseCode.PROJECT_PHASE_NOT_EXIST);
         }
+        demand.setProjectPhaseId(requestData.getProjectPhaseId());
+
+        IndustryDomain industryDomain = industryDomainDao.get(requestData.getIndustryDomainId());
+        if (null == industryDomain) {
+            throw CExceptionFactory.getException(CException.class, ResponseCode.INDUSTRY_DOMAIN_NOT_EXIST);
+        }
+        demand.setIndustryDomainId(requestData.getIndustryDomainId());
+
+        TeamSize teamSize = teamSizeDao.get(requestData.getTeamSizeId());
+        if (null == teamSize) {
+            throw CExceptionFactory.getException(CException.class, ResponseCode.TEAM_SIZE_NOT_EXIST);
+        }
+        demand.setTeamSizeId(requestData.getTeamSizeId());
+
+        Location location = locationDao.get(requestData.getLocationId());
+        if (null == location) {
+            throw CExceptionFactory.getException(CException.class, ResponseCode.LOCATION_NOT_EXIST);
+        }
+        // 缓存地区全名
+        StringBuilder fullLocation = new StringBuilder();
+        fullLocation.append(location.getName());
+        Location parentLocation = locationDao.get(location.getParentId());
+        if (null != parentLocation) {
+            fullLocation.append("|").append(parentLocation.getName());
+        }
+        demand.setFullLocation(fullLocation.toString());
+        demand.setLocationId(requestData.getLocationId());
+
+        demand.setUserId(userId);
+        demand.setProjectName(requestData.getProjectName());
+        demand.setType(requestData.getType());
+        demand.setAdvantage(requestData.getAdvantage());
+        demand.setContent(requestData.getContent());
+        demand.setContactPerson(requestData.getContactPerson());
+        demand.setContact(requestData.getContact());
         demand.setCreated(new Date());
 
         demandDao.save(demand);
@@ -253,12 +303,27 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
     }
 
     private List<DemandVO> formatDemands(List<Demand> demands) {
+        List<DemandVO> demandVOs = new ArrayList<DemandVO>();
+        if (demands == null || demands.isEmpty()) {
+            return demandVOs;
+        }
 
         Set<Long> demandIds = new HashSet<Long>();
         Set<Long> userIds = new HashSet<Long>();
         for (Demand demand : demands) {
             demandIds.add(demand.getId());
             userIds.add(demand.getUserId());
+        }
+
+        List<IndustryDomain> industryDomains = industryDomainDao.findAll();
+        Map<Long, String> domainIdMapName = new HashMap<Long, String>();
+        for (IndustryDomain industryDomain : industryDomains) {
+            domainIdMapName.put(industryDomain.getId(), industryDomain.getName());
+        }
+        List<TeamSize> teamSizes = teamSizeDao.findAll();
+        Map<Long, String> teamSizeIdMapName = new HashMap<Long, String>();
+        for (TeamSize teamSize : teamSizes) {
+            teamSizeIdMapName.put(teamSize.getId(), teamSize.getName());
         }
 
         List<StartupRole> startupRoles = startupRoleDao.findAll();
@@ -310,9 +375,12 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             userIdMapUser.put(user.getId(), userVO);
         }
 
-        List<DemandVO> demandVOs = new ArrayList<DemandVO>();
         for (Demand demand : demands) {
             DemandVO demandVO = new DemandVO();
+            demandVO.setProjectName(demand.getProjectName());
+            demandVO.setLocation(demand.getFullLocation());
+            demandVO.setIndustryDomain(domainIdMapName.get(demand.getIndustryDomainId()));
+            demandVO.setTeamSize(teamSizeIdMapName.get(demand.getTeamSizeId()));
             demandVO.setUser(userIdMapUserVO.get(demand.getUserId()));
             demandVO.setStatus(demand.getStatus());
             demandVO.setContent(ContentUtil.splitAndFilterString(demand.getContent(), 80));

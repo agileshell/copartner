@@ -1,11 +1,7 @@
 package com.insoul.copartner.vo;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.insoul.copartner.util.CustomDateSerializer;
 
 public class ProjectDetailVO implements Serializable {
 
@@ -18,9 +14,6 @@ public class ProjectDetailVO implements Serializable {
     private String content;
 
     private String status;
-
-    @JsonSerialize(using = CustomDateSerializer.class)
-    private Date initDate;
 
     private String projectPhase;
 
@@ -64,14 +57,6 @@ public class ProjectDetailVO implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Date getInitDate() {
-        return initDate;
-    }
-
-    public void setInitDate(Date initDate) {
-        this.initDate = initDate;
     }
 
     public String getProjectPhase() {
