@@ -391,8 +391,10 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
 
             Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
             Set<Long> ids = demandIdMapLikerIds.get(demand.getId());
-            for (Long id : ids) {
-                likers.add(userIdMapUser.get(id));
+            if (null != ids) {
+                for (Long id : ids) {
+                    likers.add(userIdMapUser.get(id));
+                }
             }
             demandVO.setLikers(likers);
 

@@ -1,13 +1,12 @@
 package com.insoul.copartner.vo.request;
 
-
 public class DemandListRequest extends PaginationRequest {
 
     private static final long serialVersionUID = -7650378463719813280L;
 
     private Long userId;
 
-    private Integer type;
+    private Integer type = 1;
 
     public Long getUserId() {
         return userId;
