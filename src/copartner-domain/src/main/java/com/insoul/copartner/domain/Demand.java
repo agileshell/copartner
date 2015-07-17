@@ -17,7 +17,7 @@ public class Demand extends BaseEntity {
     private Long userId;// 创建者，用户ID
 
     @Column(nullable = false)
-    private Byte type = 1; // 1.融资 2.融智
+    private Integer type = 1; // 1.融资 2.融智
 
     @Column(name = "project_name", nullable = false)
     private String projectName;// 项目名称
@@ -66,11 +66,11 @@ public class Demand extends BaseEntity {
         this.userId = userId;
     }
 
-    public Byte getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(Byte type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 

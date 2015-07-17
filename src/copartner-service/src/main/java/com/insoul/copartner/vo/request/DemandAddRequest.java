@@ -21,7 +21,7 @@ public class DemandAddRequest implements Serializable {
     @NotNull
     @Min(1)
     @Max(2)
-    private Byte type;
+    private Integer type;
 
     @NotNull
     private Long teamSizeId;// 团队规模
@@ -56,11 +56,11 @@ public class DemandAddRequest implements Serializable {
         ProjectName = projectName;
     }
 
-    public Byte getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(Byte type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 

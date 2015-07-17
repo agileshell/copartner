@@ -23,7 +23,7 @@ public class DemandVO implements Serializable {
 
     private UserBriefVO user;
 
-    private Byte type;
+    private Integer type;
 
     private String status;
 
@@ -84,11 +84,11 @@ public class DemandVO implements Serializable {
         this.user = user;
     }
 
-    public Byte getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(Byte type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
