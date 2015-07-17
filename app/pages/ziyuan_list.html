@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创客汇</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">公共资源</h1>
+		</header>
+		<div class="mui-content">
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+		 //启用双击监听
+		mui.init({
+			swipeBack: true, //启用右滑关闭功能
+			gestureConfig: {
+				doubletap: true
+			},
+			subpages: [{
+				id: 'ziyuan_list_sub',
+				url: 'ziyuan_list_sub.html',
+				styles: {
+					top: '45px',
+					bottom: '0px',
+				}
+			}],
+			preloadPages: [{
+				id: 'ziyuan_detail',
+				url: 'ziyuan_detail.html',
+				styles: {
+					popGesture: 'hide'
+				}
+			}]
+		});
+		var contentWebview = null;
+		document.querySelector('header').addEventListener('doubletap', function() {
+			if (contentWebview == null) {
+				contentWebview = plus.webview.currentWebview().children()[0];
+			}
+			if (mui.os.ios) {
+				contentWebview.evalJS("mui('#pullrefresh').pullRefresh().scrollTo(0,0,100)");
+			} else {
+				contentWebview.evalJS('mui.scrollTo(0, 100)');
+			}
+		});
+	</script>
+
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创客汇</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			span.mui-icon {
+				font-size: 14px;
+				color: #41AAF2;
+			}
+			.c-overlay .mui-bar-tab {
+				display: none;
+			}
+			.c-overlay .c-loader {
+				display: block;
+			}
+			.c-overlay .mui-content {
+				display: none;
+			}
+			.c-article-content {
+				margin-top: 45px;
+				margin-bottom: 55px;
+			}
+			.c-article-title {
+				padding: 5px 10px 0 10px;
+			}
+			.c-article-meta {
+				padding: 0 10px 10px 10px;
+				display: table;
+			}
+			.c-article-meta div {
+				height: 30px;
+				font-size: 15px;
+				display: table-cell;
+				vertical-align: middle;
+				color: gray;
+				padding: 0 5px;
+			}
+			.c-article-time {
+				font-weight: 600;
+			}
+			.c-article-article {
+				font-size: 15px;
+				padding: 0 15px;
+				color: #000;
+			}
+			.c-article-article ol {
+				margin: 0 0 0 20px;
+				padding: 0;
+			}
+			.c-article-article p {
+				color: #000;
+				font-size: 15px;
+				line-height: 23px;
+			}
+			.c-article-article img,
+			.c-article-article iframe {
+				max-width: 100%;
+				width: 100%;
+				height: auto;
+			}
+			embed,
+			object {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body class="c-overlay">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">资源详情</h1>
+		</header>
+		<nav class="mui-bar mui-bar-tab">
+			<a id="like" class="mui-tab-item" href="#">
+				<span class="mui-icon mui-icon-star" style="float: left; margin-left: 20px;"></span>
+			</a>
+			<a id="share" class="mui-tab-item" href="#">
+				<span class="mui-icon mui-icon-upload" style="float: right; margin-right: 20px;"></span>
+			</a>
+		</nav>
+		<div class="mui-content">
+			<div class="c-article-content">
+				<h4 id="c-article-title" class="c-article-title"></h4>
+				<div class="c-article-meta">
+					<div id="c-article-time" class="c-article-time"></div>
+				</div>
+				<div id="c-article-article" class="c-article-article">
+				</div>
+			</div>
+		</div>
+		<div id="loader" class="c-loader">加载中...</div>
+	</body>
+	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+	<script type="text/javascript">
+		var titleEl = document.getElementById("c-article-title");
+		var timeEl = document.getElementById("c-article-time");
+		var articleEl = document.getElementById("c-article-article");
+		var guid = '';
+		mui.init({
+			swipeBack: true, //启用右滑关闭功能
+			beforeback: function() {
+				setTimeout(function() {
+					titleEl.innerText = '';
+					timeEl.innerText = '';
+					articleEl.innerHTML = '';
+					document.body.classList.add('c-overlay');
+				}, 200);
+			}
+		});
+		mui('#c-article-article').on('tap', 'a', function() {
+			var url = this.href;
+			var protocol = /^([\w-]+:)\/\//.test(url) ? RegExp.$1 : '';
+			if (protocol === 'http:' || protocol === 'https:') { //外部链接
+				var browserMainWebview = plus.webview.getWebviewById('browser_main');
+				var browserWebview = plus.webview.getWebviewById('browser');
+				mui.fire(browserMainWebview, 'mui.view.beforeshow');
+				browserWebview.loadURL(url);
+				browserMainWebview.show('slide-in-bottom', 200);
+			}
+		});
+		(function($) {
+			document.addEventListener('mui.view.beforeshow', function(event) {
+				if (event.detail.$$type === 'back') {
+					setTimeout(function() {
+						document.body.classList.remove('c-overlay');
+					}, 500);
+					return;
+				}
+				document.body.classList.add('c-overlay');
+				var success = function(response) {
+						content = response.body;
+						console.log("content :" + JSON.stringify(content));
+						guid = content.contentId;
+						titleEl.innerText = content.title;
+						timeEl.innerText = content.created;
+						articleEl.innerHTML = content.article;
+						window.scrollTo(0, 0);
+						setTimeout(function() {
+							document.body.classList.remove('c-overlay');
+						}, 290);
+						//显示当前页面
+						mui.currentWebview.show();
+					},
+					error = function(errorType) {
+						mui.toast(app.ajaxErrorHandler(errorType));
+					};
+				app.getContentByGuid(event.detail.guid, success, error);
+			});
+			//分享
+			var Intent = null,
+				main = null;
+			// H5 plus事件处理
+			$.plusReady(function() {
+				Intent = plus.android.importClass("android.content.Intent");
+				main = plus.android.runtimeMainActivity();
+			});
+			document.getElementById("share").addEventListener('tap', function(event) {
+				event.stopPropagation();
+				var intent = new Intent(Intent.ACTION_SEND);
+				intent.setType("text/plain");
+				//TODO
+				intent.putExtra(Intent.EXTRA_TEXT, titleEl.innerText + '（' + guid + '）');
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				main.startActivity(Intent.createChooser(intent, "系统分享"));
+			});
+			//收藏
+			document.getElementById("like").addEventListener('tap', function(event) {
+				event.stopPropagation();
+				//TODO
+				mui.toast('收藏成功');
+			});
+		})(mui);
+	</script>
+
+</html>

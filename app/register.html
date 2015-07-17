@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创客汇</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<style>
+			.mui-input-group:first-child {
+				margin-top: 30px;
+			}
+			.mui-input-group label {
+				width: 22%;
+			}
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			.mui-content-padded {
+				margin-top: 30px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">账号注册</h1>
+		</header>
+		<div class="mui-content" style="padding-top: 45px;">
+			<form id='register-form' class="mui-input-group">
+				<div class="mui-input-row">
+					<input id='account' type="tel" class="mui-input" placeholder="手机号码">
+					<a id="sendcode" href="javascript:void(0);" class="send-code-btn">获取校验码</a>
+					<span id="second" class="send-code-num c-display-none"></span>
+				</div>
+				<div class="mui-input-row">
+					<input id='code' type="tel" class="mui-input-clear mui-input" placeholder="校验码">
+				</div>
+				<div class="mui-input-row">
+					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="60-20位字符，字母或数字">
+				</div>
+			</form>
+			<div class="mui-content-padded">
+				<button id='register' class="mui-btn mui-btn-block mui-btn-primary">立即注册</button>
+			</div>
+		</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script>
+			(function($, doc) {
+				$.plusReady(function() {
+					plus.screen.lockOrientation("portrait-primary");
+					var toProfilePage = function() {
+						var profilePage = null;
+						if (!profilePage) {
+							profilePage = plus.webview.getWebviewById('profile');
+						}
+						$.fire(profilePage, 'show', null);
+						setTimeout(function() {
+							$.openWindow({
+								id: 'profile',
+								show: {
+									aniShow: 'pop-in'
+								},
+								waiting: {
+									autoShow: false
+								}
+							});
+						}, 1000);
+					};
+					var sendcodeButton = doc.getElementById('sendcode'),
+						accountBox = doc.getElementById('account'),
+						passwordBox = doc.getElementById('password'),
+						codeBox = doc.getElementById('code'),
+						secondBox = doc.getElementById('second'),
+						registerButton = doc.getElementById('register');
+					sendcodeButton.addEventListener('tap', function() {
+						sendcodeButton.classList.add('c-display-none');
+						secondBox.classList.remove('c-display-none');
+						var t = 120;
+						secondBox.textContent = t + '秒';
+						//倒计时
+						var iID = setInterval(function() {
+							if (t > 0) {
+								t--;
+								secondBox.textContent = t + '秒';
+							} else {
+								clearInterval(iID);
+								sendcodeButton.classList.remove('c-display-none');
+								secondBox.classList.add('c-display-none');
+							}
+						}, 1000);
+						//发送code
+						app.getCode(accountBox.value, 'register', function(err) {
+							if (err) {
+								plus.nativeUI.toast(err);
+								//code发送失败则停止倒计时
+								clearInterval(iID);
+								sendcodeButton.classList.remove('c-display-none');
+								secondBox.classList.add('c-display-none');
+								return;
+							}
+						});
+					}, false);
+					registerButton.addEventListener('tap', function(event) {
+						var registInfo = {
+							account: accountBox.value,
+							password: passwordBox.value,
+							code: codeBox.value
+						};
+						var w = plus.nativeUI.showWaiting("　　 请等待...　　");
+						app.registry(registInfo, function(err) {
+							setTimeout(function() {
+								w.close();
+								if (err) {
+									plus.nativeUI.toast(err);
+									return;
+								}
+								plus.nativeUI.toast('账号注册成功');
+								toProfilePage();
+							}, 200);
+						});
+					});
+				});
+			}(mui, document));
+		</script>
+	</body>
+
+</html>

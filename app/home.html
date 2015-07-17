@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创客汇</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<style>
+			.mui-grid-view.mui-grid-9 {
+				background-color: #efeff4;
+			}
+			.mui-table-view:before,
+			.mui-table-view:after {
+				background-color: #efeff4;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="position: static;">
+			<h1 id="title" class="mui-title c-title"><span class="c-logo">创客汇</span></h1>
+		</header>
+		<div class="mui-content">
+			<ul id="list" class="mui-table-view mui-grid-view mui-grid-9">
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="pages/news_list.html">
+						<span class="home-grid c-news-icon"></span>
+						<div class="mui-media-body">最新动态</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="pages/zhengce_list.html">
+						<span class="home-grid c-zhengce-icon"></span>
+						<div class="mui-media-body">政策解读</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="pages/ziyuan_list.html">
+						<span class="home-grid c-resource-icon"></span>
+						<div class="mui-media-body">公共资源</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="#">
+						<span class="home-grid c-rzrh-icon"></span>
+						<div class="mui-media-body">融资融汇</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="#">
+						<span class="home-grid c-renmai-icon"></span>
+						<div class="mui-media-body">人脉</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="#">
+						<span class="home-grid c-community-icon"></span>
+						<div class="mui-media-body">创客汇</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="#">
+						<span class="home-grid c-tutor-icon"></span>
+						<div class="mui-media-body">创业导师</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="login1.html">
+						<span class="home-grid c-charging-icon"></span>
+						<div class="mui-media-body">充电站</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="login.html">
+						<span class="home-grid c-my-icon"></span>
+						<div class="mui-media-body">我</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script>
+			(function() {
+				mui.init();
+				mui.plusReady(function() {
+					plus.screen.lockOrientation("portrait-primary");
+					var showGuide = plus.storage.getItem("lauchFlag");
+					if (showGuide) {
+						//关闭splash页面；
+						plus.navigator.closeSplashscreen();
+						//预加载
+						preload();
+					} else {
+						//显示启动导航
+						mui.openWindow({
+							id: 'guide',
+							url: 'guide.html',
+							show: {
+								aniShow: 'none'
+							},
+							waiting: {
+								autoShow: false
+							}
+						});
+						//延迟的原因：优先打开启动导航页面，避免资源争夺
+						setTimeout(function() {
+							//预加载
+							preload();
+						}, 200);
+					}
+				});
+				//初始化，并预加载webview		
+				function preload() {
+					//内置浏览器
+					mui.preload({
+						url: "/browser.html",
+						id: "browser_main",
+						styles: {
+							popGesture: "hide"
+						},
+						subpages: [{
+							id: "browser",
+							url: "",
+							styles: {
+								top: "0px",
+								bottom: "44px"
+							}
+						}]
+					});
+					mui.preload({
+						url: "login.html",
+						id: "login",
+						styles: {
+							popGesture: "hide"
+						}
+					});
+					mui.preload({
+						url: "pages/news_list.html",
+						styles: {
+							popGesture: "hide"
+						}
+					});
+					mui.preload({
+						url: "pages/zhengce_list.html",
+						styles: {
+							popGesture: "hide"
+						}
+					});
+					mui.preload({
+						url: "pages/ziyuan_list.html",
+						styles: {
+							popGesture: "hide"
+						}
+					});
+				};
+				mui('#list').on('tap', 'a', function() {
+					var aniShow = "pop-in";
+					var id = this.getAttribute('href');
+					var href = this.href;
+					var webview_style = {
+						popGesture: "close"
+					};
+					mui.openWindow({
+						id: id,
+						url: this.href,
+						styles: webview_style,
+						show: {
+							aniShow: aniShow
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+				});
+				//退出应用
+				/*		mui.back = function() {
+							mui.confirm('确定退出应用？', '提示', ['确定', '取消'], function(e) {
+								if (e.index == 0) {
+									plus.runtime.quit();
+								}
+							});
+						};*/
+				var backButtonPress = 0;
+				mui.back = function(event) {
+					backButtonPress++;
+					if (backButtonPress > 1) {
+						plus.runtime.quit();
+					} else {
+						plus.nativeUI.toast('再按一次退出应用');
+					}
+					setTimeout(function() {
+						backButtonPress = 0;
+					}, 1000);
+					return false;
+				};
+			})();
+		</script>
+	</body>
+
+</html>
