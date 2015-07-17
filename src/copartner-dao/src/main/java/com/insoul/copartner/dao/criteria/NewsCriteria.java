@@ -1,48 +1,71 @@
 package com.insoul.copartner.dao.criteria;
 
+import java.util.Date;
+
 public class NewsCriteria extends PaginationCriteria {
 
-	private Long id;
+    private Long id;
 
-	private String title;
+    private String title;
 
-	private Integer type;
+    private Integer type;
 
-	private String[] status;
+    private String[] status;
 
-	public Integer getType() {
-		return type;
-	}
+    private Date from;
 
-	public void setType(Integer type) {
-		this.type = type;
-	}
+    private Date to;
 
-	public String[] getStatus() {
-		if (null == status || status.length <= 0) {
-			status = new String[] { "active", "inactive" };
-		}
+    public Integer getType() {
+        return type;
+    }
 
-		return status;
-	}
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
-	public void setStatus(String[] status) {
-		this.status = status;
-	}
+    public String[] getStatus() {
+        if (null == status || status.length <= 0) {
+            status = new String[] { "active", "inactive" };
+        }
 
-	public Long getId() {
-		return id;
-	}
+        return status;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setStatus(String[] status) {
+        this.status = status;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Date getFrom() {
+        return from;
+    }
+
+    public void setFrom(Date from) {
+        this.from = from;
+    }
+
+    public Date getTo() {
+        return to;
+    }
+
+    public void setTo(Date to) {
+        this.to = to;
+    }
+
 }

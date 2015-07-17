@@ -1,6 +1,10 @@
 package com.insoul.copartner.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.insoul.copartner.util.CustomDateSerializer;
 
 public class ContentVO implements Serializable {
 
@@ -17,6 +21,9 @@ public class ContentVO implements Serializable {
     private String coverImg;// 封皮
 
     private Long clicks = 0L;// 浏览次数
+
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date created;
 
     public Long getContentId() {
         return contentId;
@@ -64,6 +71,14 @@ public class ContentVO implements Serializable {
 
     public void setClicks(Long clicks) {
         this.clicks = clicks;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
 }

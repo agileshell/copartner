@@ -9,12 +9,32 @@ public class NewsListRequest extends PaginationRequest {
     @NotNull
     private Integer type = 1; // 默认 1行业
 
+    private Long from;
+
+    private Long to;
+
     public Integer getType() {
         return type;
     }
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Long getFrom() {
+        return from;
+    }
+
+    public void setFrom(Long from) {
+        this.from = from;
+    }
+
+    public Long getTo() {
+        return to;
+    }
+
+    public void setTo(Long to) {
+        this.to = to;
     }
 
 }

@@ -2414,6 +2414,8 @@ N/A
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
 | type  | optional | int | 根据type过滤， 1 政策解读，2 公共资源，默认值1。|
+| from  | optional | long | 该时间之后的content。|
+| to    | optional | long | 该时间之后的content。|
 | offset| optional | int | 每次获取的起始点，limit * 当前页码 或者 limit * (下一页码 - 1)， 默认值是0 |
 | limit | optional | int | 每次获取的数量，默认值是10|
 
@@ -2428,7 +2430,8 @@ N/A
                     "title": "政策解读1",
                     "synopsis": "政策解读的摘要",
                     "coverImg": "http://7xjbd9.com1.z0.glb.clouddn.com/bbbb.PNG",
-                    "clicks": 1
+                    "clicks": 1,
+                    "created":"2015-06-06 00:00:00"
                 }
             ],
             "count": 1
@@ -2482,7 +2485,7 @@ N/A
             "coverImg": "http://7xjbd9.com1.z0.glb.clouddn.com/bbbb.PNG",
             "article": "政策解读的内容呀",
             "clicks": 1,
-            "created": 1436093512000
+            "created":"2015-06-06 00:00:00"
         },
         "status": "SUCCEED"
     }
@@ -2524,6 +2527,8 @@ N/A
 |  Name| Requires| Type and Range| Description|
 |------|:--------|:--------------|:-----------|
 | type  | optional | int | 根据type过滤， 1 行业, 2 地方，默认值1。|
+| from  | optional | long | 该时间之后的news。|
+| to    | optional | long | 该时间之前的news。|
 | offset| optional | int | 每次获取的起始点，limit * 当前页码 或者 limit * (下一页码 - 1)， 默认值是0 |
 | limit | optional | int | 每次获取的数量，默认值是10|
 
@@ -2538,7 +2543,8 @@ N/A
                     "title": "最新动态1",
                     "synopsis": "最新动态的摘要",
                     "coverImg": "http://7xjbd9.com1.z0.glb.clouddn.com/bbbb.PNG",
-                    "clicks": 1
+                    "clicks": 1,
+                    "created":"2015-06-06 00:00:00"
                 }
             ],
             "count": 1
@@ -2592,7 +2598,7 @@ N/A
             "coverImg": "http://7xjbd9.com1.z0.glb.clouddn.com/bbbb.PNG",
             "article": "最新动态的内容呀",
             "clicks": 1,
-            "created": 1436093512000
+            "created":"2015-06-06 00:00:00"
         },
         "status": "SUCCEED"
     }

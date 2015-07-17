@@ -1,6 +1,7 @@
 package com.insoul.copartner.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -35,6 +36,10 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
         contentCriteria.setOffset(requestData.getOffset());
         contentCriteria.setLimit(requestData.getLimit());
         contentCriteria.setStatus(new String[] { "active" });
+        contentCriteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData
+                .getFrom()) : null);
+        contentCriteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
+                : null);
 
         Long count = contentDao.countContent(contentCriteria);
         List<Content> contents = contentDao.queryContent(contentCriteria);
@@ -46,6 +51,7 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
             contentVO.setSynopsis(content.getSynopsis());
             contentVO.setCoverImg(CDNUtil.getFullPath(content.getCoverImg()));
             contentVO.setClicks(content.getClicks());
+            contentVO.setCreated(content.getCreated());
 
             contentVOs.add(contentVO);
         }

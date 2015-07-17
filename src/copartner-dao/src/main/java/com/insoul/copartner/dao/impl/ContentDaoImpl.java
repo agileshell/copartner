@@ -30,11 +30,12 @@ public class ContentDaoImpl extends BaseDaoImpl<Content, Long> implements IConte
 
         return count;
     }
-    
+
     @Override
-	public long count() {
-		return ((java.math.BigInteger) createNativeQuery("SELECT COUNT(1) FROM content", new HashMap<String, Object>()).getSingleResult()).longValue();
-	}
+    public long count() {
+        return ((java.math.BigInteger) createNativeQuery("SELECT COUNT(1) FROM content", new HashMap<String, Object>())
+                .getSingleResult()).longValue();
+    }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private Query generateQuery(ContentCriteria criteria, boolean isCount) {
@@ -55,6 +56,14 @@ public class ContentDaoImpl extends BaseDaoImpl<Content, Long> implements IConte
         if (StringUtils.isNotBlank(criteria.getTitle())) {
             conditionStr.append(" AND title  like :title");
             params.put("title", "%" + criteria.getTitle() + "%");
+        }
+        if (null != criteria.getFrom()) {
+            conditionStr.append(" AND created >= :from");
+            params.put("from", criteria.getFrom());
+        }
+        if (null != criteria.getTo()) {
+            conditionStr.append(" AND created <= :to");
+            params.put("to", criteria.getTo());
         }
 
         Query query = null;

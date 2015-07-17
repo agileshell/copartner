@@ -1,6 +1,7 @@
 package com.insoul.copartner.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -35,6 +36,10 @@ public class NewsServiceImpl extends BaseServiceImpl implements INewsService {
         newsCriteria.setOffset(requestData.getOffset());
         newsCriteria.setLimit(requestData.getLimit());
         newsCriteria.setStatus(new String[] { "active" });
+        newsCriteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData
+                .getFrom()) : null);
+        newsCriteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
+                : null);
 
         Long count = newsDao.countNews(newsCriteria);
         List<News> newses = newsDao.queryNews(newsCriteria);
@@ -46,6 +51,7 @@ public class NewsServiceImpl extends BaseServiceImpl implements INewsService {
             newsVO.setSynopsis(news.getSynopsis());
             newsVO.setCoverImg(CDNUtil.getFullPath(news.getCoverImg()));
             newsVO.setClicks(news.getClicks());
+            newsVO.setCreated(news.getCreated());
 
             newsVOs.add(newsVO);
         }
