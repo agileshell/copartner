@@ -3,6 +3,9 @@ package com.insoul.copartner.vo;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.insoul.copartner.util.CustomDateSerializer;
+
 public class NewsDetailVO implements Serializable {
 
     private static final long serialVersionUID = 2426756979234920099L;
@@ -21,6 +24,7 @@ public class NewsDetailVO implements Serializable {
 
     private Long clicks = 0L;// 浏览次数
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
 
     public Long getNewsId() {
