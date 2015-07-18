@@ -58,11 +58,11 @@ public class ContentDaoImpl extends BaseDaoImpl<Content, Long> implements IConte
             params.put("title", "%" + criteria.getTitle() + "%");
         }
         if (null != criteria.getFrom()) {
-            conditionStr.append(" AND created >= :from");
+            conditionStr.append(" AND created > :from");
             params.put("from", criteria.getFrom());
         }
         if (null != criteria.getTo()) {
-            conditionStr.append(" AND created <= :to");
+            conditionStr.append(" AND created < :to");
             params.put("to", criteria.getTo());
         }
 
