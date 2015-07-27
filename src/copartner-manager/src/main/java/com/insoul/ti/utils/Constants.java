@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
  */
 public interface Constants {
 	
-	String ADMIN_NAME = "ADMIN_NAME";
+	String ADMIN_ONLINE = "admin_online";
 
 	String MAIL_SPLIT = ";";
 	

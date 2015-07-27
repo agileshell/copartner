@@ -1,5 +1,6 @@
 package com.insoul.ti.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.insoul.copartner.dao.criteria.UserCriteria;
 import com.insoul.copartner.domain.Admin;
 import com.insoul.copartner.domain.User;
+import com.insoul.copartner.util.IpUtil;
 import com.insoul.copartner.util.PasswordUtil;
 import com.insoul.ti.WebBase;
 import com.insoul.ti.req.PageQuery;
@@ -46,6 +48,10 @@ public class HomeController extends WebBase {
 		ModelAndView mv = createModelView("login");
 		return mv;
 	}
+	
+	public static void main(String[] args) {
+		System.out.println(PasswordUtil.encodePassword("123456", DEFAULT_ADMIN_SALT));
+	}
 
 	@RequestMapping("/login_action")
 	public ModelAndView login_action() {
@@ -59,8 +65,11 @@ public class HomeController extends WebBase {
 			return mv;
 		}
 		if (StringUtils.equals(PasswordUtil.encodePassword(password, DEFAULT_ADMIN_SALT), admin.getPassword())) {
+			admin.setLastLogin(new Date());
+			admin.setLastIp(IpUtil.ip2Long(IpUtil.getIpAddr(request)));
+			adminDAO.update(admin);
 			HttpSession session = request.getSession(true);
-			session.setAttribute(Constants.ADMIN_NAME, admin.getName());
+			session.setAttribute(Constants.ADMIN_ONLINE, admin);
 			return new ModelAndView("redirect:/home");
 		}
 		ModelAndView mv = createModelView("login");

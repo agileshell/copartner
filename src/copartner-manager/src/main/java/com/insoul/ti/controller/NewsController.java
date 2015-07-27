@@ -130,7 +130,7 @@ public class NewsController extends WebBase {
 		}
 		News news = new News();
 		news.setCoverImg(path);
-		news.setAdminUserId(0L);
+		news.setAdminUserId(getAdminId());
 		news.setArticle(request.getArticle());
 		news.setClicks(0L);
 		Date time = new Date();

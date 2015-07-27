@@ -25,6 +25,7 @@ import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IStartupStatusDao;
 import com.insoul.copartner.dao.ISystemSettingDao;
 import com.insoul.copartner.dao.IUserDao;
+import com.insoul.copartner.domain.Admin;
 import com.insoul.ti.req.ViewRequest;
 import com.insoul.ti.utils.Constants;
 
@@ -85,7 +86,7 @@ public class WebBase implements ServletContextAware {
 		mv.addObject("cdn", "/assets/");
 		mv.addObject("viewname", viewName);
 		HttpSession session = request.getSession();
-		mv.addObject(Constants.ADMIN_NAME, session.getAttribute(Constants.ADMIN_NAME));
+		mv.addObject(Constants.ADMIN_ONLINE, session.getAttribute(Constants.ADMIN_ONLINE));
 		return mv;
 	}
 
@@ -94,8 +95,17 @@ public class WebBase implements ServletContextAware {
 		mv.addObject("cdn", "/assets/");
 		mv.addObject("viewname", StringUtils.defaultIfBlank(req.getV(), viewName));
 		HttpSession session = request.getSession();
-		mv.addObject(Constants.ADMIN_NAME, session.getAttribute(Constants.ADMIN_NAME));
+		mv.addObject(Constants.ADMIN_ONLINE, session.getAttribute(Constants.ADMIN_ONLINE));
 		return mv;
+	}
+	
+	protected long getAdminId() {
+		HttpSession session = request.getSession();
+		Object admin = session.getAttribute(Constants.ADMIN_ONLINE);
+		if (admin == null) {
+			return 0L;
+		}
+		return ((Admin) admin).getId();
 	}
 
 	public ServletContext getServletContext() {

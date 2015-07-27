@@ -21,7 +21,7 @@
 			<ul class="nav navbar-nav pull-right">
 				<li class="dropdown pull-right">
 					<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-					<i class="icon-user"></i> ${ADMIN_NAME} <b class="caret"></b>
+					<i class="icon-user"></i> ${admin_online.name} <b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu">
 						<li><a href="#"><i class="icon-cogs"></i>设置</a></li>

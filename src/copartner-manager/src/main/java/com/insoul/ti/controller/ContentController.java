@@ -130,7 +130,7 @@ public class ContentController extends WebBase {
 		}
 		Content content = new Content();
 		content.setCoverImg(path);
-		content.setAdminUserId(0L);
+		content.setAdminUserId(getAdminId());
 		content.setArticle(request.getArticle());
 		content.setClicks(0L);
 		Date time = new Date();
