@@ -30,7 +30,7 @@
 						</div>
 						<div class="widget-content">
 							<div class="padd">
-								<form class="form-horizontal" action="/login" method="post">
+								<form class="form-horizontal" action="/login_action" method="post">
 									<input name="enter" type="hidden" value="false"></input>
 									<div class="form-group">
 										<label class="control-label col-lg-3" for="name">用户名:</label>

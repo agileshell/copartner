@@ -9,6 +9,8 @@ import java.nio.charset.Charset;
  * @since 2015年7月5日 下午11:02:00
  */
 public interface Constants {
+	
+	String ADMIN_NAME = "ADMIN_NAME";
 
 	String MAIL_SPLIT = ";";
 	

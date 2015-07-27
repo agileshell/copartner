@@ -21,11 +21,11 @@
 			<ul class="nav navbar-nav pull-right">
 				<li class="dropdown pull-right">
 					<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-					<i class="icon-user"></i> 刘飞 <b class="caret"></b>
+					<i class="icon-user"></i> ${ADMIN_NAME} <b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu">
 						<li><a href="#"><i class="icon-cogs"></i>设置</a></li>
-						<li><a href="#"><i class="icon-off"></i>退出</a></li>
+						<li><a href="/logout"><i class="icon-off"></i>退出</a></li>
 					</ul>
 				</li>
 			</ul>

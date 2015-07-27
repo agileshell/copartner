@@ -2,6 +2,8 @@ package com.insoul.ti;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -12,6 +14,7 @@ import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.insoul.copartner.dao.AdminDAO;
 import com.insoul.copartner.dao.IContentDao;
 import com.insoul.copartner.dao.IFeedbackDao;
 import com.insoul.copartner.dao.IIndustryDomainDao;
@@ -23,6 +26,7 @@ import com.insoul.copartner.dao.IStartupStatusDao;
 import com.insoul.copartner.dao.ISystemSettingDao;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.ti.req.ViewRequest;
+import com.insoul.ti.utils.Constants;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -63,17 +67,25 @@ public class WebBase implements ServletContextAware {
 	
 	@Resource
 	protected IProjectDao projectDAO;
+	
+	@Resource
+	protected AdminDAO adminDAO;
 
 	@Autowired
 	@Qualifier("multipartResolver")
 	protected CommonsMultipartResolver multipartResolver;
 
 	private ServletContext servletContext;
+	
+    @Autowired
+    protected HttpServletRequest request;
 
 	protected ModelAndView createModelView(String viewName) {
 		ModelAndView mv = new ModelAndView(viewName);
 		mv.addObject("cdn", "/assets/");
 		mv.addObject("viewname", viewName);
+		HttpSession session = request.getSession();
+		mv.addObject(Constants.ADMIN_NAME, session.getAttribute(Constants.ADMIN_NAME));
 		return mv;
 	}
 
@@ -81,6 +93,8 @@ public class WebBase implements ServletContextAware {
 		ModelAndView mv = new ModelAndView(viewName);
 		mv.addObject("cdn", "/assets/");
 		mv.addObject("viewname", StringUtils.defaultIfBlank(req.getV(), viewName));
+		HttpSession session = request.getSession();
+		mv.addObject(Constants.ADMIN_NAME, session.getAttribute(Constants.ADMIN_NAME));
 		return mv;
 	}
 
