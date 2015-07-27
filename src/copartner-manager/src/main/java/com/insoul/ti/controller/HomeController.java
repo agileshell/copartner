@@ -49,10 +49,6 @@ public class HomeController extends WebBase {
 		return mv;
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(PasswordUtil.encodePassword("123456", DEFAULT_ADMIN_SALT));
-	}
-
 	@RequestMapping("/login_action")
 	public ModelAndView login_action() {
 		String loginName = request.getParameter("name");
@@ -68,7 +64,7 @@ public class HomeController extends WebBase {
 			admin.setLastLogin(new Date());
 			admin.setLastIp(IpUtil.ip2Long(IpUtil.getIpAddr(request)));
 			adminDAO.update(admin);
-			HttpSession session = request.getSession(true);
+			HttpSession session = request.getSession();
 			session.setAttribute(Constants.ADMIN_ONLINE, admin);
 			return new ModelAndView("redirect:/home");
 		}

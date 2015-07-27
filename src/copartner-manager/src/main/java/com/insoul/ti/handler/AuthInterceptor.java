@@ -23,7 +23,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			response.sendRedirect("/login");
 			return false;
 		}
-		if (session.getAttribute(Constants.ADMIN_NAME) == null) {
+		if (session.getAttribute(Constants.ADMIN_ONLINE) == null) {
 			response.sendRedirect("/login");
 			return false;
 		}

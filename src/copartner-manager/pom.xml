@@ -16,6 +16,11 @@
 			<artifactId>copartner-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		  <dependency>
+	<groupId>javax.servlet</groupId>
+	<artifactId>jstl</artifactId>
+	<version>1.2</version>
+  </dependency>		
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
