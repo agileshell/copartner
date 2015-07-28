@@ -36,9 +36,14 @@ import com.insoul.ti.req.ViewRequest;
 @RequestMapping("/content")
 public class ContentController extends WebBase {
 
+	private static final String CONTENT_EDIT = "content_edit";
+	private static final String CONTENT_ADD = "content_add";
+	private static final String CONTENT_DETAIL = "content_detail";
+	private static final String CONTENT_LIST = "content_list";
+
 	@RequestMapping("/list")
 	public ModelAndView list(@Valid ContentListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView("content_list", request);
+		ModelAndView mv = createModelView(CONTENT_LIST, request);
 		PageQuery query = request.init().getQuery();
 		ContentCriteria criteria = new ContentCriteria();
 		criteria.setLimit(query.getPage_size());
@@ -61,8 +66,8 @@ public class ContentController extends WebBase {
 
 	@RequestMapping("/detail/{contentId}")
 	public ModelAndView detail(@PathVariable Long contentId, ViewRequest req) {
-		ModelAndView mv = createModelView("content_detail", req);
-		mv.addObject("viewname", "content_list");
+		ModelAndView mv = createModelView(CONTENT_DETAIL, req);
+		mv.addObject("viewname", CONTENT_LIST);
 		try {
 			Content content = contentDAO.get(contentId);
 			mv.addObject("content", content);
@@ -75,17 +80,17 @@ public class ContentController extends WebBase {
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
-		ModelAndView mv = createModelView("content_add", req);
-		mv.addObject("viewname", "content_list");
+		ModelAndView mv = createModelView(CONTENT_ADD, req);
+		mv.addObject("viewname", CONTENT_LIST);
 		return mv;
 	}
 
 	@RequestMapping("/edit/{contentId}")
 	public ModelAndView edit(@PathVariable Long contentId, ViewRequest req) {
-		ModelAndView mv = createModelView("content_edit", req);
+		ModelAndView mv = createModelView(CONTENT_EDIT, req);
 		Content content = contentDAO.get(contentId);
 		mv.addObject("content", content);
-		mv.addObject("viewname", "content_list");
+		mv.addObject("viewname", CONTENT_LIST);
 		return mv;
 	}
 

@@ -1,5 +1,7 @@
 package com.insoul.ti.req;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
  * 
@@ -24,21 +26,21 @@ public class NewsListRequest extends PageRequest {
 			sb.append("type").append("=").append(type);
 			appended = true;
 		}
-		if (status != null) {
+		if (StringUtils.isNotBlank(status)) {
 			if (appended) {
 				sb.append("&");
 			}
 			sb.append("status").append("=").append(status);
 			appended = true;
 		}
-		if (id != null) {
+		if (id != null && id > 0L) {
 			if (appended) {
 				sb.append("&");
 			}
 			sb.append("id").append("=").append(id);
 			appended = true;
 		}
-		if (title != null) {
+		if (StringUtils.isNotBlank(title)) {
 			if (appended) {
 				sb.append("&");
 			}

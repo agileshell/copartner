@@ -26,9 +26,11 @@ import com.insoul.ti.req.PageQuery;
 @RequestMapping("/feedback")
 public class FeedbackController extends WebBase {
 
+	private static final String FEEDBACK_LIST = "feedback_list";
+
 	@RequestMapping("/list")
 	public ModelAndView list(@Valid FeedbackListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView("feedback_list", request);
+		ModelAndView mv = createModelView(FEEDBACK_LIST, request);
 		PageQuery query = request.init().getQuery();
 		FeedbackCriteria criteria = new FeedbackCriteria();
 		criteria.setLimit(query.getPage_size());

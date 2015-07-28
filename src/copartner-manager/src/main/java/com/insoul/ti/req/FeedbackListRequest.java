@@ -1,5 +1,7 @@
 package com.insoul.ti.req;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
  * 
@@ -16,11 +18,11 @@ public class FeedbackListRequest extends PageRequest {
 	protected FeedbackListRequest Q() {
 		StringBuilder sb = new StringBuilder();
 		boolean appended = false;
-		if (userId != null) {
+		if (userId != null && userId > 0L) {
 			sb.append("userId").append("=").append(userId);
 			appended = true;
 		}
-		if (text != null) {
+		if (StringUtils.isNotBlank(text)) {
 			if (appended) {
 				sb.append("&");
 			}

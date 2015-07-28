@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 项目
  */
@@ -57,6 +59,20 @@ public class Project extends BaseEntity {
 
     @Column(name = "contact")
     private String contact;// 联系方式
+    
+    public String getShortContent() {
+    	if (StringUtils.length(content) < 11) {
+    		return content;
+    	}
+    	return StringUtils.substring(content, 0, 10) + "...";
+    }
+    
+    public String getShortAdvantage() {
+    	if (StringUtils.length(advantage) < 11) {
+    		return advantage;
+    	}
+    	return StringUtils.substring(advantage, 0, 10) + "...";
+    }
 
     public Long getUserId() {
         return userId;

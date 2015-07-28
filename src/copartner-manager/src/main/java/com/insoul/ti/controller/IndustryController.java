@@ -32,9 +32,13 @@ import com.insoul.ti.req.ViewRequest;
 @RequestMapping("/industry")
 public class IndustryController extends WebBase {
 
+	private static final String INDUSTRY_EDIT = "industry_edit";
+	private static final String INDUSTRY_ADD = "industry_add";
+	private static final String INDUSTRY_LIST = "industry_list";
+
 	@RequestMapping("/list")
 	public ModelAndView list(@Valid IndustryListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView("industry_list", request);
+		ModelAndView mv = createModelView(INDUSTRY_LIST, request);
 		PageQuery query = request.init().getQuery();
 		IndustryCriteria criteria = new IndustryCriteria();
 		criteria.setLimit(query.getPage_size());
@@ -47,22 +51,23 @@ public class IndustryController extends WebBase {
 		mv.addObject("industryList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		mv.addObject("req", request);
+		mv.addObject("viewname", MANAGER_VIEW_NAME);
 		return mv;
 	}
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
-		ModelAndView mv = createModelView("industry_add", req);
-		mv.addObject("viewname", "industry_list");
+		ModelAndView mv = createModelView(INDUSTRY_ADD, req);
+		mv.addObject("viewname", MANAGER_VIEW_NAME);
 		return mv;
 	}
 
 	@RequestMapping("/edit/{industryId}")
 	public ModelAndView edit(@PathVariable Long industryId, ViewRequest req) {
-		ModelAndView mv = createModelView("industry_edit", req);
+		ModelAndView mv = createModelView(INDUSTRY_EDIT, req);
 		IndustryDomain industry = industryDomainDAO.get(industryId);
 		mv.addObject("industry", industry);
-		mv.addObject("viewname", "industry_list");
+		mv.addObject("viewname", MANAGER_VIEW_NAME);
 		return mv;
 	}
 

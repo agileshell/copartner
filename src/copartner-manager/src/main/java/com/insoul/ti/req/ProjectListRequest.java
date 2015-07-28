@@ -8,27 +8,36 @@ import org.apache.commons.lang3.StringUtils;
  * @version 1.0.0
  * @since 2015年7月4日 下午7:02:30
  */
-public class StatusListRequest extends PageRequest {
+public class ProjectListRequest extends PageRequest {
 
 	private Long id;
 
 	private String name;
 
-	private Integer listed = 1;
+	private String content;// 实施条件
+
+	 private String status;
 
 	@Override
-	protected StatusListRequest Q() {
+	protected ProjectListRequest Q() {
 		StringBuilder sb = new StringBuilder();
 		boolean appended = false;
 		if (StringUtils.isNotBlank(name)) {
 			sb.append("name").append("=").append(name);
 			appended = true;
 		}
-		if (listed != null) {
+		if (StringUtils.isNotBlank(content)) {
 			if (appended) {
 				sb.append("&");
 			}
-			sb.append("listed").append("=").append(listed);
+			sb.append("content").append("=").append(content);
+			appended = true;
+		}
+		if (StringUtils.isNotBlank(status)) {
+			if (appended) {
+				sb.append("&");
+			}
+			sb.append("status").append("=").append(status);
 			appended = true;
 		}
 		if (id != null && id > 0L) {
@@ -58,11 +67,19 @@ public class StatusListRequest extends PageRequest {
 		this.name = name;
 	}
 
-	public Integer getListed() {
-		return listed;
+	public String getContent() {
+		return content;
 	}
 
-	public void setListed(Integer listed) {
-		this.listed = listed;
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

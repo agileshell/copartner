@@ -32,9 +32,13 @@ import com.insoul.ti.req.ViewRequest;
 @RequestMapping("/status")
 public class StatusController extends WebBase {
 
+	private static final String STATUS_EDIT = "status_edit";
+	private static final String STATUS_ADD = "status_add";
+	private static final String STATUS_LIST = "status_list";
+
 	@RequestMapping("/list")
 	public ModelAndView list(@Valid StatusListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView("status_list", request);
+		ModelAndView mv = createModelView(STATUS_LIST, request);
 		PageQuery query = request.init().getQuery();
 		StatusCriteria criteria = new StatusCriteria();
 		criteria.setLimit(query.getPage_size());
@@ -47,22 +51,23 @@ public class StatusController extends WebBase {
 		mv.addObject("statusList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		mv.addObject("req", request);
+		mv.addObject("viewname", MANAGER_VIEW_NAME);
 		return mv;
 	}
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
-		ModelAndView mv = createModelView("status_add", req);
-		mv.addObject("viewname", "status_list");
+		ModelAndView mv = createModelView(STATUS_ADD, req);
+		mv.addObject("viewname", MANAGER_VIEW_NAME);
 		return mv;
 	}
 
 	@RequestMapping("/edit/{statusId}")
 	public ModelAndView edit(@PathVariable Long statusId, ViewRequest req) {
-		ModelAndView mv = createModelView("status_edit", req);
+		ModelAndView mv = createModelView(STATUS_EDIT, req);
 		StartupStatus status = startupStatusDAO.get(statusId);
 		mv.addObject("status", status);
-		mv.addObject("viewname", "status_list");
+		mv.addObject("viewname", MANAGER_VIEW_NAME);
 		return mv;
 	}
 

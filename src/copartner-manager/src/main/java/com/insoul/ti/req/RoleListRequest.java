@@ -1,5 +1,7 @@
 package com.insoul.ti.req;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
  * 
@@ -18,7 +20,7 @@ public class RoleListRequest extends PageRequest {
 	protected RoleListRequest Q() {
 		StringBuilder sb = new StringBuilder();
 		boolean appended = false;
-		if (name != null) {
+		if (StringUtils.isNotBlank(name)) {
 			sb.append("name").append("=").append(name);
 			appended = true;
 		}
@@ -29,7 +31,7 @@ public class RoleListRequest extends PageRequest {
 			sb.append("listed").append("=").append(listed);
 			appended = true;
 		}
-		if (id != null) {
+		if (id != null && id > 0L) {
 			if (appended) {
 				sb.append("&");
 			}

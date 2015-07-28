@@ -32,9 +32,13 @@ import com.insoul.ti.req.ViewRequest;
 @RequestMapping("/role")
 public class RoleController extends WebBase {
 
+	private static final String ROLE_EDIT = "role_edit";
+	private static final String ROLE_ADD = "role_add";
+	private static final String ROLE_LIST = "role_list";
+
 	@RequestMapping("/list")
 	public ModelAndView list(@Valid RoleListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView("role_list", request);
+		ModelAndView mv = createModelView(ROLE_LIST, request);
 		PageQuery query = request.init().getQuery();
 		RoleCriteria criteria = new RoleCriteria();
 		criteria.setLimit(query.getPage_size());
@@ -47,22 +51,23 @@ public class RoleController extends WebBase {
 		mv.addObject("roleList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		mv.addObject("req", request);
+		mv.addObject("viewname", MANAGER_VIEW_NAME);
 		return mv;
 	}
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
-		ModelAndView mv = createModelView("role_add", req);
-		mv.addObject("viewname", "role_list");
+		ModelAndView mv = createModelView(ROLE_ADD, req);
+		mv.addObject("viewname", MANAGER_VIEW_NAME);
 		return mv;
 	}
 
 	@RequestMapping("/edit/{roleId}")
 	public ModelAndView edit(@PathVariable Long roleId, ViewRequest req) {
-		ModelAndView mv = createModelView("role_edit", req);
+		ModelAndView mv = createModelView(ROLE_EDIT, req);
 		StartupRole role = startupRoleDAO.get(roleId);
 		mv.addObject("role", role);
-		mv.addObject("viewname", "role_list");
+		mv.addObject("viewname", MANAGER_VIEW_NAME);
 		return mv;
 	}
 

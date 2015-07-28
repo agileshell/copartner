@@ -31,9 +31,12 @@ import com.insoul.ti.req.ViewRequest;
 @RequestMapping("/user")
 public class UserController extends WebBase {
 
+	private static final String USER_DETAIL = "user_detail";
+	private static final String USER_LIST = "user_list";
+
 	@RequestMapping("/list")
 	public ModelAndView list(@Valid UserListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView("user_list", request);
+		ModelAndView mv = createModelView(USER_LIST, request);
 		PageQuery query = request.init().getQuery();
 		UserCriteria criteria = new UserCriteria();
 		criteria.setLimit(query.getPage_size());
@@ -52,8 +55,8 @@ public class UserController extends WebBase {
 
 	@RequestMapping("/detail/{userId}")
 	public ModelAndView detail(@PathVariable Long userId, ViewRequest req) {
-		ModelAndView mv = createModelView("user_detail", req);
-		mv.addObject("viewname", "user_list");
+		ModelAndView mv = createModelView(USER_DETAIL, req);
+		mv.addObject("viewname", USER_LIST);
 		try {
 			User user = userDAO.get(userId);
 			mv.addObject("user", user);

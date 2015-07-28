@@ -32,6 +32,8 @@ import com.insoul.ti.req.ViewRequest;
 @RequestMapping("/phase")
 public class PhaseController extends WebBase {
 
+	private static final String PHASE_EDIT = "phase_edit";
+	private static final String PHASE_ADD = "phase_add";
 	private static final String PHASE_LIST = "phase_list";
 
 	@RequestMapping("/list")
@@ -49,22 +51,23 @@ public class PhaseController extends WebBase {
 		mv.addObject("phaseList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		mv.addObject("req", request);
+		mv.addObject("viewname", MANAGER_VIEW_NAME);
 		return mv;
 	}
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
-		ModelAndView mv = createModelView("phase_add", req);
-		mv.addObject("viewname", PHASE_LIST);
+		ModelAndView mv = createModelView(PHASE_ADD, req);
+		mv.addObject("viewname", MANAGER_VIEW_NAME);
 		return mv;
 	}
 
 	@RequestMapping("/edit/{proId}")
 	public ModelAndView edit(@PathVariable Long proId, ViewRequest req) {
-		ModelAndView mv = createModelView("phase_edit", req);
+		ModelAndView mv = createModelView(PHASE_EDIT, req);
 		ProjectPhase phase = projectPhaseDAO.get(proId);
 		mv.addObject("phase", phase);
-		mv.addObject("viewname", PHASE_LIST);
+		mv.addObject("viewname", MANAGER_VIEW_NAME);
 		return mv;
 	}
 

@@ -80,6 +80,8 @@ public class WebBase implements ServletContextAware {
 	
     @Autowired
     protected HttpServletRequest request;
+    
+    protected static final String MANAGER_VIEW_NAME = "manager";
 
 	protected ModelAndView createModelView(String viewName) {
 		ModelAndView mv = new ModelAndView(viewName);

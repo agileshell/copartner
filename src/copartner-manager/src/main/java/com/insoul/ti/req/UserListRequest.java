@@ -1,5 +1,7 @@
 package com.insoul.ti.req;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
  * 
@@ -20,25 +22,25 @@ public class UserListRequest extends PageRequest {
 	protected UserListRequest Q() {
 		StringBuilder sb = new StringBuilder();
 		boolean appended = false;
-		if (name != null) {
+		if (StringUtils.isNotBlank(name)) {
 			sb.append("name").append("=").append(name);
 			appended = true;
 		}
-		if (email != null) {
+		if (StringUtils.isNotBlank(email)) {
 			if (appended) {
 				sb.append("&");
 			}
 			sb.append("email").append("=").append(email);
 			appended = true;
 		}
-		if (id != null) {
+		if (id != null && id > 0L) {
 			if (appended) {
 				sb.append("&");
 			}
 			sb.append("id").append("=").append(id);
 			appended = true;
 		}
-		if (mobile != null) {
+		if (StringUtils.isNotBlank(mobile)) {
 			if (appended) {
 				sb.append("&");
 			}

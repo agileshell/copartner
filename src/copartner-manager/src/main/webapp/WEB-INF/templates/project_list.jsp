@@ -9,7 +9,7 @@
 	<meta name="keywords" content="dap" />
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>创客管理平台--意见反馈</title>
+	<title>创客管理平台--项目列表</title>
 	
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
@@ -37,9 +37,9 @@
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">意见反馈</h2>
+				<h2 class="pull-left">项目列表</h2>
 				<div class="bread-crumb pull-right">
-					<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>意见反馈
+					<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>项目列表
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -51,15 +51,28 @@
 							<div class="widget">
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/feedback/list" method="get">
+										<form class="form-horizontal" role="form" action="/project/list" method="get">
 											<div class="form-group">
-												<label class="col-lg-2 control-label" for="userId">用户ID:</label>
+												<label class="col-lg-2 control-label" for="id">ID:</label>
 												<div class="col-lg-4">
-													<input name="userId" id="userId" value="${req.userId}" type="text" class="form-control" placeholder="用户ID">
+													<input name="id" id="id" value="${req.id}" type="text" class="form-control" placeholder="项目ID">
 												</div>
-												<label class="col-lg-2 control-label" for="text">反馈内容:</label>
+												<label class="col-lg-2 control-label" for="title">项目名称:</label>
 												<div class="col-lg-4">
-													<input name="text" id="text" value="${req.text}" type="text" class="form-control" placeholder="反馈内容">
+													<input name="name" id="name" value="${req.name}" type="text" class="form-control" placeholder="项目名称">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-2 control-label" for="type">实施条件:</label>
+												<div class="col-lg-4">
+													<input name="content" id="content" value="${req.content}" type="text" class="form-control" placeholder="实施条件">
+												</div>
+												<label class="col-lg-2 control-label" for="type">项目状态:</label>
+												<div class="col-lg-4">
+													<jsp:include page="control/commons-status.jsp">
+														<jsp:param value="${req.status}" name="status"/>
+														<jsp:param value="true" name="has_all"/>
+													</jsp:include>
 												</div>
 												<div class="col-lg-2">
 													<button type="submit" class="btn btn-default">查询</button>
@@ -71,7 +84,7 @@
 							</div>
 							<div class="widget">
 								<div class="widget-head">
-									<div class="pull-left">意见反馈</div>
+									<div class="pull-left">项目列表</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
@@ -79,30 +92,46 @@
 										<thead>
 											<tr>
 												<th>ID</th>
-												<th>反馈人</th>
-												<th>反馈内容</th>
-												<th>反馈时间</th>
+												<th>创建者</th>
+												<th>项目名称</th>
+												<th>优势</th>
+												<th>实施条件</th>
+												<th>收藏</th>
+												<th>评论</th>
+												<th>状态</th>
+												<th>联系人</th>
+												<th>联系方式</th>
+												<th>发起时间</th>
 												<th>操作</th>
 											</tr>
 										</thead>
 										<tbody>
 											<c:if test="${!success}">
-												<tr><td colspan="5" style="text-align: center;">空空如也!!!</td></tr>
+												<tr><td colspan="12" style="text-align: center;">空空如也!!!</td></tr>
 											</c:if>
 											<c:if test="${success}">
-												<c:forEach var="c" items="${feedbackList}" varStatus="status">
+												<c:forEach var="c" items="${projectList}" varStatus="status">
 													<tr>
 														<td>${c.id}</td>
+														<td><a href="/user/detail/${c.userId}">${c.userId}</a></td>
+														<td>${c.name}</td>
+														<td>${c.shortAdvantage}</td>
+														<td>${c.shortContent}</td>
+														<td>${c.likeCount}</td>
+														<td>${c.commentCount}</td>
 														<td>
-															<a class="btn btn-xs btn-default" href="/user/detail/${c.userId}">
-																${c.userId}
-															</a>
+															<c:if test="${c.status == 'active'}"> 激活 </c:if>
+															<c:if test="${c.status == 'inactive'}"> 无效 </c:if>
+															<c:if test="${c.status == 'deleted'}"> 已删除 </c:if>
 														</td>
-														<td>${c.text}</td>
+														<td>${c.contactPerson}</td>
+														<td>${c.contact}</td>
 														<td>${c.gmtcreated}</td>
 														<td>
 															<div class="btn-group">
-																回复意见反馈
+																<a class="btn btn-xs btn-default" href="/project/detail/${c.id}">
+																	详情
+																</a>
 															</div>
 														</td>
 													</tr>

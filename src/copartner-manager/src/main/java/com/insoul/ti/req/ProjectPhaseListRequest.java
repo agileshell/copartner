@@ -1,5 +1,7 @@
 package com.insoul.ti.req;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
  *
@@ -18,7 +20,7 @@ public class ProjectPhaseListRequest extends PageRequest {
 	protected ProjectPhaseListRequest Q() {
 		StringBuilder sb = new StringBuilder();
 		boolean appended = false;
-		if (name != null) {
+		if (StringUtils.isNotBlank(name)) {
 			sb.append("name").append("=").append(name);
 			appended = true;
 		}

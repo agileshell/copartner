@@ -18,16 +18,10 @@
 			<a <c:if test="${viewname == 'news_list'}"> class="open" </c:if> href="/news/list"><i class="icon-bar-chart"></i>新闻管理</a>
 		</li>
         <li>
-			<a <c:if test="${viewname == 'industry_list'}"> class="open" </c:if> href="/industry/list"><i class="icon-bar-chart"></i>行业管理</a>
+			<a <c:if test="${viewname == 'project_list'}"> class="open" </c:if> href="/project/list"><i class="icon-bar-chart"></i>项目管理</a>
 		</li>
         <li>
-			<a <c:if test="${viewname == 'phase_list'}"> class="open" </c:if> href="/phase/list"><i class="icon-bar-chart"></i>阶段管理</a>
-		</li>
-        <li>
-			<a <c:if test="${viewname == 'role_list'}"> class="open" </c:if> href="/role/list"><i class="icon-bar-chart"></i>角色管理</a>
-		</li>
-        <li>
-			<a <c:if test="${viewname == 'status_list'}"> class="open" </c:if> href="/status/list"><i class="icon-bar-chart"></i>状态管理</a>
+			<a <c:if test="${viewname == 'manager'}"> class="open" </c:if> href="/commons/manager"><i class="icon-bar-chart"></i>资源管理</a>
 		</li>
         <li>
 			<a <c:if test="${viewname == 'feedback_list'}"> class="open" </c:if> href="/feedback/list"><i class="icon-list-alt"></i>意见反馈</a>

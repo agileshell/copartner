@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.insoul.copartner.dao.IProjectDao;
@@ -25,7 +26,6 @@ public class ProjectDaoImpl extends BaseDaoImpl<Project, Long> implements IProje
     @Override
     public Long countProject(ProjectCriteria criteria) {
         Long count = (Long) generateQuery(criteria, true).getSingleResult();
-
         return count;
     }
     
@@ -37,15 +37,26 @@ public class ProjectDaoImpl extends BaseDaoImpl<Project, Long> implements IProje
     private Query generateQuery(ProjectCriteria criteria, boolean isCount) {
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
-        if (null != criteria.getUserId()) {
+        if (null != criteria.getUserId() && criteria.getUserId() > 0L) {
             conditionStr.append(" AND userId = :userId");
             params.put("userId", criteria.getUserId());
+        }
+        if (null != criteria.getId() && criteria.getId() > 0L) {
+            conditionStr.append(" AND id = :id");
+            params.put("id", criteria.getId());
         }
         if (null != criteria.getStatus() && criteria.getStatus().length > 0) {
             conditionStr.append(" AND status IN(:status)");
             params.put("status", Arrays.asList(criteria.getStatus()));
         }
-
+        if (StringUtils.isNotBlank(criteria.getName())) {
+        	conditionStr.append(" AND name like :name");
+            params.put("name", "%" + criteria.getName() + "%");
+        }
+        if (StringUtils.isNotBlank(criteria.getContent())) {
+        	conditionStr.append(" AND content like :content");
+            params.put("content", "%" + criteria.getContent() + "%");
+        }
         Query query = null;
         StringBuilder hql = new StringBuilder();
         if (isCount) {

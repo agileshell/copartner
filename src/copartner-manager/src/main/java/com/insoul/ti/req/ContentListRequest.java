@@ -1,5 +1,7 @@
 package com.insoul.ti.req;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
  * 
@@ -20,11 +22,11 @@ public class ContentListRequest extends PageRequest {
 	protected ContentListRequest Q() {
 		StringBuilder sb = new StringBuilder();
 		boolean appended = false;
-		if (type != null) {
+		if (type != null && type > 0L) {
 			sb.append("type").append("=").append(type);
 			appended = true;
 		}
-		if (status != null) {
+		if (StringUtils.isNotBlank(status)) {
 			if (appended) {
 				sb.append("&");
 			}
@@ -38,7 +40,7 @@ public class ContentListRequest extends PageRequest {
 			sb.append("id").append("=").append(id);
 			appended = true;
 		}
-		if (title != null) {
+		if (StringUtils.isNotBlank(title)) {
 			if (appended) {
 				sb.append("&");
 			}
