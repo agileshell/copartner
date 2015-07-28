@@ -24,6 +24,7 @@ import com.insoul.copartner.dao.IProjectPhaseDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IStartupStatusDao;
 import com.insoul.copartner.dao.ISystemSettingDao;
+import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.domain.Admin;
 import com.insoul.ti.req.ViewRequest;
@@ -71,6 +72,9 @@ public class WebBase implements ServletContextAware {
 	
 	@Resource
 	protected AdminDAO adminDAO;
+	
+	@Resource
+	protected ITeamSizeDao teamSizeDAO;
 
 	@Autowired
 	@Qualifier("multipartResolver")

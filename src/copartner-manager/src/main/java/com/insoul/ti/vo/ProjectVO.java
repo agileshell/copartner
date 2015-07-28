@@ -8,6 +8,8 @@ package com.insoul.ti.vo;
  */
 public class ProjectVO extends BaseVO {
 	
+	private Long userId;// 创建者，用户ID
+	
 	private String userName;// 创建者
 
     private String name;// 项目名称
@@ -35,6 +37,14 @@ public class ProjectVO extends BaseVO {
     private String contactPerson;// 联系人
 
     private String contact;// 联系方式
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
 	public String getUserName() {
 		return userName;

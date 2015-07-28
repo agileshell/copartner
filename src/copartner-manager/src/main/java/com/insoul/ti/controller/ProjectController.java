@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.insoul.copartner.dao.criteria.ProjectCriteria;
+import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Project;
+import com.insoul.copartner.domain.ProjectPhase;
+import com.insoul.copartner.domain.TeamSize;
+import com.insoul.copartner.domain.User;
 import com.insoul.ti.WebBase;
 import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.ProjectListRequest;
@@ -66,7 +70,29 @@ public class ProjectController extends WebBase {
 	
 	private ProjectVO getProject(Long projectId) {
 		ProjectVO vo = new ProjectVO();
-		
+		Project p = projectDAO.get(projectId);
+		vo.setAdvantage(p.getAdvantage());
+		vo.setCommentCount(p.getCommentCount());
+		vo.setContact(p.getContact());
+		vo.setContactPerson(p.getContactPerson());
+		vo.setContent(p.getContent());
+		vo.setCreated(p.getCreated());
+		vo.setFullLocation(p.getFullLocation());
+		vo.setId(p.getId());
+		vo.setLikeCount(p.getLikeCount());
+		vo.setLogo(p.getLogo());
+		vo.setName(p.getName());
+		vo.setStatus(p.getStatus());
+		vo.setUpdated(p.getUpdated());
+		vo.setUserId(p.getUserId());
+		IndustryDomain i = industryDomainDAO.get(p.getIndustryDomainId());
+		if (i != null) vo.setIndustryDomainName(i.getName());
+		ProjectPhase pp = projectPhaseDAO.get(p.getProjectPhaseId());
+		if (pp != null) vo.setProjectPhaseName(pp.getName());
+		TeamSize tz = teamSizeDAO.get(p.getTeamSizeId());
+		if (tz != null) vo.setTeamSizeName(tz.getName());
+		User u = userDAO.get(p.getUserId());
+		if (u != null) vo.setUserName(u.getName());
 		return vo;
 	}
 }
