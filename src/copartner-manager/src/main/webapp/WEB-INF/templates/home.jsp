@@ -65,7 +65,7 @@
 											<div class="col-md-4">
 												<div class="well">
 													<h2>${project_count}</h2>
-													<p>项目总数</p>
+													<p><a href="/project/list">项目总数</a></p>
 												</div>
 											</div>
 											<div class="col-md-4">
