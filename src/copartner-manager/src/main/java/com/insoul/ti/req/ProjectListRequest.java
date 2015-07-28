@@ -10,13 +10,15 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class ProjectListRequest extends PageRequest {
 
+	private static final String ACTIVE = "active";
+
 	private Long id;
 
 	private String name = StringUtils.EMPTY;
 
 	private String content = StringUtils.EMPTY;// 实施条件
 
-	 private String status = StringUtils.EMPTY;
+	 private String status = ACTIVE;
 
 	@Override
 	protected ProjectListRequest Q() {
@@ -74,8 +76,11 @@ public class ProjectListRequest extends PageRequest {
 	public void setContent(String content) {
 		this.content = content;
 	}
-
+	
 	public String getStatus() {
+		if (status == null || status.length() <= 0) {
+			status = ACTIVE;
+		}
 		return status;
 	}
 

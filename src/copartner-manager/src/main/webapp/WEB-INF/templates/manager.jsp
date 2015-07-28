@@ -52,9 +52,9 @@
 							<div class="widget wred">
 								<div class="widget-content">
 									<div class="padd">
-										<div class="btn-group">
+										<div class="btn-group" style="margin-right: 10em">
 					                      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					                      <i class="icon-fire"></i>行业管理<span class="label label-info">2</span> 
+					                      行业管理
 					                      <span class="caret"></span></button>
 					                      <ul class="dropdown-menu">
 					                        <li><a href="/industry/list">行业列表</a></li>
@@ -63,9 +63,9 @@
 					                      </ul>
 					                    </div>
 					                    
-					                    <div class="btn-group">
+					                    <div class="btn-group" style="margin-right: 10em">
 					                      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					                      <i class="icon-flag-alt"></i>项目阶段管理<span class="label label-primary">2</span> 
+					                      项目阶段管理
 					                      <span class="caret"></span></button>
 					                      <ul class="dropdown-menu">
 					                        <li><a href="/phase/list">项目阶段列表</a></li>
@@ -74,9 +74,9 @@
 					                      </ul>
 					                    </div>
 					                    
-					                    <div class="btn-group">
+					                    <div class="btn-group" style="margin-right: 10em">
 					                      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					                      <i class="icon-user-md"></i>角色管理<span class="label label-primary">2</span> 
+					                      角色管理
 					                      <span class="caret"></span></button>
 					                      <ul class="dropdown-menu">
 					                        <li><a href="/role/list">角色列表</a></li>
@@ -87,7 +87,7 @@
 					                    
 					                    <div class="btn-group">
 					                      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					                      <i class="icon-shield"></i>状态管理<span class="label label-primary">2</span>
+					                      状态管理
 					                      <span class="caret"></span></button>
 					                      <ul class="dropdown-menu">
 					                        <li><a href="/status/list">状态列表</a></li>
