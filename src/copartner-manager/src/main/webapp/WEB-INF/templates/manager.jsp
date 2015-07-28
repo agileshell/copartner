@@ -40,7 +40,7 @@
 			<div class="page-head">
 				<h2 class="pull-left">资源管理</h2>
 				<div class="bread-crumb pull-right">
-					<a class="btn btn-default btn-sm" href="add">资源管理</a>
+					<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>资源管理
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -48,78 +48,57 @@
 				<div class="container">
 					<!--row start-->
 					<div class="row">
-						<div class="col-md-4">
-				          <ul class="nav nav-pills">
-				          
-				            <li class="dropdown dropdown-big">
-				              <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-				                <i class="icon-comments"></i>行业管理<span class="label label-info">2</span> 
-				              </a>
-				                <ul class="dropdown-menu">
-				                  <li>
-				                    <h6><a href="/industry/list">行业列表</a></h6>
-				                    <div class="clearfix"></div>
-				                    <hr />
-				                  </li>
-				                  <li>
-				                    <h6><a href="/industry/add">新建行业</a></h6>
-				                    <div class="clearfix"></div>
-				                    <hr />
-				                  </li>
-				                </ul>
-				            </li>
-				            <li class="dropdown dropdown-big">
-				              <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-				                <i class="icon-envelope-alt"></i>项目阶段管理<span class="label label-primary">2</span> 
-				              </a>
-				                <ul class="dropdown-menu">
-				                  <li>
-				                    <h6><a href="/phase/list">项目阶段列表</a></h6>
-				                    <div class="clearfix"></div>
-				                    <hr />
-				                  </li>
-				                  <li>
-				                    <h6><a href="/phase/add">添加项目阶段</a></h6>
-				                    <div class="clearfix"></div>
-				                    <hr />
-				                  </li>
-				                </ul>
-				            </li>
-				            <li class="dropdown dropdown-big">
-				              <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-				                <i class="icon-envelope-alt"></i>角色管理<span class="label label-primary">2</span> 
-				              </a>
-				                <ul class="dropdown-menu">
-				                  <li>
-				                    <h6><a href="/role/list">角色列表</a></h6>
-				                    <div class="clearfix"></div>
-				                    <hr />
-				                  </li>
-				                  <li>
-				                    <h6><a href="/role/add">添加角色</a></h6>
-				                    <div class="clearfix"></div>
-				                    <hr />
-				                  </li>
-				                </ul>
-				            </li>
-				            <li class="dropdown dropdown-big">
-				              <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-				                <i class="icon-envelope-alt"></i>状态管理<span class="label label-primary">2</span> 
-				              </a>
-				                <ul class="dropdown-menu">
-				                  <li>
-				                    <h6><a href="/status/list">状态列表</a></h6>
-				                    <div class="clearfix"></div>
-				                    <hr />
-				                  </li>
-				                  <li>
-				                    <h6><a href="/status/add">添加状态</a></h6>
-				                    <div class="clearfix"></div>
-				                    <hr />
-				                  </li>
-				                </ul>
-				            </li>
-				          </ul>
+						<div class="col-md-12">
+							<div class="widget wred">
+								<div class="widget-content">
+									<div class="padd">
+										<div class="btn-group">
+					                      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					                      <i class="icon-fire"></i>行业管理<span class="label label-info">2</span> 
+					                      <span class="caret"></span></button>
+					                      <ul class="dropdown-menu">
+					                        <li><a href="/industry/list">行业列表</a></li>
+					                        <li class="divider"></li>
+					                        <li><a href="/industry/add">新建行业</a></li>
+					                      </ul>
+					                    </div>
+					                    
+					                    <div class="btn-group">
+					                      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					                      <i class="icon-flag-alt"></i>项目阶段管理<span class="label label-primary">2</span> 
+					                      <span class="caret"></span></button>
+					                      <ul class="dropdown-menu">
+					                        <li><a href="/phase/list">项目阶段列表</a></li>
+					                        <li class="divider"></li>
+					                        <li><a href="/phase/add">添加项目阶段</a></li>
+					                      </ul>
+					                    </div>
+					                    
+					                    <div class="btn-group">
+					                      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					                      <i class="icon-user-md"></i>角色管理<span class="label label-primary">2</span> 
+					                      <span class="caret"></span></button>
+					                      <ul class="dropdown-menu">
+					                        <li><a href="/role/list">角色列表</a></li>
+					                        <li class="divider"></li>
+					                        <li><a href="/role/add">添加角色</a></li>
+					                      </ul>
+					                    </div>
+					                    
+					                    <div class="btn-group">
+					                      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					                      <i class="icon-shield"></i>状态管理<span class="label label-primary">2</span>
+					                      <span class="caret"></span></button>
+					                      <ul class="dropdown-menu">
+					                        <li><a href="/status/list">状态列表</a></li>
+					                        <li class="divider"></li>
+					                        <li><a href="/status/add">添加状态</a></li>
+					                      </ul>
+					                    </div>
+					                    
+									</div>
+								</div>
+							</div>
 				        </div>
 					</div>
 					<!--row end-->

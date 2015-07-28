@@ -73,6 +73,7 @@
 			<mvc:mapping path="/status/*"/>
 			<mvc:mapping path="/user/*"/>
 			<mvc:mapping path="/home"/>
+			<mvc:mapping path="/commons/manager"/>
 			<ref bean="authInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>

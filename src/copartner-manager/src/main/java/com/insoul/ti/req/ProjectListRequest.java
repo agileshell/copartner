@@ -12,11 +12,11 @@ public class ProjectListRequest extends PageRequest {
 
 	private Long id;
 
-	private String name;
+	private String name = StringUtils.EMPTY;
 
-	private String content;// 实施条件
+	private String content = StringUtils.EMPTY;// 实施条件
 
-	 private String status;
+	 private String status = StringUtils.EMPTY;
 
 	@Override
 	protected ProjectListRequest Q() {

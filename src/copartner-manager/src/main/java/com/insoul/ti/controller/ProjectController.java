@@ -17,6 +17,7 @@ import com.insoul.ti.WebBase;
 import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.ProjectListRequest;
 import com.insoul.ti.req.ViewRequest;
+import com.insoul.ti.vo.ProjectVO;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -54,12 +55,18 @@ public class ProjectController extends WebBase {
 		ModelAndView mv = createModelView("project_detail", req);
 		mv.addObject("viewname", PROJECT_LIST);
 		try {
-			Project project = projectDAO.get(projectId);
+			ProjectVO project = getProject(projectId);
 			mv.addObject("project", project);
 			mv.addObject("success", project != null);
 		} catch (Exception e) {
 			mv.addObject("success", false);
 		}
 		return mv;
+	}
+	
+	private ProjectVO getProject(Long projectId) {
+		ProjectVO vo = new ProjectVO();
+		
+		return vo;
 	}
 }

@@ -113,8 +113,8 @@
 														<td>${c.mobile}</td>
 														<td>${c.fullLocation}</td>
 														<td>
-															<c:if test="${c.gender == 'F'}"> 女 </c:if>
-															<c:if test="${c.gender == 'M'}"> 男 </c:if>
+															<c:if test="${c.gender == 'F'}"> <i class="icon-female"></i> </c:if>
+															<c:if test="${c.gender == 'M'}"> <i class="icon-male"></i> </c:if>
 														</td>
 														<td>${c.age}</td>
 														<td>
