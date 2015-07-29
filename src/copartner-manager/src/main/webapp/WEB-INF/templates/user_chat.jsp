@@ -53,8 +53,14 @@
 						<div class="col-md-12">
 			              <div class="widget">
 			                <div class="widget-head">
-			                  <div class="pull-left">${user.name}</div>
-			                  <div class="widget-icons pull-right"></div>  
+			                  <div class="pull-left">
+			                  <img src="${cdn}image/fei.liu.jpg" alt="${user.name}" class="chat_icon"/>
+			                  &nbsp;&nbsp;&nbsp;${user.name}
+			                  </div>
+			                  <div class="widget-icons pull-right">
+			                  	<a class="wminimize" href="#"><i class="icon-chevron-up"></i></a> 
+                    			<a class="wclose" href="#"><i class="icon-remove"></i></a>
+			                  </div>  
 			                  <div class="clearfix"></div>
 			                </div>
 			                <div class="widget-content">
