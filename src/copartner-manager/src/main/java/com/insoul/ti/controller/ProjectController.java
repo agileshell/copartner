@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.insoul.copartner.dao.criteria.ProjectCriteria;
@@ -57,7 +58,7 @@ public class ProjectController extends WebBase {
 	
 	@RequestMapping("/update_status/{projectId}")
 	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-	public void updateStatus(@PathVariable Long projectId, String status) {
+	public ModelAndView updateStatus(@PathVariable Long projectId, @RequestParam(value = "status", required = true) String status) {
 		try {
 			Project p = projectDAO.get(projectId);
 			p.setStatus(status);
@@ -66,6 +67,7 @@ public class ProjectController extends WebBase {
 		} catch (Exception e) {
 			returnJson(true, "500", "修改失败!!");
 		}
+		return null;
 	}
 
 	@RequestMapping("/detail/{projectId}")

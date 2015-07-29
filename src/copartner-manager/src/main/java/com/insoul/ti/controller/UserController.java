@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.insoul.copartner.dao.criteria.UserCriteria;
@@ -56,7 +57,7 @@ public class UserController extends WebBase {
 	
 	@RequestMapping("/update_status/{userId}")
 	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-	public void updateStatus(@PathVariable Long userId, String status) {
+	public ModelAndView updateStatus(@PathVariable Long userId, @RequestParam(value = "status", required = true) String status) {
 		try {
 			User user = userDAO.get(userId);
 			user.setStatus(status);
@@ -65,6 +66,7 @@ public class UserController extends WebBase {
 		} catch (Exception e) {
 			returnJson(true, "500", "修改失败!!");
 		}
+		return null;
 	}
 
 	@RequestMapping("/detail/{userId}")

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -66,7 +67,7 @@ public class ContentController extends WebBase {
 	
 	@RequestMapping("/update_status/{contentId}")
 	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-	public void updateStatus(@PathVariable Long contentId, String status) {
+	public ModelAndView updateStatus(@PathVariable Long contentId, @RequestParam(value = "status", required = true) String status) {
 		try {
 			Content content = contentDAO.get(contentId);
 			content.setStatus(status);
@@ -75,6 +76,7 @@ public class ContentController extends WebBase {
 		} catch (Exception e) {
 			returnJson(true, "500", "修改失败!!");
 		}
+		return null;
 	}
 
 	@RequestMapping("/detail/{contentId}")
