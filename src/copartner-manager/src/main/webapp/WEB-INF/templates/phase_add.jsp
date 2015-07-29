@@ -9,7 +9,7 @@
 	<meta name="keywords" content="dap" />
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="author" content="andpay.me" />
+	<meta name="author" content="fei.liu" />
 	<title>创客管理平台--新建项目阶段</title>
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>

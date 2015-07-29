@@ -33,6 +33,7 @@ import com.insoul.ti.req.ViewRequest;
 @RequestMapping("/user")
 public class UserController extends WebBase {
 
+	private static final String USER_CHAT = "user_chat";
 	private static final String USER_DETAIL = "user_detail";
 	private static final String USER_LIST = "user_list";
 
@@ -67,6 +68,21 @@ public class UserController extends WebBase {
 			returnJson(true, "500", "修改失败!!");
 		}
 		return null;
+	}
+	
+	@RequestMapping("/chat/{userId}")
+	public ModelAndView chat(@PathVariable Long userId, ViewRequest req) {
+		ModelAndView mv = createModelView(USER_CHAT, req);
+		mv.addObject("viewname", USER_LIST);
+		try {
+			User user = userDAO.get(userId);
+			mv.addObject("user", user);
+			mv.addObject("success", user != null);
+			
+		} catch (Exception e) {
+			mv.addObject("success", false);
+		}
+		return mv;
 	}
 
 	@RequestMapping("/detail/{userId}")
