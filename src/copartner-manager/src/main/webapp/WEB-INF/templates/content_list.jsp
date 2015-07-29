@@ -24,6 +24,8 @@
 	<link rel="stylesheet" href="${cdn}css/style.css"></link>
 	<link rel="stylesheet" href="${cdn}css/widgets.css"></link>
 	
+	<script src="${cdn}js/jquery.js"></script>
+	
 	<!--[if lt IE 9]>
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
@@ -119,11 +121,15 @@
 															<c:if test="${c.type == 2}"> 公共资源 </c:if>
 														</td>
 														<td>${c.title}</td>
-														<td>${c.synopsis}</td>
+														<td>${c.shortSynopsis}</td>
 														<td>
-															<c:if test="${c.status == 'active'}"> 激活 </c:if>
-															<c:if test="${c.status == 'inactive'}"> 无效 </c:if>
-															<c:if test="${c.status == 'deleted'}"> 已删除 </c:if>
+															<jsp:include page="control/commons-status.jsp">
+																<jsp:param value="${c.status}" name="status"/>
+																<jsp:param value="false" name="has_all"/>
+																<jsp:param value="true" name="update"/>
+																<jsp:param value="${c.id}" name="id"/>
+																<jsp:param value="/content/update_status/${c.id}" name="url"/>
+															</jsp:include>
 														</td>
 														<td>${c.gmtcreated}</td>
 														<td>${c.clicks}次</td>
@@ -159,7 +165,6 @@
 	<jsp:include page="control/copy-rights.jsp"/>
 	-->
 	
-	<script src="${cdn}js/jquery.js"></script>
 	<script src="${cdn}js/bootstrap.js"></script>
 	<script src="${cdn}js/jquery-ui-1.9.2.custom.min.js"></script>
 	<script src="${cdn}js/fullcalendar.min.js"></script>

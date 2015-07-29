@@ -1,13 +1,18 @@
 package com.insoul.ti;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.context.ServletContextAware;
@@ -84,6 +89,9 @@ public class WebBase implements ServletContextAware {
 	
     @Autowired
     protected HttpServletRequest request;
+	
+    @Autowired
+    protected HttpServletResponse response;
     
     protected static final String MANAGER_VIEW_NAME = "manager";
 
@@ -103,6 +111,35 @@ public class WebBase implements ServletContextAware {
 		HttpSession session = request.getSession();
 		mv.addObject(Constants.ADMIN_ONLINE, session.getAttribute(Constants.ADMIN_ONLINE));
 		return mv;
+	}
+	
+	protected void returnJson(JSONObject json) {
+		PrintWriter out = null;
+		try {
+			response.setContentType("application/json; charset=UTF-8");
+			out = response.getWriter();
+			out.write(json.toString());
+			out.flush();
+		} catch (IOException e) {
+			log.error("Return JSON Error.", e);
+		} finally {
+			if(out != null) {
+				out.close();
+				out = null;
+			}
+		}
+	}
+	
+	protected void returnJson(boolean success, String code, String message) {
+		try {
+			JSONObject json = new JSONObject();
+			json.accumulate("success", success);
+			json.accumulate("code", code);
+			json.accumulate("message", message);
+			returnJson(json);
+		} catch (Throwable e) {
+			log.error("Return JSON Error.", e);
+		}
 	}
 	
 	protected long getAdminId() {

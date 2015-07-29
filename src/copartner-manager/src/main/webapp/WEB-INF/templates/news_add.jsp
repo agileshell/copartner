@@ -78,6 +78,7 @@
 													<jsp:include page="control/commons-status.jsp">
 														<jsp:param value="active" name="status"/>
 														<jsp:param value="false" name="has_all"/>
+														<jsp:param value="false" name="update"/>
 													</jsp:include>
 												</div>
 											</div>

@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +53,19 @@ public class ProjectController extends WebBase {
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		mv.addObject("req", request);
 		return mv;
+	}
+	
+	@RequestMapping("/update_status/{projectId}")
+	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+	public void updateStatus(@PathVariable Long projectId, String status) {
+		try {
+			Project p = projectDAO.get(projectId);
+			p.setStatus(status);
+			projectDAO.update(p);
+			returnJson(true, "200", "修改成功!!");
+		} catch (Exception e) {
+			returnJson(true, "500", "修改失败!!");
+		}
 	}
 
 	@RequestMapping("/detail/{projectId}")

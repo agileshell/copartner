@@ -8,8 +8,28 @@ public class DemandCriteria extends PaginationCriteria {
     private Integer type;
 
     private String status[];
+    
+    private String projectName;// 项目名称
+    
+    private String content;// 融资/融智 要求
 
-    public Long getUserId() {
+    public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Long getUserId() {
         return userId;
     }
 

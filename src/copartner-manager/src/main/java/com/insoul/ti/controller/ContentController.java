@@ -63,6 +63,19 @@ public class ContentController extends WebBase {
 		mv.addObject("req", request);
 		return mv;
 	}
+	
+	@RequestMapping("/update_status/{contentId}")
+	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+	public void updateStatus(@PathVariable Long contentId, String status) {
+		try {
+			Content content = contentDAO.get(contentId);
+			content.setStatus(status);
+			contentDAO.update(content);
+			returnJson(true, "200", "修改成功!!");
+		} catch (Exception e) {
+			returnJson(true, "500", "修改失败!!");
+		}
+	}
 
 	@RequestMapping("/detail/{contentId}")
 	public ModelAndView detail(@PathVariable Long contentId, ViewRequest req) {

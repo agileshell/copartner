@@ -8,6 +8,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +52,19 @@ public class UserController extends WebBase {
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		mv.addObject("req", request);
 		return mv;
+	}
+	
+	@RequestMapping("/update_status/{userId}")
+	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+	public void updateStatus(@PathVariable Long userId, String status) {
+		try {
+			User user = userDAO.get(userId);
+			user.setStatus(status);
+			userDAO.update(user);
+			returnJson(true, "200", "修改成功!!");
+		} catch (Exception e) {
+			returnJson(true, "500", "修改失败!!");
+		}
 	}
 
 	@RequestMapping("/detail/{userId}")

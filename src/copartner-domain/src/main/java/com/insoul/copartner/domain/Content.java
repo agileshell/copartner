@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 政策解读
  */
@@ -38,6 +40,13 @@ public class Content extends BaseEntity {
 
     @Column(name = "admin_user_id", nullable = false)
     private Long adminUserId;// 创建人，后台admin用户的ID
+    
+    public String getShortSynopsis() {
+    	if (StringUtils.length(synopsis) < 11) {
+    		return synopsis;
+    	}
+    	return StringUtils.substring(synopsis, 0, 10) + "...";
+    }
 
     public Integer getType() {
         return type;

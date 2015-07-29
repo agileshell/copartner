@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.insoul.copartner.dao.IDemandDao;
@@ -43,6 +44,14 @@ public class DemandDaoImpl extends BaseDaoImpl<Demand, Long> implements IDemandD
         if (null != criteria.getStatus() && criteria.getStatus().length > 0) {
             conditionStr.append(" AND status IN(:status)");
             params.put("status", Arrays.asList(criteria.getStatus()));
+        }
+        if (StringUtils.isNotBlank(criteria.getProjectName())) {
+            conditionStr.append(" AND projectName like :projectName ");
+            params.put("projectName", "%" + criteria.getProjectName() + "%");
+        }
+        if (StringUtils.isNotBlank(criteria.getContent())) {
+            conditionStr.append(" AND content like :content ");
+            params.put("content", "%" + criteria.getContent() + "%");
         }
 
         Query query = null;

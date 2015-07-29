@@ -63,6 +63,19 @@ public class NewsController extends WebBase {
 		mv.addObject("req", request);
 		return mv;
 	}
+	
+	@RequestMapping("/update_status/{newsId}")
+	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+	public void updateStatus(@PathVariable Long newsId, String status) {
+		try {
+			News news = newsDAO.get(newsId);
+			news.setStatus(status);
+			newsDAO.update(news);
+			returnJson(true, "200", "修改成功!!");
+		} catch (Exception e) {
+			returnJson(true, "500", "修改失败!!");
+		}
+	}
 
 	@RequestMapping("/detail/{newsId}")
 	public ModelAndView detail(@PathVariable Long newsId, ViewRequest req) {

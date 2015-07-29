@@ -24,6 +24,8 @@
 	<link rel="stylesheet" href="${cdn}css/style.css"></link>
 	<link rel="stylesheet" href="${cdn}css/widgets.css"></link>
 	
+	<script src="${cdn}js/jquery.js"></script>
+	
 	<!--[if lt IE 9]>
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
@@ -136,7 +138,6 @@
 	<!--
 	<jsp:include page="control/copy-rights.jsp"/>
 	-->
-	<script src="${cdn}js/jquery.js"></script>
 	<script src="${cdn}js/bootstrap.js"></script>
 	<script src="${cdn}js/jquery-ui-1.9.2.custom.min.js"></script>
 	<script src="${cdn}js/fullcalendar.min.js"></script>
