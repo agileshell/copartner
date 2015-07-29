@@ -32,7 +32,7 @@
 	padding: 7px 10px;
 	border-radius: 5px;
 	font-size: 11px;
-	background: #b8db29 none repeat scroll 0 0;
+	background: #FFFFFF none repeat scroll 0 0;
 	color: #000000;
 }
 
@@ -79,12 +79,12 @@
 .chats .by-me .chat-content {
 	margin-right: 60px;
 	position: relative;
-	background: #fff;
 	border: 1px solid #ddd;
 	padding: 7px 10px;
 	border-radius: 5px;
 	font-size: 11px;
 	color: #000000;
+	background: #b8db29 none repeat scroll 0 0;
 }
 
 .chats .by-me .chat-content:after, .chats .by-me .chat-content:before
