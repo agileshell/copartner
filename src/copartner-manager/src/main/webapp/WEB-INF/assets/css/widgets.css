@@ -90,12 +90,13 @@
 .chats .by-me .chat-content:after, .chats .by-me .chat-content:before
 	{
 	left: 100%;
-	border: solid transparent #b8db29;
+	border: solid transparent;
 	content: " ";
 	height: 0;
 	width: 0;
 	position: absolute;
 	pointer-events: none;
+	border-color: transparent transparent transparent #b8db29;
 }
 
 .chats .by-me .chat-content:after {
