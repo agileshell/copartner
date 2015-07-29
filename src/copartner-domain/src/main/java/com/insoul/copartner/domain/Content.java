@@ -41,6 +41,13 @@ public class Content extends BaseEntity {
     @Column(name = "admin_user_id", nullable = false)
     private Long adminUserId;// 创建人，后台admin用户的ID
     
+    public String getShortTitle() {
+    	if (StringUtils.length(title) < 11) {
+    		return title;
+    	}
+    	return StringUtils.substring(title, 0, 10) + "...";
+    }
+    
     public String getShortSynopsis() {
     	if (StringUtils.length(synopsis) < 11) {
     		return synopsis;

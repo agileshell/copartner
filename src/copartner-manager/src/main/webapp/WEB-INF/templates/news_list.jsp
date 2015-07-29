@@ -120,7 +120,7 @@
 															<c:if test="${c.type == 1}"> 行业新闻 </c:if>
 															<c:if test="${c.type == 2}"> 地方新闻 </c:if>
 														</td>
-														<td>${c.title}</td>
+														<td>${c.shortTitle}</td>
 														<td>${c.shortSynopsis}</td>
 														<td>
 															<jsp:include page="control/commons-status.jsp">

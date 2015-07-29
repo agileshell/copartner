@@ -60,6 +60,13 @@ public class Project extends BaseEntity {
     @Column(name = "contact")
     private String contact;// 联系方式
     
+    public String getShortName() {
+    	if (StringUtils.length(name) < 11) {
+    		return name;
+    	}
+    	return StringUtils.substring(name, 0, 10) + "...";
+    }
+    
     public String getShortContent() {
     	if (StringUtils.length(content) < 11) {
     		return content;

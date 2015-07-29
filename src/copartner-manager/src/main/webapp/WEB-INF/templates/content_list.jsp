@@ -120,7 +120,7 @@
 															<c:if test="${c.type == 1}"> 政策解读 </c:if>
 															<c:if test="${c.type == 2}"> 公共资源 </c:if>
 														</td>
-														<td>${c.title}</td>
+														<td>${c.shortTitle}</td>
 														<td>${c.shortSynopsis}</td>
 														<td>
 															<jsp:include page="control/commons-status.jsp">

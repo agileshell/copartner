@@ -116,7 +116,7 @@
 													<tr>
 														<td>${c.id}</td>
 														<td><a href="/user/detail/${c.userId}">${c.userId}</a></td>
-														<td>${c.name}</td>
+														<td>${c.shortName}</td>
 														<td>${c.shortAdvantage}</td>
 														<td>${c.shortContent}</td>
 														<td>${c.likeCount}</td>
