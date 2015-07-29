@@ -9,53 +9,137 @@
 	<meta name="keywords" content="dap" />
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="author" content="andpay.me" />
 	<title>创客管理平台--即时聊天</title>
-	<link rel="stylesheet" href="${cdn}css/message.css">
-	<script src="${cdn}js/jquery-1.10.2.min.js" type="text/javascript"></script>
+	
+	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
+	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
+	<link rel="stylesheet" href="${cdn}css/jquery-ui.css"></link>
+	<link rel="stylesheet" href="${cdn}css/fullcalendar.css"></link>
+	<link rel="stylesheet" href="${cdn}css/prettyPhoto.css"></link>
+	<link rel="stylesheet" href="${cdn}css/rateit.css"></link>
+	<link rel="stylesheet" href="${cdn}css/bootstrap-datetimepicker.min.css"></link>
+	<link rel="stylesheet" href="${cdn}css/jquery.cleditor.css"></link>
+	<link rel="stylesheet" href="${cdn}css/uniform.default.css"></link>
+	<link rel="stylesheet" href="${cdn}css/bootstrap-switch.css"></link>
+	<link rel="stylesheet" href="${cdn}css/style.css"></link>
+	<link rel="stylesheet" href="${cdn}css/widgets.css"></link>
+	
+	<script src="${cdn}js/jquery.js"></script>
+	
+	<!--[if lt IE 9]>
+	<script src="${cdn}js/html5shim.js"></script>
+	<![endif]-->
+	
 	<link rel="Shortcut Icon" href="${cdn}image/icon.png" />
+
 </head>
 <body>
-	<div class="message-history">
-		<div class="message-reply">
-			<div class="message-time">2014-2-21 9:32:57</div>
-			<div class="message-info">
-				<div class="user-info">
-					<img class="user-avatar" src="${cdn}image/user_a.jpg">
+	<jsp:include page="control/header.jsp"/>
+	<div class="content">
+		<jsp:include page="control/sidebar.jsp"></jsp:include>
+		<div class="mainbar">
+			<div class="page-head">
+				<h2 class="pull-left">即时聊天</h2>
+				<div class="bread-crumb pull-right">
+					<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>即时聊天
 				</div>
-				<div class="message-content-box">
-					<div class="arrow"></div>
-					<div class="item-pics-box">
-						<a class="ui-link" href="#"> <img class="item-pic" src="${cdn}image/item_1.jpg">
-						</a>
+				<div class="clearfix"></div>
+			</div>
+			<div class="matter">
+				<div class="container">
+					<!-- row start -->
+					<div class="row">
+						<div class="col-md-4">
+			              <div class="widget">
+			                <div class="widget-head">
+			                  <div class="pull-left">Chats</div>
+			                  <div class="widget-icons pull-right">
+			                    <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a> 
+			                    <a href="#" class="wclose"><i class="icon-remove"></i></a>
+			                  </div>  
+			                  <div class="clearfix"></div>
+			                </div>
+			                <div class="widget-content">
+			                  <div class="padd">
+			                    <ul class="chats">
+			                      <li class="by-me">
+			                        <div class="avatar pull-left">
+			                          <img src="${cdn}image/user.jpg" alt=""/>
+			                        </div>
+			                        <div class="chat-content">
+			                          <div class="chat-meta">Ashok <span class="pull-right">3 hours ago</span></div>
+			                          Vivamus diam elit diam, consectetur fermentum sed dapibus eget, Vivamus consectetur dapibus adipiscing elit.
+			                          <div class="clearfix"></div>
+			                        </div>
+			                      </li> 
+			                      <li class="by-other">
+			                        <div class="avatar pull-right">
+			                          <img src="${cdn}image/user.jpg" alt=""/>
+			                        </div>
+			                        <div class="chat-content">
+			                          <div class="chat-meta">3 hours ago <span class="pull-right">Ravi</span></div>
+			                          Vivamus diam elit diam, consectetur fermentum sed dapibus eget, Vivamus consectetur dapibus adipiscing elit.
+			                          <div class="clearfix"></div>
+			                        </div>
+			                      </li>   
+			                      <li class="by-me">
+			                        <div class="avatar pull-left">
+			                          <img src="${cdn}image/user.jpg" alt=""/>
+			                        </div>
+			                        <div class="chat-content">
+			                          <div class="chat-meta">Ashok <span class="pull-right">4 hours ago</span></div>
+			                          Vivamus diam elit diam, consectetur fermentum sed dapibus eget, Vivamus consectetur dapibus adipiscing elit.
+			                          <div class="clearfix"></div>
+			                        </div>
+			                      </li>                                                              
+			                    </ul>
+			                  </div>
+			                  <div class="widget-foot">
+			                      <form class="form-inline">
+									<div class="form-group">
+										<input type="text" class="form-control" placeholder="输入消息内容">
+									</div>
+									<button type="submit" class="btn btn-default">Send</button>
+			                      </form>
+			                  </div>
+			                </div>
+			              </div>
+			              <!-- end chat -->
+			            </div>
 					</div>
-					<div class="message-content">这个东西不错呀！</div>
+					<!-- row end -->
 				</div>
 			</div>
 		</div>
-		<div class="message-receive">
-			<div class="message-time">2014-2-21 9:32:57</div>
-			<div class="message-info">
-				<div class="user-info">
-					<img class="user-avatar" src="${cdn}image/user_b.gif">
-				</div>
-				<div class="message-content-box">
-					<div class="arrow"></div>
-					<div class="item-pics-box">
-						<a class="ui-link" href="#"> <img class="item-pic" src="${cdn}image/item_1.jpg">
-						</a>
-					</div>
-					<div class="message-content">Good football</div>
-				</div>
-			</div>
-		</div>
+		<div class="clearfix"></div>
 	</div>
-	<div class="send-message">
-		<span class="send-msg-btn">发送</span>
-		<div class="message-input-box">
-			<input name="content" type="text" class="message-input" placeholder="输入消息内容">
-		</div>
-	</div>
-	<script src="${cdn}js/message.js" type="text/javascript"></script>
+	<!--
+	<jsp:include page="control/copy-rights.jsp"/>
+	-->
+	
+	<script src="${cdn}js/bootstrap.js"></script>
+	<script src="${cdn}js/jquery-ui-1.9.2.custom.min.js"></script>
+	<script src="${cdn}js/fullcalendar.min.js"></script>
+	<script src="${cdn}js/jquery.rateit.min.js"></script>
+	<script src="${cdn}js/jquery.prettyPhoto.js"></script>
+	<script src="${cdn}js/excanvas.min.js"></script>
+	<script src="${cdn}js/jquery.flot.js"></script>
+	<script src="${cdn}js/jquery.flot.resize.js"></script>
+	<script src="${cdn}js/jquery.flot.pie.js"></script>
+	<script src="${cdn}js/jquery.flot.stack.js"></script>
+	<script src="${cdn}js/jquery.noty.js"></script>
+	<script src="${cdn}js/themes/default.js"></script>
+	<script src="${cdn}js/layouts/bottom.js"></script>
+	<script src="${cdn}js/layouts/topRight.js"></script>
+	<script src="${cdn}js/layouts/top.js"></script>
+	<script src="${cdn}js/sparklines.js"></script>
+	<script src="${cdn}js/jquery.cleditor.min.js"></script>
+	<script src="${cdn}js/bootstrap-datetimepicker.min.js"></script>
+	<script src="${cdn}js/jquery.uniform.min.js"></script>
+	<script src="${cdn}js/bootstrap-switch.min.js"></script>
+	<script src="${cdn}js/filter.js"></script>
+	<script src="${cdn}js/custom.js"></script>
+	<script src="${cdn}js/charts.js"></script>
+	
 </body>
 </html>

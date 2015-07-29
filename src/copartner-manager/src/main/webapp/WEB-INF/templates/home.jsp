@@ -128,6 +128,9 @@
 																			<a class="btn btn-xs btn-default" href="/user/detail/${c.id}">
 																				详情
 																			</a>
+																			<a class="btn btn-xs btn-default" href="/user/chat/${c.id}" target="_blank">
+																				即时聊天
+																			</a>
 																		</div>
 																	</td>
 																</tr>
