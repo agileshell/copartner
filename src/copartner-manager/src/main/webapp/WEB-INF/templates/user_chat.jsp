@@ -59,7 +59,7 @@
 			                  </div>
 			                  <div class="widget-icons pull-right">
 			                  	<a class="wminimize" href="#"><i class="icon-chevron-up"></i></a> 
-                    			<a class="wclose" href="#"><i class="icon-remove"></i></a>
+                    			<!--<a class="wclose" href="#"><i class="icon-remove"></i></a>-->
 			                  </div>  
 			                  <div class="clearfix"></div>
 			                </div>
