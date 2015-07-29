@@ -66,36 +66,40 @@
 			                <div class="widget-content">
 			                  <div class="padd">
 			                    <ul class="chats">
+			                    
 			                      <li class="by-me">
-			                        <div class="avatar pull-left">
+			                        <div class="avatar pull-right">
 			                          <img src="${cdn}image/icon.png" alt="小助手" class="chat_icon"/>
 			                        </div>
 			                        <div class="chat-content">
-			                          <div class="chat-meta">小助手<span class="pull-right">2015-07-29 12:39:40</span></div>
+			                          <div class="chat-meta">2015-07-29 12:39:40<span class="pull-right">小助手</span></div>
 			                          大飞哥儿好啊！O(∩_∩)O哈哈哈~😄
 			                          <div class="clearfix"></div>
 			                        </div>
-			                      </li> 
+			                      </li>
+			                      
 			                      <li class="by-other">
-			                        <div class="avatar pull-right">
+			                        <div class="avatar pull-left">
 			                          <img src="${cdn}image/fei.liu.jpg" alt="${user.name}" class="chat_icon"/>
 			                        </div>
 			                        <div class="chat-content">
-			                          <div class="chat-meta">2015-07-29 12:53:44<span class="pull-right">${user.name}</span></div>
+			                          <div class="chat-meta">${user.name}<span class="pull-right">2015-07-29 12:53:44</span></div>
 			                          恩恩 我好着呢!!!
 			                          <div class="clearfix"></div>
 			                        </div>
-			                      </li>   
+			                      </li>
+			                      
 			                      <li class="by-me">
-			                        <div class="avatar pull-left">
+			                        <div class="avatar pull-right">
 			                          <img src="${cdn}image/icon.png" alt="小助手" class="chat_icon"/>
 			                        </div>
 			                        <div class="chat-content">
-			                          <div class="chat-meta">小助手<span class="pull-right">2015-07-29 15:53:44</span></div>
+			                          <div class="chat-meta">2015-07-29 15:53:44<span class="pull-right">小助手</span></div>
 			                          我们公司目前免费提供一套成人玩具有没有兴趣啊
 			                          <div class="clearfix"></div>
 			                        </div>
-			                      </li>                                                              
+			                      </li>
+			                                                                                
 			                    </ul>
 			                  </div>
 			                  <div class="widget-foot">
