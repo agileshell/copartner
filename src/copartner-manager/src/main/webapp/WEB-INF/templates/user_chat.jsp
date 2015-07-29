@@ -49,14 +49,11 @@
 				<div class="container">
 					<!-- row start -->
 					<div class="row">
-						<div class="col-md-4">
+						<div class="col-md-12">
 			              <div class="widget">
 			                <div class="widget-head">
-			                  <div class="pull-left">Chats</div>
-			                  <div class="widget-icons pull-right">
-			                    <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a> 
-			                    <a href="#" class="wclose"><i class="icon-remove"></i></a>
-			                  </div>  
+			                  <div class="pull-left">${user.name}</div>
+			                  <div class="widget-icons pull-right"></div>  
 			                  <div class="clearfix"></div>
 			                </div>
 			                <div class="widget-content">
@@ -64,31 +61,31 @@
 			                    <ul class="chats">
 			                      <li class="by-me">
 			                        <div class="avatar pull-left">
-			                          <img src="${cdn}image/user.jpg" alt=""/>
+			                          <img src="${cdn}image/icon.png" alt=""/>
 			                        </div>
 			                        <div class="chat-content">
-			                          <div class="chat-meta">Ashok <span class="pull-right">3 hours ago</span></div>
-			                          Vivamus diam elit diam, consectetur fermentum sed dapibus eget, Vivamus consectetur dapibus adipiscing elit.
+			                          <div class="chat-meta">小助手<span class="pull-right">2015-07-29 12:39:40</span></div>
+			                          大飞哥儿好啊！O(∩_∩)O哈哈哈~😄
 			                          <div class="clearfix"></div>
 			                        </div>
 			                      </li> 
 			                      <li class="by-other">
 			                        <div class="avatar pull-right">
-			                          <img src="${cdn}image/user.jpg" alt=""/>
+			                          <img src="${cdn}image/fei.liu.jpg" alt=""/>
 			                        </div>
 			                        <div class="chat-content">
-			                          <div class="chat-meta">3 hours ago <span class="pull-right">Ravi</span></div>
-			                          Vivamus diam elit diam, consectetur fermentum sed dapibus eget, Vivamus consectetur dapibus adipiscing elit.
+			                          <div class="chat-meta">2015-07-29 12:53:44<span class="pull-right">${user.name}</span></div>
+			                          恩恩 我好着呢!!!
 			                          <div class="clearfix"></div>
 			                        </div>
 			                      </li>   
 			                      <li class="by-me">
 			                        <div class="avatar pull-left">
-			                          <img src="${cdn}image/user.jpg" alt=""/>
+			                          <img src="${cdn}image/icon.png" alt=""/>
 			                        </div>
 			                        <div class="chat-content">
-			                          <div class="chat-meta">Ashok <span class="pull-right">4 hours ago</span></div>
-			                          Vivamus diam elit diam, consectetur fermentum sed dapibus eget, Vivamus consectetur dapibus adipiscing elit.
+			                          <div class="chat-meta">小助手<span class="pull-right">2015-07-29 15:53:44</span></div>
+			                          我们公司目前免费提供一套成人玩具有没有兴趣啊
 			                          <div class="clearfix"></div>
 			                        </div>
 			                      </li>                                                              
@@ -96,10 +93,10 @@
 			                  </div>
 			                  <div class="widget-foot">
 			                      <form class="form-inline">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="输入消息内容">
+									<div class="form-group col-lg-11">
+										<input type="text" class="form-control" placeholder="输入消息内容"></input>
 									</div>
-									<button type="submit" class="btn btn-default">Send</button>
+									<button type="submit" class="btn btn-default">发送</button>
 			                      </form>
 			                  </div>
 			                </div>
@@ -116,7 +113,6 @@
 	<!--
 	<jsp:include page="control/copy-rights.jsp"/>
 	-->
-	
 	<script src="${cdn}js/bootstrap.js"></script>
 	<script src="${cdn}js/jquery-ui-1.9.2.custom.min.js"></script>
 	<script src="${cdn}js/fullcalendar.min.js"></script>
