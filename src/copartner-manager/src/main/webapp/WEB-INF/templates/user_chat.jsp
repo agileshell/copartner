@@ -10,7 +10,6 @@
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>创客管理平台--即时聊天</title>
-	
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
 	<link rel="stylesheet" href="${cdn}css/jquery-ui.css"></link>
@@ -23,15 +22,17 @@
 	<link rel="stylesheet" href="${cdn}css/bootstrap-switch.css"></link>
 	<link rel="stylesheet" href="${cdn}css/style.css"></link>
 	<link rel="stylesheet" href="${cdn}css/widgets.css"></link>
-	
 	<script src="${cdn}js/jquery.js"></script>
-	
 	<!--[if lt IE 9]>
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
-	
 	<link rel="Shortcut Icon" href="${cdn}image/icon.png" />
-
+	<style type="text/css">
+		img.chat_icon {
+			width: 40px;
+			border: 0;
+		}
+	</style>
 </head>
 <body>
 	<jsp:include page="control/header.jsp"/>
@@ -61,7 +62,7 @@
 			                    <ul class="chats">
 			                      <li class="by-me">
 			                        <div class="avatar pull-left">
-			                          <img src="${cdn}image/icon.png" alt=""/>
+			                          <img src="${cdn}image/icon.png" alt="小助手" class="chat_icon"/>
 			                        </div>
 			                        <div class="chat-content">
 			                          <div class="chat-meta">小助手<span class="pull-right">2015-07-29 12:39:40</span></div>
@@ -71,7 +72,7 @@
 			                      </li> 
 			                      <li class="by-other">
 			                        <div class="avatar pull-right">
-			                          <img src="${cdn}image/fei.liu.jpg" alt=""/>
+			                          <img src="${cdn}image/fei.liu.jpg" alt="${user.name}" class="chat_icon"/>
 			                        </div>
 			                        <div class="chat-content">
 			                          <div class="chat-meta">2015-07-29 12:53:44<span class="pull-right">${user.name}</span></div>
@@ -81,7 +82,7 @@
 			                      </li>   
 			                      <li class="by-me">
 			                        <div class="avatar pull-left">
-			                          <img src="${cdn}image/icon.png" alt=""/>
+			                          <img src="${cdn}image/icon.png" alt="小助手" class="chat_icon"/>
 			                        </div>
 			                        <div class="chat-content">
 			                          <div class="chat-meta">小助手<span class="pull-right">2015-07-29 15:53:44</span></div>
