@@ -51,14 +51,14 @@ public class RoleController extends WebBase {
 		mv.addObject("roleList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		mv.addObject("req", request);
-		mv.addObject("viewname", MANAGER_VIEW_NAME);
+		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
 		return mv;
 	}
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
 		ModelAndView mv = createModelView(ROLE_ADD, req);
-		mv.addObject("viewname", MANAGER_VIEW_NAME);
+		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
 		return mv;
 	}
 
@@ -67,7 +67,7 @@ public class RoleController extends WebBase {
 		ModelAndView mv = createModelView(ROLE_EDIT, req);
 		StartupRole role = startupRoleDAO.get(roleId);
 		mv.addObject("role", role);
-		mv.addObject("viewname", MANAGER_VIEW_NAME);
+		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
 		return mv;
 	}
 

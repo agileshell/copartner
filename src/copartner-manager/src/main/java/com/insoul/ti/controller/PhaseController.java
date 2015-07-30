@@ -51,14 +51,14 @@ public class PhaseController extends WebBase {
 		mv.addObject("phaseList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		mv.addObject("req", request);
-		mv.addObject("viewname", MANAGER_VIEW_NAME);
+		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
 		return mv;
 	}
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
 		ModelAndView mv = createModelView(PHASE_ADD, req);
-		mv.addObject("viewname", MANAGER_VIEW_NAME);
+		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
 		return mv;
 	}
 
@@ -67,7 +67,7 @@ public class PhaseController extends WebBase {
 		ModelAndView mv = createModelView(PHASE_EDIT, req);
 		ProjectPhase phase = projectPhaseDAO.get(proId);
 		mv.addObject("phase", phase);
-		mv.addObject("viewname", MANAGER_VIEW_NAME);
+		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
 		return mv;
 	}
 

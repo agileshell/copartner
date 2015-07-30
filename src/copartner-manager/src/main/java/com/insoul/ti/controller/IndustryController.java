@@ -51,14 +51,14 @@ public class IndustryController extends WebBase {
 		mv.addObject("industryList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		mv.addObject("req", request);
-		mv.addObject("viewname", MANAGER_VIEW_NAME);
+		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
 		return mv;
 	}
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
 		ModelAndView mv = createModelView(INDUSTRY_ADD, req);
-		mv.addObject("viewname", MANAGER_VIEW_NAME);
+		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
 		return mv;
 	}
 
@@ -67,7 +67,7 @@ public class IndustryController extends WebBase {
 		ModelAndView mv = createModelView(INDUSTRY_EDIT, req);
 		IndustryDomain industry = industryDomainDAO.get(industryId);
 		mv.addObject("industry", industry);
-		mv.addObject("viewname", MANAGER_VIEW_NAME);
+		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
 		return mv;
 	}
 

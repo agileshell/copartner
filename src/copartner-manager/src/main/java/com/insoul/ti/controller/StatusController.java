@@ -51,14 +51,14 @@ public class StatusController extends WebBase {
 		mv.addObject("statusList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		mv.addObject("req", request);
-		mv.addObject("viewname", MANAGER_VIEW_NAME);
+		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
 		return mv;
 	}
 
 	@RequestMapping("/add")
 	public ModelAndView add(ViewRequest req) {
 		ModelAndView mv = createModelView(STATUS_ADD, req);
-		mv.addObject("viewname", MANAGER_VIEW_NAME);
+		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
 		return mv;
 	}
 
@@ -67,7 +67,7 @@ public class StatusController extends WebBase {
 		ModelAndView mv = createModelView(STATUS_EDIT, req);
 		StartupStatus status = startupStatusDAO.get(statusId);
 		mv.addObject("status", status);
-		mv.addObject("viewname", MANAGER_VIEW_NAME);
+		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
 		return mv;
 	}
 

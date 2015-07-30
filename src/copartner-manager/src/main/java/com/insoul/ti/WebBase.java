@@ -93,7 +93,7 @@ public class WebBase implements ServletContextAware {
     @Autowired
     protected HttpServletResponse response;
     
-    protected static final String MANAGER_VIEW_NAME = "manager";
+    protected static final String COMMONS_RESOURCES_MANAGER_VIEW_NAME = "resources_manager";
 
 	protected ModelAndView createModelView(String viewName) {
 		ModelAndView mv = new ModelAndView(viewName);

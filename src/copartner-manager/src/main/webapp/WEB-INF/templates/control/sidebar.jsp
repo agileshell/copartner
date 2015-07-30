@@ -20,9 +20,17 @@
         <li>
 			<a <c:if test="${viewname == 'project_list'}"> class="open" </c:if> href="/project/list"><i class="icon-bookmark"></i>项目管理</a>
 		</li>
-        <li>
-			<a <c:if test="${viewname == 'manager'}"> class="open" </c:if> href="/commons/manager"><i class="icon-star"></i>资源管理</a>
-		</li>
+		<li class="has_sub">
+			<a href="#" <c:if test="${viewname == 'resources_manager'}"> class="subdrop" </c:if>>
+				<i class="icon-star"></i>资源管理<span class="pull-right"><i class="icon-chevron-right"></i></span>
+			</a>
+			<ul <c:if test="${viewname == 'resources_manager'}"> style="display: block;" </c:if>>
+			  <li><a href="/industry/list"><i class="icon-screenshot"></i>行业管理</a></li>
+			  <li><a href="/phase/list"><i class="icon-list"></i>项目阶段管理</a></li>
+			  <li><a href="/role/list"><i class="icon-asterisk"></i>角色管理</a></li>
+			  <li><a href="/status/list"><i class="icon-key"></i>状态管理</a></li>
+			</ul>
+        </li>
         <li>
 			<a <c:if test="${viewname == 'feedback_list'}"> class="open" </c:if> href="/feedback/list"><i class="icon-envelope"></i>意见反馈</a>
         </li>
