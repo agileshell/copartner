@@ -65,6 +65,8 @@
 														<option value="2" <c:if test="${req.type == '2'}"> selected="selected" </c:if>>项目评论</option>
 													</select>
 												</div>
+											</div>
+											<div class="form-group">
 												<label class="col-lg-2 control-label" for="type">状态:</label>
 												<div class="col-lg-4">
 													<jsp:include page="control/commons-status.jsp">
