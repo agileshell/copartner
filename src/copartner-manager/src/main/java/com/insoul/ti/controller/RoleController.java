@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.insoul.copartner.dao.criteria.RoleCriteria;
 import com.insoul.copartner.domain.StartupRole;
 import com.insoul.ti.WebBase;
-import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.RoleListRequest;
 import com.insoul.ti.req.RoleRequest;
 import com.insoul.ti.req.ViewRequest;
@@ -32,66 +30,58 @@ import com.insoul.ti.req.ViewRequest;
 @RequestMapping("/role")
 public class RoleController extends WebBase {
 
-	private static final String ROLE_EDIT = "role_edit";
-	private static final String ROLE_ADD = "role_add";
-	private static final String ROLE_LIST = "role_list";
+    private static final String ROLE_EDIT = "role_edit";
+    private static final String ROLE_ADD = "role_add";
+    private static final String ROLE_LIST = "role_list";
 
-	@RequestMapping("/list")
-	public ModelAndView list(@Valid RoleListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView(ROLE_LIST, request);
-		PageQuery query = request.init().getQuery();
-		RoleCriteria criteria = new RoleCriteria();
-		criteria.setLimit(query.getPage_size());
-		criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
-		criteria.setId(request.getId());
-		criteria.setName(request.getName());
-		criteria.setListed(StringUtils.equals("1", String.valueOf(request.getListed())));
-		List<StartupRole> list = startupRoleDAO.query(criteria);
-		mv.addObject("query", query);
-		mv.addObject("roleList", list);
-		mv.addObject("success", CollectionUtils.isNotEmpty(list));
-		mv.addObject("req", request);
-		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
-		return mv;
-	}
+    @RequestMapping("/list")
+    public ModelAndView list(@Valid RoleListRequest request, BindingResult result) {
+        ModelAndView mv = createModelView(ROLE_LIST, request);
+        List<StartupRole> list = startupRoleDAO.findAll();
+        mv.addObject("roleList", list);
+        mv.addObject("success", CollectionUtils.isNotEmpty(list));
+        mv.addObject("req", request);
+        mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
+        return mv;
+    }
 
-	@RequestMapping("/add")
-	public ModelAndView add(ViewRequest req) {
-		ModelAndView mv = createModelView(ROLE_ADD, req);
-		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
-		return mv;
-	}
+    @RequestMapping("/add")
+    public ModelAndView add(ViewRequest req) {
+        ModelAndView mv = createModelView(ROLE_ADD, req);
+        mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
+        return mv;
+    }
 
-	@RequestMapping("/edit/{roleId}")
-	public ModelAndView edit(@PathVariable Long roleId, ViewRequest req) {
-		ModelAndView mv = createModelView(ROLE_EDIT, req);
-		StartupRole role = startupRoleDAO.get(roleId);
-		mv.addObject("role", role);
-		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
-		return mv;
-	}
+    @RequestMapping("/edit/{roleId}")
+    public ModelAndView edit(@PathVariable Long roleId, ViewRequest req) {
+        ModelAndView mv = createModelView(ROLE_EDIT, req);
+        StartupRole role = startupRoleDAO.get(roleId);
+        mv.addObject("role", role);
+        mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
+        return mv;
+    }
 
-	@RequestMapping("/update/{roleId}")
-	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-	public ModelAndView update(@PathVariable Long roleId, @Valid RoleRequest request, BindingResult result) {
-		StartupRole role = startupRoleDAO.get(roleId);
-		role.setUpdated(new Date());
-		role.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
-		role.setName(request.getName());
-		startupRoleDAO.update(role);
-		return new ModelAndView("redirect:/role/list?id=" + roleId);
-	}
+    @RequestMapping("/update/{roleId}")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public ModelAndView update(@PathVariable Long roleId, @Valid RoleRequest request, BindingResult result) {
+        StartupRole role = startupRoleDAO.get(roleId);
+        role.setUpdated(new Date());
+        role.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
+        role.setName(request.getName());
+        startupRoleDAO.update(role);
+        return new ModelAndView("redirect:/role/list?id=" + roleId);
+    }
 
-	@RequestMapping("/save")
-	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-	public ModelAndView save(@Valid RoleRequest request, BindingResult result) {
-		StartupRole role = new StartupRole();
-		Date time = new Date();
-		role.setCreated(time);
-		role.setUpdated(time);
-		role.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
-		role.setName(request.getName());
-		startupRoleDAO.save(role);
-		return new ModelAndView("redirect:/role/list?id=" + role.getId());
-	}
+    @RequestMapping("/save")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public ModelAndView save(@Valid RoleRequest request, BindingResult result) {
+        StartupRole role = new StartupRole();
+        Date time = new Date();
+        role.setCreated(time);
+        role.setUpdated(time);
+        role.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
+        role.setName(request.getName());
+        startupRoleDAO.save(role);
+        return new ModelAndView("redirect:/role/list?id=" + role.getId());
+    }
 }

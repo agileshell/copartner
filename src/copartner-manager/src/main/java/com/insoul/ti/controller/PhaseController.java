@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.insoul.copartner.dao.criteria.ProjectPhaseCriteria;
 import com.insoul.copartner.domain.ProjectPhase;
 import com.insoul.ti.WebBase;
-import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.ProjectPhaseListRequest;
 import com.insoul.ti.req.ProjectPhaseRequest;
 import com.insoul.ti.req.ViewRequest;
@@ -32,66 +30,58 @@ import com.insoul.ti.req.ViewRequest;
 @RequestMapping("/phase")
 public class PhaseController extends WebBase {
 
-	private static final String PHASE_EDIT = "phase_edit";
-	private static final String PHASE_ADD = "phase_add";
-	private static final String PHASE_LIST = "phase_list";
+    private static final String PHASE_EDIT = "phase_edit";
+    private static final String PHASE_ADD = "phase_add";
+    private static final String PHASE_LIST = "phase_list";
 
-	@RequestMapping("/list")
-	public ModelAndView list(@Valid ProjectPhaseListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView(PHASE_LIST, request);
-		PageQuery query = request.init().getQuery();
-		ProjectPhaseCriteria criteria = new ProjectPhaseCriteria();
-		criteria.setLimit(query.getPage_size());
-		criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
-		criteria.setId(request.getId());
-		criteria.setName(request.getName());
-		criteria.setListed(StringUtils.equals("1", String.valueOf(request.getListed())));
-		List<ProjectPhase> list = projectPhaseDAO.query(criteria);
-		mv.addObject("query", query);
-		mv.addObject("phaseList", list);
-		mv.addObject("success", CollectionUtils.isNotEmpty(list));
-		mv.addObject("req", request);
-		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
-		return mv;
-	}
+    @RequestMapping("/list")
+    public ModelAndView list(@Valid ProjectPhaseListRequest request, BindingResult result) {
+        ModelAndView mv = createModelView(PHASE_LIST, request);
+        List<ProjectPhase> list = projectPhaseDAO.findAll();
+        mv.addObject("phaseList", list);
+        mv.addObject("success", CollectionUtils.isNotEmpty(list));
+        mv.addObject("req", request);
+        mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
+        return mv;
+    }
 
-	@RequestMapping("/add")
-	public ModelAndView add(ViewRequest req) {
-		ModelAndView mv = createModelView(PHASE_ADD, req);
-		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
-		return mv;
-	}
+    @RequestMapping("/add")
+    public ModelAndView add(ViewRequest req) {
+        ModelAndView mv = createModelView(PHASE_ADD, req);
+        mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
+        return mv;
+    }
 
-	@RequestMapping("/edit/{proId}")
-	public ModelAndView edit(@PathVariable Long proId, ViewRequest req) {
-		ModelAndView mv = createModelView(PHASE_EDIT, req);
-		ProjectPhase phase = projectPhaseDAO.get(proId);
-		mv.addObject("phase", phase);
-		mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
-		return mv;
-	}
+    @RequestMapping("/edit/{proId}")
+    public ModelAndView edit(@PathVariable Long proId, ViewRequest req) {
+        ModelAndView mv = createModelView(PHASE_EDIT, req);
+        ProjectPhase phase = projectPhaseDAO.get(proId);
+        mv.addObject("phase", phase);
+        mv.addObject("viewname", COMMONS_RESOURCES_MANAGER_VIEW_NAME);
+        return mv;
+    }
 
-	@RequestMapping("/update/{proId}")
-	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-	public ModelAndView update(@PathVariable Long proId, @Valid ProjectPhaseRequest request, BindingResult result) {
-		ProjectPhase phase = projectPhaseDAO.get(proId);
-		phase.setUpdated(new Date());
-		phase.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
-		phase.setName(request.getName());
-		projectPhaseDAO.update(phase);
-		return new ModelAndView("redirect:/phase/list?id=" + proId);
-	}
+    @RequestMapping("/update/{proId}")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public ModelAndView update(@PathVariable Long proId, @Valid ProjectPhaseRequest request, BindingResult result) {
+        ProjectPhase phase = projectPhaseDAO.get(proId);
+        phase.setUpdated(new Date());
+        phase.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
+        phase.setName(request.getName());
+        projectPhaseDAO.update(phase);
+        return new ModelAndView("redirect:/phase/list?id=" + proId);
+    }
 
-	@RequestMapping("/save")
-	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-	public ModelAndView save(@Valid ProjectPhaseRequest request, BindingResult result) {
-		ProjectPhase phase = new ProjectPhase();
-		Date time = new Date();
-		phase.setCreated(time);
-		phase.setUpdated(time);
-		phase.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
-		phase.setName(request.getName());
-		projectPhaseDAO.save(phase);
-		return new ModelAndView("redirect:/phase/list?id=" + phase.getId());
-	}
+    @RequestMapping("/save")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public ModelAndView save(@Valid ProjectPhaseRequest request, BindingResult result) {
+        ProjectPhase phase = new ProjectPhase();
+        Date time = new Date();
+        phase.setCreated(time);
+        phase.setUpdated(time);
+        phase.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
+        phase.setName(request.getName());
+        projectPhaseDAO.save(phase);
+        return new ModelAndView("redirect:/phase/list?id=" + phase.getId());
+    }
 }

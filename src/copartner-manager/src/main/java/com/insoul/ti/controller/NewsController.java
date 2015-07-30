@@ -37,130 +37,130 @@ import com.insoul.ti.req.ViewRequest;
 @RequestMapping("/news")
 public class NewsController extends WebBase {
 
-	private static final String NEWS_EDIT = "news_edit";
-	private static final String NEWS_ADD = "news_add";
-	private static final String NEWS_DETAIL = "news_detail";
-	private static final String NEWS_LIST = "news_list";
+    private static final String NEWS_EDIT = "news_edit";
+    private static final String NEWS_ADD = "news_add";
+    private static final String NEWS_DETAIL = "news_detail";
+    private static final String NEWS_LIST = "news_list";
 
-	@RequestMapping("/list")
-	public ModelAndView list(@Valid NewsListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView(NEWS_LIST, request);
-		PageQuery query = request.init().getQuery();
-		NewsCriteria criteria = new NewsCriteria();
-		criteria.setLimit(query.getPage_size());
-		criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
-		criteria.setType(request.getType());
-		String[] status = null;
-		if (StringUtils.isNotBlank(request.getStatus())) {
-			status = new String[] { request.getStatus() };
-		}
-		criteria.setStatus(status);
-		criteria.setId(request.getId());
-		criteria.setTitle(request.getTitle());
-		List<News> list = newsDAO.queryNews(criteria);
-		mv.addObject("query", query);
-		mv.addObject("newsList", list);
-		mv.addObject("success", CollectionUtils.isNotEmpty(list));
-		mv.addObject("req", request);
-		return mv;
-	}
-	
-	@RequestMapping("/update_status/{newsId}")
-	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-	public ModelAndView updateStatus(@PathVariable Long newsId, @RequestParam(value = "status", required = true) String status) {
-		try {
-			News news = newsDAO.get(newsId);
-			news.setStatus(status);
-			newsDAO.update(news);
-			returnJson(true, "200", "修改成功!!");
-		} catch (Exception e) {
-			returnJson(true, "500", "修改失败!!");
-		}
-		return null;
-	}
+    @RequestMapping("/list")
+    public ModelAndView list(@Valid NewsListRequest request, BindingResult result) {
+        ModelAndView mv = createModelView(NEWS_LIST, request);
+        PageQuery query = request.init().getQuery();
+        NewsCriteria criteria = new NewsCriteria();
+        criteria.setLimit(query.getPage_size());
+        criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
+        criteria.setType(request.getType());
+        String[] status = null;
+        if (StringUtils.isNotBlank(request.getStatus())) {
+            status = new String[] { request.getStatus() };
+        }
+        criteria.setStatus(status);
+        criteria.setTitle(request.getTitle());
+        List<News> list = newsDAO.queryNews(criteria);
+        mv.addObject("query", query);
+        mv.addObject("newsList", list);
+        mv.addObject("success", CollectionUtils.isNotEmpty(list));
+        mv.addObject("req", request);
+        return mv;
+    }
 
-	@RequestMapping("/detail/{newsId}")
-	public ModelAndView detail(@PathVariable Long newsId, ViewRequest req) {
-		ModelAndView mv = createModelView(NEWS_DETAIL, req);
-		mv.addObject("viewname", NEWS_LIST);
-		try {
-			News news = newsDAO.get(newsId);
-			mv.addObject("news", news);
-			mv.addObject("success", news != null);
-		} catch (Exception e) {
-			mv.addObject("success", false);
-		}
-		return mv;
-	}
+    @RequestMapping("/update_status/{newsId}")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public ModelAndView updateStatus(@PathVariable Long newsId,
+            @RequestParam(value = "status", required = true) String status) {
+        try {
+            News news = newsDAO.get(newsId);
+            news.setStatus(status);
+            newsDAO.update(news);
+            returnJson(true, "200", "修改成功!!");
+        } catch (Exception e) {
+            returnJson(true, "500", "修改失败!!");
+        }
+        return null;
+    }
 
-	@RequestMapping("/add")
-	public ModelAndView add(ViewRequest req) {
-		ModelAndView mv = createModelView(NEWS_ADD, req);
-		mv.addObject("viewname", NEWS_LIST);
-		return mv;
-	}
+    @RequestMapping("/detail/{newsId}")
+    public ModelAndView detail(@PathVariable Long newsId, ViewRequest req) {
+        ModelAndView mv = createModelView(NEWS_DETAIL, req);
+        mv.addObject("viewname", NEWS_LIST);
+        try {
+            News news = newsDAO.get(newsId);
+            mv.addObject("news", news);
+            mv.addObject("success", news != null);
+        } catch (Exception e) {
+            mv.addObject("success", false);
+        }
+        return mv;
+    }
 
-	@RequestMapping("/edit/{newsId}")
-	public ModelAndView edit(@PathVariable Long newsId, ViewRequest req) {
-		ModelAndView mv = createModelView(NEWS_EDIT, req);
-		News news = newsDAO.get(newsId);
-		mv.addObject("news", news);
-		mv.addObject("viewname", NEWS_LIST);
-		return mv;
-	}
+    @RequestMapping("/add")
+    public ModelAndView add(ViewRequest req) {
+        ModelAndView mv = createModelView(NEWS_ADD, req);
+        mv.addObject("viewname", NEWS_LIST);
+        return mv;
+    }
 
-	@RequestMapping("/update/{newsId}")
-	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-	public ModelAndView update(@PathVariable Long newsId, @Valid NewsRequest request, BindingResult result) {
-		News news = newsDAO.get(newsId);
-		MultipartFile image = request.getCoverImg();
-		if (image != null) {
-			String fileType = FileUtil.getFileType(image.getOriginalFilename());
-			String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
-			try {
-				String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-				news.setCoverImg(path);
-			} catch (Exception e) {
-				log.error("UploadFile Error.", e);
-			}
-		}
-		news.setArticle(request.getArticle());
-		news.setUpdated(new Date());
-		news.setStatus(request.getStatus());
-		news.setSynopsis(request.getSynopsis());
-		news.setTitle(request.getTitle());
-		news.setType(request.getType());
-		newsDAO.update(news);
-		return new ModelAndView("redirect:/news/detail/" + newsId);
-	}
+    @RequestMapping("/edit/{newsId}")
+    public ModelAndView edit(@PathVariable Long newsId, ViewRequest req) {
+        ModelAndView mv = createModelView(NEWS_EDIT, req);
+        News news = newsDAO.get(newsId);
+        mv.addObject("news", news);
+        mv.addObject("viewname", NEWS_LIST);
+        return mv;
+    }
 
-	@RequestMapping("/save")
-	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-	public ModelAndView save(@Valid NewsRequest request, BindingResult result) {
-		MultipartFile image = request.getCoverImg();
-		String path = StringUtils.EMPTY;
-		if (image != null) {
-			String fileType = FileUtil.getFileType(image.getOriginalFilename());
-			String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
-			try {
-				path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-			} catch (Exception e) {
-				log.error("UploadFile Error.", e);
-			}
-		}
-		News news = new News();
-		news.setCoverImg(path);
-		news.setAdminUserId(getAdminId());
-		news.setArticle(request.getArticle());
-		news.setClicks(0L);
-		Date time = new Date();
-		news.setCreated(time);
-		news.setUpdated(time);
-		news.setStatus(request.getStatus());
-		news.setSynopsis(request.getSynopsis());
-		news.setTitle(request.getTitle());
-		news.setType(request.getType());
-		newsDAO.save(news);
-		return new ModelAndView("redirect:/news/detail/" + news.getId());
-	}
+    @RequestMapping("/update/{newsId}")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public ModelAndView update(@PathVariable Long newsId, @Valid NewsRequest request, BindingResult result) {
+        News news = newsDAO.get(newsId);
+        MultipartFile image = request.getCoverImg();
+        if (image != null) {
+            String fileType = FileUtil.getFileType(image.getOriginalFilename());
+            String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
+            try {
+                String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
+                news.setCoverImg(path);
+            } catch (Exception e) {
+                log.error("UploadFile Error.", e);
+            }
+        }
+        news.setArticle(request.getArticle());
+        news.setUpdated(new Date());
+        news.setStatus(request.getStatus());
+        news.setSynopsis(request.getSynopsis());
+        news.setTitle(request.getTitle());
+        news.setType(request.getType());
+        newsDAO.update(news);
+        return new ModelAndView("redirect:/news/detail/" + newsId);
+    }
+
+    @RequestMapping("/save")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public ModelAndView save(@Valid NewsRequest request, BindingResult result) {
+        MultipartFile image = request.getCoverImg();
+        String path = StringUtils.EMPTY;
+        if (image != null) {
+            String fileType = FileUtil.getFileType(image.getOriginalFilename());
+            String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
+            try {
+                path = CDNUtil.uploadFile(image.getInputStream(), fileName);
+            } catch (Exception e) {
+                log.error("UploadFile Error.", e);
+            }
+        }
+        News news = new News();
+        news.setCoverImg(path);
+        news.setAdminUserId(getAdminId());
+        news.setArticle(request.getArticle());
+        news.setClicks(0L);
+        Date time = new Date();
+        news.setCreated(time);
+        news.setUpdated(time);
+        news.setStatus(request.getStatus());
+        news.setSynopsis(request.getSynopsis());
+        news.setTitle(request.getTitle());
+        news.setType(request.getType());
+        newsDAO.save(news);
+        return new ModelAndView("redirect:/news/detail/" + news.getId());
+    }
 }

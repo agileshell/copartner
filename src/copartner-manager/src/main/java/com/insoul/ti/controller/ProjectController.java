@@ -35,80 +35,83 @@ import com.insoul.ti.vo.ProjectVO;
 @RequestMapping("/project")
 public class ProjectController extends WebBase {
 
-	private static final String PROJECT_LIST = "project_list";
+    private static final String PROJECT_LIST = "project_list";
 
-	@RequestMapping("/list")
-	public ModelAndView list(@Valid ProjectListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView(PROJECT_LIST, request);
-		PageQuery query = request.init().getQuery();
-		ProjectCriteria criteria = new ProjectCriteria();
-		criteria.setLimit(query.getPage_size());
-		criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
-		criteria.setId(request.getId());
-		criteria.setContent(request.getContent());
-		criteria.setStatus(new String[] { request.getStatus() });
-		criteria.setName(request.getName());
-		List<Project> list = projectDAO.queryProject(criteria);
-		mv.addObject("query", query);
-		mv.addObject("projectList", list);
-		mv.addObject("success", CollectionUtils.isNotEmpty(list));
-		mv.addObject("req", request);
-		return mv;
-	}
-	
-	@RequestMapping("/update_status/{projectId}")
-	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-	public ModelAndView updateStatus(@PathVariable Long projectId, @RequestParam(value = "status", required = true) String status) {
-		try {
-			Project p = projectDAO.get(projectId);
-			p.setStatus(status);
-			projectDAO.update(p);
-			returnJson(true, "200", "修改成功!!");
-		} catch (Exception e) {
-			returnJson(true, "500", "修改失败!!");
-		}
-		return null;
-	}
+    @RequestMapping("/list")
+    public ModelAndView list(@Valid ProjectListRequest request, BindingResult result) {
+        ModelAndView mv = createModelView(PROJECT_LIST, request);
+        PageQuery query = request.init().getQuery();
+        ProjectCriteria criteria = new ProjectCriteria();
+        criteria.setLimit(query.getPage_size());
+        criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
+        criteria.setStatus(new String[] { request.getStatus() });
+        criteria.setName(request.getName());
+        List<Project> list = projectDAO.queryProject(criteria);
+        mv.addObject("query", query);
+        mv.addObject("projectList", list);
+        mv.addObject("success", CollectionUtils.isNotEmpty(list));
+        mv.addObject("req", request);
+        return mv;
+    }
 
-	@RequestMapping("/detail/{projectId}")
-	public ModelAndView detail(@PathVariable Long projectId, ViewRequest req) {
-		ModelAndView mv = createModelView("project_detail", req);
-		mv.addObject("viewname", PROJECT_LIST);
-		try {
-			ProjectVO project = getProject(projectId);
-			mv.addObject("project", project);
-			mv.addObject("success", project != null);
-		} catch (Exception e) {
-			mv.addObject("success", false);
-		}
-		return mv;
-	}
-	
-	private ProjectVO getProject(Long projectId) {
-		ProjectVO vo = new ProjectVO();
-		Project p = projectDAO.get(projectId);
-		vo.setAdvantage(p.getAdvantage());
-		vo.setCommentCount(p.getCommentCount());
-		vo.setContact(p.getContact());
-		vo.setContactPerson(p.getContactPerson());
-		vo.setContent(p.getContent());
-		vo.setCreated(p.getCreated());
-		vo.setFullLocation(p.getFullLocation());
-		vo.setId(p.getId());
-		vo.setLikeCount(p.getLikeCount());
-		vo.setLogo(p.getLogo());
-		vo.setName(p.getName());
-		vo.setStatus(p.getStatus());
-		vo.setUpdated(p.getUpdated());
-		vo.setUserId(p.getUserId());
-		IndustryDomain i = industryDomainDAO.get(p.getIndustryDomainId());
-		if (i != null) vo.setIndustryDomainName(i.getName());
-		ProjectPhase pp = projectPhaseDAO.get(p.getProjectPhaseId());
-		if (pp != null) vo.setProjectPhaseName(pp.getName());
-		TeamSize tz = teamSizeDAO.get(p.getTeamSizeId());
-		if (tz != null) vo.setTeamSizeName(tz.getName());
-		User u = userDAO.get(p.getUserId());
-		if (u != null) vo.setUserName(u.getName());
-		return vo;
-	}
+    @RequestMapping("/update_status/{projectId}")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public ModelAndView updateStatus(@PathVariable Long projectId,
+            @RequestParam(value = "status", required = true) String status) {
+        try {
+            Project p = projectDAO.get(projectId);
+            p.setStatus(status);
+            projectDAO.update(p);
+            returnJson(true, "200", "修改成功!!");
+        } catch (Exception e) {
+            returnJson(true, "500", "修改失败!!");
+        }
+        return null;
+    }
+
+    @RequestMapping("/detail/{projectId}")
+    public ModelAndView detail(@PathVariable Long projectId, ViewRequest req) {
+        ModelAndView mv = createModelView("project_detail", req);
+        mv.addObject("viewname", PROJECT_LIST);
+        try {
+            ProjectVO project = getProject(projectId);
+            mv.addObject("project", project);
+            mv.addObject("success", project != null);
+        } catch (Exception e) {
+            mv.addObject("success", false);
+        }
+        return mv;
+    }
+
+    private ProjectVO getProject(Long projectId) {
+        ProjectVO vo = new ProjectVO();
+        Project p = projectDAO.get(projectId);
+        vo.setAdvantage(p.getAdvantage());
+        vo.setCommentCount(p.getCommentCount());
+        vo.setContact(p.getContact());
+        vo.setContactPerson(p.getContactPerson());
+        vo.setContent(p.getContent());
+        vo.setCreated(p.getCreated());
+        vo.setFullLocation(p.getFullLocation());
+        vo.setId(p.getId());
+        vo.setLikeCount(p.getLikeCount());
+        vo.setLogo(p.getLogo());
+        vo.setName(p.getName());
+        vo.setStatus(p.getStatus());
+        vo.setUpdated(p.getUpdated());
+        vo.setUserId(p.getUserId());
+        IndustryDomain i = industryDomainDAO.get(p.getIndustryDomainId());
+        if (i != null)
+            vo.setIndustryDomainName(i.getName());
+        ProjectPhase pp = projectPhaseDAO.get(p.getProjectPhaseId());
+        if (pp != null)
+            vo.setProjectPhaseName(pp.getName());
+        TeamSize tz = teamSizeDAO.get(p.getTeamSizeId());
+        if (tz != null)
+            vo.setTeamSizeName(tz.getName());
+        User u = userDAO.get(p.getUserId());
+        if (u != null)
+            vo.setUserName(u.getName());
+        return vo;
+    }
 }
