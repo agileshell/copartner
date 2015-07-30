@@ -33,6 +33,9 @@
 			</ul>
         </li>
         <li>
+			<a <c:if test="${viewname == 'comments_list'}"> class="open" </c:if> href="/comments/list"><i class="icon-comments"></i>评论管理</a>
+        </li>
+        <li>
 			<a <c:if test="${viewname == 'feedback_list'}"> class="open" </c:if> href="/feedback/list"><i class="icon-envelope"></i>意见反馈</a>
         </li>
 	</ul>
