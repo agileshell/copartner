@@ -32,18 +32,18 @@
 	padding: 7px 10px;
 	border-radius: 5px;
 	font-size: 11px;
-	background: #FFFFFF none repeat scroll 0 0;
 	color: #000000;
+	background: #EEE none repeat scroll 0 0;
 }
 
 .chats .by-other .chat-content:after, .chats .by-other .chat-content:before {
 	right: 100%;
-	border: solid transparent;
 	content: " ";
 	height: 0;
 	width: 0;
 	position: absolute;
 	pointer-events: none;
+	border: solid transparent;
 }
 
 .chats .by-other .chat-content:after {
@@ -67,7 +67,7 @@
 	margin-top: 5px;
 	margin-left: 10px;
 	padding: 1px;
-	background: #fff;
+	background: #FFFFFF;
 	border: 1px solid #ccc;
 }
 
@@ -90,18 +90,17 @@
 .chats .by-me .chat-content:after, .chats .by-me .chat-content:before
 	{
 	left: 100%;
-	border: solid transparent;
 	content: " ";
 	height: 0;
 	width: 0;
 	position: absolute;
 	pointer-events: none;
-	border-color: transparent transparent transparent #b8db29;
+	border: solid transparent;
 }
 
 .chats .by-me .chat-content:after {
 	border-color: rgba(255, 255, 255, 0);
-	border-left-color: #fff;
+	border-left-color: #FFFFFF;
 	border-width: 10px;
 	top: 30%;
 	margin-top: -10px;
@@ -113,6 +112,14 @@
 	border-width: 11px;
 	top: 30%;
 	margin-top: -11px;
+}
+
+
+.chats .by-me .chat-content:after, .chats .by-me .chat-content:before {
+	border-color: transparent transparent transparent #b8db29;
+}
+.chats .by-other .chat-content:after, .chats .by-other .chat-content:before {
+	border-color: transparent #EEE transparent transparent;
 }
 
 /* Chat widget ends */

@@ -63,17 +63,39 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/content/*"/>
+			<mvc:mapping path="/content/*/*"/>
+			<mvc:mapping path="/content/*/*/*"/>
 			<mvc:mapping path="/editor/*"/>
+			<mvc:mapping path="/editor/*/*"/>
+			<mvc:mapping path="/editor/*/*/*"/>
 			<mvc:mapping path="/feedback/*"/>
+			<mvc:mapping path="/feedback/*/*"/>
+			<mvc:mapping path="/feedback/*/*/*"/>
 			<mvc:mapping path="/industry/*"/>
+			<mvc:mapping path="/industry/*/*"/>
+			<mvc:mapping path="/industry/*/*/*"/>
 			<mvc:mapping path="/news/*"/>
+			<mvc:mapping path="/news/*/*"/>
+			<mvc:mapping path="/news/*/*/*"/>
 			<mvc:mapping path="/phase/*"/>
+			<mvc:mapping path="/phase/*/*"/>
+			<mvc:mapping path="/phase/*/*/*"/>
 			<mvc:mapping path="/project/*"/>
+			<mvc:mapping path="/project/*/*"/>
+			<mvc:mapping path="/project/*/*/*"/>
 			<mvc:mapping path="/role/*"/>
+			<mvc:mapping path="/role/*/*"/>
+			<mvc:mapping path="/role/*/*/*"/>
 			<mvc:mapping path="/status/*"/>
+			<mvc:mapping path="/status/*/*"/>
+			<mvc:mapping path="/status/*/*/*"/>
 			<mvc:mapping path="/user/*"/>
+			<mvc:mapping path="/user/*/*"/>
+			<mvc:mapping path="/user/*/*/*"/>
+			<mvc:mapping path="/commons/*"/>
+			<mvc:mapping path="/commons/*/*"/>
+			<mvc:mapping path="/commons/*/*/*"/>
 			<mvc:mapping path="/home"/>
-			<mvc:mapping path="/commons/manager"/>
 			<ref bean="authInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
