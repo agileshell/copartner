@@ -29,6 +29,7 @@
 			  <li><a href="/phase/list"><i class="icon-list"></i>项目阶段管理</a></li>
 			  <li><a href="/role/list"><i class="icon-asterisk"></i>角色管理</a></li>
 			  <li><a href="/status/list"><i class="icon-key"></i>状态管理</a></li>
+			  <li><a href="/team/list"><i class="icon-key"></i>团队规模</a></li>
 			</ul>
         </li>
         <li>
