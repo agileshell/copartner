@@ -37,10 +37,6 @@ public class DemandDaoImpl extends BaseDaoImpl<Demand, Long> implements IDemandD
             conditionStr.append(" AND userId = :userId");
             params.put("userId", criteria.getUserId());
         }
-        if (null != criteria.getType()) {
-            conditionStr.append(" AND type = :type");
-            params.put("type", criteria.getType());
-        }
         if (null != criteria.getStatus() && criteria.getStatus().length > 0) {
             conditionStr.append(" AND status IN(:status)");
             params.put("status", Arrays.asList(criteria.getStatus()));
@@ -49,9 +45,13 @@ public class DemandDaoImpl extends BaseDaoImpl<Demand, Long> implements IDemandD
             conditionStr.append(" AND projectName like :projectName ");
             params.put("projectName", "%" + criteria.getProjectName() + "%");
         }
-        if (StringUtils.isNotBlank(criteria.getContent())) {
-            conditionStr.append(" AND content like :content ");
-            params.put("content", "%" + criteria.getContent() + "%");
+        if (null != criteria.getFrom()) {
+            conditionStr.append(" AND created > :from");
+            params.put("from", criteria.getFrom());
+        }
+        if (null != criteria.getTo()) {
+            conditionStr.append(" AND created < :to");
+            params.put("to", criteria.getTo());
         }
 
         Query query = null;

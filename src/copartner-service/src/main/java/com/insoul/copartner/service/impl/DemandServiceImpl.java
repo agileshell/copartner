@@ -20,7 +20,6 @@ import com.insoul.copartner.dao.IDemandDao;
 import com.insoul.copartner.dao.IDemandLikersDao;
 import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.ILocationDao;
-import com.insoul.copartner.dao.IProjectDao;
 import com.insoul.copartner.dao.IProjectPhaseDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.ITeamSizeDao;
@@ -34,7 +33,6 @@ import com.insoul.copartner.domain.DemandLikers;
 import com.insoul.copartner.domain.DemandLikersId;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Location;
-import com.insoul.copartner.domain.ProjectPhase;
 import com.insoul.copartner.domain.StartupRole;
 import com.insoul.copartner.domain.TeamSize;
 import com.insoul.copartner.domain.User;
@@ -73,9 +71,6 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
     private IDemandLikersDao demandLikersDao;
 
     @Resource
-    private IProjectDao projectDao;
-
-    @Resource
     private ILocationDao locationDao;
 
     @Resource
@@ -93,10 +88,12 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
         criteria.setUserId(requestData.getUserId());
-        criteria.setType(requestData.getType());
+        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
+                : null);
+        criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
 
         if (null != requestData.getUserId() && requestData.getUserId().equals(getUserId())) {
-            criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue(), DemandStatus.BANNED.getValue() });
+            criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue(), DemandStatus.INACTIVE.getValue() });
         } else {
             criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue() });
         }
@@ -115,16 +112,11 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
 
         DemandDetailVO demandVO = new DemandDetailVO();
         demandVO.setProjectName(demand.getProjectName());
-        demandVO.setType(demand.getType());
         demandVO.setStatus(demand.getStatus());
 
         IndustryDomain industryDomain = industryDomainDao.get(demand.getIndustryDomainId());
         demandVO.setIndustryDomain(industryDomain.getName());
         demandVO.setIndustryDomainId(demand.getIndustryDomainId());
-
-        ProjectPhase projectPhase = projectPhaseDao.get(demand.getProjectPhaseId());
-        demandVO.setProjectPhaseId(demand.getProjectPhaseId());
-        demandVO.setProjectPhase(projectPhase.getName());
 
         TeamSize teamSize = teamSizeDao.get(demand.getTeamSizeId());
         demandVO.setTeamSizeId(demand.getTeamSizeId());
@@ -133,8 +125,10 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         demandVO.setLocationId(demand.getLocationId());
         demandVO.setLocation(demand.getFullLocation());
 
+        demandVO.setHasBusinessRegistered(demand.getHasBusinessRegistered());
         demandVO.setAdvantage(demand.getAdvantage());
         demandVO.setContent(demand.getContent());
+        demandVO.setReward(demand.getReward());
         demandVO.setCommentCount(demand.getCommentCount());
         demandVO.setLikeCount(demand.getLikeCount());
         demandVO.setContactPerson(demand.getContactPerson());
@@ -178,12 +172,6 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         long userId = getUserId();
         Demand demand = new Demand();
 
-        ProjectPhase projectPhase = projectPhaseDao.get(requestData.getProjectPhaseId());
-        if (null == projectPhase) {
-            throw CExceptionFactory.getException(CException.class, ResponseCode.PROJECT_PHASE_NOT_EXIST);
-        }
-        demand.setProjectPhaseId(requestData.getProjectPhaseId());
-
         IndustryDomain industryDomain = industryDomainDao.get(requestData.getIndustryDomainId());
         if (null == industryDomain) {
             throw CExceptionFactory.getException(CException.class, ResponseCode.INDUSTRY_DOMAIN_NOT_EXIST);
@@ -212,9 +200,10 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
 
         demand.setUserId(userId);
         demand.setProjectName(requestData.getProjectName());
-        demand.setType(requestData.getType());
+        demand.setHasBusinessRegistered(requestData.getHasBusinessRegistered());
         demand.setAdvantage(requestData.getAdvantage());
         demand.setContent(requestData.getContent());
+        demand.setReward(requestData.getReward());
         demand.setContactPerson(requestData.getContactPerson());
         demand.setContact(requestData.getContact());
         demand.setCreated(new Date());
@@ -379,12 +368,11 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             DemandVO demandVO = new DemandVO();
             demandVO.setProjectName(demand.getProjectName());
             demandVO.setLocation(demand.getFullLocation());
-            demandVO.setIndustryDomain(domainIdMapName.get(demand.getIndustryDomainId()));
             demandVO.setTeamSize(teamSizeIdMapName.get(demand.getTeamSizeId()));
             demandVO.setUser(userIdMapUserVO.get(demand.getUserId()));
             demandVO.setStatus(demand.getStatus());
             demandVO.setContent(ContentUtil.splitAndFilterString(demand.getContent(), 80));
-            demandVO.setType(demand.getType());
+            demandVO.setReward(demand.getReward());
             demandVO.setCommentCount(demand.getCommentCount());
             demandVO.setLikeCount(demand.getLikeCount());
             demandVO.setCreated(demand.getCreated());

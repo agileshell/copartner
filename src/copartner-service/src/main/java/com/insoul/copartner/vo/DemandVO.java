@@ -15,15 +15,13 @@ public class DemandVO implements Serializable {
 
     private String location;
 
-    private String industryDomain;
-
     private String teamSize;
 
     private String content;
 
-    private UserBriefVO user;
+    private String reward;
 
-    private Integer type;
+    private UserBriefVO user;
 
     private String status;
 
@@ -52,14 +50,6 @@ public class DemandVO implements Serializable {
         this.location = location;
     }
 
-    public String getIndustryDomain() {
-        return industryDomain;
-    }
-
-    public void setIndustryDomain(String industryDomain) {
-        this.industryDomain = industryDomain;
-    }
-
     public String getTeamSize() {
         return teamSize;
     }
@@ -76,20 +66,20 @@ public class DemandVO implements Serializable {
         this.content = content;
     }
 
+    public String getReward() {
+        return reward;
+    }
+
+    public void setReward(String reward) {
+        this.reward = reward;
+    }
+
     public UserBriefVO getUser() {
         return user;
     }
 
     public void setUser(UserBriefVO user) {
         this.user = user;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     public String getStatus() {
@@ -130,6 +120,91 @@ public class DemandVO implements Serializable {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((commentCount == null) ? 0 : commentCount.hashCode());
+        result = prime * result + ((content == null) ? 0 : content.hashCode());
+        result = prime * result + ((created == null) ? 0 : created.hashCode());
+        result = prime * result + ((likeCount == null) ? 0 : likeCount.hashCode());
+        result = prime * result + ((likers == null) ? 0 : likers.hashCode());
+        result = prime * result + ((location == null) ? 0 : location.hashCode());
+        result = prime * result + ((projectName == null) ? 0 : projectName.hashCode());
+        result = prime * result + ((reward == null) ? 0 : reward.hashCode());
+        result = prime * result + ((status == null) ? 0 : status.hashCode());
+        result = prime * result + ((teamSize == null) ? 0 : teamSize.hashCode());
+        result = prime * result + ((user == null) ? 0 : user.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        DemandVO other = (DemandVO) obj;
+        if (commentCount == null) {
+            if (other.commentCount != null)
+                return false;
+        } else if (!commentCount.equals(other.commentCount))
+            return false;
+        if (content == null) {
+            if (other.content != null)
+                return false;
+        } else if (!content.equals(other.content))
+            return false;
+        if (created == null) {
+            if (other.created != null)
+                return false;
+        } else if (!created.equals(other.created))
+            return false;
+        if (likeCount == null) {
+            if (other.likeCount != null)
+                return false;
+        } else if (!likeCount.equals(other.likeCount))
+            return false;
+        if (likers == null) {
+            if (other.likers != null)
+                return false;
+        } else if (!likers.equals(other.likers))
+            return false;
+        if (location == null) {
+            if (other.location != null)
+                return false;
+        } else if (!location.equals(other.location))
+            return false;
+        if (projectName == null) {
+            if (other.projectName != null)
+                return false;
+        } else if (!projectName.equals(other.projectName))
+            return false;
+        if (reward == null) {
+            if (other.reward != null)
+                return false;
+        } else if (!reward.equals(other.reward))
+            return false;
+        if (status == null) {
+            if (other.status != null)
+                return false;
+        } else if (!status.equals(other.status))
+            return false;
+        if (teamSize == null) {
+            if (other.teamSize != null)
+                return false;
+        } else if (!teamSize.equals(other.teamSize))
+            return false;
+        if (user == null) {
+            if (other.user != null)
+                return false;
+        } else if (!user.equals(other.user))
+            return false;
+        return true;
     }
 
 }

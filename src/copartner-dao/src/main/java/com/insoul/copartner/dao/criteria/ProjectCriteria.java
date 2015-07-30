@@ -1,42 +1,22 @@
 package com.insoul.copartner.dao.criteria;
 
+import java.util.Date;
+
 public class ProjectCriteria extends PaginationCriteria {
-	
-	private Long id;
-	
-	private String name;// 项目名称
-	
-	private String content;// 实施条件
 
     private Long userId;
 
+    private String name;
+
+    private Long projectPhaseId;
+
     private String status[];
 
-    public Long getId() {
-		return id;
-	}
+    private Date from;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private Date to;
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public Long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
@@ -44,12 +24,48 @@ public class ProjectCriteria extends PaginationCriteria {
         this.userId = userId;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getProjectPhaseId() {
+        return projectPhaseId;
+    }
+
+    public void setProjectPhaseId(Long projectPhaseId) {
+        this.projectPhaseId = projectPhaseId;
+    }
+
     public String[] getStatus() {
+        if (null == status || status.length <= 0) {
+            status = new String[] { "active", "inactive" };
+        }
+
         return status;
     }
 
     public void setStatus(String[] status) {
         this.status = status;
+    }
+
+    public Date getFrom() {
+        return from;
+    }
+
+    public void setFrom(Date from) {
+        this.from = from;
+    }
+
+    public Date getTo() {
+        return to;
+    }
+
+    public void setTo(Date to) {
+        this.to = to;
     }
 
 }

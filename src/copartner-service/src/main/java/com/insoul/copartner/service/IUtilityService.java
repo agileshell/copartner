@@ -2,6 +2,7 @@ package com.insoul.copartner.service;
 
 import java.util.List;
 
+import com.insoul.copartner.vo.FinancingPhaseVO;
 import com.insoul.copartner.vo.IndustryDomainVO;
 import com.insoul.copartner.vo.LocationVO;
 import com.insoul.copartner.vo.ProjectPhaseVO;
@@ -24,4 +25,6 @@ public interface IUtilityService {
     void feedback(String text);
 
     List<TeamSizeVO> listTeamSizes();
+
+    List<FinancingPhaseVO> listFinancingPhases();
 }

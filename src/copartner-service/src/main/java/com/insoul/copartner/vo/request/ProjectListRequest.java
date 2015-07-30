@@ -8,7 +8,9 @@ public class ProjectListRequest extends PaginationRequest implements Serializabl
 
     private Long userId;
 
-    private Integer type;
+    private Long from;
+
+    private Long to;
 
     public Long getUserId() {
         return userId;
@@ -18,12 +20,20 @@ public class ProjectListRequest extends PaginationRequest implements Serializabl
         this.userId = userId;
     }
 
-    public Integer getType() {
-        return type;
+    public Long getFrom() {
+        return from;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setFrom(Long from) {
+        this.from = from;
+    }
+
+    public Long getTo() {
+        return to;
+    }
+
+    public void setTo(Long to) {
+        this.to = to;
     }
 
 }

@@ -5,13 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * 融智
+ * 融资
  */
 @Entity
-@Table(name = "demand", catalog = "copartner")
-public class Demand extends BaseEntity {
+@Table(name = "financing", catalog = "copartner")
+public class Financing extends BaseEntity {
 
-    private static final long serialVersionUID = -7917543729540044208L;
+    private static final long serialVersionUID = -5187615027598667673L;
 
     @Column(name = "user_id", nullable = false)
     private Long userId;// 创建者，用户ID
@@ -20,16 +20,13 @@ public class Demand extends BaseEntity {
     private String projectName;// 项目名称
 
     @Column(nullable = false)
-    private String status = "active";// 状态 active 可用，inactive不可用, deleted删除
-
-    @Column(name = "team_size", nullable = false)
-    private Long teamSizeId;// 团队规模
+    private String status = "active";// 状态 active 可用，inactive不可用
 
     @Column(name = "industry_domain_id", nullable = false)
     private Long industryDomainId;// 行业
 
-    @Column(name = "has_business_registered", nullable = false)
-    private Boolean hasBusinessRegistered = false;// 是否工商注册
+    @Column(name = "team_size", nullable = false)
+    private Long teamSizeId;// 团队规模
 
     @Column(name = "location_id", nullable = false)
     private Long locationId;// 所属地区
@@ -37,26 +34,25 @@ public class Demand extends BaseEntity {
     @Column(name = "full_location", nullable = true)
     private String fullLocation;// 地区缓存
 
+    @Column(name = "has_business_registered", nullable = false)
+    private Boolean hasBusinessRegistered = false;// 是否工商注册
+
+    @Column(name = "financing_phase_id", nullable = false)
+    private Long financingPhaseId;// 融资阶段
+
     @Column(nullable = false)
     private String advantage;// 优势
 
     @Column(nullable = false)
-    private String content;// 融智要求
+    private String content;// 融资要求
 
-    @Column(nullable = false)
-    private String reward;// 回报
+    private Float funding;// 意向资金
 
     @Column(name = "contact_person")
     private String contactPerson;// 联系人
 
     @Column(name = "contact")
     private String contact;// 联系方式
-
-    @Column(name = "like_count", nullable = false)
-    private Long likeCount = 0L;
-
-    @Column(name = "comment_count", nullable = false)
-    private Long commentCount = 0L;
 
     public Long getUserId() {
         return userId;
@@ -82,14 +78,6 @@ public class Demand extends BaseEntity {
         this.status = status;
     }
 
-    public Long getTeamSizeId() {
-        return teamSizeId;
-    }
-
-    public void setTeamSizeId(Long teamSizeId) {
-        this.teamSizeId = teamSizeId;
-    }
-
     public Long getIndustryDomainId() {
         return industryDomainId;
     }
@@ -98,12 +86,12 @@ public class Demand extends BaseEntity {
         this.industryDomainId = industryDomainId;
     }
 
-    public Boolean getHasBusinessRegistered() {
-        return hasBusinessRegistered;
+    public Long getTeamSizeId() {
+        return teamSizeId;
     }
 
-    public void setHasBusinessRegistered(Boolean hasBusinessRegistered) {
-        this.hasBusinessRegistered = hasBusinessRegistered;
+    public void setTeamSizeId(Long teamSizeId) {
+        this.teamSizeId = teamSizeId;
     }
 
     public Long getLocationId() {
@@ -122,6 +110,22 @@ public class Demand extends BaseEntity {
         this.fullLocation = fullLocation;
     }
 
+    public Boolean getHasBusinessRegistered() {
+        return hasBusinessRegistered;
+    }
+
+    public void setHasBusinessRegistered(Boolean hasBusinessRegistered) {
+        this.hasBusinessRegistered = hasBusinessRegistered;
+    }
+
+    public Long getFinancingPhaseId() {
+        return financingPhaseId;
+    }
+
+    public void setFinancingPhaseId(Long financingPhaseId) {
+        this.financingPhaseId = financingPhaseId;
+    }
+
     public String getAdvantage() {
         return advantage;
     }
@@ -138,12 +142,12 @@ public class Demand extends BaseEntity {
         this.content = content;
     }
 
-    public String getReward() {
-        return reward;
+    public Float getFunding() {
+        return funding;
     }
 
-    public void setReward(String reward) {
-        this.reward = reward;
+    public void setFunding(Float funding) {
+        this.funding = funding;
     }
 
     public String getContactPerson() {
@@ -160,22 +164,6 @@ public class Demand extends BaseEntity {
 
     public void setContact(String contact) {
         this.contact = contact;
-    }
-
-    public Long getLikeCount() {
-        return likeCount;
-    }
-
-    public void setLikeCount(Long likeCount) {
-        this.likeCount = likeCount;
-    }
-
-    public Long getCommentCount() {
-        return commentCount;
-    }
-
-    public void setCommentCount(Long commentCount) {
-        this.commentCount = commentCount;
     }
 
 }

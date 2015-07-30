@@ -45,6 +45,8 @@ public enum ResponseCode {
 
     TEAM_SIZE_NOT_EXIST(10250),
 
+    FINANCING_PHASE_NOT_EXIST(10260),
+
     /* account related error code 20000-29999 */
     ACCOUNT_NOT_EXIST(20000),
 

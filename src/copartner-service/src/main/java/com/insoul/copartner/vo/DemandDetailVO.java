@@ -9,15 +9,9 @@ public class DemandDetailVO implements Serializable {
 
     private UserBriefVO user;
 
-    private Integer type;
-
     private String status;
 
     private String projectName;
-
-    private Long projectPhaseId;
-
-    private String projectPhase;
 
     private Long locationId;
 
@@ -31,9 +25,13 @@ public class DemandDetailVO implements Serializable {
 
     private String teamSize;
 
+    private Boolean hasBusinessRegistered;
+
     private String advantage;
 
     private String content;
+
+    private String reward;
 
     private String contactPerson;
 
@@ -53,14 +51,6 @@ public class DemandDetailVO implements Serializable {
         this.user = user;
     }
 
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -75,22 +65,6 @@ public class DemandDetailVO implements Serializable {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
-    }
-
-    public Long getProjectPhaseId() {
-        return projectPhaseId;
-    }
-
-    public void setProjectPhaseId(Long projectPhaseId) {
-        this.projectPhaseId = projectPhaseId;
-    }
-
-    public String getProjectPhase() {
-        return projectPhase;
-    }
-
-    public void setProjectPhase(String projectPhase) {
-        this.projectPhase = projectPhase;
     }
 
     public Long getLocationId() {
@@ -141,6 +115,14 @@ public class DemandDetailVO implements Serializable {
         this.teamSize = teamSize;
     }
 
+    public Boolean getHasBusinessRegistered() {
+        return hasBusinessRegistered;
+    }
+
+    public void setHasBusinessRegistered(Boolean hasBusinessRegistered) {
+        this.hasBusinessRegistered = hasBusinessRegistered;
+    }
+
     public String getAdvantage() {
         return advantage;
     }
@@ -155,6 +137,14 @@ public class DemandDetailVO implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getReward() {
+        return reward;
+    }
+
+    public void setReward(String reward) {
+        this.reward = reward;
     }
 
     public String getContactPerson() {

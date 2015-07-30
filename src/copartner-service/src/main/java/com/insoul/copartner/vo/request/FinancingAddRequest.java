@@ -8,24 +8,25 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.insoul.copartner.validate.constraint.StringLength;
 
-public class ProjectAddRequest implements Serializable {
+public class FinancingAddRequest implements Serializable {
 
-    private static final long serialVersionUID = -2827520776964256863L;
+    private static final long serialVersionUID = -8110897703800874369L;
 
     @NotBlank
     @StringLength(max = 50)
-    private String name;// 项目名称
-
-    private String logo;// 项目LOGO
+    private String ProjectName;// 项目名称
 
     @NotNull
-    private Long projectPhaseId;// 阶段
+    private Long teamSizeId;// 团队规模
 
     @NotNull
     private Long locationId;// 所属地区
 
     @NotNull
     private Long industryDomainId;// 行业
+
+    @NotNull
+    private Long financingPhaseId;// 阶段
 
     @NotNull
     private Boolean hasBusinessRegistered;// 是否工商注册
@@ -37,8 +38,7 @@ public class ProjectAddRequest implements Serializable {
     @StringLength(max = 200)
     private String advantage;// 优势
 
-    @NotNull
-    private Long teamSizeId;// 团队规模
+    private Float funding;// 意向资金
 
     @StringLength(max = 30)
     private String contactPerson;// 联系人
@@ -46,28 +46,20 @@ public class ProjectAddRequest implements Serializable {
     @StringLength(max = 30)
     private String contact;// 联系方式
 
-    public String getName() {
-        return name;
+    public String getProjectName() {
+        return ProjectName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProjectName(String projectName) {
+        ProjectName = projectName;
     }
 
-    public String getLogo() {
-        return logo;
+    public Long getTeamSizeId() {
+        return teamSizeId;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
-    public Long getProjectPhaseId() {
-        return projectPhaseId;
-    }
-
-    public void setProjectPhaseId(Long projectPhaseId) {
-        this.projectPhaseId = projectPhaseId;
+    public void setTeamSizeId(Long teamSizeId) {
+        this.teamSizeId = teamSizeId;
     }
 
     public Long getLocationId() {
@@ -84,6 +76,14 @@ public class ProjectAddRequest implements Serializable {
 
     public void setIndustryDomainId(Long industryDomainId) {
         this.industryDomainId = industryDomainId;
+    }
+
+    public Long getFinancingPhaseId() {
+        return financingPhaseId;
+    }
+
+    public void setFinancingPhaseId(Long financingPhaseId) {
+        this.financingPhaseId = financingPhaseId;
     }
 
     public Boolean getHasBusinessRegistered() {
@@ -110,12 +110,12 @@ public class ProjectAddRequest implements Serializable {
         this.advantage = advantage;
     }
 
-    public Long getTeamSizeId() {
-        return teamSizeId;
+    public Float getFunding() {
+        return funding;
     }
 
-    public void setTeamSizeId(Long teamSizeId) {
-        this.teamSizeId = teamSizeId;
+    public void setFunding(Float funding) {
+        this.funding = funding;
     }
 
     public String getContactPerson() {

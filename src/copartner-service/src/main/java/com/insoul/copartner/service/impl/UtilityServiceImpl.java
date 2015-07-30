@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.insoul.copartner.dao.IFeedbackDao;
+import com.insoul.copartner.dao.IFinancingPhaseDao;
 import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.ILocationDao;
 import com.insoul.copartner.dao.IProjectPhaseDao;
@@ -17,6 +18,7 @@ import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IStartupStatusDao;
 import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.domain.Feedback;
+import com.insoul.copartner.domain.FinancingPhase;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Location;
 import com.insoul.copartner.domain.ProjectPhase;
@@ -24,6 +26,7 @@ import com.insoul.copartner.domain.StartupRole;
 import com.insoul.copartner.domain.StartupStatus;
 import com.insoul.copartner.domain.TeamSize;
 import com.insoul.copartner.service.IUtilityService;
+import com.insoul.copartner.vo.FinancingPhaseVO;
 import com.insoul.copartner.vo.IndustryDomainVO;
 import com.insoul.copartner.vo.LocationVO;
 import com.insoul.copartner.vo.ProjectPhaseVO;
@@ -54,6 +57,9 @@ public class UtilityServiceImpl extends BaseServiceImpl implements IUtilityServi
 
     @Resource
     private ITeamSizeDao teamSizeDao;
+
+    @Resource
+    private IFinancingPhaseDao financingPhaseDao;
 
     @Override
     public List<LocationVO> listByParentId(Long parentId) {
@@ -159,6 +165,22 @@ public class UtilityServiceImpl extends BaseServiceImpl implements IUtilityServi
             TeamSizeVO vo = new TeamSizeVO();
             vo.setId(teamSize.getId());
             vo.setName(teamSize.getName());
+
+            vos.add(vo);
+        }
+
+        return vos;
+    }
+
+    @Override
+    public List<FinancingPhaseVO> listFinancingPhases() {
+        List<FinancingPhaseVO> vos = new ArrayList<FinancingPhaseVO>();
+
+        List<FinancingPhase> entities = financingPhaseDao.getAllListed();
+        for (FinancingPhase financingPhase : entities) {
+            FinancingPhaseVO vo = new FinancingPhaseVO();
+            vo.setId(financingPhase.getId());
+            vo.setName(financingPhase.getName());
 
             vos.add(vo);
         }

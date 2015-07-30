@@ -2,17 +2,27 @@ package com.insoul.copartner.dao.criteria;
 
 import java.util.Date;
 
-public class DemandCriteria extends PaginationCriteria {
+public class FinancingCriteria extends PaginationCriteria {
 
     private Long userId;
 
-    private String status[];
-
     private String projectName;
+
+    private Long financingPhaseId;
+
+    private String status[];
 
     private Date from;
 
     private Date to;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getProjectName() {
         return projectName;
@@ -22,12 +32,12 @@ public class DemandCriteria extends PaginationCriteria {
         this.projectName = projectName;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getFinancingPhaseId() {
+        return financingPhaseId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setFinancingPhaseId(Long financingPhaseId) {
+        this.financingPhaseId = financingPhaseId;
     }
 
     public String[] getStatus() {

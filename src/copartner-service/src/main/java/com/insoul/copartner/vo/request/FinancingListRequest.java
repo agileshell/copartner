@@ -1,8 +1,8 @@
 package com.insoul.copartner.vo.request;
 
-public class DemandListRequest extends PaginationRequest {
+public class FinancingListRequest extends PaginationRequest {
 
-    private static final long serialVersionUID = -7650378463719813280L;
+    private static final long serialVersionUID = 5363439536689758559L;
 
     private Long userId;
 

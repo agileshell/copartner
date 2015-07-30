@@ -108,4 +108,11 @@ public class CommonController extends BaseController {
 
         return ResponseUtil.jsonSucceed(utilityService.listTeamSizes(), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "financingPhases", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> listFinancingPhases() {
+
+        return ResponseUtil.jsonSucceed(utilityService.listFinancingPhases(), HttpStatus.OK);
+    }
 }

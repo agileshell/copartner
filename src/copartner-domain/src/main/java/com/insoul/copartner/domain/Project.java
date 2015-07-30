@@ -4,8 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * 项目
  */
@@ -25,7 +23,7 @@ public class Project extends BaseEntity {
     private String logo;// 项目LOGO
 
     @Column(nullable = false)
-    private String status = "active";// 状态 active 可用，inactive不可用
+    private String status = "active";// 状态 active 可用，inactive不可用, deleted删除
 
     @Column(nullable = false)
     private String advantage;// 优势
@@ -48,6 +46,9 @@ public class Project extends BaseEntity {
     @Column(name = "industry_domain_id", nullable = false)
     private Long industryDomainId;// 行业
 
+    @Column(name = "has_business_registered", nullable = false)
+    private Boolean hasBusinessRegistered = false;// 是否工商注册
+
     @Column(name = "like_count", nullable = false)
     private Long likeCount = 0L;// 收藏次数
 
@@ -59,27 +60,6 @@ public class Project extends BaseEntity {
 
     @Column(name = "contact")
     private String contact;// 联系方式
-    
-    public String getShortName() {
-    	if (StringUtils.length(name) < 11) {
-    		return name;
-    	}
-    	return StringUtils.substring(name, 0, 10) + "...";
-    }
-    
-    public String getShortContent() {
-    	if (StringUtils.length(content) < 11) {
-    		return content;
-    	}
-    	return StringUtils.substring(content, 0, 10) + "...";
-    }
-    
-    public String getShortAdvantage() {
-    	if (StringUtils.length(advantage) < 11) {
-    		return advantage;
-    	}
-    	return StringUtils.substring(advantage, 0, 10) + "...";
-    }
 
     public Long getUserId() {
         return userId;
@@ -169,6 +149,14 @@ public class Project extends BaseEntity {
         this.industryDomainId = industryDomainId;
     }
 
+    public Boolean getHasBusinessRegistered() {
+        return hasBusinessRegistered;
+    }
+
+    public void setHasBusinessRegistered(Boolean hasBusinessRegistered) {
+        this.hasBusinessRegistered = hasBusinessRegistered;
+    }
+
     public Long getLikeCount() {
         return likeCount;
     }
@@ -211,6 +199,7 @@ public class Project extends BaseEntity {
         result = prime * result + ((contactPerson == null) ? 0 : contactPerson.hashCode());
         result = prime * result + ((content == null) ? 0 : content.hashCode());
         result = prime * result + ((fullLocation == null) ? 0 : fullLocation.hashCode());
+        result = prime * result + ((hasBusinessRegistered == null) ? 0 : hasBusinessRegistered.hashCode());
         result = prime * result + ((industryDomainId == null) ? 0 : industryDomainId.hashCode());
         result = prime * result + ((likeCount == null) ? 0 : likeCount.hashCode());
         result = prime * result + ((locationId == null) ? 0 : locationId.hashCode());
@@ -261,6 +250,11 @@ public class Project extends BaseEntity {
             if (other.fullLocation != null)
                 return false;
         } else if (!fullLocation.equals(other.fullLocation))
+            return false;
+        if (hasBusinessRegistered == null) {
+            if (other.hasBusinessRegistered != null)
+                return false;
+        } else if (!hasBusinessRegistered.equals(other.hasBusinessRegistered))
             return false;
         if (industryDomainId == null) {
             if (other.industryDomainId != null)

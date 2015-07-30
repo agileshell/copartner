@@ -2,8 +2,6 @@ package com.insoul.copartner.vo.request;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -19,15 +17,7 @@ public class DemandAddRequest implements Serializable {
     private String ProjectName;// 项目名称
 
     @NotNull
-    @Min(1)
-    @Max(2)
-    private Integer type;
-
-    @NotNull
     private Long teamSizeId;// 团队规模
-
-    @NotNull
-    private Long projectPhaseId;// 阶段
 
     @NotNull
     private Long locationId;// 所属地区
@@ -35,12 +25,18 @@ public class DemandAddRequest implements Serializable {
     @NotNull
     private Long industryDomainId;// 行业
 
+    @NotNull
+    private Boolean hasBusinessRegistered;// 是否工商注册
+
     @NotBlank
     @StringLength(max = 200)
     private String content;// 实施条件
 
     @StringLength(max = 200)
     private String advantage;// 优势
+
+    @StringLength(max = 200)
+    private String reward;// 回报
 
     @StringLength(max = 30)
     private String contactPerson;// 联系人
@@ -56,28 +52,12 @@ public class DemandAddRequest implements Serializable {
         ProjectName = projectName;
     }
 
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
     public Long getTeamSizeId() {
         return teamSizeId;
     }
 
     public void setTeamSizeId(Long teamSizeId) {
         this.teamSizeId = teamSizeId;
-    }
-
-    public Long getProjectPhaseId() {
-        return projectPhaseId;
-    }
-
-    public void setProjectPhaseId(Long projectPhaseId) {
-        this.projectPhaseId = projectPhaseId;
     }
 
     public Long getLocationId() {
@@ -96,6 +76,14 @@ public class DemandAddRequest implements Serializable {
         this.industryDomainId = industryDomainId;
     }
 
+    public Boolean getHasBusinessRegistered() {
+        return hasBusinessRegistered;
+    }
+
+    public void setHasBusinessRegistered(Boolean hasBusinessRegistered) {
+        this.hasBusinessRegistered = hasBusinessRegistered;
+    }
+
     public String getContent() {
         return content;
     }
@@ -110,6 +98,14 @@ public class DemandAddRequest implements Serializable {
 
     public void setAdvantage(String advantage) {
         this.advantage = advantage;
+    }
+
+    public String getReward() {
+        return reward;
+    }
+
+    public void setReward(String reward) {
+        this.reward = reward;
     }
 
     public String getContactPerson() {

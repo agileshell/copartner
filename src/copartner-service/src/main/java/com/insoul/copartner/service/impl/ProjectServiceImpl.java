@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.insoul.copartner.constant.DemandStatus;
+import com.insoul.copartner.constant.ProjectStatus;
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.ILocationDao;
@@ -84,11 +84,14 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
         criteria.setUserId(requestData.getUserId());
+        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
+                : null);
+        criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
 
         if (null != requestData.getUserId() && requestData.getUserId().equals(getUserId())) {
-            criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue(), DemandStatus.BANNED.getValue() });
+            criteria.setStatus(new String[] { ProjectStatus.ACTIVE.getValue(), ProjectStatus.INACTIVE.getValue() });
         } else {
-            criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue() });
+            criteria.setStatus(new String[] { ProjectStatus.ACTIVE.getValue() });
         }
 
         List<Project> projects = projectDao.queryProject(criteria);
@@ -138,6 +141,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         project.setLogo(requestData.getLogo());
         project.setAdvantage(requestData.getAdvantage());
         project.setContent(requestData.getContent());
+        project.setHasBusinessRegistered(requestData.getHasBusinessRegistered());
         project.setContactPerson(requestData.getContactPerson());
         project.setContact(requestData.getContact());
         project.setCreated(new Date());

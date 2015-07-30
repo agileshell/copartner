@@ -28,11 +28,12 @@ public class ProjectDaoImpl extends BaseDaoImpl<Project, Long> implements IProje
         Long count = (Long) generateQuery(criteria, true).getSingleResult();
         return count;
     }
-    
+
     @Override
-	public long count() {
-		return ((java.math.BigInteger) createNativeQuery("SELECT COUNT(1) FROM project", new HashMap<String, Object>()).getSingleResult()).longValue();
-	}
+    public long count() {
+        return ((java.math.BigInteger) createNativeQuery("SELECT COUNT(1) FROM project", new HashMap<String, Object>())
+                .getSingleResult()).longValue();
+    }
 
     private Query generateQuery(ProjectCriteria criteria, boolean isCount) {
         StringBuilder conditionStr = new StringBuilder();
@@ -41,22 +42,27 @@ public class ProjectDaoImpl extends BaseDaoImpl<Project, Long> implements IProje
             conditionStr.append(" AND userId = :userId");
             params.put("userId", criteria.getUserId());
         }
-        if (null != criteria.getId() && criteria.getId() > 0L) {
-            conditionStr.append(" AND id = :id");
-            params.put("id", criteria.getId());
+        if (null != criteria.getProjectPhaseId() && 0 != criteria.getProjectPhaseId()) {
+            conditionStr.append(" AND projectPhaseId = :projectPhaseId");
+            params.put("projectPhaseId", criteria.getProjectPhaseId());
         }
         if (null != criteria.getStatus() && criteria.getStatus().length > 0) {
             conditionStr.append(" AND status IN(:status)");
             params.put("status", Arrays.asList(criteria.getStatus()));
         }
         if (StringUtils.isNotBlank(criteria.getName())) {
-        	conditionStr.append(" AND name like :name ");
+            conditionStr.append(" AND name like :name ");
             params.put("name", "%" + criteria.getName() + "%");
         }
-        if (StringUtils.isNotBlank(criteria.getContent())) {
-        	conditionStr.append(" AND content like :content ");
-            params.put("content", "%" + criteria.getContent() + "%");
+        if (null != criteria.getFrom()) {
+            conditionStr.append(" AND created > :from");
+            params.put("from", criteria.getFrom());
         }
+        if (null != criteria.getTo()) {
+            conditionStr.append(" AND created < :to");
+            params.put("to", criteria.getTo());
+        }
+
         Query query = null;
         StringBuilder hql = new StringBuilder();
         if (isCount) {

@@ -2,7 +2,6 @@ package com.insoul.copartner.dao.impl;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -11,41 +10,45 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
-import com.insoul.copartner.dao.INewsDao;
-import com.insoul.copartner.dao.criteria.NewsCriteria;
-import com.insoul.copartner.domain.News;
+import com.insoul.copartner.dao.IFinancingDao;
+import com.insoul.copartner.dao.criteria.FinancingCriteria;
+import com.insoul.copartner.domain.Financing;
+
 
 @Repository
-public class NewsDaoImpl extends BaseDaoImpl<News, Long> implements INewsDao {
+public class FinancingDaoImpl extends BaseDaoImpl<Financing, Long> implements IFinancingDao {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<News> queryNews(NewsCriteria criteria) {
+    public List<Financing> queryFinancing(FinancingCriteria criteria) {
         return generateQuery(criteria, false).getResultList();
     }
 
     @Override
-    public Long countNews(NewsCriteria criteria) {
+    public Long countFinancing(FinancingCriteria criteria) {
         Long count = (Long) generateQuery(criteria, true).getSingleResult();
 
         return count;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private Query generateQuery(NewsCriteria criteria, boolean isCount) {
+    private Query generateQuery(FinancingCriteria criteria, boolean isCount) {
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
-        if (null != criteria.getType() && criteria.getType() > 0) {
-            conditionStr.append(" AND type = :type");
-            params.put("type", criteria.getType());
+        if (null != criteria.getUserId() && criteria.getUserId() > 0L) {
+            conditionStr.append(" AND userId = :userId");
+            params.put("userId", criteria.getUserId());
         }
-        if (null != criteria.getStatus()) {
-            conditionStr.append(" AND status IN :status");
-            params.put("status", new HashSet(Arrays.asList(criteria.getStatus())));
+        if (null != criteria.getFinancingPhaseId() && 0 != criteria.getFinancingPhaseId()) {
+            conditionStr.append(" AND financingPhaseId = :financingPhaseId");
+            params.put("financingPhaseId", criteria.getFinancingPhaseId());
         }
-        if (StringUtils.isNotBlank(criteria.getTitle())) {
-            conditionStr.append(" AND title like :title");
-            params.put("title", "%" + criteria.getTitle() + "%");
+        if (null != criteria.getStatus() && criteria.getStatus().length > 0) {
+            conditionStr.append(" AND status IN(:status)");
+            params.put("status", Arrays.asList(criteria.getStatus()));
+        }
+        if (StringUtils.isNotBlank(criteria.getProjectName())) {
+            conditionStr.append(" AND projectName like :projectName ");
+            params.put("projectName", "%" + criteria.getProjectName() + "%");
         }
         if (null != criteria.getFrom()) {
             conditionStr.append(" AND created > :from");
@@ -55,13 +58,14 @@ public class NewsDaoImpl extends BaseDaoImpl<News, Long> implements INewsDao {
             conditionStr.append(" AND created < :to");
             params.put("to", criteria.getTo());
         }
+
         Query query = null;
         StringBuilder hql = new StringBuilder();
         if (isCount) {
-            hql.append("SELECT COUNT(*) FROM News WHERE 1=1").append(conditionStr);
+            hql.append("SELECT COUNT(*) FROM Financing WHERE 1=1").append(conditionStr);
             query = createQuery(hql.toString(), params);
         } else {
-            hql.append("FROM News WHERE 1=1").append(conditionStr).append(" ORDER BY created DESC");
+            hql.append("FROM Financing WHERE 1=1").append(conditionStr).append(" ORDER BY created DESC");
             query = createQuery(hql.toString(), params);
             if ((criteria.getLimit() != null) && (criteria.getLimit() != 0)) {
                 query.setMaxResults(criteria.getLimit());

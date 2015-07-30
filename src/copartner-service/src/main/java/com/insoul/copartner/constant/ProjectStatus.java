@@ -1,13 +1,13 @@
 package com.insoul.copartner.constant;
 
-public enum DemandStatus {
+public enum ProjectStatus {
     ACTIVE("active"),
 
     INACTIVE("inactive"),
 
     DELETED("deleted");
 
-    private DemandStatus(String value) {
+    private ProjectStatus(String value) {
         this.value = value;
     }
 
