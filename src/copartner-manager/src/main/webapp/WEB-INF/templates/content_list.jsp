@@ -70,6 +70,7 @@
 													<jsp:include page="control/commons-status.jsp">
 														<jsp:param value="${req.status}" name="status"/>
 														<jsp:param value="true" name="has_all"/>
+														<jsp:param value="false" name="update"/>
 													</jsp:include>
 												</div>
 												<label class="col-lg-2 control-label" for="type">类型:</label>

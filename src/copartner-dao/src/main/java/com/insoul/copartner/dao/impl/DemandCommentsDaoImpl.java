@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.insoul.copartner.dao.IDemandCommentsDao;
@@ -29,24 +30,31 @@ public class DemandCommentsDaoImpl extends BaseDaoImpl<DemandComments, Long> imp
     }
 
     private Query generateQuery(DemandCommentCriteria criteria, boolean isCount) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("demandId", criteria.getDemandId());
-
-        Query query = null;
-        if (isCount) {
-            String hql = "SELECT COUNT(*) FROM DemandComments WHERE demandId = :demandId AND status = 'active'";
-            query = createQuery(hql, params);
-        } else {
-            String hql = "FROM DemandComments WHERE demandId = :demandId AND status = 'active' ORDER BY created DESC";
-            query = createQuery(hql, params);
-            if ((criteria.getLimit() != null) && (criteria.getLimit() != 0)) {
-                query.setMaxResults(criteria.getLimit());
-                if (criteria.getOffset() != null) {
-                    query.setFirstResult(criteria.getOffset());
-                }
-            }
-        }
-
-        return query;
+        StringBuilder conditionStr = new StringBuilder();
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (null != criteria.getDemandId() && criteria.getDemandId() > 0L) {
+			conditionStr.append(" AND demandId = :demandId ");
+			params.put("demandId", criteria.getDemandId());
+		}
+		if (StringUtils.isNotBlank(criteria.getStatus())) {
+			conditionStr.append(" AND status = :status ");
+			params.put("status", criteria.getStatus());
+		}
+		Query query = null;
+		StringBuilder hql = new StringBuilder();
+		if (isCount) {
+			hql.append("SELECT COUNT(*) FROM DemandComments WHERE 1 = 1").append(conditionStr);
+			query = createQuery(hql.toString(), params);
+		} else {
+			hql.append("FROM DemandComments WHERE 1 = 1").append(conditionStr).append(" ORDER BY created DESC");
+			query = createQuery(hql.toString(), params);
+			if ((criteria.getLimit() != null) && (criteria.getLimit() != 0)) {
+				query.setMaxResults(criteria.getLimit());
+				if (criteria.getOffset() != null) {
+					query.setFirstResult(criteria.getOffset());
+				}
+			}
+		}
+		return query;
     }
 }

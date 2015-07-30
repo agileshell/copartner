@@ -23,7 +23,7 @@ public class DemandComments extends BaseEntity {
     private String content;
 
     @Column(nullable = false)
-    private String status = "active";
+    private String status = "active";// 状态 active 可用，inactive不可用
 
     public Long getDemandId() {
         return demandId;
