@@ -5,15 +5,15 @@
 		<div class="navbar-header">
 			<button class="navbar-toggle btn-navbar" type="button"
 				data-toggle="collapse" data-target=".bs-navbar-collapse">
-				<span>创客汇管理后台</span>
+				<span>创客汇汇管理后台</span>
 			</button>
-			<a href="#" class="navbar-brand hidden-lg">创客汇管理后台</a>
+			<a href="#" class="navbar-brand hidden-lg">创客汇汇管理后台</a>
 		</div>
 		<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 			<ul class="nav navbar-nav">
 				<li class="dropdown dropdown-big">
 					<i>
-						<img width="30px" height="30px" style="margin-left: 1px;margin-top: 10px" alt="创客汇管理后台" src="${cdn}image/icon.png">
+						<img width="30px" height="30px" style="margin-left: 1px;margin-top: 10px" alt="创客汇汇管理后台" src="${cdn}image/icon.png">
 					</i>
 				</li>
 			</ul>

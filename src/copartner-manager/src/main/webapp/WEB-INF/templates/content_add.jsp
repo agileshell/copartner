@@ -10,7 +10,7 @@
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="author" content="fei.liu" />
-	<title>创客管理平台--新建文章</title>
+	<title>创客汇管理平台--新建文章</title>
 
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
