@@ -33,6 +33,43 @@
 			border: 0;
 		}
 	</style>
+	<script type="text/javascript">
+	var ws;
+	if (!window.WebSocket) {
+		window.WebSocket = window.MozWebSocket;
+	}
+	if (window.WebSocket) {
+		ws = new WebSocket("ws://120.24.228.100:9099/ws/lnk");
+	}
+	ws.onopen = function(event) {
+		
+	};
+	ws.onmessage = function(event) {
+		alert(event.data);
+	};
+	ws.onerror = function(event) {
+		
+	};
+	ws.onclose = function(event) {
+		
+	};
+	function deliver(message) {
+		if (!window.WebSocket) {
+			return;
+		}
+		if (ws.readyState == WebSocket.OPEN) {
+			ws.send(message);
+		} else {
+			alert("The socket is not open.");
+		}
+	}
+	$(document).ready(function() {
+		$("#deliver").click(function() {
+			var message = $("#message").val();
+			
+		});
+	});
+	</script>
 </head>
 <body>
 	<jsp:include page="control/header.jsp"/>
@@ -103,12 +140,10 @@
 			                    </ul>
 			                  </div>
 			                  <div class="widget-foot">
-			                      <form class="form-inline">
-									<div class="form-group col-lg-11">
-										<input type="text" class="form-control" placeholder="输入消息内容"></input>
-									</div>
-									<button type="submit" class="btn btn-default">发送</button>
-			                      </form>
+								<div class="form-group col-lg-11">
+									<input id="message" type="text" class="form-control" placeholder="输入消息内容"></input>
+								</div>
+								<button class="btn btn-default" id="deliver">发送</button>
 			                  </div>
 			                </div>
 			              </div>
