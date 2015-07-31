@@ -92,9 +92,12 @@
 			<mvc:mapping path="/user/*"/>
 			<mvc:mapping path="/user/*/*"/>
 			<mvc:mapping path="/user/*/*/*"/>
-			<mvc:mapping path="/commons/*"/>
-			<mvc:mapping path="/commons/*/*"/>
-			<mvc:mapping path="/commons/*/*/*"/>
+			<mvc:mapping path="/comments/*"/>
+			<mvc:mapping path="/comments/*/*"/>
+			<mvc:mapping path="/comments/*/*/*"/>
+			<mvc:mapping path="/team/*"/>
+			<mvc:mapping path="/team/*/*"/>
+			<mvc:mapping path="/team/*/*/*"/>
 			<mvc:mapping path="/home"/>
 			<ref bean="authInterceptor"/>
 		</mvc:interceptor>
