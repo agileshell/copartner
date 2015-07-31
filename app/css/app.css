@@ -25,6 +25,32 @@ a {
 	text-decoration: none;
 	color: #41AAF2;
 }
+.mui-bar-tab .mui-tab-item.mui-active {
+	color: #41AAF2;
+}
+.mui-segmented-control {
+	border: 1px solid #41AAF2;
+}
+.mui-segmented-control.mui-segmented-control-inverted~.mui-slider-progress-bar {
+	background-color: #41AAF2;
+}
+.mui-segmented-control .mui-control-item {
+	color: #41AAF2;
+	border-color: #41AAF2;
+	border-left: 1px solid #41AAF2;
+}
+.mui-segmented-control .mui-control-item.mui-active {
+	color: #fff;
+	background-color: #41AAF2;
+}
+.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+	color: #41AAF2;
+	border-bottom: 2px solid #41AAF2;
+	background: 0 0;
+}
+.c-control .mui-control-item {
+	line-height: 30px;
+}
 .c-browser .mui-bar .mui-btn {
 	top: 10px;
 	padding: 2px 12px 2px;
@@ -73,7 +99,7 @@ a {
 	background-repeat: no-repeat;
 	display: inline-block;
 }
-.c-rzrh-icon {
+.c-rzrz-icon {
 	width: 60px;
 	height: 60px;
 	background-image: url(../images/home_rzrh.png);
@@ -120,19 +146,6 @@ a {
 	background-size: 60px 60px;
 	background-repeat: no-repeat;
 	display: inline-block;
-}
-.mui-segmented-control {
-	border: 1px solid #41AAF2;
-}
-.mui-segmented-control .mui-control-item.mui-active {
-	color: #fff;
-	background-color: #41AAF2;
-}
-.mui-segmented-control .mui-control-item {
-	line-height: 30px;
-	color: #41AAF2;
-	border-color: #41AAF2;
-	border-left: 1px solid #41AAF2;
 }
 .c-loader {
 	top: 0;

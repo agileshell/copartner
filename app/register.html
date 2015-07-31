@@ -45,7 +45,7 @@
 					<input id='code' type="tel" class="mui-input-clear mui-input" placeholder="校验码">
 				</div>
 				<div class="mui-input-row">
-					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="60-20位字符，字母或数字">
+					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="密码（6-16位字符，字母或数字）">
 				</div>
 			</form>
 			<div class="mui-content-padded">
@@ -60,22 +60,11 @@
 				$.plusReady(function() {
 					plus.screen.lockOrientation("portrait-primary");
 					var toProfilePage = function() {
-						var profilePage = null;
-						if (!profilePage) {
-							profilePage = plus.webview.getWebviewById('profile');
-						}
-						$.fire(profilePage, 'show', null);
-						setTimeout(function() {
-							$.openWindow({
-								id: 'profile',
-								show: {
-									aniShow: 'pop-in'
-								},
-								waiting: {
-									autoShow: false
-								}
-							});
-						}, 1000);
+						var profilePage = plus.webview.getWebviewById('profile');
+						mui.fire(profilePage, 'mui.view.beforeshow', {
+							needReflush: true
+						});
+						profilePage.show();
 					};
 					var sendcodeButton = doc.getElementById('sendcode'),
 						accountBox = doc.getElementById('account'),
