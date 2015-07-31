@@ -9,6 +9,9 @@
 		<link rel="stylesheet" href="css/mui.min.css">
 		<link rel="stylesheet" href="css/app.css" />
 		<style>
+			.mui-bar .mui-pull-left span {
+				font-size: 18px;
+			}
 			.mui-input-group:first-child {
 				margin-top: 30px;
 			}
@@ -63,7 +66,7 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="goHome" class="mui-action-menu mui-icon mui-icon-home mui-pull-left"></a>
 			<h1 id="title" class="mui-title c-title">账号登录</h1>
 		</header>
 		<div class="mui-content" style="padding-top: 45px;">
@@ -93,82 +96,65 @@
 				var accountBox = doc.getElementById('account');
 				//从localStorage中获取账号
 				accountBox.value = localStorage.getItem('$account');
+				mui.init({
+					keyEventBind: {
+						backbutton: false
+					}
+				});
 				$.plusReady(function() {
 					plus.screen.lockOrientation("portrait-primary");
-					var state = app.getState();
-					var profilePage = $.preload({
-						"id": 'profile',
-						"url": 'profile.html'
-					});
 					var toProfilePage = function() {
-						$.fire(profilePage, 'show', null);
-						setTimeout(function() {
-							$.openWindow({
-								id: 'profile',
-								show: {
-									aniShow: 'pop-in'
-								},
-								waiting: {
-									autoShow: false
-								}
-							});
-						}, 0);
+						var profilePage = plus.webview.getWebviewById('profile');
+						mui.fire(profilePage, 'mui.view.beforeshow', {
+							needReflush: true
+						});
+						profilePage.show();
 					};
-					//检查 "登录状态"
-					if (state.userId) {
-						toProfilePage();
-					} else {
-						//第三方登录
-						var auths = {};
-						var oauthArea = doc.querySelector('.oauth-area');
-						plus.oauth.getServices(function(services) {
-							for (var i in services) {
-								var service = services[i];
-								auths[service.id] = service;
-								var btn = document.createElement('div');
-								btn.setAttribute('class', 'oauth-btn');
-								btn.authId = service.id;
-								btn.style.backgroundImage = 'url("images/' + service.id + '.png")'
-									//btn.innerText = service.description + "登录";
-								oauthArea.appendChild(btn);
-							}
-							$(oauthArea).on('tap', '.oauth-btn', function() {
-								var auth = auths[this.authId];
-								var waiting = plus.nativeUI.showWaiting();
-								auth.login(function() {
-									waiting.close();
-									plus.nativeUI.toast("登录认证成功");
-									//alert(JSON.stringify(auth.authResult));
-									auth.getUserInfo(function() {
-										plus.nativeUI.toast("获取用户信息成功：");
-										//alert(JSON.stringify(auth.userInfo));
-										var authUserInfo = auth.userInfo;
-										app.logingByAuth(authUserInfo, function() {
-											toProfilePage();
-										});
-									}, function(e) {
-										plus.nativeUI.toast("获取用户信息失败：" + e.message);
+					//第三方登录
+					var auths = {};
+					var oauthArea = doc.querySelector('.oauth-area');
+					plus.oauth.getServices(function(services) {
+						for (var i in services) {
+							var service = services[i];
+							auths[service.id] = service;
+							var btn = document.createElement('div');
+							btn.setAttribute('class', 'oauth-btn');
+							btn.authId = service.id;
+							btn.style.backgroundImage = 'url("images/' + service.id + '.png")'
+								//btn.innerText = service.description + "登录";
+							oauthArea.appendChild(btn);
+						}
+						$(oauthArea).on('tap', '.oauth-btn', function() {
+							var auth = auths[this.authId];
+							var waiting = plus.nativeUI.showWaiting();
+							auth.login(function() {
+								waiting.close();
+								plus.nativeUI.toast("登录认证成功");
+								//alert(JSON.stringify(auth.authResult));
+								auth.getUserInfo(function() {
+									plus.nativeUI.toast("获取用户信息成功：");
+									//alert(JSON.stringify(auth.userInfo));
+									var authUserInfo = auth.userInfo;
+									app.logingByAuth(authUserInfo, function() {
+										toProfilePage();
 									});
 								}, function(e) {
-									waiting.close();
-									plus.nativeUI.toast("登录认证失败：" + e.message);
+									plus.nativeUI.toast("获取用户信息失败：" + e.message);
 								});
+							}, function(e) {
+								waiting.close();
+								plus.nativeUI.toast("登录认证失败：" + e.message);
 							});
-						}, function(e) {
-							oauthArea.style.display = 'none';
-							plus.nativeUI.toast("获取登录认证失败：" + e.message);
 						});
-					}
-					// close splash
-					setTimeout(function() {
-						//关闭 splash
-						plus.navigator.closeSplashscreen();
-					}, 600);
+					}, function(e) {
+						oauthArea.style.display = 'none';
+						plus.nativeUI.toast("获取登录认证失败：" + e.message);
+					});
 					var loginButton = doc.getElementById('login');
 					var passwordBox = doc.getElementById('password');
 					var regButton = doc.getElementById('reg');
 					var forgetButton = doc.getElementById('forgetPassword');
-					loginButton.addEventListener('tap', function(event) {
+					loginButton.addEventListener('tap', function() {
 						var loginInfo = {
 							account: accountBox.value,
 							password: passwordBox.value
@@ -180,47 +166,42 @@
 								if (err) {
 									plus.nativeUI.toast(err);
 									return;
+								} else {
+									toProfilePage();
 								}
-								toProfilePage();
 							}, 200);
 						});
 					});
 					$.enterfocus('#login-form input', function() {
 						$.trigger(loginButton, 'tap');
 					});
-					regButton.addEventListener('tap', function(event) {
+					regButton.addEventListener('tap', function() {
 						$.openWindow({
 							url: 'register.html',
 							id: 'register',
 							show: {
 								aniShow: 'pop-in'
 							},
-							styles: {
-								popGesture: 'hide'
-							},
 							waiting: {
 								autoShow: false
 							}
 						});
-					}, false);
-					forgetButton.addEventListener('tap', function(event) {
+					});
+					forgetButton.addEventListener('tap', function() {
 						$.openWindow({
 							url: 'forget_password.html',
 							id: 'forget_password',
 							show: {
 								aniShow: 'pop-in'
 							},
-							styles: {
-								popGesture: 'hide'
-							},
 							waiting: {
 								autoShow: false
 							}
 						});
-					}, false);
-					window.addEventListener('resize', function() {
-						oauthArea.style.display = document.body.clientHeight > 400 ? 'block' : 'none';
-					}, false);
+					});
+					doc.getElementById('goHome').addEventListener('tap', function() {
+						plus.webview.getLaunchWebview().show();
+					});
 				});
 			}(mui, document));
 		</script>

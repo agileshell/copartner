@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创客汇</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			.account-info {
+				margin-top: 44px;
+			}
+			.user-bg {
+				position: relative;
+				width: 100%;
+				max-height: 160px;
+				min-height: 160px;
+			}
+			.user-wrapper {
+				padding-left: 10px;
+				padding-top: 30px;
+			}
+			.user-avatar {
+				border-radius: 50%;
+				float: left;
+				width: 65px;
+			}
+			.user-info {
+				float: left;
+				margin-left: 10px;
+				color: #fff;
+			}
+			.user-name {
+				display: block;
+				font-size: 20px;
+				font-weight: bolder;
+			}
+			.user-item {
+				display: block;
+				font-size: 12px;
+				line-height: 20px;
+			}
+			.mui-bar~.mui-content .mui-fullscreen {
+				top: 200px;
+				height: auto;
+			}
+			.mui-control-content {
+				height: 100%;
+				background-color: white;
+			}
+			.new-item {
+				padding: 15px 0 0 15px;
+				border-bottom: 1px solid #c8c7cc;
+			}
+			.project-name {
+				color: #C15151;
+				font-size: 15px;
+			}
+			.project-item {
+				display: block;
+				font-size: 12px;
+				line-height: 20px;
+			}
+			.mui-pull-bottom-tips {
+				text-align: center;
+				background-color: #efeff4;
+				font-size: 15px;
+				line-height: 40px;
+				color: #777;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a id="goHome" class="mui-action-menu mui-icon mui-icon-home mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">我的空间</h1>
+			<a id="edit-profile" class="mui-action-menu mui-icon mui-icon-compose mui-pull-right"></a>
+		</header>
+		<div class="mui-content account-info">
+			<div class="user-bg" style="background:url(../images/profile_bg.png) no-repeat; background-size:cover">
+				<div class="user-wrapper">
+					<img id="user-avatar" src="../images/blank.jpg" class="user-avatar">
+					<div class="user-info">
+						<span class="user-name"><span id="user-name"></span></span>
+						<span class="user-item"><span id="user-lean" ></span></span>
+						<span class="user-item">目前状况：<span id="user-startup-status"></span></span>
+						<span class="user-item">所属行业：<span id="user-domains"></span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mui-content">
+			<div class="mui-slider mui-fullscreen">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item mui-active" href="#rongzi">我的融资</a>
+					<a class="mui-control-item" href="#rongzhi">我的融智</a>
+					<a class="mui-control-item" href="#project">我的项目</a>
+				</div>
+				<div class="mui-slider-progress-bar mui-col-xs-4"></div>
+				<div class="mui-slider-group">
+					<div id="rongzi" class="mui-slider-item mui-control-content mui-active">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div class="new-item">
+									<img id="new-rongzi" src="../images/new-rongzi.png" style="width:200px" />
+								</div>
+								<ul id="rongzi-list" class="mui-table-view mui-table-view-chevron">
+								</ul>
+								<div class="mui-pull-bottom-tips">
+									<span id="loading-rongzi" class="mui-pull-loading">点击加载更多</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="rongzhi" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div class="new-item">
+									<img id="new-rongzhi" src="../images/new-rongzhi.png" style="width:200px" />
+								</div>
+								<ul id="rongzhi-list" class="mui-table-view mui-table-view-chevron">
+								</ul>
+								<div class="mui-pull-bottom-tips">
+									<span id="loading-rongzhi" class="mui-pull-loading">点击加载更多</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="project" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div class="new-item">
+									<img id="new-project" src="../images/new-project.png" style="width:200px" />
+								</div>
+								<ul id="project-list" class="mui-table-view mui-table-view-chevron">
+								</ul>
+								<div class="mui-pull-bottom-tips">
+									<span id="loading-project" class="mui-pull-loading">点击加载更多</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script id="rongzi-template" type="text/x-handlebars-template">
+		<li id="rongzi_{{id}}" class="mui-table-view-cell mui-media">
+			<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+				<div class="mui-media-body">
+					<span class="project-name">{{projectName}}</span>
+					<span class="project-item">{{location}} {{teamSize}}</span>
+					<span class="project-item">领域：{{industryDomain}}</span>
+					<span class="project-item">阶段：{{financingPhase}}</span>
+					<span class="project-item">融资：{{content}}</span>
+				</div>
+			</a>
+		</li>
+	</script>
+	<script id="rongzhi-template" type="text/x-handlebars-template">
+		<li id="rongzhi_{{id}}" class="mui-table-view-cell mui-media">
+			<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+				<div class="mui-media-body">
+					<span class="project-name">{{projectName}}</span>
+					<span class="project-item">{{location}} {{teamSize}}</span>
+					<span class="project-item">回报：{{reward}}</span>
+					<span class="project-item">融智：{{content}}</span>
+				</div>
+			</a>
+		</li>
+	</script>
+	<script src="../js/handlebars-v2.0.0.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/app.js"></script>
+	<script type="text/javascript">
+		(function() {
+			var rongziDivEl = document.createElement("div"),
+				rongziSource = document.getElementById("rongzi-template").innerText,
+				rongziTemplate = Handlebars.compile(rongziSource),
+				rongziEl = document.getElementById("rongzi-list"),
+				rongzhiDivEl = document.createElement("div"),
+				rongzhiSource = document.getElementById("rongzhi-template").innerText,
+				rongzhiTemplate = Handlebars.compile(rongzhiSource),
+				rongzhiEl = document.getElementById("rongzhi-list");
+			var rongziIsFirstLoad = true,
+				rongzhiIsFirstLoad = true,
+				rongziLatestLoadingRequestDate = 0,
+				rongzhiLatestLoadingRequestDate = 0;
+			mui.init({
+				keyEventBind: {
+					backbutton: false
+				}
+			});
+			mui('.mui-scroll-wrapper').scroll({
+				indicators: true //是否显示滚动条
+			});
+			mui.plusReady(function() {
+				document.addEventListener('mui.view.beforeshow', function(event) {
+					var needReflush = event.detail.needReflush;
+					var successCallback = function(data) {
+							var userInfo = data.body,
+								gender = ('F' == userInfo.gender ? '男' : '女');
+							document.getElementById('user-avatar').src = userInfo.avatar;
+							document.getElementById('user-name').innerText = userInfo.name;
+							document.getElementById('user-lean').innerText = userInfo.fullLocation + '，' + userInfo.age + '，' + gender + '，' + userInfo.startupRole.name;
+							document.getElementById('user-startup-status').innerText = userInfo.startupStatus.name;
+							document.getElementById('user-domains').innerText = userInfo.fullDomains;
+						},
+						errorCallback = function(err) {
+							plus.nativeUI.toast(err);
+						};
+					app.getProfile(successCallback, errorCallback);
+					if (rongziIsFirstLoad || needReflush) {
+						rongziEl.innerHTML = '';
+						loadingRongzi();
+						rongziIsFirstLoad = false;
+						rongziLatestLoadingRequestDate = 0;
+					}
+					if (rongzhiIsFirstLoad || needReflush) {
+						rongzhiEl.innerHTML = '';
+						loadingRongzhi();
+						rongzhiIsFirstLoad = false;
+						rongzhiLatestLoadingRequestDate = 0;
+					}
+				});
+				document.getElementById('goHome').addEventListener('tap', function() {
+					plus.webview.getLaunchWebview().show();
+				});
+				//退出登录
+				document.getElementById('edit-profile').addEventListener('tap', function() {
+					app.setState({});
+					plus.webview.getLaunchWebview().show();
+				});
+			});
+			document.getElementById('new-rongzi').addEventListener('tap', function() {
+				mui.openWindow({
+					url: 'create_rongzi.html',
+					id: 'create_rongzi',
+					show: {
+						aniShow: 'pop-in'
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+			});
+			document.getElementById('new-rongzhi').addEventListener('tap', function() {
+				mui.openWindow({
+					url: 'create_rongzhi.html',
+					id: 'create_rongzhi',
+					show: {
+						aniShow: 'pop-in'
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+			});
+			document.getElementById('loading-rongzi').addEventListener('tap', function() {
+				rongziIsFirstLoad = false;
+				loadingRongzi();
+			});
+			document.getElementById('loading-rongzhi').addEventListener('tap', function() {
+				rongzhiIsFirstLoad = false;
+				loadingRongzhi();
+			});
+			document.getElementById('loading-project').addEventListener('tap', function() {
+				loadingProject();
+			});
+
+			function loadingRongzi() {
+				var success = function(response) {
+						var items = response.body.list;
+						if (items.length > 0) {
+							rongziLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+							for (var i = 0, len = items.length; i < len; i++) {
+								rongziDivEl.innerHTML = rongziTemplate(items[i]);
+								rongziEl.appendChild(rongziDivEl.firstElementChild);
+							}
+						}
+					},
+					error = function(errorType) {
+						mui.toast(app.ajaxErrorHandler(errorType));
+					};
+				setTimeout(function() {
+					app.listUserRongzis(0, 10, 0, rongziLatestLoadingRequestDate, success, error);
+				}, 500);
+			};
+
+			function loadingRongzhi() {
+				var success = function(response) {
+						var items = response.body.list;
+						if (items.length > 0) {
+							rongzhiLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+							for (var i = 0, len = items.length; i < len; i++) {
+								rongzhiDivEl.innerHTML = rongzhiTemplate(items[i]);
+								rongzhiEl.appendChild(rongzhiDivEl.firstElementChild);
+							}
+						}
+					},
+					error = function(errorType) {
+						mui.toast(app.ajaxErrorHandler(errorType));
+					};
+				setTimeout(function() {
+					app.listUserRongzhis(0, 10, 0, rongzhiLatestLoadingRequestDate, success, error);
+				}, 500);
+			};
+
+			function loadingProject() {};
+		})();
+	</script>
+
+</html>

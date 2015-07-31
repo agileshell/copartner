@@ -26,55 +26,55 @@
 		<div class="mui-content">
 			<ul id="list" class="mui-table-view mui-grid-view mui-grid-9">
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a href="pages/news_list.html">
+					<a id="news_list" href="pages/news_list.html">
 						<span class="home-grid c-news-icon"></span>
 						<div class="mui-media-body">最新动态</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a href="pages/zhengce_list.html">
+					<a id="zhengce_list" href="pages/zhengce_list.html">
 						<span class="home-grid c-zhengce-icon"></span>
 						<div class="mui-media-body">政策解读</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a href="pages/ziyuan_list.html">
+					<a id="ziyuan_list" href="pages/ziyuan_list.html">
 						<span class="home-grid c-resource-icon"></span>
 						<div class="mui-media-body">公共资源</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a href="#">
-						<span class="home-grid c-rzrh-icon"></span>
-						<div class="mui-media-body">融资融汇</div>
+					<a id="rzrz_list" href="pages/rzrz_list.html">
+						<span class="home-grid c-rzrz-icon"></span>
+						<div class="mui-media-body">融资融智</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a href="#">
+					<a id="renmai_list" href="#">
 						<span class="home-grid c-renmai-icon"></span>
 						<div class="mui-media-body">人脉</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a href="#">
+					<a id="chuangkehui" href="#">
 						<span class="home-grid c-community-icon"></span>
 						<div class="mui-media-body">创客汇</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a href="#">
+					<a id="daoshi" href="#">
 						<span class="home-grid c-tutor-icon"></span>
 						<div class="mui-media-body">创业导师</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a href="login1.html">
+					<a id="chongdianzhan" href="#">
 						<span class="home-grid c-charging-icon"></span>
 						<div class="mui-media-body">充电站</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a href="login.html">
+					<a id="profile" href="pages/profile.html">
 						<span class="home-grid c-my-icon"></span>
 						<div class="mui-media-body">我</div>
 					</a>
@@ -82,6 +82,7 @@
 			</ul>
 		</div>
 		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
 		<script>
 			(function() {
 				mui.init();
@@ -89,15 +90,17 @@
 					plus.screen.lockOrientation("portrait-primary");
 					var showGuide = plus.storage.getItem("lauchFlag");
 					if (showGuide) {
-						//关闭splash页面；
-						plus.navigator.closeSplashscreen();
+						//关闭splash页面
+						setTimeout(function() {
+							plus.navigator.closeSplashscreen();
+						}, 3000);
 						//预加载
 						preload();
 					} else {
 						//显示启动导航
 						mui.openWindow({
-							id: 'guide',
 							url: 'guide.html',
+							id: 'guide',
 							show: {
 								aniShow: 'none'
 							},
@@ -116,14 +119,11 @@
 				function preload() {
 					//内置浏览器
 					mui.preload({
-						url: "/browser.html",
+						url: "browser.html",
 						id: "browser_main",
-						styles: {
-							popGesture: "hide"
-						},
 						subpages: [{
-							id: "browser",
 							url: "",
+							id: "browser",
 							styles: {
 								top: "0px",
 								bottom: "44px"
@@ -132,41 +132,59 @@
 					});
 					mui.preload({
 						url: "login.html",
-						id: "login",
-						styles: {
-							popGesture: "hide"
-						}
+						id: "login"
 					});
 					mui.preload({
 						url: "pages/news_list.html",
-						styles: {
-							popGesture: "hide"
-						}
+						id: "news_list"
 					});
 					mui.preload({
 						url: "pages/zhengce_list.html",
-						styles: {
-							popGesture: "hide"
-						}
+						id: "zhengce_list"
 					});
 					mui.preload({
 						url: "pages/ziyuan_list.html",
-						styles: {
-							popGesture: "hide"
-						}
+						id: "ziyuan_list"
+					});
+					mui.preload({
+						url: "pages/rzrz_list.html",
+						id: "rzrz_list"
+					});
+					mui.preload({
+						url: "pages/profile.html",
+						id: "profile"
 					});
 				};
+				var loginPage = null,
+					profilePage = null;
 				mui('#list').on('tap', 'a', function() {
+					if ('#' == this.getAttribute('href')) {
+						plus.nativeUI.toast('TODO');
+						return;
+					}
+					var id = this.getAttribute('id');
+					if ('profile' == id) {
+						var state = app.getState();
+						//检查 "登录状态"
+						if (state.userId) {
+							if (!profilePage) {
+								profilePage = plus.webview.getWebviewById('profile');
+							}
+							mui.fire(profilePage, 'mui.view.beforeshow', {
+								needReflush: false
+							});
+						} else {
+							if (!loginPage) {
+								loginPage = plus.webview.getWebviewById('login');
+							}
+							loginPage.show();
+							return;
+						}
+					}
 					var aniShow = "pop-in";
-					var id = this.getAttribute('href');
-					var href = this.href;
-					var webview_style = {
-						popGesture: "close"
-					};
 					mui.openWindow({
 						id: id,
 						url: this.href,
-						styles: webview_style,
 						show: {
 							aniShow: aniShow
 						},
@@ -176,13 +194,6 @@
 					});
 				});
 				//退出应用
-				/*		mui.back = function() {
-							mui.confirm('确定退出应用？', '提示', ['确定', '取消'], function(e) {
-								if (e.index == 0) {
-									plus.runtime.quit();
-								}
-							});
-						};*/
 				var backButtonPress = 0;
 				mui.back = function(event) {
 					backButtonPress++;

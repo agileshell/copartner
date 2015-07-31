@@ -12,7 +12,7 @@
 
 	<body>
 		<div class="mui-content" style="padding: 0px 5px;">
-			<div id="news-type" class="mui-segmented-control">
+			<div id="news-type" class="mui-segmented-control c-control">
 				<a id="industry" class="mui-control-item mui-active" href="#industry-item">行业</a>
 				<a id="location" class="mui-control-item" href="#location-item">地方</a>
 			</div>
@@ -57,8 +57,7 @@
 			newsTemplate = Handlebars.compile(newsSource),
 			newsType = 1,
 			industryNewsEl = document.getElementById("industry-news-list"),
-			locationNewsEl = document.getElementById("location-news-list"),
-			newsEl = industryNewsEl;
+			locationNewsEl = document.getElementById("location-news-list");
 		mui.init({
 			pullRefresh: {
 				container: '#pullrefresh',
@@ -76,13 +75,11 @@
 			var id = this.getAttribute('id');
 			if (id == 'industry') {
 				newsType = 1;
-				newsEl = industryNewsEl;
 				if (!industryNewsLoadingNoData) {
 					mui('#pullrefresh').pullRefresh().refresh(true);
 				}
 			} else {
 				newsType = 2;
-				newsEl = locationNewsEl;
 				if (!locationNewsIsFirstLoad) {
 					locationNewsIsFirstLoad = true;
 					setTimeout(function() {
@@ -122,77 +119,100 @@
 		function pulldownRefresh() {
 			setTimeout(function() {
 				console.log('pulldown');
-				var newsLatestRefreshRequestDate = (newsType == 1) ? industryNewsLatestRefreshRequestDate : locationNewsLatestRefreshRequestDate;
-				var newsLatestLoadingRequestDate = (newsType == 1) ? industryNewsLatestLoadingRequestDate : locationNewsLatestLoadingRequestDate;
-				var success = function(response) {
-						var news = response.body.list;
-						if (news.length > 0) {
-							if (newsLatestRefreshRequestDate == 0 && newsLatestLoadingRequestDate == 0) {
-								if (newsType == 1) {
+				if (newsType == 1) {
+					var success = function(response) {
+							var news = response.body.list;
+							if (news.length > 0) {
+								if (industryNewsLatestRefreshRequestDate == 0 && industryNewsLatestLoadingRequestDate == 0) {
 									industryNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
-								} else {
-									locationNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
+								}
+								industryNewsLatestRefreshRequestDate = Date.parse(news[0].created);
+								for (var i = news.length - 1; i >= 0; i--) {
+									divEl.innerHTML = newsTemplate(app.processNews(news[i]));
+									industryNewsEl.insertBefore(divEl.firstElementChild, industryNewsEl.firstElementChild);
 								}
 							}
-							if (newsType == 1) {
-								industryNewsLatestRefreshRequestDate = Date.parse(news[0].created);
-							} else {
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						};
+					app.listnews(newsType, 0, 10, industryNewsLatestRefreshRequestDate, 0, success, error);
+				} else {
+					var success = function(response) {
+							var news = response.body.list;
+							if (news.length > 0) {
+								if (locationNewsLatestRefreshRequestDate == 0 && locationNewsLatestLoadingRequestDate == 0) {
+									locationNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
+								}
 								locationNewsLatestRefreshRequestDate = Date.parse(news[0].created);
+								for (var i = news.length - 1; i >= 0; i--) {
+									divEl.innerHTML = newsTemplate(app.processNews(news[i]));
+									locationNewsEl.insertBefore(divEl.firstElementChild, locationNewsEl.firstElementChild);
+								}
 							}
-							for (var i = news.length - 1; i >= 0; i--) {
-								divEl.innerHTML = newsTemplate(app.processNews(news[i]));
-								newsEl.insertBefore(divEl.firstElementChild, newsEl.firstElementChild);
-							}
-						}
-						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
-					},
-					error = function(errorType) {
-						mui.toast(app.ajaxErrorHandler(errorType));
-						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
-					};
-				app.listnews(newsType, 0, 10, newsLatestRefreshRequestDate, 0, success, error);
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						};
+					app.listnews(newsType, 0, 10, locationNewsLatestRefreshRequestDate, 0, success, error);
+				}
 			}, 1000);
 		};
 		 //上拉加载具体业务实现
 		function pullupRefresh() {
 			setTimeout(function() {
 				console.log('pullup');
-				var newsLatestRefreshRequestDate = (newsType == 1) ? industryNewsLatestRefreshRequestDate : locationNewsLatestRefreshRequestDate;
-				var newsLatestLoadingRequestDate = (newsType == 1) ? industryNewsLatestLoadingRequestDate : locationNewsLatestLoadingRequestDate;
-				var success = function(response) {
-						var news = response.body.list;
-						if (news.length > 0) {
-							if (newsLatestLoadingRequestDate == 0 && newsLatestRefreshRequestDate == 0) {
-								if (newsType == 1) {
+				if (newsType == 1) {
+					var success = function(response) {
+							var news = response.body.list;
+							if (news.length > 0) {
+								if (industryNewsLatestLoadingRequestDate == 0 && industryNewsLatestRefreshRequestDate == 0) {
 									industryNewsLatestRefreshRequestDate = Date.parse(news[0].created);
-								} else {
+								}
+								industryNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
+								for (var i = 0, len = news.length; i < len; i++) {
+									divEl.innerHTML = newsTemplate(app.processNews(news[i]));
+									industryNewsEl.appendChild(divEl.firstElementChild);
+								}
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+							} else {
+								industryNewsLoadingNoData = true;
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+							}
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+						};
+					app.listnews(newsType, 0, 10, 0, industryNewsLatestLoadingRequestDate, success, error);
+				} else {
+					var success = function(response) {
+							var news = response.body.list;
+							if (news.length > 0) {
+								if (locationNewsLatestLoadingRequestDate == 0 && locationNewsLatestRefreshRequestDate == 0) {
 									locationNewsLatestRefreshRequestDate = Date.parse(news[0].created);
 								}
-							}
-							if (newsType == 1) {
-								industryNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
-							} else {
 								locationNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
-							}
-							for (var i = 0, len = news.length; i < len; i++) {
-								divEl.innerHTML = newsTemplate(app.processNews(news[i]));
-								newsEl.appendChild(divEl.firstElementChild);
-							}
-							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
-						} else {
-							if (newsType == 1) {
-								industryNewsLoadingNoData = true;
+								for (var i = 0, len = news.length; i < len; i++) {
+									divEl.innerHTML = newsTemplate(app.processNews(news[i]));
+									locationNewsEl.appendChild(divEl.firstElementChild);
+								}
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 							} else {
 								locationNewsLoadingNoData = true;
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
 							}
-							mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
-						}
-					},
-					error = function(errorType) {
-						mui.toast(app.ajaxErrorHandler(errorType));
-						mui('#pullrefresh').pullRefresh().endPullupToRefresh();
-					};
-				app.listnews(newsType, 0, 10, 0, newsLatestLoadingRequestDate, success, error);
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+						};
+					app.listnews(newsType, 0, 10, 0, locationNewsLatestLoadingRequestDate, success, error);
+				}
 			}, 1000);
 		};
 	</script>
