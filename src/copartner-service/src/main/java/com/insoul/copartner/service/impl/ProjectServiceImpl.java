@@ -251,6 +251,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
             projectVO.setCommentCount(project.getCommentCount());
             projectVO.setLikeCount(project.getLikeCount());
             projectVO.setLocation(project.getFullLocation());
+            projectVO.setCreated(project.getCreated());
 
             projectVO.setProjectPhase(phaseIdMapName.get(project.getProjectPhaseId()));
             projectVO.setIndustryDomain(domainIdMapName.get(project.getIndustryDomainId()));
