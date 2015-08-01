@@ -373,6 +373,8 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             demandVO.setStatus(demand.getStatus());
             demandVO.setContent(ContentUtil.splitAndFilterString(demand.getContent(), 80));
             demandVO.setReward(demand.getReward());
+            demandVO.setContactPerson(demand.getContactPerson());
+            demandVO.setContact(demand.getContact());
             demandVO.setCommentCount(demand.getCommentCount());
             demandVO.setLikeCount(demand.getLikeCount());
             demandVO.setCreated(demand.getCreated());

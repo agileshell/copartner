@@ -25,6 +25,10 @@ public class DemandVO implements Serializable {
 
     private String status;
 
+    private String contactPerson;
+
+    private String contact;
+
     private Long likeCount;
 
     private Long commentCount;
@@ -88,6 +92,22 @@ public class DemandVO implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     public Long getLikeCount() {
