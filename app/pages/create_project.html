@@ -40,16 +40,29 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 id="title" class="mui-title c-title">创建融智</h1>
-			<a id="create-rongzhi-a" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right"></a>
+			<h1 id="title" class="mui-title c-title">创建项目</h1>
+			<a id="create-project-a" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right"></a>
 		</header>
 		<div class="mui-content">
 			<div class="mui-page-content">
-				<form id='create-rongzhi-form' class="mui-input-group">
+				<form id='create-rongzi-form' class="mui-input-group">
+					<div class="mui-input-row">
+						<label>Logo</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='logo' name='logo' type="text" value="" class="c-input">
+						</span>
+					</div>
 					<div class="mui-input-row">
 						<label>项目名称</label>
 						<span class="mui-pull-right mui-navigate-right">
-							<input id='projectName' name='projectName' type="text" value="" class="c-input">
+							<input id='name' name='name' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>项目阶段</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='projectPhase' name="projectPhaseId" type="hidden">
+							<input id='projectPhaseName' type="text" value="" class="c-input">
 						</span>
 					</div>
 					<div class="mui-input-row">
@@ -74,7 +87,7 @@
 						</span>
 					</div>
 					<div class="mui-input-row">
-						<label>工商注册</label>
+						<label>实体店</label>
 						<input id='hasBusinessRegistered' name="hasBusinessRegistered" value="true" type="hidden">
 						<div id="businessRegistered" class="mui-switch mui-switch-mini mui-active ">
 							<div class="mui-switch-handle"></div>
@@ -94,12 +107,11 @@
 					</div>
 				</form>
 				<div class="mui-input-row" style="margin: 10px 5px 0 5px;">
-					<textarea id="reward" rows="2" placeholder="回报"></textarea>
-					<textarea id="advantage" rows="2" placeholder="优势"></textarea>
-					<textarea id="content" rows="3" placeholder="融智要求"></textarea>
+					<textarea id="advantage" rows="3" placeholder="优势"></textarea>
+					<textarea id="content" rows="3" placeholder="实施条件"></textarea>
 				</div>
 				<div class="mui-content-padded">
-					<button id='create-rongzhi-b' class="mui-btn mui-btn-block mui-btn-primary">确认</button>
+					<button id='create-project-b' class="mui-btn mui-btn-block mui-btn-primary">确认</button>
 				</div>
 			</div>
 		</div>
@@ -121,6 +133,16 @@
 				industryDomainsPicker.show(function(items) {
 					industryDomainName.value = items[0].text;
 					industryDomain.value = items[0].value;
+				});
+			}, false);
+			var projectPhasesPicker = new $.PopPicker();
+			projectPhasesPicker.setData(projectPhaseData);
+			var projectPhaseName = doc.getElementById('projectPhaseName'),
+				projectPhase = doc.getElementById('projectPhase');
+			projectPhaseName.addEventListener('tap', function(event) {
+				projectPhasesPicker.show(function(items) {
+					projectPhaseName.value = items[0].text;
+					projectPhase.value = items[0].value;
 				});
 			}, false);
 			var teamSizesPicker = new $.PopPicker();
@@ -159,30 +181,31 @@
 					});
 					profilePage.show();
 				};
-				doc.getElementById('create-rongzhi-a').addEventListener('tap', function() {
-					createRongzhi();
+				doc.getElementById('create-project-a').addEventListener('tap', function() {
+					creatProject();
 				});
-				doc.getElementById('create-rongzhi-b').addEventListener('tap', function() {
-					createRongzhi();
+				doc.getElementById('create-project-b').addEventListener('tap', function() {
+					creatProject();
 				});
 
-				function createRongzhi() {
-					var rzInfo = {
-						projectName: doc.getElementById('projectName').value,
+				function creatProject() {
+					var projectInfo = {
+						logo: doc.getElementById('logo').value,
+						name: doc.getElementById('name').value,
+						projectPhaseId: doc.getElementById('projectPhase').value,
 						locationId: doc.getElementById('location').value,
 						industryDomainId: doc.getElementById('industryDomain').value,
 						teamSizeId: doc.getElementById('teamSize').value,
 						contact: doc.getElementById('contact').value,
 						contactPerson: doc.getElementById('contactPerson').value,
-						reward: doc.getElementById('reward').value,
 						hasBusinessRegistered: doc.getElementById('hasBusinessRegistered').value,
 						advantage: doc.getElementById('advantage').value,
 						content: doc.getElementById('content').value
 					};
-					var w = plus.nativeUI.showWaiting("　　 请等待...　　");
-					app.createRongzhi(rzInfo, function(err) {
+					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
+					app.createProject(projectInfo, function(err) {
 						setTimeout(function() {
-							w.close();
+							wait.close();
 							if (err) {
 								plus.nativeUI.toast(err);
 								return;

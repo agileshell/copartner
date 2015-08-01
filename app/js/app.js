@@ -291,7 +291,6 @@
 
 		mui.ajax('http://120.24.228.100:8080/copartner/financing', {
 			data: {
-				type: 1,
 				projectName: rzInfo.projectName,
 				locationId: rzInfo.locationId,
 				industryDomainId: rzInfo.industryDomainId,
@@ -484,6 +483,115 @@
 
 	owner.listRongzhis = function(offset, limit, from, to, successCallback, errorCallback) {
 		mui.ajax('http://120.24.228.100:8080/copartner/demands', {
+			data: {
+				offset: offset,
+				limit: limit,
+				from: from,
+				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return successCallback(data);
+				} else {
+					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				return errorCallback(owner.ajaxErrorHandler(type));
+			}
+		})
+	};
+
+	owner.createProject = function(projectInfo, callback) {
+		callback = callback || $.noop;
+		projectInfo = projectInfo || {};
+		projectInfo.logo = projectInfo.logo || '';
+		projectInfo.name = projectInfo.name || '';
+		projectInfo.projectPhaseId = projectInfo.projectPhaseId || 0;
+		projectInfo.locationId = projectInfo.locationId || 0;
+		projectInfo.industryDomainId = projectInfo.industryDomainId || 0;
+		projectInfo.teamSizeId = projectInfo.teamSizeId || 0;
+		projectInfo.contact = projectInfo.contact || '';
+		projectInfo.contactPerson = projectInfo.contactPerson || '';
+		projectInfo.advantage = projectInfo.advantage || '';
+		projectInfo.content = projectInfo.content || '';
+		if (projectInfo.name.length <= 0) {
+			return callback('项目名称不能为空');
+		} else if (projectInfo.name.length > 50) {
+			return callback('项目名称不能大于50个字符');
+		}
+		if (projectInfo.projectPhaseId == 0) {
+			return callback('项目阶段不能为空');
+		}
+		if (projectInfo.locationId == 0) {
+			return callback('地区不能为空');
+		}
+		if (projectInfo.industryDomainId == 0) {
+			return callback('领域不能为空');
+		}
+		if (projectInfo.teamSizeId == 0) {
+			return callback('团队不能为空');
+		}
+		if (projectInfo.contact.length > 30) {
+			return callback('联系人不能大于30个字符');
+		}
+		if (projectInfo.contactPerson.length > 30) {
+			return callback('联系电话不能大于30个字符');
+		}
+		if (projectInfo.advantage.length > 200) {
+			return callback('优势不能大于200个字符');
+		}
+		if (projectInfo.content.length <= 0) {
+			return callback('实施条件不能为空');
+		} else if (projectInfo.content.length > 200) {
+			return callback('实施条件不能大于200个字符');
+		}
+
+		mui.ajax('http://120.24.228.100:8080/copartner/project', {
+			data: {
+				name: projectInfo.name,
+				logo: projectInfo.logo,
+				projectPhaseId: projectInfo.projectPhaseId,
+				locationId: projectInfo.locationId,
+				industryDomainId: projectInfo.industryDomainId,
+				teamSizeId: projectInfo.teamSizeId,
+				contact: projectInfo.contact,
+				contactPerson: projectInfo.contactPerson,
+				advantage: projectInfo.advantage,
+				content: projectInfo.content,
+				hasBusinessRegistered: projectInfo.hasBusinessRegistered
+			},
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				console.log(JSON.stringify(xhr));
+				console.log(JSON.stringify(errorThrown));
+				if (errorThrown == 'Forbidden') {
+					app.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
+	};
+
+	owner.listUserProjects = function(offset, limit, from, to, successCallback, errorCallback) {
+		var userId = owner.getUserId();
+		mui.ajax('http://120.24.228.100:8080/copartner/user/' + userId + '/projects', {
 			data: {
 				offset: offset,
 				limit: limit,

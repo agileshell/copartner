@@ -172,6 +172,17 @@
 			</a>
 		</li>
 	</script>
+	<script id="project-template" type="text/x-handlebars-template">
+		<li id="project_{{id}}" class="mui-table-view-cell mui-media">
+			<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+				<div class="mui-media-body">
+					<span class="project-name">{{name}}</span>
+					<span class="project-item">{{location}} {{teamSize}}</span>
+					<span class="project-item">实施条件：{{content}}</span>
+				</div>
+			</a>
+		</li>
+	</script>
 	<script src="../js/handlebars-v2.0.0.js"></script>
 	<script src="../js/mui.min.js"></script>
 	<script src="../js/app.js"></script>
@@ -184,11 +195,17 @@
 				rongzhiDivEl = document.createElement("div"),
 				rongzhiSource = document.getElementById("rongzhi-template").innerText,
 				rongzhiTemplate = Handlebars.compile(rongzhiSource),
-				rongzhiEl = document.getElementById("rongzhi-list");
+				rongzhiEl = document.getElementById("rongzhi-list"),
+				projectDivEl = document.createElement("div"),
+				projectSource = document.getElementById("project-template").innerText,
+				projectTemplate = Handlebars.compile(projectSource),
+				projectEl = document.getElementById("project-list");
 			var rongziIsFirstLoad = true,
 				rongzhiIsFirstLoad = true,
+				projectIsFirstLoad = true,
 				rongziLatestLoadingRequestDate = 0,
-				rongzhiLatestLoadingRequestDate = 0;
+				rongzhiLatestLoadingRequestDate = 0,
+				projectLatestLoadingRequestDate = 0;
 			mui.init({
 				keyEventBind: {
 					backbutton: false
@@ -225,6 +242,12 @@
 						rongzhiIsFirstLoad = false;
 						rongzhiLatestLoadingRequestDate = 0;
 					}
+					if (projectIsFirstLoad || needReflush) {
+						projectEl.innerHTML = '';
+						loadingProject();
+						projectIsFirstLoad = false;
+						projectLatestLoadingRequestDate = 0;
+					}
 				});
 				document.getElementById('goHome').addEventListener('tap', function() {
 					plus.webview.getLaunchWebview().show();
@@ -259,6 +282,18 @@
 					}
 				});
 			});
+			document.getElementById('new-project').addEventListener('tap', function() {
+				mui.openWindow({
+					url: 'create_project.html',
+					id: 'create_project',
+					show: {
+						aniShow: 'pop-in'
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+			});
 			document.getElementById('loading-rongzi').addEventListener('tap', function() {
 				rongziIsFirstLoad = false;
 				loadingRongzi();
@@ -268,6 +303,7 @@
 				loadingRongzhi();
 			});
 			document.getElementById('loading-project').addEventListener('tap', function() {
+				projectIsFirstLoad = false;
 				loadingProject();
 			});
 
@@ -309,7 +345,24 @@
 				}, 500);
 			};
 
-			function loadingProject() {};
+			function loadingProject() {
+				var success = function(response) {
+						var items = response.body.list;
+						if (items.length > 0) {
+							projectLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+							for (var i = 0, len = items.length; i < len; i++) {
+								projectDivEl.innerHTML = projectTemplate(items[i]);
+								projectEl.appendChild(projectDivEl.firstElementChild);
+							}
+						}
+					},
+					error = function(errorType) {
+						mui.toast(app.ajaxErrorHandler(errorType));
+					};
+				setTimeout(function() {
+					app.listUserProjects(0, 10, 0, projectLatestLoadingRequestDate, success, error);
+				}, 500);
+			};
 		})();
 	</script>
 
