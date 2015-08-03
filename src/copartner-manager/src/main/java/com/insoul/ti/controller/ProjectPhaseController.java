@@ -28,7 +28,7 @@ import com.insoul.ti.req.ViewRequest;
  */
 @Controller
 @RequestMapping("/phase")
-public class PhaseController extends WebBase {
+public class ProjectPhaseController extends WebBase {
 
     private static final String PHASE_EDIT = "phase_edit";
     private static final String PHASE_ADD = "phase_add";

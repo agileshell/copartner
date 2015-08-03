@@ -99,6 +99,12 @@
 			<mvc:mapping path="/team/*/*"/>
 			<mvc:mapping path="/team/*/*/*"/>
 			<mvc:mapping path="/home"/>
+			<mvc:mapping path="/demand/*"/>
+			<mvc:mapping path="/demand/*/*"/>
+			<mvc:mapping path="/demand/*/*/*"/>
+			<mvc:mapping path="/finaphase/*"/>
+			<mvc:mapping path="/finaphase/*/*"/>
+			<mvc:mapping path="/finaphase/*/*/*"/>
 			<ref bean="authInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
