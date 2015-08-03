@@ -94,7 +94,8 @@ public class WebBase implements ServletContextAware {
 
 	@Resource
 	protected IFinancingPhaseDao financingPhaseDAO;
-	
+
+	@Resource
 	protected IDemandDao demandDAO;
 
 	@Autowired
