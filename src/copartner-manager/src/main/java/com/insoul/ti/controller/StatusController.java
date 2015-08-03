@@ -69,7 +69,7 @@ public class StatusController extends WebBase {
         status.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
         status.setName(request.getName());
         startupStatusDAO.update(status);
-        return new ModelAndView("redirect:/status/list?id=" + statusId);
+        return new ModelAndView("redirect:/status/list");
     }
 
     @RequestMapping("/save")
@@ -82,6 +82,6 @@ public class StatusController extends WebBase {
         status.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
         status.setName(request.getName());
         startupStatusDAO.save(status);
-        return new ModelAndView("redirect:/status/list?id=" + status.getId());
+        return new ModelAndView("redirect:/status/list");
     }
 }

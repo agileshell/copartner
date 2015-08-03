@@ -69,7 +69,7 @@ public class IndustryController extends WebBase {
         industry.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
         industry.setName(request.getName());
         industryDomainDAO.update(industry);
-        return new ModelAndView("redirect:/industry/list?id=" + industryId);
+        return new ModelAndView("redirect:/industry/list");
     }
 
     @RequestMapping("/save")
@@ -82,6 +82,6 @@ public class IndustryController extends WebBase {
         industry.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
         industry.setName(request.getName());
         industryDomainDAO.save(industry);
-        return new ModelAndView("redirect:/industry/list?id=" + industry.getId());
+        return new ModelAndView("redirect:/industry/list");
     }
 }

@@ -69,7 +69,7 @@ public class RoleController extends WebBase {
         role.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
         role.setName(request.getName());
         startupRoleDAO.update(role);
-        return new ModelAndView("redirect:/role/list?id=" + roleId);
+        return new ModelAndView("redirect:/role/list");
     }
 
     @RequestMapping("/save")
@@ -82,6 +82,6 @@ public class RoleController extends WebBase {
         role.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
         role.setName(request.getName());
         startupRoleDAO.save(role);
-        return new ModelAndView("redirect:/role/list?id=" + role.getId());
+        return new ModelAndView("redirect:/role/list");
     }
 }

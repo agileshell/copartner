@@ -69,7 +69,7 @@ public class FinancePhaseController extends WebBase {
 		phase.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
 		phase.setName(request.getName());
 		financingPhaseDAO.update(phase);
-		return new ModelAndView("redirect:/finaphase/list?id=" + finaphaseId);
+		return new ModelAndView("redirect:/finaphase/list");
 	}
 
 	@RequestMapping("/save")
@@ -82,6 +82,6 @@ public class FinancePhaseController extends WebBase {
 		phase.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
 		phase.setName(request.getName());
 		financingPhaseDAO.save(phase);
-		return new ModelAndView("redirect:/finaphase/list?id=" + phase.getId());
+		return new ModelAndView("redirect:/finaphase/list");
 	}
 }

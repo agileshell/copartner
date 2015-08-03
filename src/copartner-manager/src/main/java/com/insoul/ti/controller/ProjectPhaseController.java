@@ -69,7 +69,7 @@ public class ProjectPhaseController extends WebBase {
         phase.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
         phase.setName(request.getName());
         projectPhaseDAO.update(phase);
-        return new ModelAndView("redirect:/phase/list?id=" + proId);
+        return new ModelAndView("redirect:/phase/list");
     }
 
     @RequestMapping("/save")
@@ -82,6 +82,6 @@ public class ProjectPhaseController extends WebBase {
         phase.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
         phase.setName(request.getName());
         projectPhaseDAO.save(phase);
-        return new ModelAndView("redirect:/phase/list?id=" + phase.getId());
+        return new ModelAndView("redirect:/phase/list");
     }
 }

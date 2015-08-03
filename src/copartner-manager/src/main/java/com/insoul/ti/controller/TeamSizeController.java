@@ -69,7 +69,7 @@ public class TeamSizeController extends WebBase {
 		teamSize.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
 		teamSize.setName(request.getName());
 		teamSizeDAO.update(teamSize);
-		return new ModelAndView("redirect:/team/list?id=" + teamId);
+		return new ModelAndView("redirect:/team/list");
 	}
 
 	@RequestMapping("/save")
@@ -82,6 +82,6 @@ public class TeamSizeController extends WebBase {
 		teamSize.setIsListed(StringUtils.equals("1", String.valueOf(request.getListed())));
 		teamSize.setName(request.getName());
 		teamSizeDAO.save(teamSize);
-		return new ModelAndView("redirect:/team/list?id=" + teamSize.getId());
+		return new ModelAndView("redirect:/team/list");
 	}
 }
