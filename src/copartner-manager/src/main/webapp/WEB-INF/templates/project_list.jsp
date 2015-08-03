@@ -113,9 +113,9 @@
 													<tr>
 														<td>${c.id}</td>
 														<td><a href="/user/detail/${c.userId}">${c.userId}</a></td>
-														<td>${c.shortName}</td>
-														<td>${c.shortAdvantage}</td>
-														<td>${c.shortContent}</td>
+														<td>${utils.getShort(${c.name}, 10)}</td>
+														<td>${utils.getShort(${c.advantage}, 10)}</td>
+														<td>${utils.getShort(${c.content}, 10)}</td>
 														<td>${c.likeCount}</td>
 														<td>${c.commentCount}</td>
 														<td>

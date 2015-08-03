@@ -38,6 +38,7 @@ import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.domain.Admin;
 import com.insoul.ti.req.ViewRequest;
 import com.insoul.ti.utils.Constants;
+import com.insoul.ti.utils.Utils;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -122,6 +123,7 @@ public class WebBase implements ServletContextAware {
 	protected ModelAndView createModelView(String viewName, ViewRequest req) {
 		ModelAndView mv = new ModelAndView(viewName);
 		mv.addObject("cdn", "/assets/");
+		mv.addObject("utils", new Utils());
 		mv.addObject("viewname", StringUtils.defaultIfBlank(req.getV(), viewName));
 		HttpSession session = request.getSession();
 		mv.addObject(Constants.ADMIN_ONLINE, session.getAttribute(Constants.ADMIN_ONLINE));
