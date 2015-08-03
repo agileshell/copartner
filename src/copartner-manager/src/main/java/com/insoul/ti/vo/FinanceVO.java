@@ -30,8 +30,18 @@ public class FinanceVO extends BaseVO {
 
     private String contact;// 联系方式
     
+    private String financingPhaseName;// 融资阶段
+    
     private Boolean hasBusinessRegistered = false;// 是否工商注册
     private String reward;// 回报
+
+	public String getFinancingPhaseName() {
+		return financingPhaseName;
+	}
+
+	public void setFinancingPhaseName(String financingPhaseName) {
+		this.financingPhaseName = financingPhaseName;
+	}
 
 	public String getReward() {
 		return reward;

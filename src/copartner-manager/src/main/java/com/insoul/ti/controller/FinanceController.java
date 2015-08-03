@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.insoul.copartner.dao.criteria.FinancingCriteria;
 import com.insoul.copartner.domain.Financing;
+import com.insoul.copartner.domain.FinancingPhase;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.TeamSize;
 import com.insoul.copartner.domain.User;
@@ -102,6 +103,10 @@ public class FinanceController extends WebBase {
         vo.setUpdated(financing.getUpdated());
         vo.setUserId(financing.getUserId());
         vo.setHasBusinessRegistered(financing.getHasBusinessRegistered());
+        FinancingPhase financingPhase = financingPhaseDAO.get(financing.getFinancingPhaseId());
+        if (financingPhase != null) {
+        	vo.setFinancingPhaseName(financingPhase.getName());
+        }
         IndustryDomain i = industryDomainDAO.get(financing.getIndustryDomainId());
         if (i != null)
             vo.setIndustryDomainName(i.getName());

@@ -91,6 +91,10 @@
 	<div class="col-lg-7">${finance.industryDomainName}</div>
 </div>
 <div class="form-group">
+	<label class="col-lg-5 control-label">融资阶段:</label>
+	<div class="col-lg-7">${finance.financingPhaseName}</div>
+</div>
+<div class="form-group">
 	<label class="col-lg-5 control-label">地区:</label>
 	<div class="col-lg-7">${finance.fullLocation}</div>
 </div>

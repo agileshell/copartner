@@ -105,7 +105,7 @@
 											<div class="form-group">
 												<div class="col-lg-offset-1 col-lg-9">
 													<a class="btn btn-default btn-sm" href="/user/list">列表</a>
-													<a class="btn btn-default btn-sm" href="/user/chat/${user.id}" target="_self">即时聊天</a>
+													<!--<a class="btn btn-default btn-sm" href="/user/chat/${user.id}" target="_self">即时聊天</a>-->
 												</div>
 											</div>
 										</c:if>
