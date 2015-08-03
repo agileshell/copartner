@@ -9,7 +9,7 @@
 	<meta name="keywords" content="dap" />
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>创客汇管理平台--融智详情</title>
+	<title>创客汇管理平台--融资详情</title>
 
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
@@ -37,9 +37,9 @@
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">融智详情</h2>
+				<h2 class="pull-left">融资详情</h2>
 				<div class="bread-crumb pull-right">
-					<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>融智详情
+					<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>融资详情
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -50,62 +50,54 @@
 						<div class="col-md-12">
 							<div class="widget wgreen">
 								<div class="widget-head">
-									<div class="pull-left">融智详情</div>
+									<div class="pull-left">融资详情</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
 									<div class="padd form-horizontal">
 										<c:if test="${!success}">
 											<div class="form-group">
-												<div class="col-lg-12" style="text-align: center;">融智不存在!!!</div>
+												<div class="col-lg-12" style="text-align: center;">融资不存在!!!</div>
 											</div>
 										</c:if>
 										<c:if test="${success}">
 <div class="form-group">
-	<label class="col-lg-5 control-label" >融智名称:</label>
-	<div class="col-lg-7">${demand.name}</div>
+	<label class="col-lg-5 control-label" >融资名称:</label>
+	<div class="col-lg-7">${finance.name}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label" >融智发布者:</label>
-	<div class="col-lg-7"><a href="/user/detail/${demand.userId}">${demand.userName}</a></div>
+	<label class="col-lg-5 control-label" >融资发布者:</label>
+	<div class="col-lg-7"><a href="/user/detail/${finance.userId}">${finance.userName}</a></div>
 </div>
 <div class="form-group">
 	<label class="col-lg-5 control-label">联系人:</label>
-	<div class="col-lg-7">${demand.contactPerson} - ${demand.contact}</div>
+	<div class="col-lg-7">${finance.contactPerson} - ${finance.contact}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">融智要求:</label>
-	<div class="col-lg-7">${demand.content}</div>
+	<label class="col-lg-5 control-label">融资要求:</label>
+	<div class="col-lg-7">${finance.content}</div>
 </div>
 <div class="form-group">
 	<label class="col-lg-5 control-label">优势:</label>
-	<div class="col-lg-7">${demand.advantage}</div>
+	<div class="col-lg-7">${finance.advantage}</div>
 </div>
 
 <div class="form-group">
 	<label class="col-lg-5 control-label">团队规模:</label>
-	<div class="col-lg-7">${demand.teamSizeName}</div>
+	<div class="col-lg-7">${finance.teamSizeName}</div>
 </div>
 <div class="form-group">
 	<label class="col-lg-5 control-label">行业:</label>
-	<div class="col-lg-7">${demand.industryDomainName}</div>
+	<div class="col-lg-7">${finance.industryDomainName}</div>
 </div>
 <div class="form-group">
 	<label class="col-lg-5 control-label">地区:</label>
-	<div class="col-lg-7">${demand.fullLocation}</div>
-</div>
-<div class="form-group">
-	<label class="col-lg-5 control-label">收藏次数:</label>
-	<div class="col-lg-7">${demand.likeCount}</div>
-</div>
-<div class="form-group">
-	<label class="col-lg-5 control-label">评论次数:</label>
-	<div class="col-lg-7">${demand.commentCount}</div>
+	<div class="col-lg-7">${finance.fullLocation}</div>
 </div>
 <hr />
 <div class="form-group">
 	<div class="col-lg-offset-1 col-lg-9">
-		<a class="btn btn-default btn-sm" href="/demand/list">列表</a>
+		<a class="btn btn-default btn-sm" href="/finance/list">列表</a>
 	</div>
 </div>
 										</c:if>

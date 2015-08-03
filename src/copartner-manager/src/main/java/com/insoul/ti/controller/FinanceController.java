@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.insoul.copartner.dao.criteria.DemandCriteria;
-import com.insoul.copartner.domain.Demand;
+import com.insoul.copartner.dao.criteria.FinancingCriteria;
+import com.insoul.copartner.domain.Financing;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.TeamSize;
 import com.insoul.copartner.domain.User;
@@ -22,7 +22,7 @@ import com.insoul.ti.WebBase;
 import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.ProjectListRequest;
 import com.insoul.ti.req.ViewRequest;
-import com.insoul.ti.vo.DemandVO;
+import com.insoul.ti.vo.FinanceVO;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -31,38 +31,38 @@ import com.insoul.ti.vo.DemandVO;
  * @since 2015年7月4日 下午11:37:15
  */
 @Controller
-@RequestMapping("/demand")
-public class DemandController extends WebBase {
+@RequestMapping("/finance")
+public class FinanceController extends WebBase {
 
-    private static final String DEMAND_DETAIL = "demand_detail";
-	private static final String DEMAND_LIST = "demand_list";
+    private static final String FINANCE_DETAIL = "financing_detail";
+	private static final String FINANCE_LIST = "financing_list";
 
     @RequestMapping("/list")
     public ModelAndView list(@Valid ProjectListRequest request, BindingResult result) {
-        ModelAndView mv = createModelView(DEMAND_LIST, request);
+        ModelAndView mv = createModelView(FINANCE_LIST, request);
         PageQuery query = request.init().getQuery();
-        DemandCriteria criteria = new DemandCriteria();
+        FinancingCriteria criteria = new FinancingCriteria();
         criteria.setLimit(query.getPage_size());
         criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
         criteria.setStatus(new String[] { request.getStatus() });
         criteria.setProjectName(request.getName());
         criteria.setUserId(request.getId());
-        List<Demand> list = demandDAO.queryDemand(criteria);
+        List<Financing> list = financingDAO.queryFinancing(criteria);
         mv.addObject("query", query);
-        mv.addObject("demandList", list);
+        mv.addObject("financingList", list);
         mv.addObject("success", CollectionUtils.isNotEmpty(list));
         mv.addObject("req", request);
         return mv;
     }
 
-    @RequestMapping("/update_status/{demandId}")
+    @RequestMapping("/update_status/{financingId}")
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-    public ModelAndView updateStatus(@PathVariable Long demandId,
+    public ModelAndView updateStatus(@PathVariable Long financingId,
             @RequestParam(value = "status", required = true) String status) {
         try {
-        	Demand demand = demandDAO.get(demandId);
-        	demand.setStatus(status);
-            demandDAO.update(demand);
+        	Financing financing = financingDAO.get(financingId);
+        	financing.setStatus(status);
+        	financingDAO.update(financing);
             returnJson(true, "200", "修改成功!!");
         } catch (Exception e) {
             returnJson(true, "500", "修改失败!!");
@@ -70,47 +70,45 @@ public class DemandController extends WebBase {
         return null;
     }
 
-    @RequestMapping("/detail/{demandId}")
-    public ModelAndView detail(@PathVariable Long demandId, ViewRequest req) {
-        ModelAndView mv = createModelView(DEMAND_DETAIL, req);
-        mv.addObject("viewname", DEMAND_LIST);
+    @RequestMapping("/detail/{financingId}")
+    public ModelAndView detail(@PathVariable Long financingId, ViewRequest req) {
+        ModelAndView mv = createModelView(FINANCE_DETAIL, req);
+        mv.addObject("viewname", FINANCE_LIST);
         try {
-        	DemandVO demand = getDemand(demandId);
-            mv.addObject("demand", demand);
-            mv.addObject("success", demand != null);
+        	FinanceVO finance = getFinancing(financingId);
+            mv.addObject("finance", finance);
+            mv.addObject("success", finance != null);
         } catch (Exception e) {
             mv.addObject("success", false);
         }
         return mv;
     }
 
-    private DemandVO getDemand(Long demandId) {
-        Demand demand = demandDAO.get(demandId);
-        if (demand == null) {
+    private FinanceVO getFinancing(Long financingId) {
+    	Financing financing = financingDAO.get(financingId);
+        if (financing == null) {
         	return null;
         }
-    	DemandVO vo = new DemandVO();
-        vo.setAdvantage(demand.getAdvantage());
-        vo.setCommentCount(demand.getCommentCount());
-        vo.setContact(demand.getContact());
-        vo.setContactPerson(demand.getContactPerson());
-        vo.setContent(demand.getContent());
-        vo.setCreated(demand.getCreated());
-        vo.setFullLocation(demand.getFullLocation());
-        vo.setId(demand.getId());
-        vo.setLikeCount(demand.getLikeCount());
-        vo.setName(demand.getProjectName());
-        vo.setStatus(demand.getStatus());
-        vo.setUpdated(demand.getUpdated());
-        vo.setUserId(demand.getUserId());
-        vo.setHasBusinessRegistered(demand.getHasBusinessRegistered());
-        IndustryDomain i = industryDomainDAO.get(demand.getIndustryDomainId());
+        FinanceVO vo = new FinanceVO();
+        vo.setAdvantage(financing.getAdvantage());
+        vo.setContact(financing.getContact());
+        vo.setContactPerson(financing.getContactPerson());
+        vo.setContent(financing.getContent());
+        vo.setCreated(financing.getCreated());
+        vo.setFullLocation(financing.getFullLocation());
+        vo.setId(financing.getId());
+        vo.setName(financing.getProjectName());
+        vo.setStatus(financing.getStatus());
+        vo.setUpdated(financing.getUpdated());
+        vo.setUserId(financing.getUserId());
+        vo.setHasBusinessRegistered(financing.getHasBusinessRegistered());
+        IndustryDomain i = industryDomainDAO.get(financing.getIndustryDomainId());
         if (i != null)
             vo.setIndustryDomainName(i.getName());
-        TeamSize tz = teamSizeDAO.get(demand.getTeamSizeId());
+        TeamSize tz = teamSizeDAO.get(financing.getTeamSizeId());
         if (tz != null)
             vo.setTeamSizeName(tz.getName());
-        User u = userDAO.get(demand.getUserId());
+        User u = userDAO.get(financing.getUserId());
         if (u != null)
             vo.setUserName(u.getName());
         return vo;

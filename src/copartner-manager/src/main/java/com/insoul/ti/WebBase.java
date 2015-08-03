@@ -24,6 +24,7 @@ import com.insoul.copartner.dao.IContentDao;
 import com.insoul.copartner.dao.IDemandCommentsDao;
 import com.insoul.copartner.dao.IDemandDao;
 import com.insoul.copartner.dao.IFeedbackDao;
+import com.insoul.copartner.dao.IFinancingDao;
 import com.insoul.copartner.dao.IFinancingPhaseDao;
 import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.INewsDao;
@@ -97,6 +98,9 @@ public class WebBase implements ServletContextAware {
 
 	@Resource
 	protected IDemandDao demandDAO;
+
+	@Resource
+	protected IFinancingDao financingDAO;
 
 	@Autowired
 	@Qualifier("multipartResolver")
