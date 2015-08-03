@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Utils {
 	
-	public String getShort(String src, int len) {
+	public static String getShort(String src, int len) {
 		if (StringUtils.length(src) < len + 1) {
 			return src;
 		}

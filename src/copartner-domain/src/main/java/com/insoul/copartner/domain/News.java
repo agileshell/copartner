@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * 最新动态
  */
@@ -40,20 +38,6 @@ public class News extends BaseEntity {
 
     @Column(name = "admin_user_id", nullable = false)
     private Long adminUserId;// 创建人，后台admin用户的ID
-    
-    public String getShortTitle() {
-    	if (StringUtils.length(title) < 11) {
-    		return title;
-    	}
-    	return StringUtils.substring(title, 0, 10) + "...";
-    }
-    
-    public String getShortSynopsis() {
-    	if (StringUtils.length(synopsis) < 11) {
-    		return synopsis;
-    	}
-    	return StringUtils.substring(synopsis, 0, 10) + "...";
-    }
 
     public Integer getType() {
         return type;

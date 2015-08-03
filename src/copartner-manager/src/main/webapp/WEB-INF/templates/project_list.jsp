@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.mos.me/ti" prefix="t"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -113,9 +114,9 @@
 													<tr>
 														<td>${c.id}</td>
 														<td><a href="/user/detail/${c.userId}">${c.userId}</a></td>
-														<td>${utils.getShort(${c.name}, 10)}</td>
-														<td>${utils.getShort(${c.advantage}, 10)}</td>
-														<td>${utils.getShort(${c.content}, 10)}</td>
+														<td><t:short content="${c.name}" length="10"></t:short></td>
+														<td><t:short content="${c.advantage}" length="10"></t:short></td>
+														<td><t:short content="${c.content}" length="10"></t:short></td>
 														<td>${c.likeCount}</td>
 														<td>${c.commentCount}</td>
 														<td>

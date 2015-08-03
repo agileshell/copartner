@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.mos.me/ti" prefix="t"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -121,8 +122,8 @@
 															<c:if test="${c.type == 1}"> 政策解读 </c:if>
 															<c:if test="${c.type == 2}"> 公共资源 </c:if>
 														</td>
-														<td>${c.shortTitle}</td>
-														<td>${c.shortSynopsis}</td>
+														<td><t:short content="${c.title}" length="10"></t:short></td>
+														<td><t:short content="${c.synopsis}" length="10"></t:short></td>
 														<td>
 															<jsp:include page="control/commons-status.jsp">
 																<jsp:param value="${c.status}" name="status"/>

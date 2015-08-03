@@ -20,6 +20,9 @@
         <li>
 			<a <c:if test="${viewname == 'project_list'}"> class="open" </c:if> href="/project/list"><i class="icon-bookmark"></i>项目管理</a>
 		</li>
+        <li>
+			<a <c:if test="${viewname == 'demand_list'}"> class="open" </c:if> href="/demand/list"><i class="icon-tint"></i>融智管理</a>
+		</li>
 		<li class="has_sub">
 			<a href="#" <c:if test="${viewname == 'resources_manager'}"> class="subdrop" </c:if>>
 				<i class="icon-star"></i>资源管理<span class="pull-right"><i class="icon-chevron-right"></i></span>
