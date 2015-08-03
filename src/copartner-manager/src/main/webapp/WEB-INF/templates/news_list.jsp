@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://www.mos.me/ti" prefix="t"%>
+<%@taglib uri="/WEB-INF/ti-tags.tld" prefix="t"%>
 <!DOCTYPE html>
 <html>
 <head>
