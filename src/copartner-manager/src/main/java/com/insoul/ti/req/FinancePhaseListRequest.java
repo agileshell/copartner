@@ -4,36 +4,34 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
- * 
+ *
  * @version 1.0.0
- * @since 2015年7月4日 下午7:02:30
+ * @since 2015年7月6日 下午6:06:18
  */
-public class ProjectListRequest extends PageRequest {
-
-	private static final String ACTIVE = "active";
+public class FinancePhaseListRequest extends PageRequest {
 
 	private Long id;
 
-	private String name = StringUtils.EMPTY;
+	private String name;
 
-	 private String status = ACTIVE;
+	private Integer listed = 1;
 
 	@Override
-	protected ProjectListRequest Q() {
+	protected FinancePhaseListRequest Q() {
 		StringBuilder sb = new StringBuilder();
 		boolean appended = false;
 		if (StringUtils.isNotBlank(name)) {
 			sb.append("name").append("=").append(name);
 			appended = true;
 		}
-		if (StringUtils.isNotBlank(status)) {
+		if (listed != null) {
 			if (appended) {
 				sb.append("&");
 			}
-			sb.append("status").append("=").append(status);
+			sb.append("listed").append("=").append(listed);
 			appended = true;
 		}
-		if (id != null && id > 0L) {
+		if (id != null) {
 			if (appended) {
 				sb.append("&");
 			}
@@ -59,15 +57,12 @@ public class ProjectListRequest extends PageRequest {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public String getStatus() {
-		if (status == null || status.length() <= 0) {
-			status = ACTIVE;
-		}
-		return status;
+
+	public Integer getListed() {
+		return listed;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setListed(Integer listed) {
+		this.listed = listed;
 	}
 }

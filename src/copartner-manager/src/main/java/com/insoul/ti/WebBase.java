@@ -22,7 +22,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.insoul.copartner.dao.AdminDAO;
 import com.insoul.copartner.dao.IContentDao;
 import com.insoul.copartner.dao.IDemandCommentsDao;
+import com.insoul.copartner.dao.IDemandDao;
 import com.insoul.copartner.dao.IFeedbackDao;
+import com.insoul.copartner.dao.IFinancingPhaseDao;
 import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.INewsDao;
 import com.insoul.copartner.dao.IProjectCommentsDao;
@@ -88,6 +90,11 @@ public class WebBase implements ServletContextAware {
 	
 	@Resource
 	protected IDemandCommentsDao demandCommentsDao;
+
+	@Resource
+	protected IFinancingPhaseDao financingPhaseDAO;
+	
+	protected IDemandDao demandDAO;
 
 	@Autowired
 	@Qualifier("multipartResolver")

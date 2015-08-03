@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
  * @version 1.0.0
  * @since 2015年7月4日 下午7:02:30
  */
-public class ProjectListRequest extends PageRequest {
+public class DemandListRequest extends PageRequest {
 
 	private static final String ACTIVE = "active";
 
@@ -19,7 +19,7 @@ public class ProjectListRequest extends PageRequest {
 	 private String status = ACTIVE;
 
 	@Override
-	protected ProjectListRequest Q() {
+	protected DemandListRequest Q() {
 		StringBuilder sb = new StringBuilder();
 		boolean appended = false;
 		if (StringUtils.isNotBlank(name)) {

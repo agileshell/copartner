@@ -9,7 +9,7 @@
 	<meta name="keywords" content="dap" />
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>创客汇管理平台--项目列表</title>
+	<title>创客汇管理平台--融资阶段列表</title>
 	
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
@@ -39,9 +39,9 @@
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">项目列表</h2>
+				<h2 class="pull-left">融资阶段管理</h2>
 				<div class="bread-crumb pull-right">
-					<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>项目列表
+					<a class="btn btn-default btn-sm" href="add">新建融资阶段</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -53,24 +53,23 @@
 							<div class="widget">
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/project/list" method="get">
+										<form class="form-horizontal" role="form" action="/finaphase/list" method="get">
 											<div class="form-group">
 												<label class="col-lg-2 control-label" for="id">ID:</label>
 												<div class="col-lg-4">
-													<input name="id" id="id" value="${req.id}" type="text" class="form-control" placeholder="用户ID">
+													<input name="id" id="id" value="${req.id}" type="text" class="form-control" placeholder="阶段ID">
 												</div>
-												<label class="col-lg-2 control-label" for="title">项目名称:</label>
+												<label class="col-lg-2 control-label" for="name">阶段名称:</label>
 												<div class="col-lg-4">
-													<input name="name" id="name" value="${req.name}" type="text" class="form-control" placeholder="项目名称">
+													<input name="name" id="name" value="${req.name}" type="text" class="form-control" placeholder="融资阶段名称">
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-2 control-label" for="type">项目状态:</label>
+												<label class="col-lg-2 control-label" for="type">状态:</label>
 												<div class="col-lg-4">
-													<jsp:include page="control/commons-status.jsp">
-														<jsp:param value="${req.status}" name="status"/>
+													<jsp:include page="control/commons-listed.jsp">
+														<jsp:param value="${req.listed}" name="listed"/>
 														<jsp:param value="true" name="has_all"/>
-														<jsp:param value="false" name="update"/>
 													</jsp:include>
 												</div>
 												<div class="col-lg-2">
@@ -83,7 +82,7 @@
 							</div>
 							<div class="widget">
 								<div class="widget-head">
-									<div class="pull-left">项目列表</div>
+									<div class="pull-left">融资阶段列表</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
@@ -91,49 +90,31 @@
 										<thead>
 											<tr>
 												<th>ID</th>
-												<th>创建者</th>
-												<th>项目名称</th>
-												<th>优势</th>
-												<th>实施条件</th>
-												<th>收藏</th>
-												<th>评论</th>
-												<th>状态</th>
-												<th>联系人</th>
-												<th>联系方式</th>
-												<th>发起时间</th>
+												<th>融资阶段名称</th>
+												<th>显示</th>
+												<th>创建时间</th>
 												<th>操作</th>
 											</tr>
 										</thead>
 										<tbody>
 											<c:if test="${!success}">
-												<tr><td colspan="12" style="text-align: center;">空空如也!!!</td></tr>
+												<tr><td colspan="5" style="text-align: center;">空空如也!!!</td></tr>
+												<tr><td colspan="5" style="text-align: center;"><a class="btn btn-default btn-sm" href="add">新建融资阶段</a></td></tr>
 											</c:if>
 											<c:if test="${success}">
-												<c:forEach var="c" items="${projectList}" varStatus="status">
+												<c:forEach var="c" items="${phaseList}" varStatus="status">
 													<tr>
 														<td>${c.id}</td>
-														<td><a href="/user/detail/${c.userId}">${c.userId}</a></td>
-														<td>${c.shortName}</td>
-														<td>${c.shortAdvantage}</td>
-														<td>${c.shortContent}</td>
-														<td>${c.likeCount}</td>
-														<td>${c.commentCount}</td>
+														<td>${c.name}</td>
 														<td>
-															<jsp:include page="control/commons-status.jsp">
-																<jsp:param value="${c.status}" name="status"/>
-																<jsp:param value="false" name="has_all"/>
-																<jsp:param value="true" name="update"/>
-																<jsp:param value="${c.id}" name="id"/>
-																<jsp:param value="/project/update_status/${c.id}" name="url"/>
-															</jsp:include>
+															<c:if test="${c.isListed}"> 显示 </c:if>
+															<c:if test="${!c.isListed}"> 隐藏 </c:if>
 														</td>
-														<td>${c.contactPerson}</td>
-														<td>${c.contact}</td>
 														<td>${c.gmtcreated}</td>
 														<td>
 															<div class="btn-group">
-																<a class="btn btn-xs btn-default" href="/project/detail/${c.id}">
-																	详情
+																<a class="btn btn-xs btn-default" href="edit/${c.id}">
+																	编辑
 																</a>
 															</div>
 														</td>
@@ -154,11 +135,9 @@
 		</div>
 		<div class="clearfix"></div>
 	</div>
-	
 	<!--
 	<jsp:include page="control/copy-rights.jsp"/>
 	-->
-	
 	<script src="${cdn}js/bootstrap.js"></script>
 	<script src="${cdn}js/jquery-ui-1.9.2.custom.min.js"></script>
 	<script src="${cdn}js/fullcalendar.min.js"></script>
@@ -182,6 +161,5 @@
 	<script src="${cdn}js/filter.js"></script>
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
-	
 </body>
 </html>

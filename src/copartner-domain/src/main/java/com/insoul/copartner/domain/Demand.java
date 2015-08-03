@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 融智
  */
@@ -58,6 +60,27 @@ public class Demand extends BaseEntity {
     @Column(name = "comment_count", nullable = false)
     private Long commentCount = 0L;
 
+    public String getShortName() {
+    	if (StringUtils.length(projectName) < 11) {
+    		return projectName;
+    	}
+    	return StringUtils.substring(projectName, 0, 10) + "...";
+    }
+    
+    public String getShortContent() {
+    	if (StringUtils.length(content) < 11) {
+    		return content;
+    	}
+    	return StringUtils.substring(content, 0, 10) + "...";
+    }
+    
+    public String getShortAdvantage() {
+    	if (StringUtils.length(advantage) < 11) {
+    		return advantage;
+    	}
+    	return StringUtils.substring(advantage, 0, 10) + "...";
+    }
+    
     public Long getUserId() {
         return userId;
     }
