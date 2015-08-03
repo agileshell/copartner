@@ -49,36 +49,6 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="widget">
-								<div class="widget-content">
-									<div class="padd">
-										<form class="form-horizontal" role="form" action="/industry/list" method="get">
-											<div class="form-group">
-												<label class="col-lg-2 control-label" for="id">ID:</label>
-												<div class="col-lg-4">
-													<input name="id" id="id" value="${req.id}" type="text" class="form-control" placeholder="行业ID">
-												</div>
-												<label class="col-lg-2 control-label" for="name">行业名称:</label>
-												<div class="col-lg-4">
-													<input name="name" id="name" value="${req.name}" type="text" class="form-control" placeholder="行业名称">
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-lg-2 control-label" for="type">状态:</label>
-												<div class="col-lg-4">
-													<jsp:include page="control/commons-listed.jsp">
-														<jsp:param value="${req.listed}" name="listed"/>
-														<jsp:param value="true" name="has_all"/>
-													</jsp:include>
-												</div>
-												<div class="col-lg-2">
-													<button type="submit" class="btn btn-default">查询</button>
-												</div>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-							<div class="widget">
 								<div class="widget-head">
 									<div class="pull-left">行业列表</div>
 									<div class="clearfix"></div>
@@ -121,7 +91,7 @@
 											</c:if>
 										</tbody>
 									</table>
-									<jsp:include page="control/pagination.jsp"/>
+									<!-- <jsp:include page="control/pagination.jsp"/> -->
 								</div>
 							</div>
 						</div>

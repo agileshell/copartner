@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.insoul.copartner.dao.criteria.TeamSizeCriteria;
 import com.insoul.copartner.domain.TeamSize;
 import com.insoul.ti.WebBase;
-import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.TeamSizeListRequest;
 import com.insoul.ti.req.TeamSizeRequest;
 import com.insoul.ti.req.ViewRequest;
@@ -39,15 +37,7 @@ public class TeamSizeController extends WebBase {
 	@RequestMapping("/list")
 	public ModelAndView list(@Valid TeamSizeListRequest request, BindingResult result) {
 		ModelAndView mv = createModelView(TEAM_SIZE_LIST, request);
-		PageQuery query = request.init().getQuery();
-		TeamSizeCriteria criteria = new TeamSizeCriteria();
-		criteria.setLimit(query.getPage_size());
-		criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
-		criteria.setId(request.getId());
-		criteria.setName(request.getName());
-		criteria.setListed(StringUtils.equals("1", String.valueOf(request.getListed())));
-		List<TeamSize> list = teamSizeDAO.query(criteria);
-		mv.addObject("query", query);
+		List<TeamSize> list = teamSizeDAO.findAll();
 		mv.addObject("teamSizeList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		mv.addObject("req", request);
