@@ -105,6 +105,9 @@
 			<mvc:mapping path="/finaphase/*"/>
 			<mvc:mapping path="/finaphase/*/*"/>
 			<mvc:mapping path="/finaphase/*/*/*"/>
+			<mvc:mapping path="/finance/*"/>
+			<mvc:mapping path="/finance/*/*"/>
+			<mvc:mapping path="/finance/*/*/*"/>
 			<ref bean="authInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
