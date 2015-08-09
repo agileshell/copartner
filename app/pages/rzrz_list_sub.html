@@ -56,7 +56,7 @@
 					</ul>
 				</div>
 				<div id="project-item" class="mui-control-content">
-					<ul id="rongzhi-list" class="mui-table-view mui-table-view-chevron">
+					<ul id="project-list" class="mui-table-view mui-table-view-chevron">
 					</ul>
 				</div>
 			</div>
@@ -91,6 +91,19 @@
 			</a>
 		</li>
 	</script>
+	<script id="project-template" type="text/x-handlebars-template">
+		<li id="project_{{id}}" class="mui-table-view-cell mui-media">
+			<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+				<div class="mui-media-body">
+					<span class="project-name">{{name}}</span>
+					<span class="project-item">{{location}}，{{teamSize}}</span>
+					<span class="project-item">领域：{{industryDomain}}</span>
+					<span class="project-item">阶段：{{projectPhase}}</span>
+					<span class="project-item">要求：{{content}}</span>
+				</div>
+			</a>
+		</li>
+	</script>
 	<script type="text/javascript" charset="UTF-8" src="../js/handlebars-v2.0.0.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
@@ -113,10 +126,11 @@
 			rongziTemplate = Handlebars.compile(rongziSource),
 			rongzhiSource = document.getElementById("rongzhi-template").innerText,
 			rongzhiTemplate = Handlebars.compile(rongzhiSource),
+			projectSource = document.getElementById("project-template").innerText,
+			projectTemplate = Handlebars.compile(projectSource),
 			rongziEl = document.getElementById("rongzi-list"),
 			rongzhiEl = document.getElementById("rongzhi-list"),
-			projectEl = document.getElementById("project-list"),
-			rzrzEl = rongziEl;
+			projectEl = document.getElementById("project-list");
 		mui.init({
 			pullRefresh: {
 				container: '#pullrefresh',
@@ -130,40 +144,6 @@
 				}
 			}
 		});
-		mui('#rzrz-type').on('tap', 'a', function() {
-			var id = this.getAttribute('id');
-			if (id == 'rongzi') {
-				rzrzType = 1;
-				rzrzEl = rongziEl;
-				if (!rongziLoadingNoData) {
-					mui('#pullrefresh').pullRefresh().refresh(true);
-				}
-			} else if (id == 'rongzhi') {
-				rzrzType = 2;
-				rzrzEl = rongzhiEl;
-				if (!rongzhiIsFirstLoad) {
-					rongzhiIsFirstLoad = true;
-					setTimeout(function() {
-						mui('#pullrefresh').pullRefresh().pullupLoading();
-					}, 200);
-				}
-				if (!rongzhiLoadingNoData) {
-					mui('#pullrefresh').pullRefresh().refresh(true);
-				}
-			} else {
-				rzrzType = 3;
-				rzrzEl = projectEl;
-				if (!projectIsFirstLoad) {
-					projectIsFirstLoad = true;
-					setTimeout(function() {
-						mui('#pullrefresh').pullRefresh().pullupLoading();
-					}, 200);
-				}
-				if (!projectLoadingNoData) {
-					mui('#pullrefresh').pullRefresh().refresh(true);
-				}
-			}
-		});
 		mui.plusReady(function() {
 			if (plus.networkinfo.getCurrentType() === plus.networkinfo.CONNECTION_NONE) {
 				plus.nativeUI.alert('无网络连接!');
@@ -172,6 +152,40 @@
 					mui('#pullrefresh').pullRefresh().pullupLoading();
 				}, 200);
 			}
+			//tap
+			mui('#rzrz-type').on('tap', 'a', function() {
+				var id = this.getAttribute('id');
+				//切换父Webview的创建button
+				plus.webview.currentWebview().parent().evalJS("changeAction('"+ id + "')");
+				if (id == 'rongzi') {
+					rzrzType = 1;
+					if (!rongziLoadingNoData) {
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}
+				} else if (id == 'rongzhi') {
+					rzrzType = 2;
+					if (!rongzhiIsFirstLoad) {
+						rongzhiIsFirstLoad = true;
+						setTimeout(function() {
+							mui('#pullrefresh').pullRefresh().pullupLoading();
+						}, 200);
+					}
+					if (!rongzhiLoadingNoData) {
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}
+				} else {
+					rzrzType = 3;
+					if (!projectIsFirstLoad) {
+						projectIsFirstLoad = true;
+						setTimeout(function() {
+							mui('#pullrefresh').pullRefresh().pullupLoading();
+						}, 200);
+					}
+					if (!projectLoadingNoData) {
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}
+				}
+			});
 		});
 		 //下拉刷新具体业务实现
 		function pulldownRefresh() {
@@ -220,8 +234,26 @@
 						};
 					app.listRongzhis(0, 10, rongzhiLatestRefreshRequestDate, 0, success, error);
 				} else {
-					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
-					mui.toast('TODO');
+					var success = function(response) {
+							var items = response.body.list;
+							if (items.length > 0) {
+								//数据是按时间倒叙排列的
+								if (projectLatestRefreshRequestDate == 0 && projectLatestLoadingRequestDate == 0) {
+									projectLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+								}
+								projectLatestRefreshRequestDate = Date.parse(items[0].created);
+								for (var i = items.length - 1; i >= 0; i--) {
+									divEl.innerHTML = projectTemplate(items[i]);
+									projectEl.insertBefore(divEl.firstElementChild, projectEl.firstElementChild);
+								}
+							}
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						};
+					app.listProjects(0, 10, projectLatestRefreshRequestDate, 0, success, error);
 				}
 			}, 1000);
 		};
@@ -278,8 +310,29 @@
 						};
 					app.listRongzhis(0, 10, 0, rongzhiLatestLoadingRequestDate, success, error);
 				} else {
-					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
-					mui.toast('TODO');
+					var success = function(response) {
+							var items = response.body.list;
+							if (items.length > 0) {
+								//数据是按时间倒叙排列的
+								if (projectLatestRefreshRequestDate == 0 && projectLatestLoadingRequestDate == 0) {
+									projectLatestRefreshRequestDate = Date.parse(items[0].created);
+								}
+								projectLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+								for (var i = 0, len = items.length; i < len; i++) {
+									divEl.innerHTML = projectTemplate(items[i]);
+									projectEl.appendChild(divEl.firstElementChild);
+								}
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+							} else {
+								projectLoadingNoData = false;
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+							}
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+						};
+					app.listProjects(0, 10, 0, projectLatestLoadingRequestDate, success, error);
 				}
 			}, 1000);
 		};

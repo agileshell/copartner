@@ -34,6 +34,16 @@
 			.mui-btn {
 				padding: 10px;
 			}
+			#head {
+				height: 40px;
+				line-height: 40px;
+			}
+			#head-img {
+				position: absolute;
+				right: 40px;
+				width: 40px;
+				height: 40px;
+			}
 		</style>
 	</head>
 
@@ -48,8 +58,9 @@
 				<form id='create-rongzi-form' class="mui-input-group">
 					<div class="mui-input-row">
 						<label>Logo</label>
-						<span class="mui-pull-right mui-navigate-right">
-							<input id='logo' name='logo' type="text" value="" class="c-input">
+						<span id="head" class="mui-pull-right mui-navigate-right">
+							<input id='logo' name='logo' type="hidden" value="" >
+							<img class="head-img mui-action-preview" id="head-img" src=""/>
 						</span>
 					</div>
 					<div class="mui-input-row">
@@ -117,6 +128,7 @@
 		</div>
 	</body>
 	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.view.js "></script>
 	<script src="../js/app.js"></script>
 	<script src="../js/mui.listpicker.js"></script>
 	<script src="../js/mui.poppicker.js"></script>
@@ -172,11 +184,10 @@
 			businessRegistered.addEventListener('toggle', function(event) {
 				hasBusinessRegistered.value = event.detail.isActive ? 'true' : 'false';
 			});
-			//ready
-			$.ready(function() {
+			$.plusReady(function() {
 				var toProfilePage = function() {
 					var profilePage = plus.webview.getWebviewById('profile');
-					mui.fire(profilePage, 'mui.view.beforeshow', {
+					$.fire(profilePage, 'mui.view.beforeshow', {
 						needReflush: true
 					});
 					profilePage.show();
@@ -215,6 +226,117 @@
 						}, 200);
 					});
 				};
+				//更换头像
+				$(".mui-input-row").on("tap", "#head", function(e) {
+					var a = [{
+						title: "拍照"
+					}, {
+						title: "从手机相册选择"
+					}];
+					plus.nativeUI.actionSheet({
+						title: "修改头像",
+						cancel: "取消",
+						buttons: a
+					}, function(b) {
+						switch (b.index) {
+							case 0:
+								break;
+							case 1:
+								getImage();
+								break;
+							case 2:
+								galleryImg();
+								break;
+							default:
+								break
+						}
+					})
+				});
+
+				function getImage() {
+					var c = plus.camera.getCamera();
+					c.captureImage(function(e) {
+						plus.io.resolveLocalFileSystemURL(e, function(entry) {
+							var s = entry.toLocalURL() + "?version=" + new Date().getTime();
+							doc.getElementById("head-img").src = s;
+							upload(entry);
+						}, function(e) {
+							console.log("读取拍照文件错误：" + e.message);
+						});
+					}, function(s) {
+						console.log("error" + s);
+					}, {
+						filename: "_doc/head.jpg"
+					})
+				}
+
+				function galleryImg() {
+					plus.gallery.pick(function(a) {
+						plus.io.resolveLocalFileSystemURL(a, function(entry) {
+							plus.io.resolveLocalFileSystemURL("_doc/", function(root) {
+								root.getFile("head.jpg", {}, function(file) {
+									//文件已存在
+									file.remove(function() {
+										entry.copyTo(root, 'head.jpg', function(e) {
+												var path = e.fullPath + "?version=" + new Date().getTime();
+												doc.getElementById("head-img").src = path;
+												upload(e);
+											},
+											function(e) {
+												console.log('copy image fail:' + e.message);
+											});
+									}, function() {
+										console.log("delete image fail:" + e.message);
+									});
+								}, function() {
+									//文件不存在
+									entry.copyTo(root, 'head.jpg', function(e) {
+											var path = e.fullPath + "?version=" + new Date().getTime();
+											doc.getElementById("head-img").src = path;
+											upload(e);
+										},
+										function(e) {
+											console.log('copy image fail:' + e.message);
+										});
+								});
+							}, function(e) {
+								console.log("get _www folder fail");
+							})
+						}, function(e) {
+							console.log("读取拍照文件错误：" + e.message);
+						});
+					}, function(a) {}, {
+						filter: "image"
+					})
+				};
+
+				function upload(f) {
+					var wt = plus.nativeUI.showWaiting();
+					var task = plus.uploader.createUpload('http://120.24.228.100:8080/copartner/image', {
+							method: "POST"
+						},
+						function(t, status) { //上传完成
+							if (status == 200) {
+								wt.close();
+								var data = JSON.parse(t.responseText);
+								if (data.status == 'SUCCEED') {
+									plus.nativeUI.toast("上传成功");
+									console.log(data.body.image_path);
+									doc.getElementById("logo").value = data.body.image_path;
+								} else {
+									plus.nativeUI.toast("上传失败, " + app.ajaxFailedHandler(data.body.error.code));
+								}
+							} else {
+								wt.close();
+								plus.nativeUI.toast("上传失败");
+							}
+						}
+					);
+					task.addFile(f.fullPath, {
+						key: 'image'
+					});
+					task.start();
+				}
 			});
 		})(mui, document);
 	</script>

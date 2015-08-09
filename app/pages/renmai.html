@@ -18,9 +18,9 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 id="title" class="mui-title c-title">融资融智</h1>
-			<a id="create-operation" class="mui-action-menu mui-icon mui-icon-plusempty mui-pull-right">
-				<span class="c-operation">创建融资</span>
+			<h1 id="title" class="mui-title c-title">人脉</h1>
+			<a id="add-frient" class="mui-action-menu mui-icon mui-icon-plusempty mui-pull-right">
+				<span class="c-operation">添加好友</span>
 			</a>
 		</header>
 		<div class="mui-content">
@@ -36,8 +36,8 @@
 				doubletap: true
 			},
 			subpages: [{
-				id: 'rzrz_list_sub',
-				url: 'rzrz_list_sub.html',
+				id: 'renmai_sub',
+				url: 'renmai_sub.html',
 				styles: {
 					top: '45px',
 					bottom: '0px',
@@ -55,42 +55,11 @@
 				newsWebview.evalJS('mui.scrollTo(0, 100)');
 			}
 		});
-		var loginPage = null;
-		var operation = 'create_rongzi';
 		mui.plusReady(function() {
-			document.getElementById('create-operation').addEventListener('tap', function() {
-				if (app.getUserId() == 0) {
-					if (!loginPage) {
-						loginPage = plus.webview.getWebviewById('login');
-					}
-					loginPage.show();
-				} else {
-					mui.openWindow({
-						url: operation + '.html',
-						id: operation,
-						show: {
-							aniShow: 'pop-in'
-						},
-						waiting: {
-							autoShow: false
-						}
-					});
-				}
+			document.getElementById('add-frient').addEventListener('tap', function() {
+				plus.nativeUI.toast('展示屏蔽');
 			});
 		});
-
-		function changeAction(value) {
-			if (value == 'rongzi') {
-				operation = 'create_rongzi';
-				document.getElementById('create-operation').innerHTML = "<span class='c-operation'>创建融资</span>";
-			} else if (value == 'rongzhi') {
-				operation = 'create_rongzhi';
-				document.getElementById('create-operation').innerHTML = "<span class='c-operation'>创建融智</span>";
-			} else {
-				operation = 'create_project';
-				document.getElementById('create-operation').innerHTML = "<span class='c-operation'>创建项目</span>";
-			}
-		}
 	</script>
 
 </html>

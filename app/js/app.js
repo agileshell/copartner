@@ -615,6 +615,32 @@
 		})
 	};
 
+	owner.listProjects = function(offset, limit, from, to, successCallback, errorCallback) {
+		mui.ajax('http://120.24.228.100:8080/copartner/projects', {
+			data: {
+				offset: offset,
+				limit: limit,
+				from: from,
+				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return successCallback(data);
+				} else {
+					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				return errorCallback(owner.ajaxErrorHandler(type));
+			}
+		})
+	};
+
+
 	owner.openLoginPage = function() {
 		mui.openWindow({
 			id: 'login',
@@ -626,7 +652,24 @@
 	};
 
 	var errorCodeMsgMap = {
-		ode_10000: '参数错误',
+		code_10000: '参数错误',
+		code_10100: '文件为空',
+		code_10101: '文件类型不正确',
+		code_10102: '文件过大',
+		code_10103: '文件缺少最小尺寸',
+		code_10104: '图片过宽',
+		code_10105: '图片过高',
+		code_10106: '图片缺少最小宽度',
+		code_10107: '图片缺少最小高度',
+		code_10108: '验证图片出错',
+		code_10109: '上传文件出错',
+		code_10110: '图片地址不正确',
+		code_10200: '地区不存在',
+		code_10210: '创业状态不存在',
+		code_10220: '个人角色不存在',
+		code_10230: '行业领域不存在',
+		code_10240: '项目阶段不存在',
+		code_10250: '团队规模不存在',
 		code_20001: '账号或密码错误',
 		code_20000: '账号不存在',
 		code_20001: '账号或密码错误',

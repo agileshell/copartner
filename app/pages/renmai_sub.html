@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创客汇</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/mui.indexedlist.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				overflow: hidden;
+			}
+			.mui-scroll-wrapper {
+				position: absolute;
+				z-index: 1;
+				top: 35px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content" style="padding: 0px 5px; position: absolute; z-index: 2;">
+			<div class="mui-segmented-control c-control">
+				<a id="contact-book" class="mui-control-item mui-active" href="#contact-book-item">通讯录</a>
+				<a id="chat-history" class="mui-control-item" href="#chat-history-item">聊天</a>
+			</div>
+		</div>
+		<div class="mui-content">
+			<div class="mui-scroll-wrapper">
+				<div id="contact-book-item" class="mui-control-content mui-active">
+					<!-- start -->
+					<div id='list' class="mui-group-list">
+						<div class="mui-group-list-search mui-input-row mui-search">
+							<input type="search" class="mui-input-clear mui-group-list-search-input" placeholder="搜索">
+						</div>
+						<div class="mui-group-list-bar">
+							<a>A</a>
+							<a>B</a>
+							<a>C</a>
+							<a>D</a>
+							<a>E</a>
+							<a>F</a>
+							<a>G</a>
+							<a>H</a>
+							<a>I</a>
+							<a>J</a>
+							<a>K</a>
+							<a>L</a>
+							<a>M</a>
+							<a>N</a>
+							<a>O</a>
+							<a>P</a>
+							<a>Q</a>
+							<a>R</a>
+							<a>S</a>
+							<a>T</a>
+							<a>U</a>
+							<a>V</a>
+							<a>W</a>
+							<a>X</a>
+							<a>Y</a>
+							<a>Z</a>
+						</div>
+						<div class="mui-group-list-alert"></div>
+						<div class="mui-group-list-inner">
+							<div class="mui-group-list-empty-alert">没有数据</div>
+							<ul class="mui-table-view">
+								<li data-group="A" class="mui-table-view-divider mui-group-list-group">A</li>
+								<li data-value="Alven" data-tags="Alven" class="mui-table-view-cell mui-group-list-item">Alven</li>
+								<li data-value="abb" data-tags="alibaba" class="mui-table-view-cell mui-group-list-item">阿里</li>
+								<li data-group="B" class="mui-table-view-divider mui-group-list-group">B</li>
+								<li data-value="BSD" data-tags="BaoShan" class="mui-table-view-cell mui-group-list-item">白珊</li>
+								<li data-value="BBE" data-tags="BaoBeiEr" class="mui-table-view-cell mui-group-list-item">寶貝兒</li>
+								<li data-group="C" class="mui-table-view-divider mui-group-list-group">C</li>
+								<li data-value="CG" data-tags="ChengGong" class="mui-table-view-cell mui-group-list-item">成功</li>
+								<li data-group="G" class="mui-table-view-divider mui-group-list-group">G</li>
+								<li data-value="GDX" data-tags="guodaxia" class="mui-table-view-cell mui-group-list-item">郭大俠</li>
+								<li data-value="GXX" data-tags="guoxiaoxia" class="mui-table-view-cell mui-group-list-item">郭小俠</li>
+								<li data-value="GX" data-tags="guoxiang" class="mui-table-view-cell mui-group-list-item">郭襄</li>
+								<li data-group="H" class="mui-table-view-divider mui-group-list-group">H</li>
+								<li data-value="hdf" data-tags="haidafu" class="mui-table-view-cell mui-group-list-item">海大富</li>
+								<li data-group="J" class="mui-table-view-divider mui-group-list-group">J</li>
+								<li data-value="JZH" data-tags="jiangzhonghai" class="mui-table-view-cell mui-group-list-item">江中還</li>
+								<li data-group="L" class="mui-table-view-divider mui-group-list-group">L</li>
+								<li data-value="LJ" data-tags="LiJiang" class="mui-table-view-cell mui-group-list-item">李江</li>
+								<li data-value="LY" data-tags="LuoYang" class="mui-table-view-cell mui-group-list-item">羅阳</li>
+								<li data-group="M" class="mui-table-view-divider mui-group-list-group">M</li>
+								<li data-value="MST" data-tags="MAOSHAOTIAN" class="mui-table-view-cell mui-group-list-item">毛少天</li>
+								<li data-group="N" class="mui-table-view-divider mui-group-list-group">N</li>
+								<li data-value="npss" data-tags="nanpaisanshu" class="mui-table-view-cell mui-group-list-item">南派三叔</li>
+								<li data-group="P" class="mui-table-view-divider mui-group-list-group">P</li>
+								<li data-value="ps" data-tags="pusa" class="mui-table-view-cell mui-group-list-item">普仨</li>
+								<li data-group="Q" class="mui-table-view-divider mui-group-list-group">Q</li>
+								<li data-value="qsy" data-tags="qiushaoyun" class="mui-table-view-cell mui-group-list-item">邱少雲</li>
+								<li data-group="S" class="mui-table-view-divider mui-group-list-group">S</li>
+								<li data-value="ST" data-tags="ShanTou" class="mui-table-view-cell mui-group-list-item">汕头</li>
+								<li data-group="T" class="mui-table-view-divider mui-group-list-group">T</li>
+								<li data-value="TBH" data-tags="TANGBOHU" class="mui-table-view-cell mui-group-list-item">唐伯虎</li>
+								<li data-group="W" class="mui-table-view-divider mui-group-list-group">W</li>
+								<li data-value="WXC" data-tags="wangsicong" class="mui-table-view-cell mui-group-list-item">王思聰</li>
+								<li data-value="WDC" data-tags="wangdachui" class="mui-table-view-cell mui-group-list-item">王大錘</li>
+								<li data-group="X" class="mui-table-view-divider mui-group-list-group">X</li>
+								<li data-value="XF" data-tags="xufu" class="mui-table-view-cell mui-group-list-item">徐福</li>
+								<li data-group="Y" class="mui-table-view-divider mui-group-list-group">Y</li>
+								<li data-value="YNJ" data-tags="yingnengjing" class="mui-table-view-cell mui-group-list-item">因能靜</li>
+								<li data-value="YG" data-tags="yangguo" class="mui-table-view-cell mui-group-list-item">楊過</li>
+								<li data-group="Z" class="mui-table-view-divider mui-group-list-group">Z</li>
+								<li data-value="ZWX" data-tags="ZhongWeiXiang" class="mui-table-view-cell mui-group-list-item">中卫香</li>
+								<li data-value="ZUH" data-tags="ZhuHaiSan" class="mui-table-view-cell mui-group-list-item">珠海三</li>
+							</ul>
+						</div>
+					</div>
+					<!-- end -->
+				</div>
+				<div id="chat-history-item" class="mui-control-content">
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/mui.indexedlist.js"></script>
+	<script>
+		mui.init();
+		mui.ready(function() {
+			var list = document.getElementById('list');
+			//calc hieght
+			list.style.height = (document.body.offsetHeight - 30) + 'px';
+			//create
+			window.groupList = new mui.GroupList(list);
+		});
+	</script>
+
+</html>
