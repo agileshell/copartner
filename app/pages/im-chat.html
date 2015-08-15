@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创客汇</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<link rel="stylesheet" href="../css/message.css" />
+		<style>
+			footer {
+				position: fixed;
+				width: 100%;
+				height: 50px;
+				min-height: 50px;
+				border-top: solid 1px #bbb;
+				left: 0px;
+				bottom: 0px;
+				overflow: hidden;
+				padding: 0px 50px 0 10px;
+				background-color: #fafafa;
+			}
+			.footer-left {
+				position: absolute;
+				width: 50px;
+				height: 50px;
+				left: 0px;
+				bottom: 0px;
+				text-align: center;
+				vertical-align: middle;
+				line-height: 100%;
+				padding: 12px 4px;
+			}
+			.footer-right {
+				position: absolute;
+				width: 50px;
+				height: 50px;
+				right: 0px;
+				bottom: 0px;
+				text-align: center;
+				vertical-align: middle;
+				line-height: 100%;
+				padding: 12px 5px;
+				display: inline-block;
+			}
+			.footer-center {
+				height: 100%;
+				padding: 5px 0px;
+			}
+			.footer-center [class*=input] {
+				width: 100%;
+				height: 100%;
+				border-radius: 5px;
+			}
+			.footer-center .input-text {
+				background: #fff;
+				border: solid 1px #ddd;
+				padding: 10px !important;
+				font-size: 16px !important;
+				line-height: 18px !important;
+				font-family: verdana !important;
+				overflow: hidden;
+			}
+			.mui-content {
+				height: 100%;
+				padding: 44px 0px 50px 0px;
+				overflow: auto;
+				background-color: #eaeaea;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">聊天</h1>
+		</header>
+		<div class="mui-content">
+			<div class="message-history">
+				<div class="message-reply">
+					<div class="message-time">2014-2-21 9:32:57</div>
+					<div class="message-info">
+						<div class="user-info">
+							<img class="user-avatar" src="../images/blank.jpg">
+						</div>
+						<div class="message-content-box">
+							<div class="arrow"></div>
+							<div class="message-content">这个东西不错呀！</div>
+						</div>
+					</div>
+				</div>
+				<div class="message-receive">
+					<div class="message-time">2014-2-21 9:32:57</div>
+					<div class="message-info">
+						<div class="user-info">
+							<img class="user-avatar" src="../images/user-photo.png">
+						</div>
+						<div class="message-content-box">
+							<div class="arrow"></div>
+							<div class="message-content">Good football</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer>
+			<div class="footer-center">
+				<textarea id='msg-text' type="text" class='input-text' placeholder="输入消息内容"></textarea>
+			</div>
+			<label class="footer-right">
+				<span id="send-msg">send</span>
+			</label>
+		</footer>
+	</body>
+
+</html>
