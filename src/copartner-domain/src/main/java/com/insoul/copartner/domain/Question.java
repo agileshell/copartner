@@ -29,7 +29,10 @@ public class Question extends BaseEntity {
     private Long tutorId;// 导师
 
     @Column(name = "permission", nullable = false)
-    private Integer permission;// 权限, 1:全体可见, 2:导师可见
+    private Integer permission;// 权限, 1:全体可见, 2:仅被提问的导师可见
+
+    @Column(name = "status", nullable = false)
+    private String status;// 状态 active,inactive,deleted
 
     public String getTitle() {
         return title;
@@ -79,6 +82,14 @@ public class Question extends BaseEntity {
         this.permission = permission;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -86,6 +97,7 @@ public class Question extends BaseEntity {
         result = prime * result + ((categoryId == null) ? 0 : categoryId.hashCode());
         result = prime * result + ((content == null) ? 0 : content.hashCode());
         result = prime * result + ((permission == null) ? 0 : permission.hashCode());
+        result = prime * result + ((status == null) ? 0 : status.hashCode());
         result = prime * result + ((title == null) ? 0 : title.hashCode());
         result = prime * result + ((tutorId == null) ? 0 : tutorId.hashCode());
         result = prime * result + ((userId == null) ? 0 : userId.hashCode());
@@ -115,6 +127,11 @@ public class Question extends BaseEntity {
             if (other.permission != null)
                 return false;
         } else if (!permission.equals(other.permission))
+            return false;
+        if (status == null) {
+            if (other.status != null)
+                return false;
+        } else if (!status.equals(other.status))
             return false;
         if (title == null) {
             if (other.title != null)

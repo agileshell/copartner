@@ -82,6 +82,10 @@ public enum ResponseCode {
 
     CONTENT_NOT_EXIST(30200),
 
+    COURSE_NOT_EXIST(30300),
+
+    QUESTION_NOT_EXIST(30400), QUESTION_CATEGORY_NOT_EXIST(30401), TUTOR_NOT_EXIST(30402),
+
     ;
 
     private int value;

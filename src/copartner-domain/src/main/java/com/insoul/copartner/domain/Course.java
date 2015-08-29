@@ -25,6 +25,9 @@ public class Course extends BaseEntity {
     @Column(name = "cover_img")
     private String coverImg;// 封皮
 
+    @Column(name = "url", nullable = false)
+    private String url;// 链接
+
     @Column(name = "time", nullable = false)
     private Integer time;// 时长, 单位:分钟
 
@@ -70,6 +73,14 @@ public class Course extends BaseEntity {
 
     public void setCoverImg(String coverImg) {
         this.coverImg = coverImg;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Integer getTime() {
@@ -124,6 +135,7 @@ public class Course extends BaseEntity {
         result = prime * result + ((status == null) ? 0 : status.hashCode());
         result = prime * result + ((synopsis == null) ? 0 : synopsis.hashCode());
         result = prime * result + ((time == null) ? 0 : time.hashCode());
+        result = prime * result + ((url == null) ? 0 : url.hashCode());
         result = prime * result + ((userId == null) ? 0 : userId.hashCode());
         return result;
     }
@@ -176,6 +188,11 @@ public class Course extends BaseEntity {
             if (other.time != null)
                 return false;
         } else if (!time.equals(other.time))
+            return false;
+        if (url == null) {
+            if (other.url != null)
+                return false;
+        } else if (!url.equals(other.url))
             return false;
         if (userId == null) {
             if (other.userId != null)

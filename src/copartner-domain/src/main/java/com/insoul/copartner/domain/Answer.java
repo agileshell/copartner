@@ -11,7 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "answer", catalog = "copartner")
-@NamedQueries({ @NamedQuery(name = "Answer.getByQuestionId", query = "FROM Answer WHERE questionId = :questionId AND `status` = 'active'") })
+@NamedQueries({ @NamedQuery(name = "Answer.findByQuestionId", query = "FROM Answer WHERE questionId = :questionId AND `status` = 'active'") })
 public class Answer extends BaseEntity {
 
     private static final long serialVersionUID = 9179901523688416197L;
