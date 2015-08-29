@@ -408,7 +408,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
                 }
             }
 
-            user.setDomains(strDomainIds.toString());
+            String strDomains = strDomainIds.substring(0, strDomainIds.length() - 1);
+            user.setDomains(strDomains);
         }
     }
 

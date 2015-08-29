@@ -96,6 +96,8 @@ public class QuestionServiceImpl extends BaseServiceImpl implements IQuestionSer
                 questioner.setAvatar(CDNUtil.getFullPath(questionerUser.getAvatar()));
             }
             questionVO.setQuestioner(questioner);
+
+            questionVOs.add(questionVO);
         }
 
         Long count = questionDao.countQuestion(criteria);

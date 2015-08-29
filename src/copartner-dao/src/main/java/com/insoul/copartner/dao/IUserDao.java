@@ -3,6 +3,7 @@ package com.insoul.copartner.dao;
 import java.util.List;
 import java.util.Set;
 
+import com.insoul.copartner.dao.criteria.TutorCriteria;
 import com.insoul.copartner.dao.criteria.UserCriteria;
 import com.insoul.copartner.domain.User;
 
@@ -16,5 +17,7 @@ public interface IUserDao extends IBaseDao<User, Long> {
 
     List<User> query(UserCriteria criteria);
 
-	long count();
+    long count();
+
+    List<User> queryTutor(TutorCriteria criteria);
 }
