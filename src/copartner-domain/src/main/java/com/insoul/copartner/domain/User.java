@@ -23,6 +23,15 @@ public class User extends BaseEntity {
 
     private static final long serialVersionUID = 6718859190782978249L;
 
+    @Column(name = "role_id", nullable = false)
+    private Long roleId = 1L;// 1:创业者, 2:投资人, 3:导师
+
+    @Column(name = "level", nullable = false)
+    private Integer level = 0;// VIP等级
+
+    @Column(name = "points", nullable = false)
+    private Long points;// 积分
+
     @Column(name = "name", nullable = false)
     private String name;// 姓名
 
@@ -86,6 +95,25 @@ public class User extends BaseEntity {
 
     @Column(name = "im_id")
     private Long imId;// 聊天ID
+
+    @Column(name = "id_number")
+    private String idNumber;// 身份证号
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
 
     public String getName() {
         return name;
@@ -255,6 +283,14 @@ public class User extends BaseEntity {
         this.imId = imId;
     }
 
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -267,16 +303,19 @@ public class User extends BaseEntity {
         result = prime * result + ((email == null) ? 0 : email.hashCode());
         result = prime * result + ((fullLocation == null) ? 0 : fullLocation.hashCode());
         result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+        result = prime * result + ((idNumber == null) ? 0 : idNumber.hashCode());
         result = prime * result + ((imId == null) ? 0 : imId.hashCode());
         result = prime * result + ((introduction == null) ? 0 : introduction.hashCode());
         result = prime * result + ((isEmailVerified == null) ? 0 : isEmailVerified.hashCode());
         result = prime * result + ((isMobileVerified == null) ? 0 : isMobileVerified.hashCode());
         result = prime * result + ((lastIp == null) ? 0 : lastIp.hashCode());
         result = prime * result + ((lastLogin == null) ? 0 : lastLogin.hashCode());
+        result = prime * result + ((level == null) ? 0 : level.hashCode());
         result = prime * result + ((locationId == null) ? 0 : locationId.hashCode());
         result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((password == null) ? 0 : password.hashCode());
+        result = prime * result + ((roleId == null) ? 0 : roleId.hashCode());
         result = prime * result + ((salt == null) ? 0 : salt.hashCode());
         result = prime * result + ((startupRoleId == null) ? 0 : startupRoleId.hashCode());
         result = prime * result + ((status == null) ? 0 : status.hashCode());
@@ -332,6 +371,11 @@ public class User extends BaseEntity {
                 return false;
         } else if (!gender.equals(other.gender))
             return false;
+        if (idNumber == null) {
+            if (other.idNumber != null)
+                return false;
+        } else if (!idNumber.equals(other.idNumber))
+            return false;
         if (imId == null) {
             if (other.imId != null)
                 return false;
@@ -362,6 +406,11 @@ public class User extends BaseEntity {
                 return false;
         } else if (!lastLogin.equals(other.lastLogin))
             return false;
+        if (level == null) {
+            if (other.level != null)
+                return false;
+        } else if (!level.equals(other.level))
+            return false;
         if (locationId == null) {
             if (other.locationId != null)
                 return false;
@@ -381,6 +430,11 @@ public class User extends BaseEntity {
             if (other.password != null)
                 return false;
         } else if (!password.equals(other.password))
+            return false;
+        if (roleId == null) {
+            if (other.roleId != null)
+                return false;
+        } else if (!roleId.equals(other.roleId))
             return false;
         if (salt == null) {
             if (other.salt != null)
