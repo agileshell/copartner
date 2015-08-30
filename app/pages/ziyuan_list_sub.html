@@ -11,6 +11,9 @@
 	</head>
 
 	<body>
+		<div class="mui-input-row mui-search" style="height: 34px;">
+			<input id="search" type="search" name="keyword" class="mui-input-speech mui-input-clear" placeholder="请输入您要查询的关键字">
+		</div>
 		<div class="mui-content">
 			<div id="pullrefresh" class="mui-scroll-wrapper">
 				<ul id="content-list" class="mui-table-view mui-table-view-chevron">
@@ -39,7 +42,9 @@
 		var divEl = document.createElement("div"),
 			contentSource = document.getElementById("content-template").innerText,
 			contentTemplate = Handlebars.compile(contentSource),
-			contentEl = document.getElementById("content-list");
+			contentEl = document.getElementById("content-list"),
+			searchEl = document.getElementById("search"),
+			keyword = '';
 		mui.init({
 			pullRefresh: {
 				container: '#pullrefresh',
@@ -61,6 +66,32 @@
 					mui('#pullrefresh').pullRefresh().pullupLoading();
 				}, 200);
 			}
+		});
+		 //search
+		searchEl.addEventListener('search', function() {
+			keyword = searchEl.value;
+			contentLatestRefreshRequestDate = 0;
+			contentLatestLoadingRequestDate = 0;
+			contentEl.innerHTML = '';
+			var success = function(response) {
+					var contents = response.body.list;
+					if (contents.length > 0) {
+						contentLatestRefreshRequestDate = Date.parse(contents[0].created);
+						contentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
+						for (var i = 0, len = contents.length; i < len; i++) {
+							divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
+							contentEl.appendChild(divEl.firstElementChild);
+						}
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+					} else {
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+					}
+				},
+				error = function(errorType) {
+					mui.toast(app.ajaxErrorHandler(errorType));
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+				};
+			app.listContents(2, keyword, 0, 10, 0, contentLatestLoadingRequestDate, success, error);
 		});
 		 //打开详情
 		mui('#pullrefresh').on('tap', 'a', function() {
@@ -98,7 +129,7 @@
 						mui.toast(app.ajaxErrorHandler(errorType));
 						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
 					};
-				app.listContents(2, 0, 10, contentLatestRefreshRequestDate, 0, success, error);
+				app.listContents(2, keyword, 0, 10, contentLatestRefreshRequestDate, 0, success, error);
 			}, 1000);
 		};
 		 //上拉加载具体业务实现
@@ -125,7 +156,7 @@
 							mui.toast(app.ajaxErrorHandler(errorType));
 							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 						};
-					app.listContents(2, 0, 10, 0, contentLatestLoadingRequestDate, success, error);
+					app.listContents(2, keyword, 0, 10, 0, contentLatestLoadingRequestDate, success, error);
 				},
 				1000);
 		};

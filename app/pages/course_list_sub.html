@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创客汇</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			.new-item {
+				padding: 15px 0 0 15px;
+				border-bottom: 1px solid #c8c7cc;
+			}
+			.course-item {
+				display: block;
+				font-size: 12px;
+				line-height: 20px;
+			}
+			.course-avatar {
+				border-radius: 50%;
+				width: 40px;
+				float: left;
+			}
+			.course-info {
+				float: left;
+				margin-top: 10px;
+				margin-left: 5px;
+				color: #C15151;
+				font-size: 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content" style="padding: 0px 5px;">
+			<div id="course-type" class="mui-segmented-control c-control">
+				<a id="free" class="mui-control-item mui-active" href="#free-item">免费课程</a>
+				<a id="vip" class="mui-control-item" href="#vip-item">会员课程</a>
+			</div>
+		</div>
+		<div class="mui-content">
+			<div id="pullrefresh" class="mui-scroll-wrapper">
+				<div id="free-item" class="mui-control-content mui-active">
+					<ul id="free-course-list" class="mui-table-view mui-table-view-chevron">
+					</ul>
+				</div>
+				<div id="vip-item" class="mui-control-content">
+					<ul id="vip-course-list" class="mui-table-view mui-table-view-chevron">
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script id="course-template" type="text/x-handlebars-template">
+		<li id="course_{{id}}" class="mui-table-view-cell mui-media">
+			<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+				<div style="overflow: hidden;">
+					<img src="{{coverImg}}" class="course-avatar">
+					<span class="course-info">{{name}}</span>
+				</div>
+				<div class="mui-media-body" style="padding-left: 45px;">
+					<span class="course-item">主讲人：{{speaker}}，时长：{{time}}分钟</span>
+						<span class="course-item">简介：{{synopsis}}</span>
+				</div>
+			</a>
+		</li>
+	</script>
+	<script type="text/javascript" charset="UTF-8" src="../js/handlebars-v2.0.0.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+	<script>
+		var freeLatestRefreshRequestDate = 0,
+			freeLatestLoadingRequestDate = 0,
+			vipLatestRefreshRequestDate = 0,
+			vipLatestLoadingRequestDate = 0,
+			vipIsFirstLoad = false,
+			freeLoadingNoData = false,
+			vipLoadingNoData = false;
+		var divEl = document.createElement("div"),
+			courseSource = document.getElementById("course-template").innerText,
+			courseTemplate = Handlebars.compile(courseSource),
+			isFree = true,
+			freeEl = document.getElementById("free-course-list"),
+			vipEl = document.getElementById("vip-course-list");
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				down: {
+					contentrefresh: '正在刷新...',
+					callback: pulldownRefresh
+				},
+				up: {
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+		mui('#course-type').on('tap', 'a', function() {
+			var id = this.getAttribute('id');
+			if (id == 'free') {
+				isFree = true;
+				if (!freeLoadingNoData) {
+					mui('#pullrefresh').pullRefresh().refresh(true);
+				}
+			} else {
+				isFree = false;
+				if (!vipIsFirstLoad) {
+					vipIsFirstLoad = true;
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 200);
+				}
+				if (!vipLoadingNoData) {
+					mui('#pullrefresh').pullRefresh().refresh(true);
+				}
+			}
+		});
+		mui.plusReady(function() {
+			if (plus.networkinfo.getCurrentType() === plus.networkinfo.CONNECTION_NONE) {
+				plus.nativeUI.alert('无网络连接!');
+			} else {
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				}, 200);
+			}
+		});
+		 //打开详情
+		mui('#pullrefresh').on('tap', 'a', function() {
+			open_course_detail(this.getAttribute('data-guid'));
+		});
+		 //打开详情具体业务实现
+		var detailWebview = null; //详情页面子webview
+		function open_course_detail(id) {
+			if (!detailWebview) {
+				detailWebview = plus.webview.getWebviewById('course_detail');
+			}
+			//触发子窗口变更详情
+			mui.fire(detailWebview, 'mui.view.beforeshow', {
+				guid: id
+			});
+		};
+		 //下拉刷新具体业务实现
+		function pulldownRefresh() {
+			setTimeout(function() {
+				console.log('pulldown');
+				if (isFree) {
+					var success = function(response) {
+							var courses = response.body.list;
+							if (courses.length > 0) {
+								if (freeLatestRefreshRequestDate == 0 && freeLatestLoadingRequestDate == 0) {
+									freeLatestLoadingRequestDate = Date.parse(courses[courses.length - 1].created);
+								}
+								freeLatestRefreshRequestDate = Date.parse(courses[0].created);
+								for (var i = courses.length - 1; i >= 0; i--) {
+									divEl.innerHTML = courseTemplate(app.processCourse(courses[i]));
+									freeEl.insertBefore(divEl.firstElementChild, freeEl.firstElementChild);
+								}
+							}
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						};
+					app.listcourses(isFree, 0, 10, freeLatestRefreshRequestDate, 0, success, error);
+				} else {
+					var success = function(response) {
+							var courses = response.body.list;
+							if (courses.length > 0) {
+								if (vipLatestRefreshRequestDate == 0 && vipLatestLoadingRequestDate == 0) {
+									vipLatestLoadingRequestDate = Date.parse(courses[courses.length - 1].created);
+								}
+								vipLatestRefreshRequestDate = Date.parse(courses[0].created);
+								for (var i = courses.length - 1; i >= 0; i--) {
+									divEl.innerHTML = courseTemplate(app.processCourse(courses[i]));
+									vipEl.insertBefore(divEl.firstElementChild, vipEl.firstElementChild);
+								}
+							}
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						};
+					app.listcourses(isFree, 0, 10, vipLatestRefreshRequestDate, 0, success, error);
+				}
+			}, 1000);
+		};
+		 //上拉加载具体业务实现
+		function pullupRefresh() {
+			setTimeout(function() {
+				console.log('pullup');
+				if (isFree) {
+					var success = function(response) {
+							var courses = response.body.list;
+							if (courses.length > 0) {
+								if (freeLatestLoadingRequestDate == 0 && freeLatestRefreshRequestDate == 0) {
+									freeLatestRefreshRequestDate = Date.parse(courses[0].created);
+								}
+								freeLatestLoadingRequestDate = Date.parse(courses[courses.length - 1].created);
+								for (var i = 0, len = courses.length; i < len; i++) {
+									divEl.innerHTML = courseTemplate(app.processCourse(courses[i]));
+									freeEl.insertBefore(divEl.firstElementChild, freeEl.firstElementChild);
+								}
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+							} else {
+								freeLoadingNoData = true;
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+							}
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+						};
+					app.listcourses(isFree, 0, 10, 0, freeLatestLoadingRequestDate, success, error);
+				} else {
+					var success = function(response) {
+							var courses = response.body.list;
+							if (courses.length > 0) {
+								if (vipLatestLoadingRequestDate == 0 && vipLatestRefreshRequestDate == 0) {
+									vipLatestRefreshRequestDate = Date.parse(courses[0].created);
+								}
+								vipLatestLoadingRequestDate = Date.parse(courses[courses.length - 1].created);
+								for (var i = 0, len = courses.length; i < len; i++) {
+									divEl.innerHTML = courseTemplate(app.processCourse(courses[i]));
+									vipEl.insertBefore(divEl.firstElementChild, vipEl.firstElementChild);
+								}
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+							} else {
+								vipLoadingNoData = true;
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+							}
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+						};
+					app.listcourses(isFree, 0, 10, 0, vipLatestLoadingRequestDate, success, error);
+				}
+			}, 1000);
+		};
+	</script>
+
+</html>

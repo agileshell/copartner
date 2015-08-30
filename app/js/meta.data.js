@@ -64,6 +64,71 @@ var financingPhaseData = [{
 	"text": "首次公开募股"
 }];
 
+var startupRoleData = [{
+	"value": 1,
+	"text": "产品"
+}, {
+	"value": 2,
+	"text": "技术"
+}, {
+	"value": 3,
+	"text": "运营"
+}, {
+	"value": 4,
+	"text": "营销"
+}, {
+	"value": 5,
+	"text": "设计"
+}, {
+	"value": 6,
+	"text": "其它"
+}];
+
+var startupStatusData = [{
+	"value": 1,
+	"text": "有创业意愿"
+}, {
+	"value": 2,
+	"text": "有创业想法"
+}, {
+	"value": 3,
+	"text": "全职创业中"
+}, {
+	"value": 4,
+	"text": "兼职创业中"
+}, {
+	"value": 5,
+	"text": "投资人"
+}, {
+	"value": 6,
+	"text": "媒体人"
+}];
+
+var genderData = [{
+	"value": "M",
+	"text": "男"
+}, {
+	"value": "F",
+	"text": "女"
+}];
+
+var ageData = [{
+	"value": "<25",
+	"text": "<25"
+}, {
+	"value": "25-30",
+	"text": "25-30"
+}, {
+	"value": "31-35",
+	"text": "31-35"
+}, {
+	"value": "36-40",
+	"text": "36-40"
+}, {
+	"value": ">40",
+	"text": ">40"
+}];
+
 var projectPhaseData = [{
 	"value": 1,
 	"text": "原型构建阶段"

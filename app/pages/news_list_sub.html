@@ -16,6 +16,9 @@
 				<a id="industry" class="mui-control-item mui-active" href="#industry-item">行业</a>
 				<a id="location" class="mui-control-item" href="#location-item">地方</a>
 			</div>
+			<div class="mui-input-row mui-search" style="height: 34px;">
+				<input id="search" type="search" name="keyword" class="mui-input-speech mui-input-clear" placeholder="请输入您要查询的关键字">
+			</div>
 		</div>
 		<div class="mui-content">
 			<div id="pullrefresh" class="mui-scroll-wrapper">
@@ -56,6 +59,9 @@
 			newsSource = document.getElementById("news-template").innerText,
 			newsTemplate = Handlebars.compile(newsSource),
 			newsType = 1,
+			searchEl = document.getElementById("search"),
+			industryNewsKeyword = '',
+			locationNewsKeyword = '',
 			industryNewsEl = document.getElementById("industry-news-list"),
 			locationNewsEl = document.getElementById("location-news-list");
 		mui.init({
@@ -75,11 +81,27 @@
 			var id = this.getAttribute('id');
 			if (id == 'industry') {
 				newsType = 1;
+				searchEl.value = industryNewsKeyword;
+				if (industryNewsKeyword.length <= 0) {
+					mui('.mui-placeholder')[0].classList.remove('mui-hidden');
+					mui('.mui-icon-clear')[0].classList.add('mui-hidden');
+				} else {
+					mui('.mui-placeholder')[0].classList.add('mui-hidden');
+					mui('.mui-icon-clear')[0].classList.remove('mui-hidden');
+				}
 				if (!industryNewsLoadingNoData) {
 					mui('#pullrefresh').pullRefresh().refresh(true);
 				}
 			} else {
 				newsType = 2;
+				searchEl.value = locationNewsKeyword;
+				if (locationNewsKeyword.length <= 0) {
+					mui('.mui-placeholder')[0].classList.remove('mui-hidden');
+					mui('.mui-icon-clear')[0].classList.add('mui-hidden');
+				} else {
+					mui('.mui-placeholder')[0].classList.add('mui-hidden');
+					mui('.mui-icon-clear')[0].classList.remove('mui-hidden');
+				}
 				if (!locationNewsIsFirstLoad) {
 					locationNewsIsFirstLoad = true;
 					setTimeout(function() {
@@ -98,6 +120,60 @@
 				setTimeout(function() {
 					mui('#pullrefresh').pullRefresh().pullupLoading();
 				}, 200);
+			}
+		});
+		 //search
+		searchEl.addEventListener('search', function() {
+			if (newsType == 1) {
+				industryNewsKeyword = searchEl.value;
+				industryNewsLatestRefreshRequestDate = 0;
+				industryNewsLatestLoadingRequestDate = 0;
+				industryNewsEl.innerHTML = '';
+				var success = function(response) {
+						var news = response.body.list;
+						if (news.length > 0) {
+							industryNewsLatestRefreshRequestDate = Date.parse(news[0].created);
+							industryNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
+							for (var i = 0, len = news.length; i < len; i++) {
+								divEl.innerHTML = newsTemplate(app.processNews(news[i]));
+								industryNewsEl.appendChild(divEl.firstElementChild);
+							}
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+						} else {
+							industryNewsLoadingNoData = true;
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+						}
+					},
+					error = function(errorType) {
+						mui.toast(app.ajaxErrorHandler(errorType));
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+					};
+				app.listnews(newsType, industryNewsKeyword, 0, 10, 0, industryNewsLatestLoadingRequestDate, success, error);
+			} else {
+				locationNewsKeyword = searchEl.value;
+				locationNewsLatestRefreshRequestDate = 0;
+				locationNewsLatestLoadingRequestDate = 0;
+				locationNewsEl.innerHTML = '';
+				var success = function(response) {
+						var news = response.body.list;
+						if (news.length > 0) {
+							locationNewsLatestRefreshRequestDate = Date.parse(news[0].created);
+							locationNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
+							for (var i = 0, len = news.length; i < len; i++) {
+								divEl.innerHTML = newsTemplate(app.processNews(news[i]));
+								locationNewsEl.appendChild(divEl.firstElementChild);
+							}
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+						} else {
+							locationNewsLoadingNoData = true;
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+						}
+					},
+					error = function(errorType) {
+						mui.toast(app.ajaxErrorHandler(errorType));
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+					};
+				app.listnews(newsType, locationNewsKeyword, 0, 10, 0, locationNewsLatestLoadingRequestDate, success, error);
 			}
 		});
 		 //点击最新动态列表，打开动态详情
@@ -138,7 +214,7 @@
 							mui.toast(app.ajaxErrorHandler(errorType));
 							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
 						};
-					app.listnews(newsType, 0, 10, industryNewsLatestRefreshRequestDate, 0, success, error);
+					app.listnews(newsType, industryNewsKeyword, 0, 10, industryNewsLatestRefreshRequestDate, 0, success, error);
 				} else {
 					var success = function(response) {
 							var news = response.body.list;
@@ -158,7 +234,7 @@
 							mui.toast(app.ajaxErrorHandler(errorType));
 							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
 						};
-					app.listnews(newsType, 0, 10, locationNewsLatestRefreshRequestDate, 0, success, error);
+					app.listnews(newsType, locationNewsKeyword, 0, 10, locationNewsLatestRefreshRequestDate, 0, success, error);
 				}
 			}, 1000);
 		};
@@ -188,7 +264,7 @@
 							mui.toast(app.ajaxErrorHandler(errorType));
 							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 						};
-					app.listnews(newsType, 0, 10, 0, industryNewsLatestLoadingRequestDate, success, error);
+					app.listnews(newsType, industryNewsKeyword, 0, 10, 0, industryNewsLatestLoadingRequestDate, success, error);
 				} else {
 					var success = function(response) {
 							var news = response.body.list;
@@ -211,7 +287,7 @@
 							mui.toast(app.ajaxErrorHandler(errorType));
 							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 						};
-					app.listnews(newsType, 0, 10, 0, locationNewsLatestLoadingRequestDate, success, error);
+					app.listnews(newsType, locationNewsKeyword, 0, 10, 0, locationNewsLatestLoadingRequestDate, success, error);
 				}
 			}, 1000);
 		};

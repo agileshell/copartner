@@ -206,10 +206,18 @@
 				rongziLatestLoadingRequestDate = 0,
 				rongzhiLatestLoadingRequestDate = 0,
 				projectLatestLoadingRequestDate = 0;
+			var profileDetailWebview = null;
 			mui.init({
 				keyEventBind: {
 					backbutton: false
-				}
+				},
+				preloadPages: [{
+					id: 'update_profile',
+					url: 'update_profile.html',
+					styles: {
+						popGesture: 'hide'
+					}
+				}]
 			});
 			mui('.mui-scroll-wrapper').scroll({
 				indicators: true //是否显示滚动条
@@ -222,8 +230,8 @@
 								gender = ('F' == userInfo.gender ? '男' : '女');
 							document.getElementById('user-avatar').src = userInfo.avatar;
 							document.getElementById('user-name').innerText = userInfo.name;
-							document.getElementById('user-lean').innerText = userInfo.fullLocation + '，' + userInfo.age + '，' + gender + '，' + userInfo.startupRole.name;
-							document.getElementById('user-startup-status').innerText = userInfo.startupStatus.name;
+							document.getElementById('user-lean').innerText = userInfo.fullLocation + '，' + userInfo.age + '，' + gender + (userInfo.startupRole ? '，' + userInfo.startupRole.name : '');
+							document.getElementById('user-startup-status').innerText = userInfo.startupStatus ? userInfo.startupStatus.name : '';
 							document.getElementById('user-domains').innerText = userInfo.fullDomains;
 						},
 						errorCallback = function(err) {
@@ -252,10 +260,11 @@
 				document.getElementById('goHome').addEventListener('tap', function() {
 					plus.webview.getLaunchWebview().show();
 				});
-				//退出登录
 				document.getElementById('edit-profile').addEventListener('tap', function() {
-					app.setState({});
-					plus.webview.getLaunchWebview().show();
+					if (!profileDetailWebview) {
+						profileDetailWebview = plus.webview.getWebviewById('update_profile');
+					}
+					mui.fire(profileDetailWebview, 'mui.view.beforeshow', {});
 				});
 			});
 			document.getElementById('new-rongzi').addEventListener('tap', function() {

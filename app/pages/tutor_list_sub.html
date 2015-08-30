@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创客汇</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			.new-item {
+				padding: 15px 0 0 15px;
+				border-bottom: 1px solid #c8c7cc;
+			}
+			.course-item {
+				display: block;
+				font-size: 12px;
+				line-height: 20px;
+			}
+			.course-avatar {
+				border-radius: 50%;
+				width: 40px;
+				float: left;
+			}
+			.course-info {
+				float: left;
+				margin-top: 10px;
+				margin-left: 5px;
+				color: #C15151;
+				font-size: 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content" style="padding: 0px 5px;">
+			<div id="course-type" class="mui-segmented-control c-control">
+				<a id="tutor" class="mui-control-item mui-active" href="#tutor-item">创业导师</a>
+				<a id="question" class="mui-control-item" href="#question-item">即时提问</a>
+			</div>
+		</div>
+		<div class="mui-content">
+			<div id="pullrefresh" class="mui-scroll-wrapper">
+				<div id="tutor-item" class="mui-control-content mui-active">
+					<ul id="tutor-list" class="mui-table-view mui-table-view-chevron">
+					</ul>
+				</div>
+				<div id="question-item" class="mui-control-content">
+					<ul id="question-list" class="mui-table-view mui-table-view-chevron">
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

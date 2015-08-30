@@ -243,6 +243,70 @@
 			}
 		})
 	};
+	owner.updateProfile = function(profileInfo, callback) {
+		callback = callback || $.noop;
+		profileInfo = profileInfo || {};
+		profileInfo.name = profileInfo.name || '';
+		profileInfo.avatar = profileInfo.avatar || '';
+		profileInfo.age = profileInfo.age || '';
+		profileInfo.gender = profileInfo.gender || '';
+		profileInfo.locationId = profileInfo.locationId || 0;
+		profileInfo.startupStatusId = profileInfo.startupStatusId || 0;
+		profileInfo.startupRoleId = profileInfo.startupRoleId || 0;
+		profileInfo.domainIds = profileInfo.domainIds || 0;
+		profileInfo.introduction = profileInfo.introduction || '';
+		if (profileInfo.name.length <= 0) {
+			return callback('姓名不能为空');
+		} else if (profileInfo.name.length > 32) {
+			return callback('姓名不能大于32个字符');
+		}
+		if (profileInfo.age.length <= 0) {
+			return callback('年龄不能为空');
+		}
+		if (profileInfo.gender.length <= 0) {
+			return callback('性别不能为空');
+		}
+		if (profileInfo.locationId == 0) {
+			return callback('地区不能为空');
+		}
+		if (profileInfo.startupRoleId == 0) {
+			return callback('角色不能为空');
+		}
+		if (profileInfo.startupStatusId == 0) {
+			return callback('目前状态不能为空');
+		}
+		if (profileInfo.domainIds == 0) {
+			return callback('领域不能为空');
+		}
+		if (profileInfo.introduction.length <= 0) {
+			return callback('简介不能为空');
+		} else if (profileInfo.introduction.length > 100) {
+			return callback('简介不能大于100个字符');
+		}
+
+		mui.ajax('http://120.24.228.100:8080/copartner/user/profile', {
+			data: profileInfo,
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					app.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
+	};
 
 	owner.createRongzi = function(rzInfo, callback) {
 		callback = callback || $.noop;
@@ -715,10 +779,11 @@
 	/**
 	 * 获取news列表
 	 **/
-	owner.listnews = function(newsType, offset, limit, from, to, successCallback, errorCallback) {
+	owner.listnews = function(newsType, keyword, offset, limit, from, to, successCallback, errorCallback) {
 		mui.ajax('http://120.24.228.100:8080/copartner/news', {
 			data: {
 				type: newsType,
+				keyword: keyword,
 				offset: offset,
 				limit: limit,
 				from: from,
@@ -770,10 +835,12 @@
 	/**
 	 * 获取contents列表
 	 **/
-	owner.listContents = function(contentType, offset, limit, from, to, successCallback, errorCallback) {
+	owner.listContents = function(contentType, keyword, offset, limit, from, to, successCallback, errorCallback) {
+		console.log(keyword + offset + '-' + offset + '-' + from + '-' + to);
 		mui.ajax('http://120.24.228.100:8080/copartner/contents', {
 			data: {
 				type: contentType,
+				keyword: keyword,
 				offset: offset,
 				limit: limit,
 				from: from,
@@ -820,5 +887,64 @@
 			contentInfo.image = content.coverImg;
 		}
 		return contentInfo;
+	};
+
+	/**
+	 * 获取course列表
+	 **/
+	owner.listcourses = function(isFree, offset, limit, from, to, successCallback, errorCallback) {
+		mui.ajax('http://120.24.228.100:8080/copartner/courses', {
+			data: {
+				isFree: isFree,
+				offset: offset,
+				limit: limit,
+				from: from,
+				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+	/**
+	 * 获取course详情
+	 **/
+	owner.getCourseByGuid = function(guid, successCallback, errorCallback) {
+		mui.ajax('http://120.24.228.100:8080/copartner/course/' + guid, {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+	/**
+	 * course对象包装
+	 **/
+	owner.processCourse = function(course) {
+		var courseInfo = {};
+		courseInfo.id = course.courseId;
+		courseInfo.name = course.name;
+		courseInfo.synopsis = course.synopsis;
+		courseInfo.speaker = course.speaker;
+		courseInfo.time = course.time;
+		courseInfo.clicks = course.clicks;
+		if (!course.coverImg) {
+			courseInfo.coverImg = 'images/blank.jpg';
+		} else {
+			courseInfo.coverImg = course.coverImg;
+		}
+		console.log(JSON.stringify(courseInfo));
+		return courseInfo;
 	};
 }(mui, window.app = {}));

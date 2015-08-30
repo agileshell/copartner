@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创客汇</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<link href="../css/mui.listpicker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<style>
+			.mui-page-content {
+				margin-top: 44px;
+			}
+			.mui-input-row label {
+				width: 22%;
+				padding: 10px 0 10px 10px;
+			}
+			.mui-input-row span {
+				width: 78%;
+			}
+			.c-input {
+				margin-left: -20px;
+				text-align: right;
+			}
+			.mui-input-row textarea {
+				margin-bottom: 5px;
+			}
+			.mui-content-padded {
+				margin-top: 10px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+			#head {
+				height: 40px;
+				line-height: 40px;
+			}
+			#head-img {
+				position: absolute;
+				right: 40px;
+				width: 40px;
+				height: 40px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">个人资料</h1>
+			<a id="update-profile-a" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right"></a>
+		</header>
+		<div class="mui-content">
+			<div class="mui-page-content">
+				<form id='create-profile-form' class="mui-input-group">
+					<div class="mui-input-row">
+						<label>头像</label>
+						<span id="head" class="mui-pull-right mui-navigate-right">
+							<input id='avatar' name='avatar' type="hidden" value="" >
+							<img class="head-img mui-action-preview" id="head-img" src=""/>
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>姓名</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='name' name='name' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>手机号</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='mobile' name='mobile' type="text" value="" class="c-input" readonly="readonly" disabled="disabled">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>邮箱</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='email' name='email' type="text" value="" class="c-input" readonly="readonly" disabled="disabled">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>性别</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='gender' name="gender" type="hidden">
+							<input id='genderName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>年龄</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='age' name="age" type="hidden">
+							<input id='ageName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>地区</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='locationId' name="locationId" type="hidden">
+							<input id='locationName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>领域</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='industryDomainId' name="industryDomainId" type="hidden">
+							<input id='industryDomainName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>角色定位</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='startupRoleId' name="startupRoleId" type="hidden">
+							<input id='startupRoleName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>目前状态</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='startupStatusId' name="startupStatusId" type="hidden">
+							<input id='startupStatusName' type="text" value="" class="c-input">
+						</span>
+					</div>
+				</form>
+				<div class="mui-input-row" style="margin: 10px 5px 0 5px;">
+					<textarea id="introduction" rows="3" placeholder="简介"></textarea>
+				</div>
+				<div class="mui-content-padded">
+					<button id='update-profile-b' class="mui-btn mui-btn-block mui-btn-primary">确认</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.view.js "></script>
+	<script src="../js/app.js"></script>
+	<script src="../js/mui.listpicker.js"></script>
+	<script src="../js/mui.poppicker.js"></script>
+	<script src="../js/meta.data.js"></script>
+	<script>
+		var avatarEl = document.getElementById("avatar"),
+			headEl = document.getElementById("head-img"),
+			nameEl = document.getElementById("name"),
+			mobileEl = document.getElementById("mobile"),
+			emailEl = document.getElementById("email"),
+			ageEl = document.getElementById("age"),
+			ageNameEl = document.getElementById("ageName"),
+			genderEl = document.getElementById("gender"),
+			genderNameEl = document.getElementById("genderName"),
+			locationIdEl = document.getElementById('locationId'),
+			locationNameEl = document.getElementById('locationName'),
+			industryDomainIdEl = document.getElementById('industryDomainId'),
+			industryDomainNameEl = document.getElementById('industryDomainName'),
+			startupRoleIdEl = document.getElementById('startupRoleId'),
+			startupRoleNameEl = document.getElementById('startupRoleName'),
+			startupStatusIdEl = document.getElementById('startupStatusId'),
+			startupStatusNameEl = document.getElementById('startupStatusName'),
+			introductionEl = document.getElementById("introduction");
+		(function($, doc) {
+			$.init({
+				beforeback: function() {
+					setTimeout(function() {
+						avatarEl.value = '';
+						headEl.src = '';
+						nameEl.value = '';
+						mobileEl.value = '';
+						emailEl.value = '';
+						locationIdEl.value = 0;
+						locationNameEl.value = '';
+						genderEl.value = '';
+						genderNameEl.value = '';
+						industryDomainIdEl.value = 0;
+						industryDomainNameEl.value = '';
+						startupRoleIdEl.value = 0;
+						startupRoleNameEl.value = '';
+						startupStatusIdEl.value = 0;
+						startupStatusNameEl.value = '';
+						introductionEl.value = '';
+					}, 200);
+				}
+			});
+			//pickers
+			var genderPicker = new $.PopPicker();
+			genderPicker.setData(genderData);
+			genderNameEl.addEventListener('tap', function(event) {
+				genderPicker.show(function(items) {
+					genderEl.value = items[0].value;
+					genderNameEl.value = items[0].text;
+				});
+			}, false);
+			var agePicker = new $.PopPicker();
+			agePicker.setData(ageData);
+			ageNameEl.addEventListener('tap', function(event) {
+				agePicker.show(function(items) {
+					ageEl.value = items[0].value;
+					ageNameEl.value = items[0].text;
+				});
+			}, false);
+			//domains
+			var industryDomainsPicker = new $.PopPicker();
+			industryDomainsPicker.setData(industryDomainData);
+			industryDomainNameEl.addEventListener('tap', function(event) {
+				industryDomainsPicker.show(function(items) {
+					industryDomainIdEl.value = items[0].value;
+					industryDomainNameEl.value = items[0].text;
+				});
+			}, false);
+			//locations
+			var locationPicker = new $.PopPicker({
+				layer: 2
+			});
+			locationPicker.setData(locationData);
+			locationNameEl.addEventListener('tap', function(event) {
+				locationPicker.show(function(items) {
+					locationIdEl.value = items[1].value;
+					locationNameEl.value = items[0].text + '|' + items[1].text;
+				});
+			}, false);
+			//startupRole
+			var startupRolePicker = new $.PopPicker();
+			startupRolePicker.setData(startupRoleData);
+			startupRoleNameEl.addEventListener('tap', function(event) {
+				startupRolePicker.show(function(items) {
+					startupRoleIdEl.value = items[0].value;
+					startupRoleNameEl.value = items[0].text;
+				});
+			}, false);
+			//startupStatusData
+			var startupStatusPicker = new $.PopPicker();
+			startupStatusPicker.setData(startupStatusData);
+			startupStatusNameEl.addEventListener('tap', function(event) {
+				startupStatusPicker.show(function(items) {
+					startupStatusIdEl.value = items[0].value;
+					startupStatusNameEl.value = items[0].text;
+				});
+			}, false);
+			//show data
+			doc.addEventListener('mui.view.beforeshow', function(event) {
+				var success = function(response) {
+						profile = response.body;
+						avatarEl.value = profile.originAvatar;
+						headEl.src = profile.avatar;
+						nameEl.value = profile.name;
+						mobileEl.value = profile.mobile;
+						emailEl.value = profile.email;
+						locationIdEl.value = profile.location.locationId;
+						locationNameEl.value = profile.fullLocation;
+						genderEl.value = profile.gender;
+						genderNameEl.value = ('F' == profile.gender ? '男' : '女');
+						var profileDomain = profile.domains;
+						if (profileDomain) {
+							industryDomainIdEl.value = profileDomain[0].id;
+							industryDomainNameEl.value = profileDomain[0].name;
+						}
+						var profileStartupRole = profile.startupRole;
+						if (profileStartupRole) {
+							startupRoleIdEl.value = profileStartupRole.id;
+							startupRoleNameEl.value = profileStartupRole.name;
+						}
+						var profileStartupStatus = profile.startupStatus;
+						if (profileStartupStatus) {
+							startupStatusIdEl.value = profileStartupStatus.id;
+							startupStatusNameEl.value = profileStartupStatus.name;
+						}
+						introductionEl.value = profile.introduction;
+						window.scrollTo(0, 0);
+						//显示当前页面
+						mui.currentWebview.show();
+					},
+					error = function(errorType) {
+						mui.toast(app.ajaxErrorHandler(errorType));
+					};
+				app.getProfile(success, error);
+			});
+			$.plusReady(function() {
+				var toProfilePage = function() {
+					var profilePage = plus.webview.getWebviewById('profile');
+					$.fire(profilePage, 'mui.view.beforeshow', {
+						needReflush: true
+					});
+					profilePage.show();
+				};
+				doc.getElementById('update-profile-a').addEventListener('tap', function() {
+					updateProfile();
+				});
+				doc.getElementById('update-profile-b').addEventListener('tap', function() {
+					updateProfile();
+				});
+
+				function updateProfile() {
+					var profileInfo = {
+						avatar: avatarEl.value,
+						name: nameEl.value,
+						gender: genderEl.value,
+						age: ageEl.value,
+						locationId: locationIdEl.value,
+						startupStatusId: startupStatusIdEl.value,
+						startupRoleId: startupRoleIdEl.value,
+						domainIds: industryDomainIdEl.value,
+						introduction: introductionEl.value
+					};
+					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
+					app.updateProfile(profileInfo, function(err) {
+						setTimeout(function() {
+							wait.close();
+							if (err) {
+								plus.nativeUI.toast(err);
+								return;
+							} else {
+								toProfilePage();
+							}
+						}, 200);
+					});
+				};
+				//更换头像
+				$(".mui-input-row").on("tap", "#head", function(e) {
+					var a = [{
+						title: "拍照"
+					}, {
+						title: "从手机相册选择"
+					}];
+					plus.nativeUI.actionSheet({
+						title: "修改头像",
+						cancel: "取消",
+						buttons: a
+					}, function(b) {
+						switch (b.index) {
+							case 0:
+								break;
+							case 1:
+								getImage();
+								break;
+							case 2:
+								galleryImg();
+								break;
+							default:
+								break
+						}
+					})
+				});
+
+				function getImage() {
+					var c = plus.camera.getCamera();
+					c.captureImage(function(e) {
+						plus.io.resolveLocalFileSystemURL(e, function(entry) {
+							var s = entry.toLocalURL() + "?version=" + new Date().getTime();
+							doc.getElementById("head-img").src = s;
+							upload(entry);
+						}, function(e) {
+							console.log("读取拍照文件错误：" + e.message);
+						});
+					}, function(s) {
+						console.log("error" + s);
+					}, {
+						filename: "_doc/head.jpg"
+					})
+				}
+
+				function galleryImg() {
+					plus.gallery.pick(function(a) {
+						plus.io.resolveLocalFileSystemURL(a, function(entry) {
+							plus.io.resolveLocalFileSystemURL("_doc/", function(root) {
+								root.getFile("head.jpg", {}, function(file) {
+									//文件已存在
+									file.remove(function() {
+										entry.copyTo(root, 'head.jpg', function(e) {
+												var path = e.fullPath + "?version=" + new Date().getTime();
+												doc.getElementById("head-img").src = path;
+												upload(e);
+											},
+											function(e) {
+												console.log('copy image fail:' + e.message);
+											});
+									}, function() {
+										console.log("delete image fail:" + e.message);
+									});
+								}, function() {
+									//文件不存在
+									entry.copyTo(root, 'head.jpg', function(e) {
+											var path = e.fullPath + "?version=" + new Date().getTime();
+											doc.getElementById("head-img").src = path;
+											upload(e);
+										},
+										function(e) {
+											console.log('copy image fail:' + e.message);
+										});
+								});
+							}, function(e) {
+								console.log("get _www folder fail");
+							})
+						}, function(e) {
+							console.log("读取拍照文件错误：" + e.message);
+						});
+					}, function(a) {}, {
+						filter: "image"
+					})
+				};
+
+				function upload(f) {
+					var wt = plus.nativeUI.showWaiting();
+					var task = plus.uploader.createUpload('http://120.24.228.100:8080/copartner/image', {
+							method: "POST"
+						},
+						function(t, status) { //上传完成
+							if (status == 200) {
+								wt.close();
+								var data = JSON.parse(t.responseText);
+								if (data.status == 'SUCCEED') {
+									plus.nativeUI.toast("上传成功");
+									console.log(data.body.image_path);
+									doc.getElementById("avatar").value = data.body.image_path;
+								} else {
+									plus.nativeUI.toast("上传失败, " + app.ajaxFailedHandler(data.body.error.code));
+								}
+							} else {
+								wt.close();
+								plus.nativeUI.toast("上传失败");
+							}
+						}
+					);
+					task.addFile(f.fullPath, {
+						key: 'image'
+					});
+					task.start();
+				}
+			});
+		})(mui, document);
+	</script>
+
+</html>
