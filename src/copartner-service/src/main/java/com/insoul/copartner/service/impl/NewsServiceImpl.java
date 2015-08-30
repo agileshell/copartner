@@ -40,6 +40,7 @@ public class NewsServiceImpl extends BaseServiceImpl implements INewsService {
                 .getFrom()) : null);
         newsCriteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
                 : null);
+        newsCriteria.setTitle(requestData.getKeyword());
 
         Long count = newsDao.countNews(newsCriteria);
         List<News> newses = newsDao.queryNews(newsCriteria);

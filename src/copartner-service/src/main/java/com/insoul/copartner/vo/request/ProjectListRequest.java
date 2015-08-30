@@ -12,6 +12,8 @@ public class ProjectListRequest extends PaginationRequest implements Serializabl
 
     private Long to;
 
+    private String keyword;
+
     public Long getUserId() {
         return userId;
     }
@@ -34,6 +36,14 @@ public class ProjectListRequest extends PaginationRequest implements Serializabl
 
     public void setTo(Long to) {
         this.to = to;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
 }

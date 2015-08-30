@@ -1,5 +1,6 @@
 package com.insoul.copartner.dao.criteria;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class ContentCriteria extends PaginationCriteria {
@@ -66,6 +67,12 @@ public class ContentCriteria extends PaginationCriteria {
 
     public void setTo(Date to) {
         this.to = to;
+    }
+
+    @Override
+    public String toString() {
+        return "ContentCriteria [id=" + id + ", title=" + title + ", type=" + type + ", status="
+                + Arrays.toString(status) + ", from=" + from + ", to=" + to + "]";
     }
 
 }

@@ -40,6 +40,7 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
                 .getFrom()) : null);
         contentCriteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
                 : null);
+        contentCriteria.setTitle(requestData.getKeyword());
 
         Long count = contentDao.countContent(contentCriteria);
         List<Content> contents = contentDao.queryContent(contentCriteria);

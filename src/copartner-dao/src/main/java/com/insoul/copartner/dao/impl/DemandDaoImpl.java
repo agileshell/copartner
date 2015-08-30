@@ -42,7 +42,7 @@ public class DemandDaoImpl extends BaseDaoImpl<Demand, Long> implements IDemandD
             params.put("status", Arrays.asList(criteria.getStatus()));
         }
         if (StringUtils.isNotBlank(criteria.getProjectName())) {
-            conditionStr.append(" AND projectName like :projectName ");
+            conditionStr.append(" AND projectName LIKE :projectName ");
             params.put("projectName", "%" + criteria.getProjectName() + "%");
         }
         if (null != criteria.getFrom()) {

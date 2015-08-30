@@ -51,7 +51,7 @@ public class ProjectDaoImpl extends BaseDaoImpl<Project, Long> implements IProje
             params.put("status", Arrays.asList(criteria.getStatus()));
         }
         if (StringUtils.isNotBlank(criteria.getName())) {
-            conditionStr.append(" AND name like :name ");
+            conditionStr.append(" AND name LIKE :name ");
             params.put("name", "%" + criteria.getName() + "%");
         }
         if (null != criteria.getFrom()) {

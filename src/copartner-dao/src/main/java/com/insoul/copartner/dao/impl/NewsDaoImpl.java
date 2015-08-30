@@ -44,7 +44,7 @@ public class NewsDaoImpl extends BaseDaoImpl<News, Long> implements INewsDao {
             params.put("status", new HashSet(Arrays.asList(criteria.getStatus())));
         }
         if (StringUtils.isNotBlank(criteria.getTitle())) {
-            conditionStr.append(" AND title like :title");
+            conditionStr.append(" AND title LIKE :title");
             params.put("title", "%" + criteria.getTitle() + "%");
         }
         if (null != criteria.getFrom()) {

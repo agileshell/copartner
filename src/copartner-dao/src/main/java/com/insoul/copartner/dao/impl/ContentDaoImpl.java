@@ -39,6 +39,7 @@ public class ContentDaoImpl extends BaseDaoImpl<Content, Long> implements IConte
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private Query generateQuery(ContentCriteria criteria, boolean isCount) {
+        System.out.println(criteria.toString());
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
         if (null != criteria.getType() && criteria.getType() > 0) {
@@ -54,7 +55,7 @@ public class ContentDaoImpl extends BaseDaoImpl<Content, Long> implements IConte
             params.put("id", criteria.getId());
         }
         if (StringUtils.isNotBlank(criteria.getTitle())) {
-            conditionStr.append(" AND title  like :title");
+            conditionStr.append(" AND title LIKE :title");
             params.put("title", "%" + criteria.getTitle() + "%");
         }
         if (null != criteria.getFrom()) {

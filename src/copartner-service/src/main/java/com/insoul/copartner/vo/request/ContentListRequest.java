@@ -13,6 +13,8 @@ public class ContentListRequest extends PaginationRequest {
 
     private Long to;
 
+    private String keyword;
+
     public Integer getType() {
         return type;
     }
@@ -35,6 +37,14 @@ public class ContentListRequest extends PaginationRequest {
 
     public void setTo(Long to) {
         this.to = to;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
 }

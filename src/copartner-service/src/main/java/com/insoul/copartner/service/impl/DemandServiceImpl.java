@@ -91,6 +91,7 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
                 : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
+        criteria.setProjectName(requestData.getKeyword());
 
         if (null != requestData.getUserId() && requestData.getUserId().equals(getUserId())) {
             criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue(), DemandStatus.INACTIVE.getValue() });

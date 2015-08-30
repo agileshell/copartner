@@ -87,6 +87,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
                 : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
+        criteria.setName(requestData.getKeyword());
 
         if (null != requestData.getUserId() && requestData.getUserId().equals(getUserId())) {
             criteria.setStatus(new String[] { ProjectStatus.ACTIVE.getValue(), ProjectStatus.INACTIVE.getValue() });

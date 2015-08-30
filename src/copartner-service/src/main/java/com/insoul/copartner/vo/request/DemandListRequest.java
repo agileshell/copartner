@@ -10,6 +10,8 @@ public class DemandListRequest extends PaginationRequest {
 
     private Long to;
 
+    private String keyword;
+
     public Long getUserId() {
         return userId;
     }
@@ -32,6 +34,14 @@ public class DemandListRequest extends PaginationRequest {
 
     public void setTo(Long to) {
         this.to = to;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
 }
