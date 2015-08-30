@@ -15,6 +15,7 @@ import com.insoul.copartner.domain.Course;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.service.ICourseService;
+import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.vo.CourseDetailVO;
 import com.insoul.copartner.vo.CourseVO;
 import com.insoul.copartner.vo.Pagination;
@@ -50,7 +51,7 @@ public class CourseServiceImpl extends BaseServiceImpl implements ICourseService
             courseVO.setName(course.getName());
             courseVO.setSynopsis(course.getSynopsis());
             courseVO.setSpeaker(course.getSpeaker());
-            courseVO.setCoverImg(course.getCoverImg());
+            courseVO.setCoverImg(CDNUtil.getFullPath(course.getCoverImg()));
             courseVO.setTime(course.getTime());
             courseVO.setClicks(course.getClicks());
             courseVO.setCreated(course.getCreated());
@@ -73,8 +74,8 @@ public class CourseServiceImpl extends BaseServiceImpl implements ICourseService
         courseVO.setName(course.getName());
         courseVO.setSynopsis(course.getSynopsis());
         courseVO.setSpeaker(course.getSpeaker());
-        courseVO.setCoverImg(course.getCoverImg());
-        courseVO.setUrl(course.getUrl());
+        course.setCoverImg(CDNUtil.getFullPath(course.getCoverImg()));
+        course.setUrl(CDNUtil.getFullPath(course.getUrl()));
         courseVO.setTime(course.getTime());
         courseVO.setClicks(course.getClicks());
         courseVO.setCreated(course.getCreated());

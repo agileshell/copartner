@@ -438,6 +438,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         userDetailVO.setMobile(user.getMobile());
         userDetailVO.setEmail(user.getEmail());
         userDetailVO.setStatus(user.getStatus());
+        userDetailVO.setOriginAvatar(user.getAvatar());
         userDetailVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
         userDetailVO.setGender(user.getGender());
         userDetailVO.setAge(user.getAge());

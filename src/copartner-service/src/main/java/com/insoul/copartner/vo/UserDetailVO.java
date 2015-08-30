@@ -17,6 +17,8 @@ public class UserDetailVO implements Serializable {
 
     private String status;
 
+    private String originAvatar;
+
     private String avatar;
 
     private LocationVO location;
@@ -85,6 +87,14 @@ public class UserDetailVO implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getOriginAvatar() {
+        return originAvatar;
+    }
+
+    public void setOriginAvatar(String originAvatar) {
+        this.originAvatar = originAvatar;
     }
 
     public String getAvatar() {

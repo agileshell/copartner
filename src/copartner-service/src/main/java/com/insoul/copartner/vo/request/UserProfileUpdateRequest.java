@@ -9,7 +9,7 @@ public class UserProfileUpdateRequest implements Serializable {
 
     private static final long serialVersionUID = -994521443246533850L;
 
-    @StringLength(max = 64, min = 2)
+    @StringLength(max = 32, min = 2)
     private String name;
 
     private String avatar;
