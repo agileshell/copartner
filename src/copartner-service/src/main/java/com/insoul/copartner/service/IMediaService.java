@@ -10,5 +10,7 @@ public interface IMediaService {
 
     Map<String, String> uploadImage(MultipartFile image) throws CException;
 
-    boolean deleteImage(String image) throws CException;
+    Map<String, String> uploadVedio(MultipartFile vedio) throws CException;
+
+    boolean deleteMedia(String media) throws CException;
 }

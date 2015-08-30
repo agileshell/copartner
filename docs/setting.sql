@@ -433,13 +433,16 @@ INSERT INTO `system_setting` (`id`, `group`,`key`,`value`,`created`,`updated`) V
 (9,'app_info','android_version','1.0.1',NOW(),NULL),
 (10,'app_info','ios_downloadURL','http://7xjbd9.com1.z0.glb.clouddn.com/chuangkehui1.0.1.ipa',NOW(),NULL),
 (11,'app_info','android_downloadURL','http://7xjbd9.com1.z0.glb.clouddn.com/chuangkehui1.0.1.apk',NOW(),NULL),
-(12,'image','file_type_limit','JPG,JPEG,GIF,PNG,BMP',NOW(),NULL),
-(13,'image','file_max_size','5MB',NOW(),NULL),
-(14,'image','file_min_size','1KB',NOW(),NULL),
-(15,'image','file_dimension_max_width','1024',NOW(),NULL),
-(16,'image','file_dimension_max_height','1024',NOW(),NULL),
-(17,'image','file_dimension_min_width','50',NOW(),NULL),
-(18,'image','file_dimension_min_height','50',NOW(),NULL);
+(12,'image','image_type_limit','JPG,JPEG,GIF,PNG,BMP',NOW(),NULL),
+(13,'image','image_max_size','5MB',NOW(),NULL),
+(14,'image','image_min_size','1KB',NOW(),NULL),
+(15,'image','image_dimension_max_width','1024',NOW(),NULL),
+(16,'image','image_dimension_max_height','1024',NOW(),NULL),
+(17,'image','image_dimension_min_width','50',NOW(),NULL),
+(18,'image','image_dimension_min_height','50',NOW(),NULL),
+(19,'vedio','vedio_type_limit','MP4,3GP,WMV,MKV,FLV,SWF',NOW(),NULL),
+(20,'vedio','vedio_max_size','50MB',NOW(),NULL),
+(21,'vedio','vedio_min_size','10KB',NOW(),NULL);
 
 TRUNCATE `project_phase`;
 INSERT INTO `project_phase` (`id`, `name`, `is_listed`, `created`) VALUES

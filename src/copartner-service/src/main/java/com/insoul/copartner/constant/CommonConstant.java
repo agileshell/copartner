@@ -20,6 +20,10 @@ public interface CommonConstant {
 
     String ORIGINAL_IMAGE_URL = "image_url";
 
+    String PATH = "path";
+
+    String ORIGINAL_URL = "url";
+
     String EMAIL = "email";
 
     String MOBILE = "mobile";

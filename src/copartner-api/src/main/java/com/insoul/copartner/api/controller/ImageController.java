@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,8 +23,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.insoul.copartner.constant.CommonConstant;
 import com.insoul.copartner.constant.GlobalProperties;
@@ -55,17 +54,6 @@ public class ImageController extends BaseController {
         Map<String, String> result = mediaService.uploadImage(imageAddRequest.getImage());
 
         return ResponseUtil.jsonSucceed(result, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/image", method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> deleteImg(@RequestParam String image) throws CException {
-        if (StringUtils.isBlank(image)) {
-            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
-        }
-        mediaService.deleteImage(image);
-
-        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
     }
 
     @RequestMapping(value = "image/{path:.+}", method = RequestMethod.GET)
@@ -139,5 +127,16 @@ public class ImageController extends BaseController {
         }
 
         return contentType;
+    }
+
+    @RequestMapping(value = "/vedio", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> uploadVedio(MultipartFile vedio) throws CException {
+        if (null == vedio || vedio.isEmpty()) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+        Map<String, String> result = mediaService.uploadVedio(vedio);
+
+        return ResponseUtil.jsonSucceed(result, HttpStatus.OK);
     }
 }
