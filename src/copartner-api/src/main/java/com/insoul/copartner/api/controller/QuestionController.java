@@ -30,6 +30,13 @@ public class QuestionController extends BaseController {
     @Resource
     private IQuestionService questionService;
 
+    @RequestMapping(value = "question/categories", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> listQuestionCategories() {
+
+        return ResponseUtil.jsonSucceed(questionService.listQuestionCategories(), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/questions", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> listQuestions(@Valid QuestionListRequest requestData,

@@ -1,6 +1,10 @@
 package com.insoul.copartner.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.insoul.copartner.util.CustomDateSerializer;
 
 public class TutorVO implements Serializable {
 
@@ -13,6 +17,9 @@ public class TutorVO implements Serializable {
     private String avatar;
 
     private IndustryDomainVO domain;
+
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date created;
 
     public Long getTutorId() {
         return tutorId;
@@ -44,6 +51,14 @@ public class TutorVO implements Serializable {
 
     public void setDomain(IndustryDomainVO domain) {
         this.domain = domain;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
 }

@@ -32,7 +32,7 @@ public class Question extends BaseEntity {
     private Integer permission;// 权限, 1:全体可见, 2:仅被提问的导师可见
 
     @Column(name = "status", nullable = false)
-    private String status;// 状态 active,inactive,deleted
+    private String status = "active";// 状态 active,inactive,deleted
 
     public String getTitle() {
         return title;

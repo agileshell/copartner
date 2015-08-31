@@ -52,6 +52,7 @@ public class TutorServiceImpl extends BaseServiceImpl implements ITutorService {
             tutorVO.setTutorId(user.getId());
             tutorVO.setName(user.getName());
             tutorVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+            tutorVO.setCreated(user.getCreated());
 
             if (StringUtils.isNotBlank(user.getDomains())) {
                 String domainIds[] = user.getDomains().split(",");

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.dao.ICourseDao;
@@ -74,8 +75,8 @@ public class CourseServiceImpl extends BaseServiceImpl implements ICourseService
         courseVO.setName(course.getName());
         courseVO.setSynopsis(course.getSynopsis());
         courseVO.setSpeaker(course.getSpeaker());
-        course.setCoverImg(CDNUtil.getFullPath(course.getCoverImg()));
-        course.setUrl(CDNUtil.getFullPath(course.getUrl()));
+        courseVO.setCoverImg(CDNUtil.getFullPath(course.getCoverImg()));
+        courseVO.setUrl(CDNUtil.getFullPath(course.getUrl()));
         courseVO.setTime(course.getTime());
         courseVO.setClicks(course.getClicks());
         courseVO.setCreated(course.getCreated());
@@ -84,6 +85,7 @@ public class CourseServiceImpl extends BaseServiceImpl implements ICourseService
     }
 
     @Override
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
     public void createCourse(CourseAddRequest requestData) {
         Course course = new Course();
         course.setUserId(getUserId());

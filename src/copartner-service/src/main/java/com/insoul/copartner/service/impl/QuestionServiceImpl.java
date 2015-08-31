@@ -26,6 +26,7 @@ import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.ContentUtil;
 import com.insoul.copartner.vo.AnswerVO;
 import com.insoul.copartner.vo.Pagination;
+import com.insoul.copartner.vo.QuestionCategoryVO;
 import com.insoul.copartner.vo.QuestionDetailVO;
 import com.insoul.copartner.vo.QuestionVO;
 import com.insoul.copartner.vo.UserLeanVO;
@@ -191,6 +192,7 @@ public class QuestionServiceImpl extends BaseServiceImpl implements IQuestionSer
     }
 
     @Override
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
     public void answer(Long questionId, String content) throws CException {
         Question question = questionDao.get(questionId);
         if (null == question || !question.getStatus().equals("active")) {
@@ -204,6 +206,22 @@ public class QuestionServiceImpl extends BaseServiceImpl implements IQuestionSer
         answer.setCreated(new Date());
 
         answerDao.save(answer);
+    }
+
+    @Override
+    public List<QuestionCategoryVO> listQuestionCategories() {
+        List<QuestionCategoryVO> vos = new ArrayList<QuestionCategoryVO>();
+
+        List<QuestionCategory> entities = questionCategoryDao.getAllListed();
+        for (QuestionCategory questionCategory : entities) {
+            QuestionCategoryVO vo = new QuestionCategoryVO();
+            vo.setId(questionCategory.getId());
+            vo.setName(questionCategory.getName());
+
+            vos.add(vo);
+        }
+
+        return vos;
     }
 
 }
