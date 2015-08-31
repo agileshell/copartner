@@ -1,9 +1,303 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="utf-8">
-		<title></title>
+		<title>创客汇</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<link href="../css/mui.listpicker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<style>
+			.mui-page-content {
+				margin-top: 44px;
+			}
+			.mui-input-row label {
+				width: 22%;
+				padding: 10px 0 10px 10px;
+			}
+			.mui-input-row span {
+				width: 78%;
+			}
+			.c-input {
+				margin-left: -20px;
+				text-align: right;
+			}
+			.mui-input-row textarea {
+				margin-bottom: 5px;
+			}
+			.mui-content-padded {
+				margin-top: 10px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+			#head {
+				height: 40px;
+				line-height: 40px;
+			}
+			#head-img {
+				position: absolute;
+				right: 40px;
+				width: 40px;
+				height: 40px;
+			}
+			#vedioTmp {
+				position: absolute;
+				width: 40px;
+			}
+		</style>
 	</head>
+
 	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">上传视频</h1>
+			<a id="upload-course-a" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right"></a>
+		</header>
+		<div class="mui-content">
+			<div class="mui-page-content">
+				<form id='upload-course-form' class="mui-input-group">
+					<div class="mui-input-row">
+						<label>封皮</label>
+						<span id="head" class="mui-pull-right mui-navigate-right">
+							<input id='coverImg' name='coverImg' type="hidden" value="" >
+							<img class="head-img mui-action-preview" id="head-img" src=""/>
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>课程名称</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='name' name='name' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>主讲人</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='speaker' name='speaker' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>时长</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='time' name='time' type="tel" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>视频</label>
+						<span id="vedio" class="mui-pull-right mui-navigate-right">
+							<input id='url' name='url' type="hidden" value="" >
+							<span id='vedioTmp'></span>
+						</span>
+					</div>
+				</form>
+				<div class="mui-input-row" style="margin: 10px 5px 0 5px;">
+					<textarea id="synopsis" rows="3" placeholder="描述"></textarea>
+				</div>
+				<div class="mui-content-padded">
+					<button id='upload-course-b' class="mui-btn mui-btn-block mui-btn-primary">提交</button>
+				</div>
+			</div>
+		</div>
 	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.view.js "></script>
+	<script src="../js/app.js"></script>
+	<script>
+		var coverImgEl = document.getElementById("coverImg"),
+			headEl = document.getElementById("head-img"),
+			nameEl = document.getElementById("name"),
+			speakerEl = document.getElementById("speaker"),
+			timeEl = document.getElementById("time"),
+			synopsisEl = document.getElementById("synopsis"),
+			urlEl = document.getElementById("url");
+		(function($, doc) {
+			$.init();
+			$.plusReady(function() {
+				var toCoursePage = function() {
+					var coursePage = plus.webview.getWebviewById('course_list');
+					$.fire(coursePage, 'mui.view.beforeshow', {
+						needReflush: true
+					});
+					coursePage.show();
+				};
+				doc.getElementById('upload-course-a').addEventListener('tap', function() {
+					uploadCourse();
+				});
+				doc.getElementById('upload-course-b').addEventListener('tap', function() {
+					uploadCourse();
+				});
+
+				function uploadCourse() {
+					var courseInfo = {
+						coverImg: coverImgEl.value,
+						url: urlEl.value,
+						name: nameEl.value,
+						speaker: speakerEl.value,
+						time: timeEl.value,
+						synopsis: synopsisEl.value
+					};
+					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
+					app.uploadCourse(courseInfo, function(err) {
+						setTimeout(function() {
+							wait.close();
+							if (err) {
+								plus.nativeUI.toast(err);
+								return;
+							} else {
+								toCoursePage();
+							}
+						}, 200);
+					});
+				};
+				//上传封皮
+				$(".mui-input-row").on("tap", "#head", function(e) {
+					var a = [{
+						title: "拍照"
+					}, {
+						title: "从手机相册选择"
+					}];
+					plus.nativeUI.actionSheet({
+						title: "修改头像",
+						cancel: "取消",
+						buttons: a
+					}, function(b) {
+						switch (b.index) {
+							case 0:
+								break;
+							case 1:
+								getImage();
+								break;
+							case 2:
+								galleryImg();
+								break;
+							default:
+								break
+						}
+					})
+				});
+
+				function getImage() {
+					var c = plus.camera.getCamera();
+					c.captureImage(function(e) {
+						plus.io.resolveLocalFileSystemURL(e, function(entry) {
+							var s = entry.toLocalURL() + "?version=" + new Date().getTime();
+							doc.getElementById("head-img").src = s;
+							upload(entry);
+						}, function(e) {
+							console.log("读取拍照文件错误：" + e.message);
+						});
+					}, function(s) {
+						console.log("error" + s);
+					}, {
+						filename: "_doc/head.jpg"
+					})
+				}
+
+				function galleryImg() {
+					plus.gallery.pick(function(p) {
+						var path = p + "?version=" + new Date().getTime();
+						doc.getElementById("head-img").src = path;
+						upload(p);
+					}, function(e) {
+						console.log("读取文件错误：" + e.message);
+					}, {
+						filter: "image"
+					});
+				};
+
+				function upload(p) {
+					var wt = plus.nativeUI.showWaiting();
+					var task = plus.uploader.createUpload('http://120.24.228.100:8080/copartner/image', {
+							method: "POST"
+						},
+						function(t, status) { //上传完成
+							if (status == 200) {
+								wt.close();
+								var data = JSON.parse(t.responseText);
+								if (data.status == 'SUCCEED') {
+									plus.nativeUI.toast("上传成功");
+									console.log(data.body.image_path);
+									doc.getElementById("coverImg").value = data.body.image_path;
+								} else {
+									plus.nativeUI.toast("上传失败, " + app.ajaxFailedHandler(data.body.error.code));
+								}
+							} else {
+								wt.close();
+								plus.nativeUI.toast("上传失败");
+							}
+						}
+					);
+					task.addFile(p, {
+						key: 'image'
+					});
+					task.start();
+				};
+				//上传视频
+				$(".mui-input-row").on("tap", "#vedio", function(e) {
+					var a = [{
+						title: "从手机相册选择"
+					}];
+					plus.nativeUI.actionSheet({
+						title: "上传视频",
+						cancel: "取消",
+						buttons: a
+					}, function(b) {
+						switch (b.index) {
+							case 0:
+								break;
+							case 1:
+								galleryVedio();
+								break;
+							default:
+								break
+						}
+					})
+				});
+
+				function galleryVedio() {
+					plus.gallery.pick(function(path) {
+						var n = path.substr(path.lastIndexOf('/') + 1);
+						doc.getElementById("vedioTmp").innerText = n;
+						uploadVedio(path);
+					}, function(e) {
+						console.log("读取文件错误：" + e.message);
+					}, {
+						filter: "video"
+					});
+				};
+
+				function uploadVedio(p) {
+					var wt = plus.nativeUI.showWaiting();
+					var task = plus.uploader.createUpload('http://120.24.228.100:8080/copartner/vedio', {
+							method: "POST"
+						},
+						function(t, status) { //上传完成
+							if (status == 200) {
+								wt.close();
+								var data = JSON.parse(t.responseText);
+								if (data.status == 'SUCCEED') {
+									plus.nativeUI.toast("上传成功");
+									console.log(data.body.path);
+									doc.getElementById("url").value = data.body.path;
+								} else {
+									plus.nativeUI.toast("上传失败, " + app.ajaxFailedHandler(data.body.error.code));
+								}
+							} else {
+								wt.close();
+								plus.nativeUI.toast("上传失败");
+							}
+						}
+					);
+					task.addFile(p, {
+						key: 'vedio'
+					});
+					task.start();
+				};
+			});
+		})(mui, document);
+	</script>
+
 </html>

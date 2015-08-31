@@ -9,24 +9,24 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<style>
-			.new-item {
-				padding: 15px 0 0 15px;
-				border-bottom: 1px solid #c8c7cc;
-			}
-			.course-item {
+			.tutor-item {
 				display: block;
 				font-size: 12px;
 				line-height: 20px;
 			}
-			.course-avatar {
+			.tutor-avatar {
 				border-radius: 50%;
 				width: 40px;
 				float: left;
 			}
-			.course-info {
+			.tutor-info {
 				float: left;
 				margin-top: 10px;
 				margin-left: 5px;
+				color: #C15151;
+				font-size: 15px;
+			}
+			.question-name {
 				color: #C15151;
 				font-size: 15px;
 			}
@@ -35,9 +35,12 @@
 
 	<body>
 		<div class="mui-content" style="padding: 0px 5px;">
-			<div id="course-type" class="mui-segmented-control c-control">
+			<div id="type" class="mui-segmented-control c-control">
 				<a id="tutor" class="mui-control-item mui-active" href="#tutor-item">创业导师</a>
 				<a id="question" class="mui-control-item" href="#question-item">即时提问</a>
+			</div>
+			<div class="mui-input-row mui-search" style="height: 34px;">
+				<input id="search" type="search" name="keyword" class="mui-input-speech mui-input-clear" placeholder="请输入您要查询的关键字">
 			</div>
 		</div>
 		<div class="mui-content">
@@ -52,6 +55,285 @@
 				</div>
 			</div>
 		</div>
+		<script id="tutor-template" type="text/x-handlebars-template">
+			<li id="tutor_{{id}}" class="mui-table-view-cell mui-media">
+				<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+					<div style="overflow: hidden;">
+						<img src="{{avatar}}" class="tutor-avatar">
+						<span class="tutor-info">{{name}}</span>
+					</div>
+					<div class="mui-media-body" style="padding-left: 45px;">
+						<span class="tutor-item">领域：{{domainName}}</span>
+					</div>
+				</a>
+			</li>
+		</script>
+		<script id="question-template" type="text/x-handlebars-template">
+			<li id="question_{{id}}" class="mui-table-view-cell mui-media">
+				<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+					<div style="overflow: hidden;">
+						<img src="{{questioner.avatar}}" class="tutor-avatar">
+						<span class="tutor-info">{{questioner.name}}</span>
+					</div>
+					<div class="mui-media-body" style="padding-left: 45px;">
+						<span class="question-name">{{title}}</span>
+						<span class="tutor-item">类别：{{categoryName}}</span>
+						<span class="tutor-item">提问时间：{{created}}</span>
+						<span class="tutor-item">问题：{{content}}</span>
+					</div>
+				</a>
+			</li>
+		</script>
+		<script type="text/javascript" charset="UTF-8" src="../js/handlebars-v2.0.0.js"></script>
+		<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+		<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+		<script>
+			var tutorLatestRefreshRequestDate = 0,
+				tutorLatestLoadingRequestDate = 0,
+				questionLatestRefreshRequestDate = 0,
+				questionLatestLoadingRequestDate = 0,
+				questionIsFirstLoad = false,
+				tutorLoadingNoData = false,
+				questionLoadingNoData = false;
+			var divEl = document.createElement("div"),
+				tutorSource = document.getElementById("tutor-template").innerText,
+				tutorTemplate = Handlebars.compile(tutorSource),
+				questionSource = document.getElementById("question-template").innerText,
+				questionTemplate = Handlebars.compile(questionSource),
+				type = 'tutor',
+				searchEl = document.getElementById("search"),
+				tutorKeyword = '',
+				questionKeyword = '',
+				tutorEl = document.getElementById("tutor-list"),
+				questionEl = document.getElementById("question-list");
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						contentrefresh: '正在刷新...',
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			mui.plusReady(function() {
+				if (plus.networkinfo.getCurrentType() === plus.networkinfo.CONNECTION_NONE) {
+					plus.nativeUI.alert('无网络连接!');
+				} else {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 200);
+				}
+			});
+			 //打开详情
+			mui('#pullrefresh').on('tap', 'a', function() {
+				if (type == 'tutor') {
+					//TODO
+				} else {
+					open_question_detail(this.getAttribute('data-guid'));
+				}
+			});
+			var questionDetailWebview = null;
+
+			function open_question_detail(id) {
+				if (!questionDetailWebview) {
+					questionDetailWebview = plus.webview.getWebviewById('question_detail');
+				}
+				mui.fire(questionDetailWebview, 'mui.view.beforeshow', {
+					guid: id
+				});
+			};
+			mui('#type').on('tap', 'a', function() {
+				var id = this.getAttribute('id');
+				if (id == 'tutor') {
+					type = 'tutor';
+					searchEl.value = tutorKeyword;
+					if (tutorKeyword.length <= 0) {
+						mui('.mui-placeholder')[0].classList.remove('mui-hidden');
+						mui('.mui-icon-clear')[0].classList.add('mui-hidden');
+					} else {
+						mui('.mui-placeholder')[0].classList.add('mui-hidden');
+						mui('.mui-icon-clear')[0].classList.remove('mui-hidden');
+					}
+					if (!tutorLoadingNoData) {
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}
+				} else {
+					type = 'question';
+					searchEl.value = questionKeyword;
+					if (questionKeyword.length <= 0) {
+						mui('.mui-placeholder')[0].classList.remove('mui-hidden');
+						mui('.mui-icon-clear')[0].classList.add('mui-hidden');
+					} else {
+						mui('.mui-placeholder')[0].classList.add('mui-hidden');
+						mui('.mui-icon-clear')[0].classList.remove('mui-hidden');
+					}
+					if (!questionIsFirstLoad) {
+						questionIsFirstLoad = true;
+						setTimeout(function() {
+							mui('#pullrefresh').pullRefresh().pullupLoading();
+						}, 200);
+					}
+					if (!questionLoadingNoData) {
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}
+				}
+			});
+			 //search
+			searchEl.addEventListener('search', function() {
+				if (type == 'tutor') {
+					tutorKeyword = searchEl.value;
+					tutorLatestRefreshRequestDate = 0;
+					tutorLatestLoadingRequestDate = 0;
+					tutorEl.innerHTML = '';
+					var success = function(response) {
+							var tutors = response.body;
+							if (tutors.length > 0) {
+								tutorLatestRefreshRequestDate = Date.parse(tutors[0].created);
+								tutorLatestLoadingRequestDate = Date.parse(tutors[tutors.length - 1].created);
+								for (var i = 0, len = tutors.length; i < len; i++) {
+									divEl.innerHTML = tutorTemplate(app.processTutor(tutors[i]));
+									tutorEl.insertBefore(divEl.firstElementChild, tutorEl.firstElementChild);
+								}
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+							} else {
+								tutorLoadingNoData = true;
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+							}
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+						};
+					app.listTutors(tutorKeyword, 0, 10, 0, tutorLatestLoadingRequestDate, success, error);
+				} else {
+					questionKeyword = searchEl.value;
+					questionLatestRefreshRequestDate = 0;
+					questionLatestLoadingRequestDate = 0;
+					questionEl.innerHTML = '';
+					var success = function(response) {
+							var questions = response.body.list;
+							if (questions.length > 0) {
+								questionLatestRefreshRequestDate = Date.parse(questions[0].created);
+								questionLatestLoadingRequestDate = Date.parse(questions[questions.length - 1].created);
+								for (var i = questions.length - 1; i >= 0; i--) {
+									divEl.innerHTML = questionTemplate(app.processQuestion(questions[i]));
+									questionEl.insertBefore(divEl.firstElementChild, questionEl.firstElementChild);
+								}
+							}
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						};
+					app.listQuestions(questionKeyword, 0, 10, 0, questionLatestLoadingRequestDate, success, error);
+				}
+			});
+			 //下拉刷新具体业务实现
+			function pulldownRefresh() {
+				setTimeout(function() {
+					console.log('pulldown');
+					if (type == 'tutor') {
+						var success = function(response) {
+								var tutors = response.body;
+								if (tutors.length > 0) {
+									if (tutorLatestRefreshRequestDate == 0 && tutorLatestLoadingRequestDate == 0) {
+										tutorLatestLoadingRequestDate = Date.parse(tutors[tutors.length - 1].created);
+									}
+									tutorLatestRefreshRequestDate = Date.parse(tutors[0].created);
+									for (var i = tutors.length - 1; i >= 0; i--) {
+										divEl.innerHTML = tutorTemplate(app.processTutor(tutors[i]));
+										tutorEl.insertBefore(divEl.firstElementChild, tutorEl.firstElementChild);
+									}
+								}
+								mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+							},
+							error = function(errorType) {
+								mui.toast(app.ajaxErrorHandler(errorType));
+								mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+							};
+						app.listTutors(tutorKeyword, 0, 10, tutorLatestRefreshRequestDate, 0, success, error);
+					} else {
+						var success = function(response) {
+								var questions = response.body.list;
+								if (questions.length > 0) {
+									if (questionLatestRefreshRequestDate == 0 && questionLatestLoadingRequestDate == 0) {
+										questionLatestLoadingRequestDate = Date.parse(questions[questions.length - 1].created);
+									}
+									questionLatestRefreshRequestDate = Date.parse(questions[0].created);
+									for (var i = questions.length - 1; i >= 0; i--) {
+										divEl.innerHTML = questionTemplate(app.processQuestion(questions[i]));
+										questionEl.insertBefore(divEl.firstElementChild, questionEl.firstElementChild);
+									}
+								}
+								mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+							},
+							error = function(errorType) {
+								mui.toast(app.ajaxErrorHandler(errorType));
+								mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+							};
+						app.listQuestions(questionKeyword, 0, 10, questionLatestRefreshRequestDate, 0, success, error);
+					}
+				}, 1000);
+			};
+			 //上拉加载具体业务实现
+			function pullupRefresh() {
+				setTimeout(function() {
+					console.log('pullup');
+					if (type == 'tutor') {
+						var success = function(response) {
+								var tutors = response.body;
+								if (tutors.length > 0) {
+									if (tutorLatestLoadingRequestDate == 0 && tutorLatestRefreshRequestDate == 0) {
+										tutorLatestRefreshRequestDate = Date.parse(tutors[0].created);
+									}
+									tutorLatestLoadingRequestDate = Date.parse(tutors[tutors.length - 1].created);
+									for (var i = 0, len = tutors.length; i < len; i++) {
+										divEl.innerHTML = tutorTemplate(app.processTutor(tutors[i]));
+										tutorEl.insertBefore(divEl.firstElementChild, tutorEl.firstElementChild);
+									}
+									mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+								} else {
+									tutorLoadingNoData = true;
+									mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+								}
+							},
+							error = function(errorType) {
+								mui.toast(app.ajaxErrorHandler(errorType));
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+							};
+						app.listTutors(tutorKeyword, 0, 10, 0, tutorLatestLoadingRequestDate, success, error);
+					} else {
+						var success = function(response) {
+								var questions = response.body.list;
+								if (questions.length > 0) {
+									if (questionLatestLoadingRequestDate == 0 && questionLatestRefreshRequestDate == 0) {
+										questionLatestRefreshRequestDate = Date.parse(questions[0].created);
+									}
+									questionLatestLoadingRequestDate = Date.parse(questions[questions.length - 1].created);
+									for (var i = questions.length - 1; i >= 0; i--) {
+										divEl.innerHTML = questionTemplate(app.processQuestion(questions[i]));
+										questionEl.insertBefore(divEl.firstElementChild, questionEl.firstElementChild);
+									}
+									mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+								} else {
+									questionLoadingNoData = false;
+									mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+								}
+							},
+							error = function(errorType) {
+								mui.toast(app.ajaxErrorHandler(errorType));
+								mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+							};
+						app.listQuestions(questionKeyword, 0, 10, 0, questionLatestLoadingRequestDate, success, error);
+					}
+				}, 1000);
+			};
+		</script>
 	</body>
 
 </html>

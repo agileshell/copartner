@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创客汇</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<link rel="stylesheet" href="../css/message.css" />
+		<style>
+			.c-overlay .mui-bar-tab {
+				display: none;
+			}
+			.c-overlay .c-loader {
+				display: block;
+			}
+			.c-overlay .mui-content {
+				display: none;
+			}
+			.border-bottom-1px {
+				width: 98%;
+				margin: auto;
+				border-bottom: 1px solid #c8c7cc;
+			}
+			.c-article-content {
+				margin-top: 45px;
+				margin-bottom: 55px;
+			}
+			.c-article-title {
+				padding: 5px 10px 0 10px;
+			}
+			.c-article-meta {
+				padding: 0 10px 10px 10px;
+			}
+			.c-article-outline {
+				padding: 0 15px 0 35px;
+			}
+			.c-article-meta span {
+				display: block;
+				font-size: 15px;
+				color: gray;
+				font-weight: 600;
+			}
+			.c-article-article {
+				font-size: 15px;
+				padding: 5px 15px;
+				color: #000;
+			}
+			.avatar {
+				border-radius: 50%;
+				width: 30px;
+				float: left;
+				margin-top: 10px;
+			}
+			.c-article-meta .user-name {
+				color: #C15151;
+				font-size: 15px;
+			}
+		</style>
+	</head>
+
+	<body class="c-overlay">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">问题详情</h1>
+		</header>
+		<div class="mui-content">
+			<div class="c-article-content">
+				<h4 id="c-article-title" class="c-article-title"></h4>
+				<div class="c-article-meta">
+					<img id="user-avatar" src="" class="avatar">
+					<div class="c-article-outline">
+						<span id="user-name" class="user-name"></span>
+						<span id="category"><span>
+						<span id="created"><span>
+					</div>
+				</div>
+
+				<p class="border-bottom-1px"></p>
+				<div id="c-article-article" class="c-article-article">
+				</div>
+			</div>
+			<div id="message-history" class="message-history">
+			</div>
+			<div class="send-message">
+				<div class="send-msg-btn">发送</div>
+				<div class="message-input-box">
+					<input name="content" type="text" class="message-input" placeholder="输入消息内容">
+				</div>
+			</div>
+		</div>
+		<div id="loader" class="c-loader">加载中...</div>
+		<script id="receive-template" type="text/x-handlebars-template">
+				<div class="message-receive">
+					<div class="message-time">{{created}}</div>
+					<div class="message-info">
+						<div class="user-info">
+							<img class="user-avatar" src="{{answeror.avatar}}">
+						</div>
+						<div class="message-content-box">
+							<div class="arrow"></div>
+							<div class="message-content">{{content}}</div>
+						</div>
+					</div>
+				</div>
+		</script>
+		<script id="reply-template" type="text/x-handlebars-template">
+				<div class="message-reply">
+					<div class="message-time">{{created}}</div>
+					<div class="message-info">
+						<div class="user-info">
+							<img class="user-avatar" src="{{answeror.avatar}}">
+						</div>
+						<div class="message-content-box">
+							<div class="arrow"></div>
+							<div class="message-content">{{content}}</div>
+						</div>
+					</div>
+				</div>
+		</script>
+		<script type="text/javascript" charset="UTF-8" src="../js/handlebars-v2.0.0.js"></script>
+		<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+		<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+		<script type="text/javascript">
+			var titleEl = document.getElementById("c-article-title"),
+				articleEl = document.getElementById("c-article-article"),
+				avatarEl = document.getElementById("user-avatar"),
+				categoryEl = document.getElementById("category"),
+				createdEl = document.getElementById("created");
+			var divEl = document.createElement("div"),
+				historyEl = document.getElementById("message-history"),
+				replySource = document.getElementById("reply-template").innerText,
+				replyTemplate = Handlebars.compile(replySource),
+				receiveSource = document.getElementById("receive-template").innerText,
+				receiveTemplate = Handlebars.compile(receiveSource);
+			mui.init({
+				swipeBack: true, //启用右滑关闭功能
+				beforeback: function() {
+					setTimeout(function() {
+						titleEl.innerText = '';
+						articleEl.innerText = '';
+						avatarEl.src = '';
+						categoryEl.innerText = '';
+						createdEl.innerText = '';
+						historyEl.innerHTML = '';
+						document.body.classList.add('c-overlay');
+					}, 200);
+				}
+			});
+			(function($) {
+				document.addEventListener('mui.view.beforeshow', function(event) {
+					if (event.detail.$$type === 'back') {
+						setTimeout(function() {
+							document.body.classList.remove('c-overlay');
+						}, 500);
+						return;
+					}
+					document.body.classList.add('c-overlay');
+					
+					var success = function(response) {
+							question = response.body;
+							titleEl.innerText = question.title;
+							articleEl.innerText = question.content;
+							avatarEl.src = question.questioner.avatar;
+							categoryEl.innerText = question.categoryName;
+							createdEl.innerText = question.created;
+							answers = question.answers;
+							console.log(JSON.stringify(answers));
+							for (var i = 0, len = answers.length; i < len; i++) {
+								if (i % 2 == 1) {
+									divEl.innerHTML = replyTemplate(answers[i]);
+								} else {
+									divEl.innerHTML = receiveTemplate(answers[i]);
+								}
+								historyEl.insertBefore(divEl.firstElementChild, historyEl.firstElementChild);
+							}
+							window.scrollTo(0, 0);
+							setTimeout(function() {
+								document.body.classList.remove('c-overlay');
+							}, 290);
+							//显示当前页面
+							mui.currentWebview.show();
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+						};
+					app.getQuestionByGuid(event.detail.guid, success, error);
+				});	
+			})(mui);
+		</script>
+	</body>
+
+</html>

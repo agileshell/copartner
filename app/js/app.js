@@ -641,8 +641,6 @@
 				}
 			},
 			error: function(xhr, type, errorThrown) {
-				console.log(JSON.stringify(xhr));
-				console.log(JSON.stringify(errorThrown));
 				if (errorThrown == 'Forbidden') {
 					app.setState({});
 					owner.openLoginPage();
@@ -892,10 +890,11 @@
 	/**
 	 * 获取course列表
 	 **/
-	owner.listcourses = function(isFree, offset, limit, from, to, successCallback, errorCallback) {
+	owner.listcourses = function(isFree, keyword, offset, limit, from, to, successCallback, errorCallback) {
 		mui.ajax('http://120.24.228.100:8080/copartner/courses', {
 			data: {
 				isFree: isFree,
+				keyword: keyword,
 				offset: offset,
 				limit: limit,
 				from: from,
@@ -944,7 +943,236 @@
 		} else {
 			courseInfo.coverImg = course.coverImg;
 		}
-		console.log(JSON.stringify(courseInfo));
+
 		return courseInfo;
+	};
+
+	owner.uploadCourse = function(courseInfo, callback) {
+		callback = callback || $.noop;
+		courseInfo = courseInfo || {};
+		courseInfo.coverImg = courseInfo.coverImg || '';
+		courseInfo.name = courseInfo.name || '';
+		courseInfo.speaker = courseInfo.speaker || '';
+		courseInfo.time = courseInfo.time || 0;
+		courseInfo.synopsis = courseInfo.synopsis || '';
+		courseInfo.url = courseInfo.url || '';
+		if (courseInfo.name.length <= 0) {
+			return callback('课程名称不能为空');
+		} else if (courseInfo.name.length > 30) {
+			return callback('课程名称不能大于30个字符');
+		}
+		if (courseInfo.coverImg.length <= 0) {
+			return callback('封皮不能为空');
+		}
+		if (courseInfo.url.length <= 0) {
+			return callback('视频不能为空');
+		}
+		if (courseInfo.speaker.length <= 0) {
+			return callback('主讲人不能为空');
+		}
+		if (courseInfo.time == 0) {
+			return callback('时长不能为空');
+		}
+		if (courseInfo.synopsis.length <= 0) {
+			return callback('简介不能为空');
+		} else if (courseInfo.synopsis.length > 100) {
+			return callback('简介不能大于100个字符');
+		}
+
+		mui.ajax('http://120.24.228.100:8080/copartner/course', {
+			data: courseInfo,
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					app.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
+	};
+
+	/**
+	 * 获取tutor列表
+	 **/
+	owner.listTutors = function(keyword, offset, limit, from, to, successCallback, errorCallback) {
+		mui.ajax('http://120.24.228.100:8080/copartner/tutors', {
+			data: {
+				keyword: keyword,
+				offset: offset,
+				limit: limit,
+				from: from,
+				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+	/**
+	 * 获取tutor详情
+	 **/
+	owner.getTutorByGuid = function(guid, successCallback, errorCallback) {
+		mui.ajax('http://120.24.228.100:8080/copartner/tutor/' + guid, {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+	/**
+	 * tutor对象包装
+	 **/
+	owner.processTutor = function(tutor) {
+		var tutorInfo = {};
+		tutorInfo.id = tutor.tutorId;
+		tutorInfo.name = tutor.name;
+		tutorInfo.domainId = tutor.domain.id;
+		tutorInfo.domainName = tutor.domain.name;
+		if (!tutor.avatar) {
+			tutorInfo.avatar = 'images/blank.jpg';
+		} else {
+			tutorInfo.avatar = tutor.avatar;
+		}
+
+		return tutorInfo;
+	};
+
+	/**
+	 * 获取question列表
+	 **/
+	owner.listQuestions = function(keyword, offset, limit, from, to, successCallback, errorCallback) {
+		mui.ajax('http://120.24.228.100:8080/copartner/questions', {
+			data: {
+				keyword: keyword,
+				offset: offset,
+				limit: limit,
+				from: from,
+				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+
+	owner.listQuestionCategories = function(successCallback) {
+		mui.ajax('http://120.24.228.100:8080/copartner/question/categories', {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			}
+		})
+	};
+	/**
+	 * question对象包装
+	 **/
+	owner.processQuestion = function(question) {
+		var questionInfo = {};
+		questionInfo.id = question.questionId;
+		questionInfo.title = question.title;
+		questionInfo.categoryId = question.categoryId;
+		questionInfo.categoryName = question.categoryName;
+		questionInfo.content = question.content;
+		questionInfo.questioner = question.questioner;
+		questionInfo.created = question.created;
+
+		return questionInfo;
+	};
+
+	owner.createQuestion = function(questionInfo, callback) {
+		callback = callback || $.noop;
+		questionInfo = questionInfo || {};
+		questionInfo.title = questionInfo.title || '';
+		questionInfo.content = questionInfo.content || '';
+		questionInfo.permission = questionInfo.permission || 0;
+		questionInfo.tutorId = questionInfo.tutorId || 0;
+		questionInfo.categoryId = questionInfo.categoryId || 0;
+		if (questionInfo.title.length <= 0) {
+			return callback('问题不能为空');
+		} else if (questionInfo.title.length > 50) {
+			return callback('问题不能大于50个字符');
+		}
+		if (questionInfo.categoryId == 0) {
+			return callback('类别不能为空');
+		}
+		if (questionInfo.tutorId == 0) {
+			return callback('导师不能为空');
+		}
+		if (questionInfo.content.length <= 0) {
+			return callback('内容不能为空');
+		} else if (questionInfo.title.length > 200) {
+			return callback('内容不能大于200个字符');
+		}
+
+		mui.ajax('http://120.24.228.100:8080/copartner/question', {
+			data: questionInfo,
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					app.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
+	};
+	
+	/**
+	 * 获取course详情
+	 **/
+	owner.getQuestionByGuid = function(guid, successCallback, errorCallback) {
+		mui.ajax('http://120.24.228.100:8080/copartner/question/' + guid, {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
 	};
 }(mui, window.app = {}));

@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<style>
-			span.mui-icon {
+			span .mui-icon {
 				font-size: 14px;
 				color: #41AAF2;
 			}
@@ -136,7 +136,6 @@
 				document.body.classList.add('c-overlay');
 				var success = function(response) {
 						news = response.body;
-						console.log("news :" + JSON.stringify(news));
 						guid = news.newsId;
 						titleEl.innerText = news.title;
 						timeEl.innerText = news.created;

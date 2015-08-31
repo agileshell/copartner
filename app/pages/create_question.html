@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创客汇</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<link href="../css/mui.listpicker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<style>
+			.mui-page-content {
+				margin-top: 44px;
+			}
+			.mui-input-row label {
+				width: 22%;
+				padding: 10px 0 10px 10px;
+			}
+			.mui-input-row span {
+				width: 78%;
+			}
+			.c-input {
+				margin-left: -20px;
+				text-align: right;
+			}
+			.mui-input-row textarea {
+				margin-bottom: 5px;
+			}
+			.mui-content-padded {
+				margin-top: 10px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title c-title">我要提问</h1>
+			<a id="create-question-a" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right"></a>
+		</header>
+		<div class="mui-content">
+			<div class="mui-page-content">
+				<form id='upload-course-form' class="mui-input-group">
+					<div class="mui-input-row">
+						<label>问题</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='title' name='title' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>类别</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='categoryId' name="categoryId" type="hidden">
+							<input id='categoryName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>导师</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='tutorId' name="tutorId" type="hidden">
+							<input id='tutorName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>全体可见</label>
+						<input id='permission' name="permission" value="1" type="hidden">
+						<div id="permissionSwitch" class="mui-switch mui-switch-mini mui-active ">
+							<div class="mui-switch-handle"></div>
+						</div>
+					</div>
+				</form>
+				<div class="mui-input-row" style="margin: 10px 5px 0 5px;">
+					<textarea id="content" rows="3" placeholder="内容"></textarea>
+				</div>
+				<div class="mui-content-padded">
+					<button id='create-question-b' class="mui-btn mui-btn-block mui-btn-primary">提交</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/app.js"></script>
+	<script src="../js/mui.listpicker.js"></script>
+	<script src="../js/mui.poppicker.js"></script>
+	<script>
+		var titleEl = document.getElementById("title"),
+			contentEl = document.getElementById("content");
+		var permissionEl = document.getElementById('permission'),
+			permissionSwitch = document.getElementById('permissionSwitch');
+		var categoryId = document.getElementById('categoryId'),
+			categoryName = document.getElementById('categoryName');
+		var tutorId = document.getElementById('tutorId'),
+			tutorName = document.getElementById('tutorName');
+		titleEl.value = '';
+		contentEl.value = '';
+		categoryId.value = '';
+		categoryName.value = '';
+		tutorId.value = '';
+		tutorName.value = '';
+		var categories = [];
+		(function($, doc) {
+			app.listQuestionCategories(function(response) {
+				categories = response.body;
+				console.log(JSON.stringify(categories));
+				var categoryPicker = new $.PopPicker();
+				categoryPicker.setData(categories);
+				categoryName.addEventListener('tap', function(event) {
+					categoryPicker.show(function(items) {
+						categoryId.value = items[0].value;
+						categoryName.value = items[0].text;
+					});
+				}, false);
+			})
+			$.init();
+			$.plusReady(function() {
+				var toQuestionPage = function() {
+					var questionPage = plus.webview.getWebviewById('tutor_list');
+					$.fire(questionPage, 'mui.view.beforeshow', {
+						needReflush: true
+					});
+					questionPage.show();
+				};
+				doc.getElementById('create-question-a').addEventListener('tap', function() {
+					createQuestion();
+				});
+				doc.getElementById('create-question-b').addEventListener('tap', function() {
+					createQuestion();
+				});
+
+				function createQuestion() {
+					var questionInfo = {
+						title: titleEl.value,
+						content: contentEl.value,
+						tutorId: tutorId.value,
+						permission: permissionEl.value,
+						categoryId: categoryId.value
+					};
+					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
+					app.createQuestion(questionInfo, function(err) {
+						setTimeout(function() {
+							wait.close();
+							if (err) {
+								plus.nativeUI.toast(err);
+								return;
+							} else {
+								toQuestionPage();
+							}
+						}, 200);
+					});
+				};
+				var tutorPicker = new $.PopPicker();
+				tutorPicker.setData([{
+					value: '2',
+					text: 'Pointer'
+				}]);
+				tutorName.addEventListener('tap', function(event) {
+					tutorPicker.show(function(items) {
+						tutorId.value = items[0].value;
+						tutorName.value = items[0].text;
+					});
+				}, false);
+				permissionSwitch.addEventListener('toggle', function(event) {
+					permissionEl.value = event.detail.isActive ? '1' : '2';
+				});
+			});
+		})(mui, document);
+	</script>
+
+</html>

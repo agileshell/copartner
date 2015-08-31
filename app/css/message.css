@@ -4,51 +4,43 @@
 	border: 2px solid #EEE;
 	/*min-width: 600px;*/
 	margin: auto;
-	padding: 10px;
+	padding: 5px;
 	font-size: 12px;
 }
-
 .message-time {
 	height: 20px;
 	line-height: 18px;
 }
-
 .message-receive .message-time {
-	margin-left: 60px;
+	margin-left: 35px;
 	text-align: left;
 }
-
 .message-reply .message-time {
-	margin-right: 60px;
+	margin-right: 35px;
 	text-align: right;
 }
-
 .message-info {
 	position: relative;
 	overflow: hidden;
 }
-
 .message-content-box {
 	border-radius: 5px;
 	position: relative;
 	padding: 15px;
 	word-break: break-word;
 }
-
 .message-reply .message-content-box {
 	background: #b8db29;
 	color: #333;
-	margin-right: 60px;
+	margin-right: 35px;
 	float: right;
 }
-
 .message-receive .message-content-box {
-	background: #EEE;
+	background: #D0CECE;
 	color: #333;
-	margin-left: 60px;
+	margin-left: 35px;
 	float: left;
 }
-
 .message-content-box .arrow {
 	width: 0;
 	height: 0;
@@ -58,53 +50,35 @@
 	position: absolute;
 	top: 10px;
 }
-
 .message-reply .message-content-box .arrow {
 	border-color: transparent transparent transparent #b8db29;
 	right: -20px;
 }
-
 .message-receive .message-content-box .arrow {
-	border-color: transparent #EEE transparent transparent;
+	border-color: transparent #D0CECE transparent transparent;
 	left: -20px;
 }
-
-.item-pics-box {
-	float: left;
-	margin-right: 10px;
-}
-
-.item-pic {
-	width: 40px;
-	height: 40px;
-}
-
 .message-content {
 	overflow: hidden;
 }
-
 .user-avatar {
-	width: 40px;
-	height: 40px;
-	border-radius: 25px;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
 	position: absolute;
 	top: 0;
 }
-
 .message-receive .user-avatar {
 	left: 0;
 }
-
 .message-reply .user-avatar {
 	right: 0;
 }
-
 .send-message {
 	position: relative;
 	margin-top: 7px;
 	height: 40px;
 }
-
 .send-message .send-msg-btn {
 	float: right;
 	width: 75px;
@@ -116,10 +90,9 @@
 	border: 1px solid #D7D7D7;
 	text-align: center;
 }
-
 .send-message .message-input-box {
 	border-radius: 3px;
-	background: url("./images/write.png");
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAABGdBTUEAALGPC/xhBQAAAPlQTFRFmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZAAAAmZmZ5KmwVQAAAFJ0Uk5T2k1Lpaf67ojkc5dbXCWCdP3PQfftRR2OsOm8wfJYrUBOkYkjzFn2SQXljVOpJOqmVIGe76Qq8PWhdkwwPUSq4mkEq5yZ+DddARIC/P4D+RHNAFNYFooAAAC3SURBVBjTVdDFEsJAEATQxd3d3d2dhGAhCUtm/v9jCFVsWOb4DlPdTYA/0SlYgPDi01x2h5WnKPWAciQclfJ4PMk2949azWI5JnlVv0k9KrWhgPGE+f6u9k/w0IUaMBK10dOQzgAYbbT5R4YLYDTB9RNe+mwHX5K7OP3I8gZfUi54VgxZ7YFRCi+yIdcDi0OUDFYNoVszM7lhWqvU1fGvGAnSQBbVO9ee6FcazjX4icg5Ekr+zQhvBU9YhAVrUs0AAAAASUVORK5CYII=);
 	background-size: 11px 11px;
 	background-repeat: no-repeat;
 	background-position: 6px 14px;
@@ -128,7 +101,6 @@
 	border: 1px solid #D7D7D7;
 	overflow: hidden;
 }
-
 .send-message input.message-input {
 	margin: 0;
 	padding: 8px 0;

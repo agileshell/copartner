@@ -51,7 +51,7 @@
 	<body class="c-overlay">
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 id="title" class="mui-title c-title">动态详情</h1>
+			<h1 id="title" class="mui-title c-title">课程详情</h1>
 		</header>
 		<nav class="mui-bar mui-bar-tab">
 			<a id="like" class="mui-tab-item" href="#">
@@ -70,9 +70,7 @@
 				<div class="c-article-info2">
 					<div id="synopsis" class="c-article-time">ss</div>
 				</div>
-				<div id="c-article-article" class="c-article-article">
-					<video id="video" controls poster="" width="320">
-					</video>
+				<div id="video" class="c-article-article">
 				</div>
 			</div>
 		</div>
@@ -83,30 +81,22 @@
 			var infoEl = document.getElementById("info");
 			var synopsisEl = document.getElementById("synopsis");
 			var videoEl = document.getElementById("video");
+			nameEl.innerText = '';
+			infoEl.innerText = '';
+			synopsisEl.innerHTML = '';
+			videoEl.innerHTML = '';
 			var guid = '';
-			mui.init({
-				swipeBack: true, //启用右滑关闭功能
-				beforeback: function() {
-					setTimeout(function() {
-						nameEl.innerText = '';
-						infoEl.innerText = '';
-						synopsisEl.innerHTML = '';
-						videoEl.innerHTML = '';
-					}, 200);
-				}
-			});
+			mui.init();
 			(function($) {
 				document.addEventListener('mui.view.beforeshow', function(event) {
-					var clentW = document.body.clientWidth-20;
+					var clentW = document.body.clientWidth - 20;
 					var success = function(response) {
 							course = response.body;
 							guid = course.courseId;
 							nameEl.innerText = course.name;
 							infoEl.innerText = '主讲人：' + course.speaker + '，时长：' + course.time + '分钟';
 							synopsisEl.innerHTML = course.synopsis;
-							videoEl.poster = course.coverImg;
-							videoEl.width = clentW;
-							videoEl.innerHTML = "<source src='" + course.url + "' type='video/mp4' />"
+							videoEl.innerHTML = "<video id='video' controls poster='" + course.coverImg + "' width='" + clentW + "'><source src='" + course.url + "' type='video/mp4' /></video>";
 							window.scrollTo(0, 0);
 							//显示当前页面
 							mui.currentWebview.show();

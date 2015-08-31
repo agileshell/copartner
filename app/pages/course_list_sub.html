@@ -9,10 +9,6 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<style>
-			.new-item {
-				padding: 15px 0 0 15px;
-				border-bottom: 1px solid #c8c7cc;
-			}
 			.course-item {
 				display: block;
 				font-size: 12px;
@@ -39,6 +35,9 @@
 				<a id="free" class="mui-control-item mui-active" href="#free-item">免费课程</a>
 				<a id="vip" class="mui-control-item" href="#vip-item">会员课程</a>
 			</div>
+			<div class="mui-input-row mui-search" style="height: 34px;">
+				<input id="search" type="search" name="keyword" class="mui-input-speech mui-input-clear" placeholder="请输入您要查询的关键字">
+			</div>
 		</div>
 		<div class="mui-content">
 			<div id="pullrefresh" class="mui-scroll-wrapper">
@@ -62,7 +61,7 @@
 				</div>
 				<div class="mui-media-body" style="padding-left: 45px;">
 					<span class="course-item">主讲人：{{speaker}}，时长：{{time}}分钟</span>
-						<span class="course-item">简介：{{synopsis}}</span>
+					<span class="course-item">简介：{{synopsis}}</span>
 				</div>
 			</a>
 		</li>
@@ -82,6 +81,9 @@
 			courseSource = document.getElementById("course-template").innerText,
 			courseTemplate = Handlebars.compile(courseSource),
 			isFree = true,
+			searchEl = document.getElementById("search"),
+			freeKeyword = '',
+			vipKeyword = '',
 			freeEl = document.getElementById("free-course-list"),
 			vipEl = document.getElementById("vip-course-list");
 		mui.init({
@@ -97,15 +99,40 @@
 				}
 			}
 		});
+		mui.plusReady(function() {
+			if (plus.networkinfo.getCurrentType() === plus.networkinfo.CONNECTION_NONE) {
+				plus.nativeUI.alert('无网络连接!');
+			} else {
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				}, 200);
+			}
+		});
 		mui('#course-type').on('tap', 'a', function() {
 			var id = this.getAttribute('id');
 			if (id == 'free') {
 				isFree = true;
+				searchEl.value = freeKeyword;
+				if (freeKeyword.length <= 0) {
+					mui('.mui-placeholder')[0].classList.remove('mui-hidden');
+					mui('.mui-icon-clear')[0].classList.add('mui-hidden');
+				} else {
+					mui('.mui-placeholder')[0].classList.add('mui-hidden');
+					mui('.mui-icon-clear')[0].classList.remove('mui-hidden');
+				}
 				if (!freeLoadingNoData) {
 					mui('#pullrefresh').pullRefresh().refresh(true);
 				}
 			} else {
 				isFree = false;
+				searchEl.value = vipKeyword;
+				if (vipKeyword.length <= 0) {
+					mui('.mui-placeholder')[0].classList.remove('mui-hidden');
+					mui('.mui-icon-clear')[0].classList.add('mui-hidden');
+				} else {
+					mui('.mui-placeholder')[0].classList.add('mui-hidden');
+					mui('.mui-icon-clear')[0].classList.remove('mui-hidden');
+				}
 				if (!vipIsFirstLoad) {
 					vipIsFirstLoad = true;
 					setTimeout(function() {
@@ -117,13 +144,52 @@
 				}
 			}
 		});
-		mui.plusReady(function() {
-			if (plus.networkinfo.getCurrentType() === plus.networkinfo.CONNECTION_NONE) {
-				plus.nativeUI.alert('无网络连接!');
+		 //search
+		searchEl.addEventListener('search', function() {
+			if (isFree) {
+				freeKeyword = searchEl.value;
+				freeLatestRefreshRequestDate = 0;
+				freeLatestLoadingRequestDate = 0;
+				freeEl.innerHTML = '';
+				var success = function(response) {
+						var courses = response.body.list;
+						if (courses.length > 0) {
+							freeLatestLoadingRequestDate = Date.parse(courses[courses.length - 1].created);
+							freeLatestRefreshRequestDate = Date.parse(courses[0].created);
+							for (var i = courses.length - 1; i >= 0; i--) {
+								divEl.innerHTML = courseTemplate(app.processCourse(courses[i]));
+								freeEl.insertBefore(divEl.firstElementChild, freeEl.firstElementChild);
+							}
+						}
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+					},
+					error = function(errorType) {
+						mui.toast(app.ajaxErrorHandler(errorType));
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+					};
+				app.listcourses(isFree, freeKeyword, 0, 10, freeLatestRefreshRequestDate, 0, success, error);
 			} else {
-				setTimeout(function() {
-					mui('#pullrefresh').pullRefresh().pullupLoading();
-				}, 200);
+				vipKeyword = searchEl.value;
+				vipLatestRefreshRequestDate = 0;
+				vipLatestLoadingRequestDate = 0;
+				vipEl.innerHTML = '';
+				var success = function(response) {
+						var courses = response.body.list;
+						if (courses.length > 0) {
+							vipLatestLoadingRequestDate = Date.parse(courses[courses.length - 1].created);
+							vipLatestRefreshRequestDate = Date.parse(courses[0].created);
+							for (var i = courses.length - 1; i >= 0; i--) {
+								divEl.innerHTML = courseTemplate(app.processCourse(courses[i]));
+								vipEl.insertBefore(divEl.firstElementChild, vipEl.firstElementChild);
+							}
+						}
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+					},
+					error = function(errorType) {
+						mui.toast(app.ajaxErrorHandler(errorType));
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+					};
+				app.listcourses(isFree, vipKeyword, 0, 10, vipLatestRefreshRequestDate, 0, success, error);
 			}
 		});
 		 //打开详情
@@ -164,7 +230,7 @@
 							mui.toast(app.ajaxErrorHandler(errorType));
 							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
 						};
-					app.listcourses(isFree, 0, 10, freeLatestRefreshRequestDate, 0, success, error);
+					app.listcourses(isFree, freeKeyword, 0, 10, freeLatestRefreshRequestDate, 0, success, error);
 				} else {
 					var success = function(response) {
 							var courses = response.body.list;
@@ -184,7 +250,7 @@
 							mui.toast(app.ajaxErrorHandler(errorType));
 							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
 						};
-					app.listcourses(isFree, 0, 10, vipLatestRefreshRequestDate, 0, success, error);
+					app.listcourses(isFree, vipKeyword, 0, 10, vipLatestRefreshRequestDate, 0, success, error);
 				}
 			}, 1000);
 		};
@@ -214,7 +280,7 @@
 							mui.toast(app.ajaxErrorHandler(errorType));
 							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 						};
-					app.listcourses(isFree, 0, 10, 0, freeLatestLoadingRequestDate, success, error);
+					app.listcourses(isFree, freeKeyword, 0, 10, 0, freeLatestLoadingRequestDate, success, error);
 				} else {
 					var success = function(response) {
 							var courses = response.body.list;
@@ -237,7 +303,7 @@
 							mui.toast(app.ajaxErrorHandler(errorType));
 							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 						};
-					app.listcourses(isFree, 0, 10, 0, vipLatestLoadingRequestDate, success, error);
+					app.listcourses(isFree, vipKeyword, 0, 10, 0, vipLatestLoadingRequestDate, success, error);
 				}
 			}, 1000);
 		};
