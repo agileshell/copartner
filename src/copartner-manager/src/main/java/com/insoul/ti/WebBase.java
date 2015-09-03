@@ -20,6 +20,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.insoul.copartner.dao.AdminDAO;
+import com.insoul.copartner.dao.IAnswerDao;
 import com.insoul.copartner.dao.IContentDao;
 import com.insoul.copartner.dao.IDemandCommentsDao;
 import com.insoul.copartner.dao.IDemandDao;
@@ -31,6 +32,8 @@ import com.insoul.copartner.dao.INewsDao;
 import com.insoul.copartner.dao.IProjectCommentsDao;
 import com.insoul.copartner.dao.IProjectDao;
 import com.insoul.copartner.dao.IProjectPhaseDao;
+import com.insoul.copartner.dao.IQuestionCategoryDao;
+import com.insoul.copartner.dao.IQuestionDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IStartupStatusDao;
 import com.insoul.copartner.dao.ISystemSettingDao;
@@ -101,6 +104,15 @@ public class WebBase implements ServletContextAware {
 
 	@Resource
 	protected IFinancingDao financingDAO;
+
+    @Resource
+	protected IQuestionDao questionDAO;
+
+    @Resource
+    protected IQuestionCategoryDao questionCategoryDAO;
+
+    @Resource
+    protected IAnswerDao answerDAO;
 
 	@Autowired
 	@Qualifier("multipartResolver")

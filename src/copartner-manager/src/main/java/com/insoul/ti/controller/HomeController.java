@@ -79,7 +79,7 @@ public class HomeController extends WebBase {
 		ModelAndView mv = createModelView("home", request);
 		PageQuery query = request.init().getQuery();
 		UserCriteria criteria = new UserCriteria();
-		criteria.setLimit(query.getPage_size());
+		criteria.setLimit(query.getPage_size() * 100);
 		criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
 		criteria.setId(request.getId());
 		criteria.setEmail(request.getEmail());

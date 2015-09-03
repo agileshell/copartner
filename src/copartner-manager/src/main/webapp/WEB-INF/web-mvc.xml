@@ -108,6 +108,7 @@
 			<mvc:mapping path="/finance/*"/>
 			<mvc:mapping path="/finance/*/*"/>
 			<mvc:mapping path="/finance/*/*/*"/>
+			<mvc:mapping path="/question/**"/>
 			<ref bean="authInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>

@@ -40,6 +40,9 @@
 			</ul>
         </li>
         <li>
+			<a <c:if test="${viewname == 'question_list'}"> class="open" </c:if> href="/question/list"><i class="icon-question"></i>问题管理</a>
+        </li>
+        <li>
 			<a <c:if test="${viewname == 'comments_list'}"> class="open" </c:if> href="/comments/list"><i class="icon-comments"></i>评论管理</a>
         </li>
         <li>
