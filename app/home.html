@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>创客汇</title>
+		<title>创始人</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 
 		<link rel="stylesheet" href="css/mui.min.css">
@@ -21,7 +21,7 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav" style="position: static;">
-			<h1 id="title" class="mui-title c-title"><span class="c-logo">创客汇</span></h1>
+			<h1 id="title" class="mui-title c-title"><span class="c-logo">创始人</span></h1>
 		</header>
 		<div class="mui-content">
 			<ul id="list" class="mui-table-view mui-grid-view mui-grid-9">
@@ -58,7 +58,7 @@
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
 					<a id="forum" href="pages/forum.html">
 						<span class="home-grid c-community-icon"></span>
-						<div class="mui-media-body">创客汇</div>
+						<div class="mui-media-body">创客家</div>
 					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
@@ -175,7 +175,7 @@
 						return;
 					}
 					var id = this.getAttribute('id');
-					if ('profile' == id) {
+					if ('profile' == id || 'renmai' == id) {
 						var state = app.getState();
 						//检查 "登录状态"
 						if (state.userId) {

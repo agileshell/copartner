@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>创客汇</title>
+		<title>创始人</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 
 		<link rel="stylesheet" href="../css/mui.min.css" />
@@ -42,6 +42,13 @@
 					top: '45px',
 					bottom: '0px',
 				}
+			}],
+			preloadPages: [{
+				id: 'search_friends',
+				url: 'search_friends.html',
+				styles: {
+					popGesture: 'hide'
+				}
 			}]
 		});
 		var newsWebview = null;
@@ -55,9 +62,13 @@
 				newsWebview.evalJS('mui.scrollTo(0, 100)');
 			}
 		});
+		var searchFriendsWebview = null;
 		mui.plusReady(function() {
 			document.getElementById('add-frient').addEventListener('tap', function() {
-				plus.nativeUI.toast('展示屏蔽');
+				if (!searchFriendsWebview) {
+					searchFriendsWebview = plus.webview.getWebviewById('search_friends');
+				}
+				searchFriendsWebview.show();
 			});
 		});
 	</script>
