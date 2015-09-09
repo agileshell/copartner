@@ -46,7 +46,7 @@
 	</body>
 	<script id="friend-template" type="text/x-handlebars-template">
 		<li class="mui-table-view-cell" data-id="{{friendId}}">{{name}}
-			<button type="button" class="mui-btn mui-btn-danger">添加</button>
+			<button type="button" class="mui-btn mui-btn-danger add-frient">添加</button>
 		</li>
 	</script>
 	<script type="text/javascript" charset="UTF-8" src="../js/handlebars-v2.0.0.js"></script>
@@ -80,9 +80,27 @@
 						};
 					app.searchFriends(keyword.value, success, error);
 				});
-				mui('#search-list').on('tap', 'list', function() {
+				mui('#search-list').on('tap', '.add-frient', function() {
 					var w = plus.nativeUI.showWaiting("　　 请等待...　　");
-					this.getAttribute('data-id');
+                    var success = function(response) {
+							w.close();
+                            mui.openWindow({
+                                id: "renmai",
+                                url: "renmai.html",
+                                show: {
+                                    aniShow: "pop-in"
+                                },
+                                waiting: {
+                                    autoShow: false
+                                }
+                            });
+						},
+						error = function(errorType) {
+							w.close();
+							mui.toast(app.ajaxErrorHandler(errorType));
+						};
+					var userid = this.getAttribute('data-id');
+                    app.addFriend(userid, success, error);
 				});
 			});
 		}(mui, document));

@@ -20,11 +20,20 @@
 				z-index: 1;
 				top: 35px;
 			}
+            .user-name {
+				color: #C15151;
+				font-size: 15px;
+			}
+			.user-avatar {
+				border-radius: 50%;
+				width: 40px;
+				float: left;
+			}
 		</style>
 	</head>
 
 	<body>
-		<div class="mui-content" style="padding: 0px 5px; position: absolute; z-index: 2;">
+        <div class="mui-content" style="padding: 0px 5px; position: absolute; z-index: 2;">
 			<div class="mui-segmented-control c-control">
 				<a id="contact-book" class="mui-control-item mui-active" href="#contact-book-item">通讯录</a>
 				<a id="chat-history" class="mui-control-item" href="#chat-history-item">聊天</a>
@@ -70,54 +79,65 @@
 						<div class="mui-group-list-inner">
 							<div class="mui-group-list-empty-alert">没有数据</div>
 							<ul class="mui-table-view">
-								<li data-group="A" class="mui-table-view-divider mui-group-list-group">A</li>
-								<li data-value="Alven" data-tags="Alven" class="mui-table-view-cell mui-group-list-item">Alven</li>
-								<li data-value="abb" data-tags="alibaba" class="mui-table-view-cell mui-group-list-item">阿里</li>
-								<li data-group="B" class="mui-table-view-divider mui-group-list-group">B</li>
-								<li data-value="BSD" data-tags="BaoShan" class="mui-table-view-cell mui-group-list-item">白珊</li>
-								<li data-value="BBE" data-tags="BaoBeiEr" class="mui-table-view-cell mui-group-list-item">寶貝兒</li>
-								<li data-group="C" class="mui-table-view-divider mui-group-list-group">C</li>
-								<li data-value="CG" data-tags="ChengGong" class="mui-table-view-cell mui-group-list-item">成功</li>
-								<li data-group="G" class="mui-table-view-divider mui-group-list-group">G</li>
-								<li data-value="GDX" data-tags="guodaxia" class="mui-table-view-cell mui-group-list-item">郭大俠</li>
-								<li data-value="GXX" data-tags="guoxiaoxia" class="mui-table-view-cell mui-group-list-item">郭小俠</li>
-								<li data-value="GX" data-tags="guoxiang" class="mui-table-view-cell mui-group-list-item">郭襄</li>
-								<li data-group="H" class="mui-table-view-divider mui-group-list-group">H</li>
-								<li data-value="hdf" data-tags="haidafu" class="mui-table-view-cell mui-group-list-item">海大富</li>
-								<li data-group="J" class="mui-table-view-divider mui-group-list-group">J</li>
-								<li data-value="JZH" data-tags="jiangzhonghai" class="mui-table-view-cell mui-group-list-item">江中還</li>
-								<li data-group="L" class="mui-table-view-divider mui-group-list-group">L</li>
-								<li data-value="LJ" data-tags="LiJiang" class="mui-table-view-cell mui-group-list-item">李江</li>
-								<li data-value="LY" data-tags="LuoYang" class="mui-table-view-cell mui-group-list-item">羅阳</li>
-								<li data-group="M" class="mui-table-view-divider mui-group-list-group">M</li>
-								<li data-value="MST" data-tags="MAOSHAOTIAN" class="mui-table-view-cell mui-group-list-item">毛少天</li>
-								<li data-group="N" class="mui-table-view-divider mui-group-list-group">N</li>
-								<li data-value="npss" data-tags="nanpaisanshu" class="mui-table-view-cell mui-group-list-item">南派三叔</li>
-								<li data-group="P" class="mui-table-view-divider mui-group-list-group">P</li>
-								<li data-value="ps" data-tags="pusa" class="mui-table-view-cell mui-group-list-item">普仨</li>
-								<li data-group="Q" class="mui-table-view-divider mui-group-list-group">Q</li>
-								<li data-value="qsy" data-tags="qiushaoyun" class="mui-table-view-cell mui-group-list-item">邱少雲</li>
-								<li data-group="S" class="mui-table-view-divider mui-group-list-group">S</li>
-								<li data-value="ST" data-tags="ShanTou" class="mui-table-view-cell mui-group-list-item">汕头</li>
-								<li data-group="T" class="mui-table-view-divider mui-group-list-group">T</li>
-								<li data-value="TBH" data-tags="TANGBOHU" class="mui-table-view-cell mui-group-list-item">唐伯虎</li>
-								<li data-group="W" class="mui-table-view-divider mui-group-list-group">W</li>
-								<li data-value="WXC" data-tags="wangsicong" class="mui-table-view-cell mui-group-list-item">王思聰</li>
-								<li data-value="WDC" data-tags="wangdachui" class="mui-table-view-cell mui-group-list-item">王大錘</li>
-								<li data-group="X" class="mui-table-view-divider mui-group-list-group">X</li>
-								<li data-value="XF" data-tags="xufu" class="mui-table-view-cell mui-group-list-item">徐福</li>
-								<li data-group="Y" class="mui-table-view-divider mui-group-list-group">Y</li>
-								<li data-value="YNJ" data-tags="yingnengjing" class="mui-table-view-cell mui-group-list-item">因能靜</li>
-								<li data-value="YG" data-tags="yangguo" class="mui-table-view-cell mui-group-list-item">楊過</li>
-								<li data-group="Z" class="mui-table-view-divider mui-group-list-group">Z</li>
-								<li data-value="ZWX" data-tags="ZhongWeiXiang" class="mui-table-view-cell mui-group-list-item">中卫香</li>
-								<li data-value="ZUH" data-tags="ZhuHaiSan" class="mui-table-view-cell mui-group-list-item">珠海三</li>
+								<li data-guid="1" data-group="A" class="mui-table-view-divider mui-group-list-group">A</li>
+								<li data-guid="1" data-value="Alven" data-tags="Alven" class="mui-table-view-cell mui-group-list-item">Alven</li>
+								<li data-guid="1" data-value="abb" data-tags="alibaba" class="mui-table-view-cell mui-group-list-item">阿里</li>
+								<li data-guid="1" data-group="B" class="mui-table-view-divider mui-group-list-group">B</li>
+								<li data-guid="1" data-value="BSD" data-tags="BaoShan" class="mui-table-view-cell mui-group-list-item">白珊</li>
+								<li data-guid="1" data-value="BBE" data-tags="BaoBeiEr" class="mui-table-view-cell mui-group-list-item">寶貝兒</li>
+								<li data-guid="1" data-group="C" class="mui-table-view-divider mui-group-list-group">C</li>
+								<li data-guid="1" data-value="CG" data-tags="ChengGong" class="mui-table-view-cell mui-group-list-item">成功</li>
+								<li data-guid="1" data-group="G" class="mui-table-view-divider mui-group-list-group">G</li>
+								<li data-guid="1" data-value="GDX" data-tags="guodaxia" class="mui-table-view-cell mui-group-list-item">郭大俠</li>
+								<li data-guid="1" data-value="GXX" data-tags="guoxiaoxia" class="mui-table-view-cell mui-group-list-item">郭小俠</li>
+								<li data-guid="1" data-value="GX" data-tags="guoxiang" class="mui-table-view-cell mui-group-list-item">郭襄</li>
+								<li data-guid="1" data-group="H" class="mui-table-view-divider mui-group-list-group">H</li>
+								<li data-guid="1" data-value="hdf" data-tags="haidafu" class="mui-table-view-cell mui-group-list-item">海大富</li>
+								<li data-guid="1" data-group="J" class="mui-table-view-divider mui-group-list-group">J</li>
+								<li data-guid="1" data-value="JZH" data-tags="jiangzhonghai" class="mui-table-view-cell mui-group-list-item">江中還</li>
+								<li data-guid="1" data-group="L" class="mui-table-view-divider mui-group-list-group">L</li>
+								<li data-guid="1" data-value="LJ" data-tags="LiJiang" class="mui-table-view-cell mui-group-list-item">李江</li>
+								<li data-guid="1" data-value="LY" data-tags="LuoYang" class="mui-table-view-cell mui-group-list-item">羅阳</li>
+								<li data-guid="1" data-group="M" class="mui-table-view-divider mui-group-list-group">M</li>
+								<li data-guid="1" data-value="MST" data-tags="MAOSHAOTIAN" class="mui-table-view-cell mui-group-list-item">毛少天</li>
+								<li data-guid="1" data-group="N" class="mui-table-view-divider mui-group-list-group">N</li>
+								<li data-guid="1" data-value="npss" data-tags="nanpaisanshu" class="mui-table-view-cell mui-group-list-item">南派三叔</li>
+								<li data-guid="1" data-group="P" class="mui-table-view-divider mui-group-list-group">P</li>
+								<li data-guid="1" data-value="ps" data-tags="pusa" class="mui-table-view-cell mui-group-list-item">普仨</li>
+								<li data-guid="1" data-group="Q" class="mui-table-view-divider mui-group-list-group">Q</li>
+								<li data-guid="1" data-value="qsy" data-tags="qiushaoyun" class="mui-table-view-cell mui-group-list-item">邱少雲</li>
+								<li data-guid="1" data-group="S" class="mui-table-view-divider mui-group-list-group">S</li>
+								<li data-guid="1" data-value="ST" data-tags="ShanTou" class="mui-table-view-cell mui-group-list-item">汕头</li>
+								<li data-guid="1" data-group="T" class="mui-table-view-divider mui-group-list-group">T</li>
+								<li data-guid="1" data-value="TBH" data-tags="TANGBOHU" class="mui-table-view-cell mui-group-list-item">唐伯虎</li>
+								<li data-guid="1" data-group="W" class="mui-table-view-divider mui-group-list-group">W</li>
+								<li data-guid="1" data-value="WXC" data-tags="wangsicong" class="mui-table-view-cell mui-group-list-item">王思聰</li>
+								<li data-guid="1" data-value="WDC" data-tags="wangdachui" class="mui-table-view-cell mui-group-list-item">王大錘</li>
+								<li data-guid="1" data-group="X" class="mui-table-view-divider mui-group-list-group">X</li>
+								<li data-guid="1" data-value="XF" data-tags="xufu" class="mui-table-view-cell mui-group-list-item">徐福</li>
+								<li data-guid="1" data-group="Y" class="mui-table-view-divider mui-group-list-group">Y</li>
+								<li data-guid="1" data-value="YNJ" data-tags="yingnengjing" class="mui-table-view-cell mui-group-list-item">因能靜</li>
+								<li data-guid="1" data-value="YG" data-tags="yangguo" class="mui-table-view-cell mui-group-list-item">楊過</li>
+								<li data-guid="1" data-group="Z" class="mui-table-view-divider mui-group-list-group">Z</li>
+								<li data-guid="1" data-value="ZWX" data-tags="ZhongWeiXiang" class="mui-table-view-cell mui-group-list-item">中卫香</li>
+								<li data-guid="1" data-value="ZUH" data-tags="ZhuHaiSan" class="mui-table-view-cell mui-group-list-item">珠海三</li>
 							</ul>
 						</div>
 					</div>
 					<!-- end -->
 				</div>
-				<div id="chat-history-item" class="mui-control-content">
+                <div id="chat-history-item" class="mui-control-content">
+					<ul id="content-list" class="mui-table-view mui-table-view-chevron">
+						<li id="im_id" class="mui-table-view-cell mui-media">
+							<a class='mui-navigate-right' href="chat.html?id=1" data-guid="1">
+								<img class="mui-media-object mui-pull-left user-avatar" src="../images/blank.jpg">
+								<div class="mui-media-body">
+									<span class="user-name">王少天</span>
+									<p class="mui-ellipsis-2">12345679798</p>
+								</div>
+							</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -134,6 +154,20 @@
 			//create
 			window.groupList = new mui.GroupList(list);
 		});
+
+        mui('.mui-table-view').on('tap', 'li', function() {
+			open_chat(this.getAttribute('data-guid'));
+		});
+
+		var chatWebview = null;
+		function open_chat(id) {
+			if (!chatWebview) {
+				chatWebview = plus.webview.getWebviewById('im_chat');
+			}
+			mui.fire(chatWebview, 'mui.view.beforeshow', {
+				guid: id
+			});
+		};
 	</script>
 
 </html>
