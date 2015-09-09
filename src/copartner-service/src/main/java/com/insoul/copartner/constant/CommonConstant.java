@@ -20,6 +20,8 @@ public interface CommonConstant {
 
     String ORIGINAL_IMAGE_URL = "image_url";
 
+    int IMAGE_STANDARD = 200; // 200px
+
     String PATH = "path";
 
     String ORIGINAL_URL = "url";

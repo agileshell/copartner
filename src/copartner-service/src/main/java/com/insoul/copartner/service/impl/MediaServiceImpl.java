@@ -1,9 +1,18 @@
 package com.insoul.copartner.service.impl;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import javax.imageio.ImageIO;
+
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,29 +31,46 @@ import com.insoul.copartner.util.SystemUtil;
 public class MediaServiceImpl extends BaseServiceImpl implements IMediaService {
 
     @Override
-    public Map<String, String> uploadImage(final MultipartFile image) throws CException {
+    public Map<String, String> uploadImage(MultipartFile imageFile, boolean needThumbnail) throws CException {
+        InputStream in = null;
+        if (needThumbnail) {
+            ByteArrayOutputStream out;
+            try {
+                BufferedImage image = ImageIO.read(imageFile.getInputStream());
+                int min = Math.min(image.getHeight(), image.getWidth());
+                out = new ByteArrayOutputStream();
+                int a = CommonConstant.IMAGE_STANDARD;
+                Thumbnails.of(imageFile.getInputStream()).scale(a * 1.0f / min).sourceRegion(Positions.CENTER, a, a)
+                        .size(a, a).keepAspectRatio(false).toOutputStream(out);
 
-        Map<String, String> siteSettings = SystemUtil.getSettings(SettingConstant.GROUP_TYPE_IMAGE);
-        if (null != siteSettings && siteSettings.size() > 0) {
-            long maxSize = FileUtil.string2bytes(siteSettings.get(SettingConstant.IMAGE_MAX_SIZE));
-            long minSize = FileUtil.string2bytes(siteSettings.get(SettingConstant.IMAGE_MIN_SIZE));
-            String[] imageTyps = siteSettings.get(SettingConstant.IMAGE_TYPE_LIMIT).split(",");
-            int maxWidth = Integer.valueOf(siteSettings.get(SettingConstant.IMAGE_DIMENSION_MAX_WIDTH));
-            int maxHeight = Integer.valueOf(siteSettings.get(SettingConstant.IMAGE_DIMENSION_MAX_HEIGHT));
-            int minWidth = Integer.valueOf(siteSettings.get(SettingConstant.IMAGE_DIMENSION_MIN_WIDTH));
-            int minHeight = Integer.valueOf(siteSettings.get(SettingConstant.IMAGE_DIMENSION_MIN_HEIGHT));
+                in = new ByteArrayInputStream(out.toByteArray());
+            } catch (Exception e) {
+                throw CExceptionFactory.getException(CException.class, ResponseCode.FILE_UPLOAD_ERROR);
+            }
+        } else {
+            Map<String, String> siteSettings = SystemUtil.getSettings(SettingConstant.GROUP_TYPE_IMAGE);
+            if (null != siteSettings && siteSettings.size() > 0) {
+                long maxSize = FileUtil.string2bytes(siteSettings.get(SettingConstant.IMAGE_MAX_SIZE));
+                long minSize = FileUtil.string2bytes(siteSettings.get(SettingConstant.IMAGE_MIN_SIZE));
+                String[] imageTyps = siteSettings.get(SettingConstant.IMAGE_TYPE_LIMIT).split(",");
+                int maxWidth = Integer.valueOf(siteSettings.get(SettingConstant.IMAGE_DIMENSION_MAX_WIDTH));
+                int maxHeight = Integer.valueOf(siteSettings.get(SettingConstant.IMAGE_DIMENSION_MAX_HEIGHT));
+                int minWidth = Integer.valueOf(siteSettings.get(SettingConstant.IMAGE_DIMENSION_MIN_WIDTH));
+                int minHeight = Integer.valueOf(siteSettings.get(SettingConstant.IMAGE_DIMENSION_MIN_HEIGHT));
 
-            FileUtil.validateImage(image, maxSize, minSize, imageTyps, maxWidth, minWidth, maxHeight, minHeight);
+                FileUtil.validateImage(imageFile, maxSize, minSize, imageTyps, maxWidth, minWidth, maxHeight, minHeight);
+            }
+
+            try {
+                in = imageFile.getInputStream();
+            } catch (IOException e) {
+                throw CExceptionFactory.getException(CException.class, ResponseCode.FILE_UPLOAD_ERROR);
+            }
         }
 
-        String fileType = FileUtil.getFileType(image.getOriginalFilename());
+        String fileType = FileUtil.getFileType(imageFile.getOriginalFilename());
         String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
-        String path = null;
-        try {
-            path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-        } catch (IOException e) {
-            throw CExceptionFactory.getException(CException.class, ResponseCode.FILE_UPLOAD_ERROR);
-        }
+        String path = CDNUtil.uploadFile(in, fileName);
 
         Map<String, String> result = new HashMap<String, String>();
         result.put(CommonConstant.IMAGE_PATH, path);

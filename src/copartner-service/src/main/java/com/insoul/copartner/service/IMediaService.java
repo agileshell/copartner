@@ -8,7 +8,7 @@ import com.insoul.copartner.exception.CException;
 
 public interface IMediaService {
 
-    Map<String, String> uploadImage(MultipartFile image) throws CException;
+    Map<String, String> uploadImage(MultipartFile imageFile, boolean needThumbnail) throws CException;
 
     Map<String, String> uploadVedio(MultipartFile vedio) throws CException;
 
