@@ -1158,12 +1158,55 @@
 			}
 		})
 	};
-	
+
 	/**
 	 * 获取course详情
 	 **/
 	owner.getQuestionByGuid = function(guid, successCallback, errorCallback) {
 		mui.ajax('http://120.24.228.100:8080/copartner/question/' + guid, {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+
+
+	owner.searchFriends = function(keyword, successCallback, errorCallback) {
+		mui.ajax('http://120.24.228.100:8080/copartner/user/friends/search?keyword=' + keyword, {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+
+	owner.addFriend = function(friendId, successCallback, errorCallback) {
+		mui.ajax('http://120.24.228.100:8080/copartner/user/friend/=' + friendId, {
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+
+	owner.listFriends = function(successCallback, errorCallback) {
+		mui.ajax('http://120.24.228.100:8080/copartner/user/friends', {
 			dataType: 'json',
 			type: 'get',
 			timeout: 5000,

@@ -119,7 +119,7 @@ public class UserDaoImpl extends BaseDaoImpl<User, Long> implements IUserDao {
         }
 
         Query query = null;
-        StringBuilder hql = new StringBuilder("FROM User WHERE roleId = 3");
+        StringBuilder hql = new StringBuilder("FROM User WHERE status = 'active' AND roleId = 3");
         hql.append(conditionStr).append(" ORDER BY created DESC");
         query = createQuery(hql.toString(), params);
         if ((criteria.getLimit() != null) && (criteria.getLimit() != 0)) {
@@ -128,6 +128,18 @@ public class UserDaoImpl extends BaseDaoImpl<User, Long> implements IUserDao {
                 query.setFirstResult(criteria.getOffset());
             }
         }
+
+        return query.getResultList();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<User> findUsers(String keyword) {
+        StringBuilder hql = new StringBuilder();
+        Map<String, Object> params = new HashMap<String, Object>();
+        hql.append(" FROM User WHERE status = 'active' AND roleId != 3 AND name like :keyword OR email like :keyword OR mobile like :keyword");
+        params.put("keyword", "%" + keyword + "%");
+        Query query = createQuery(hql.toString(), params);
 
         return query.getResultList();
     }

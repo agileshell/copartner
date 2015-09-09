@@ -12,4 +12,6 @@ public interface IUserFriendsService {
     List<FriendVO> listFriends(Boolean isPassed);
 
     FriendVO acceptFriend(Long friendId) throws CException;
+
+    List<FriendVO> searchFriends(String keyword);
 }

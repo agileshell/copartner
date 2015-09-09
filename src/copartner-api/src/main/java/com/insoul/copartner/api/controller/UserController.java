@@ -109,6 +109,13 @@ public class UserController extends BaseController {
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/friends/search", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> searchFriends(String keyword) {
+
+        return ResponseUtil.jsonSucceed(userFriendsService.searchFriends(keyword), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/friend/{friendId}", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> addFriend(@PathVariable Long friendId) throws CException {
@@ -130,7 +137,7 @@ public class UserController extends BaseController {
         return ResponseUtil.jsonSucceed(userFriendsService.listFriends(true), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/newFriends", method = RequestMethod.GET)
+    @RequestMapping(value = "/friends/new", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> listNewFriends() {
 

@@ -10,6 +10,10 @@ public class FriendVO implements Serializable {
 
     private String name;
 
+    private String abbr;
+
+    private String pinyin;
+
     private String avatar;
 
     private Long imId;
@@ -28,6 +32,22 @@ public class FriendVO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAbbr() {
+        return abbr;
+    }
+
+    public void setAbbr(String abbr) {
+        this.abbr = abbr;
+    }
+
+    public String getPinyin() {
+        return pinyin;
+    }
+
+    public void setPinyin(String pinyin) {
+        this.pinyin = pinyin;
     }
 
     public String getAvatar() {

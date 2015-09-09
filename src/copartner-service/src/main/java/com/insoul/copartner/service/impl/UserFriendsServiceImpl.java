@@ -21,6 +21,7 @@ import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.service.IUserFriendsService;
 import com.insoul.copartner.util.CDNUtil;
+import com.insoul.copartner.util.Chinese2Spell;
 import com.insoul.copartner.vo.FriendVO;
 
 @Service
@@ -68,6 +69,8 @@ public class UserFriendsServiceImpl extends BaseServiceImpl implements IUserFrie
             FriendVO friendVO = new FriendVO();
             friendVO.setFriendId(user.getId());
             friendVO.setName(user.getName());
+            friendVO.setAbbr(Chinese2Spell.converterToFirstSpell(user.getName()));
+            friendVO.setPinyin(Chinese2Spell.converterToSpell(user.getName()));
             friendVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
             friendVO.setImId(user.getImId());
 
@@ -95,9 +98,37 @@ public class UserFriendsServiceImpl extends BaseServiceImpl implements IUserFrie
         FriendVO friendVO = new FriendVO();
         friendVO.setFriendId(friend.getId());
         friendVO.setName(friend.getName());
+        friendVO.setAbbr(Chinese2Spell.converterToFirstSpell(friend.getName()));
+        friendVO.setPinyin(Chinese2Spell.converterToSpell(friend.getName()));
         friendVO.setAvatar(CDNUtil.getFullPath(friend.getAvatar()));
         friendVO.setImId(friend.getImId());
 
         return friendVO;
+    }
+
+    @Override
+    public List<FriendVO> searchFriends(String keyword) {
+        List<FriendVO> friendVOs = new ArrayList<FriendVO>();
+
+        Set<Long> friendIds = new HashSet<Long>();
+        List<UserFriends> userFriends = userFriendsDao.findByUserIdAndStatus(getUserId(), true);
+        for (UserFriends userFriend : userFriends) {
+            friendIds.add(userFriend.getId().getFriendId());
+        }
+
+        List<User> users = userDao.findUsers(keyword);
+        for (User user : users) {
+            if (!userFriends.contains(user.getId())) {
+                FriendVO friendVO = new FriendVO();
+                friendVO.setFriendId(user.getId());
+                friendVO.setName(user.getName());
+                friendVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+                friendVO.setImId(user.getImId());
+
+                friendVOs.add(friendVO);
+            }
+        }
+
+        return friendVOs;
     }
 }

@@ -25,10 +25,13 @@
         <intercept-url pattern="/demand/**" method="POST" access="isAuthenticated()" />
         <intercept-url pattern="/project/**" method="DELETE" access="isAuthenticated()" />
         <intercept-url pattern="/project/**" method="POST" access="isAuthenticated()" />
-        
+
         <intercept-url pattern="/course" method="POST" access="isAuthenticated()" />
         <intercept-url pattern="/question" method="POST" access="isAuthenticated()" />
         <intercept-url pattern="/question/*/answer" access="isAuthenticated()" />
+
+        <intercept-url pattern="/friend/**" access="isAuthenticated()" />
+        <intercept-url pattern="/friends/**" access="isAuthenticated()" />
 
         <csrf disabled="true"/>
         <http-basic/>
