@@ -30,7 +30,7 @@ public class User extends BaseEntity {
     private Integer level = 0;// VIP等级
 
     @Column(name = "points", nullable = false)
-    private Long points;// 积分
+    private Long points = 0;// 积分
 
     @Column(name = "name", nullable = false)
     private String name;// 姓名
