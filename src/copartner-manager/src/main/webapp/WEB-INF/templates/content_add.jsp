@@ -25,6 +25,8 @@
 	<link rel="stylesheet" href="${cdn}css/style.css"></link>
 	<link rel="stylesheet" href="${cdn}css/widgets.css"></link>
 	
+	<link href="${cdn}js/kindeditor/themes/default/default.css" rel="stylesheet" />
+	
 	<!--[if lt IE 9]>
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
@@ -150,11 +152,43 @@
 	<script src="${cdn}js/filter.js"></script>
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
+	
+	<script charset="utf-8" src="${cdn}js/kindeditor/kindeditor-all-min.js"></script>
+	<script charset="utf-8" src="${cdn}js/kindeditor/lang/zh_CN.js"></script>
+	<script charset="utf-8" src="${cdn}js/kindeditor/plugins/autoheight/autoheight.js"></script>
+	
+	<script>
+	    KindEditor.ready(function(K) {
+	        window.editor = K.create('#article', {
+	            langType : 'zh_CN',
+	            uploadJson : '/editor/file_upload',
+	            items : [
+	                     'source', '|', 'undo', 'redo', '|', 'preview', 'template', 'code', 'cut', 'copy', 'paste',
+	                     'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+	                     'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+	                     'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+	                     'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+	                     'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
+	                     'flash', 'media', 'insertfile', 'table', 'hr', 'baidumap', 'pagebreak',
+	                     'anchor', 'link', 'unlink'
+	            ],
+	            minHeight : 300,
+	            autoHeightMode : true,
+	            afterCreate : function() {
+	                this.loadPlugin('autoheight');
+	            }
+	        });
+	    });
+	</script>
+	
+	<!--
 	<script src="${cdn}js/ckeditor/ckeditor.js" type="text/javascript"></script>
 	<script type="text/javascript">
 	    $(function() {
 	        CKEDITOR.replace("article");
 	    });
 	</script>
+	-->
+	
 </body>
 </html>

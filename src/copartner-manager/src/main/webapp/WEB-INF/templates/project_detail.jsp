@@ -76,7 +76,7 @@
 <div class="form-group">
 	<label class="col-lg-5 control-label">项目LOGO:</label>
 	<div class="col-lg-7">
-	<img alt="${project.name}" src="http://7xjbd9.com1.z0.glb.clouddn.com/${project.logo}"  width="500">
+	<img alt="${project.name}" src="${cdnDomain}${project.logo}"  width="500"></img>
 	</div>
 </div>
 <div class="form-group">

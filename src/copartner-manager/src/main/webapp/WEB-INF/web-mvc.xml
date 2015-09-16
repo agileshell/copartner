@@ -32,7 +32,7 @@
 	default-lazy-init="false" default-autowire="byName">
 
 	<bean class="com.insoul.ti.handler.GlobalExceptionHandler" />
-
+	<context:property-placeholder location="classpath*:config.properties" />
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 	<context:annotation-config />
 	<context:component-scan base-package="com.insoul.ti.controller"/>

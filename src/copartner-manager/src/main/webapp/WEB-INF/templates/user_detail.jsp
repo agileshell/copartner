@@ -69,7 +69,7 @@
 											<div class="form-group">
 												<label class="col-lg-5 control-label">头像:</label>
 												<div class="col-lg-7">
-												<img alt="${user.name}" src="http://7xjbd9.com1.z0.glb.clouddn.com/${user.avatar}"  width="500">
+												<img alt="${user.name}" src="${cdnDomain}${user.avatar}"></img>
 												</div>
 											</div>
 											<div class="form-group">

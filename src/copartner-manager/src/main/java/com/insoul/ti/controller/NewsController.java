@@ -116,12 +116,14 @@ public class NewsController extends WebBase {
         MultipartFile image = request.getCoverImg();
         if (image != null) {
             String fileType = FileUtil.getFileType(image.getOriginalFilename());
-            String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
-            try {
-                String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-                news.setCoverImg(path);
-            } catch (Exception e) {
-                log.error("UploadFile Error.", e);
+            if (StringUtils.isNoneBlank(fileType)) {
+                String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
+                try {
+                    String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
+                    if (StringUtils.isNoneBlank(path)) news.setCoverImg(path);
+                } catch (Exception e) {
+                    log.error("UploadFile Error.", e);
+                }
             }
         }
         news.setArticle(request.getArticle());
@@ -141,15 +143,17 @@ public class NewsController extends WebBase {
         String path = StringUtils.EMPTY;
         if (image != null) {
             String fileType = FileUtil.getFileType(image.getOriginalFilename());
-            String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
-            try {
-                path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-            } catch (Exception e) {
-                log.error("UploadFile Error.", e);
+            if (StringUtils.isNoneBlank(fileType)) {
+                String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
+                try {
+                    path = CDNUtil.uploadFile(image.getInputStream(), fileName);
+                } catch (Exception e) {
+                    log.error("UploadFile Error.", e);
+                }
             }
         }
         News news = new News();
-        news.setCoverImg(path);
+        if (StringUtils.isNoneBlank(path)) news.setCoverImg(path);
         news.setAdminUserId(getAdminId());
         news.setArticle(request.getArticle());
         news.setClicks(0L);

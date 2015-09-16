@@ -104,7 +104,7 @@
 														<tr>
 															<td>
 															<a href="/user/detail/${c.answeror.userId}">
-															<img class="user_icon" alt="${c.answeror.name}" src="http://7xjbd9.com1.z0.glb.clouddn.com/${c.answeror.avatar}">
+															<img class="user_icon" alt="${c.answeror.name}" src="${cdnDomain}${c.answeror.avatar}"></img>
 															${c.answeror.name}
 															</a>
 															</td>

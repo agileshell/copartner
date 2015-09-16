@@ -116,12 +116,15 @@ public class ContentController extends WebBase {
 		MultipartFile image = request.getCoverImg();
 		if (image != null) {
 			String fileType = FileUtil.getFileType(image.getOriginalFilename());
-			String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
-			try {
-				String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-				content.setCoverImg(path);
-			} catch (Exception e) {
-				log.error("UploadFile Error.", e);
+			if (StringUtils.isNoneBlank(fileType)) {
+			    String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
+	            try {
+	                String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
+	                log.error("file path : " + path);
+	                if (StringUtils.isNoneBlank(path)) content.setCoverImg(path);
+	            } catch (Exception e) {
+	                log.error("UploadFile Error.", e);
+	            }
 			}
 		}
 		content.setArticle(request.getArticle());
@@ -141,15 +144,17 @@ public class ContentController extends WebBase {
 		String path = StringUtils.EMPTY;
 		if (image != null) {
 			String fileType = FileUtil.getFileType(image.getOriginalFilename());
-			String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
-			try {
-				path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-			} catch (Exception e) {
-				log.error("UploadFile Error.", e);
+			if (StringUtils.isNoneBlank(fileType)) {
+			    String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
+	            try {
+	                path = CDNUtil.uploadFile(image.getInputStream(), fileName);
+	            } catch (Exception e) {
+	                log.error("UploadFile Error.", e);
+	            }
 			}
 		}
 		Content content = new Content();
-		content.setCoverImg(path);
+		if (StringUtils.isNoneBlank(path)) content.setCoverImg(path);
 		content.setAdminUserId(getAdminId());
 		content.setArticle(request.getArticle());
 		content.setClicks(0L);

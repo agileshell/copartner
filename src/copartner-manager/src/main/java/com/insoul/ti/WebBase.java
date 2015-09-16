@@ -15,10 +15,12 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.insoul.copartner.constant.GlobalProperties;
 import com.insoul.copartner.dao.AdminDAO;
 import com.insoul.copartner.dao.IAnswerDao;
 import com.insoul.copartner.dao.IContentDao;
@@ -127,10 +129,11 @@ public class WebBase implements ServletContextAware {
     protected HttpServletResponse response;
     
     protected static final String COMMONS_RESOURCES_MANAGER_VIEW_NAME = "resources_manager";
-
+    
 	protected ModelAndView createModelView(String viewName) {
 		ModelAndView mv = new ModelAndView(viewName);
 		mv.addObject("cdn", "/assets/");
+        mv.addObject("cdnDomain", GlobalProperties.CDN_DOMAIN);
 		mv.addObject("viewname", viewName);
 		HttpSession session = request.getSession();
 		mv.addObject(Constants.ADMIN_ONLINE, session.getAttribute(Constants.ADMIN_ONLINE));
@@ -140,6 +143,7 @@ public class WebBase implements ServletContextAware {
 	protected ModelAndView createModelView(String viewName, ViewRequest req) {
 		ModelAndView mv = new ModelAndView(viewName);
 		mv.addObject("cdn", "/assets/");
+        mv.addObject("cdnDomain", GlobalProperties.CDN_DOMAIN);
 		mv.addObject("utils", new Utils());
 		mv.addObject("viewname", StringUtils.defaultIfBlank(req.getV(), viewName));
 		HttpSession session = request.getSession();

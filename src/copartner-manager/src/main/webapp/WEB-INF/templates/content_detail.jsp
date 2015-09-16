@@ -69,7 +69,7 @@
 											<div class="form-group">
 												<label class="col-lg-5 control-label">封皮:</label>
 												<div class="col-lg-7">
-												<img alt="${content.title}" src="http://7xjbd9.com1.z0.glb.clouddn.com/${content.coverImg}"></img>
+												<img alt="${content.title}" src="${cdnDomain}${content.coverImg}" width="500"></img>
 												</div>
 											</div>
 											
