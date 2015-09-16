@@ -38,7 +38,7 @@
 			<div class="page-head">
 				<h2 class="pull-left">创业状态管理</h2>
 				<div class="bread-crumb pull-right">
-					<a class="btn btn-default btn-sm" href="add">新建创业状态</a>
+					<a class="btn btn-default btn-sm" href="/status/add">新建创业状态</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -66,7 +66,7 @@
 										<tbody>
 											<c:if test="${!success}">
 												<tr><td colspan="5" style="text-align: center;">空空如也!!!</td></tr>
-												<tr><td colspan="5" style="text-align: center;"><a class="btn btn-default btn-sm" href="add">新建创业状态</a></td></tr>
+												<tr><td colspan="5" style="text-align: center;"><a class="btn btn-default btn-sm" href="/status/add">新建创业状态</a></td></tr>
 											</c:if>
 											<c:if test="${success}">
 												<c:forEach var="c" items="${statusList}" varStatus="status">

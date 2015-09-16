@@ -36,7 +36,7 @@
 			<div class="page-head">
 				<h2 class="pull-left">行业管理</h2>
 				<div class="bread-crumb pull-right">
-					<a class="btn btn-default btn-sm" href="add">新建行业</a>
+					<a class="btn btn-default btn-sm" href="/industry/add">新建行业</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>

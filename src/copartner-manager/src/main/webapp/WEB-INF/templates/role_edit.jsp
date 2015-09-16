@@ -36,7 +36,7 @@
 			<div class="page-head">
 				<h2 class="pull-left">角色管理</h2>
 				<div class="bread-crumb pull-right">
-					<a class="btn btn-default btn-sm" href="add">新建角色</a>
+					<a class="btn btn-default btn-sm" href="/role/add">新建角色</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>

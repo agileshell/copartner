@@ -41,7 +41,7 @@
 			<div class="page-head">
 				<h2 class="pull-left">融资阶段管理</h2>
 				<div class="bread-crumb pull-right">
-					<a class="btn btn-default btn-sm" href="add">新建融资阶段</a>
+					<a class="btn btn-default btn-sm" href="/finaphase/add">新建融资阶段</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -69,7 +69,7 @@
 										<tbody>
 											<c:if test="${!success}">
 												<tr><td colspan="5" style="text-align: center;">空空如也!!!</td></tr>
-												<tr><td colspan="5" style="text-align: center;"><a class="btn btn-default btn-sm" href="add">新建融资阶段</a></td></tr>
+												<tr><td colspan="5" style="text-align: center;"><a class="btn btn-default btn-sm" href="/finaphase/add">新建融资阶段</a></td></tr>
 											</c:if>
 											<c:if test="${success}">
 												<c:forEach var="c" items="${phaseList}" varStatus="status">

@@ -40,7 +40,7 @@
 			<div class="page-head">
 				<h2 class="pull-left">融资阶段管理</h2>
 				<div class="bread-crumb pull-right">
-					<a class="btn btn-default btn-sm" href="add">新建融资阶段</a>
+					<a class="btn btn-default btn-sm" href="/finaphase/add">新建融资阶段</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>

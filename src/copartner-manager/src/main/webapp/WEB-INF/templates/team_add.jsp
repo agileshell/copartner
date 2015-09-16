@@ -36,7 +36,7 @@
 			<div class="page-head">
 				<h2 class="pull-left">团队规模管理</h2>
 				<div class="bread-crumb pull-right">
-					<a class="btn btn-default btn-sm" href="add">新建团队规模</a>
+					<a class="btn btn-default btn-sm" href="/team/add">新建团队规模</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>
