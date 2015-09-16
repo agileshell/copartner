@@ -59,7 +59,7 @@
 												<div class="col-lg-4">
 													<input name="keyword" id="keyword" value="${req.keyword}" type="text" class="form-control" placeholder="问题关键字">
 												</div>
-												<label class="col-lg-2 control-label" for="type">状态:</label>
+												<label class="col-lg-2 control-label" for="status">状态:</label>
 												<div class="col-lg-4">
 													<jsp:include page="control/commons-status.jsp">
 														<jsp:param value="${req.status}" name="status"/>

@@ -65,11 +65,11 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-2 control-label" for="type">邮箱:</label>
+												<label class="col-lg-1 control-label" for="type">邮箱:</label>
 												<div class="col-lg-4">
 													<input name="email" id="email" value="${req.email}" type="text" class="form-control" placeholder="用户邮箱">
 												</div>
-												<label class="col-lg-2 control-label" for="type">手机号:</label>
+												<label class="col-lg-1 control-label" for="type">手机号:</label>
 												<div class="col-lg-4">
 													<input name="mobile" id="mobile" value="${req.mobile}" type="text" class="form-control" placeholder="用户手机号">
 												</div>
@@ -92,6 +92,7 @@
 											<tr>
 												<th>ID</th>
 												<th>姓名</th>
+												<th>角色</th>
 												<th>邮箱</th>
 												<th>手机号</th>
 												<th>地址</th>
@@ -104,13 +105,14 @@
 										</thead>
 										<tbody>
 											<c:if test="${!success}">
-												<tr><td colspan="10" style="text-align: center;">空空如也!!!</td></tr>
+												<tr><td colspan="11" style="text-align: center;">空空如也!!!</td></tr>
 											</c:if>
 											<c:if test="${success}">
 												<c:forEach var="c" items="${userList}" varStatus="status">
 													<tr>
 														<td>${c.id}</td>
 														<td>${c.name}</td>
+														<td>${startupRoles.get(c.startupRoleId)}</td>
 														<td>${c.email}</td>
 														<td>${c.mobile}</td>
 														<td>${c.fullLocation}</td>

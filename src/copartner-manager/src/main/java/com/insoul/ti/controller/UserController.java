@@ -53,6 +53,7 @@ public class UserController extends WebBase {
 		mv.addObject("userList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		mv.addObject("req", request);
+        mv.addObject("startupRoles", getStartupRoleMap());
 		return mv;
 	}
 	

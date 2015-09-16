@@ -93,6 +93,7 @@ public class HomeController extends WebBase {
 		mv.addObject("user_count", userDAO.count());
 		mv.addObject("project_count", projectDAO.count());
 		mv.addObject("content_count", contentDAO.count());
+        mv.addObject("startupRoles", getStartupRoleMap());
 		return mv;
 	}
 }

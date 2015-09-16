@@ -2,6 +2,9 @@ package com.insoul.ti;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -15,7 +18,6 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,6 +26,7 @@ import com.insoul.copartner.constant.GlobalProperties;
 import com.insoul.copartner.dao.AdminDAO;
 import com.insoul.copartner.dao.IAnswerDao;
 import com.insoul.copartner.dao.IContentDao;
+import com.insoul.copartner.dao.ICourseDao;
 import com.insoul.copartner.dao.IDemandCommentsDao;
 import com.insoul.copartner.dao.IDemandDao;
 import com.insoul.copartner.dao.IFeedbackDao;
@@ -42,6 +45,7 @@ import com.insoul.copartner.dao.ISystemSettingDao;
 import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.domain.Admin;
+import com.insoul.copartner.domain.StartupRole;
 import com.insoul.ti.req.ViewRequest;
 import com.insoul.ti.utils.Constants;
 import com.insoul.ti.utils.Utils;
@@ -127,8 +131,20 @@ public class WebBase implements ServletContextAware {
 	
     @Autowired
     protected HttpServletResponse response;
+
+    @Resource
+    protected ICourseDao courseDAO;
     
     protected static final String COMMONS_RESOURCES_MANAGER_VIEW_NAME = "resources_manager";
+    
+    protected Map<Long, String> getStartupRoleMap() {
+        List<StartupRole> list = startupRoleDAO.findAll();
+        Map<Long, String> map = new HashMap<Long, String>();
+        for (StartupRole startupRole : list) {
+            map.put(startupRole.getId(), startupRole.getName());
+        }
+        return map;
+    }
     
 	protected ModelAndView createModelView(String viewName) {
 		ModelAndView mv = new ModelAndView(viewName);

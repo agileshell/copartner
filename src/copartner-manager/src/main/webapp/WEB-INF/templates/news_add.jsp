@@ -10,7 +10,7 @@
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="author" content="fei.liu" />
-	<title>创客汇管理平台--新建新闻</title>
+	<title>创客汇管理平台--新建新闻动态</title>
 
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
@@ -40,9 +40,9 @@
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">新闻管理</h2>
+				<h2 class="pull-left">新闻动态管理</h2>
 				<div class="bread-crumb pull-right">
-					<a class="btn btn-default btn-sm" href="/news/add">新建新闻</a>
+					<a class="btn btn-default btn-sm" href="/news/add">新建新闻动态</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -53,7 +53,7 @@
 						<div class="col-md-12">
 							<div class="widget wgreen">
 								<div class="widget-head">
-									<div class="pull-left">新建新闻</div>
+									<div class="pull-left">新建新闻动态</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">

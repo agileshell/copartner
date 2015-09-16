@@ -10,7 +10,7 @@
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="author" content="fei.liu" />
-	<title>创客汇管理平台--新闻动态编辑</title>
+	<title>创客汇管理平台--课程编辑</title>
 
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
@@ -25,7 +25,8 @@
 	<link rel="stylesheet" href="${cdn}css/style.css"></link>
 	<link rel="stylesheet" href="${cdn}css/widgets.css"></link>
 	
-	<link href="${cdn}js/kindeditor/themes/default/default.css" rel="stylesheet" />
+	<link href="${cdn}css/video-js.css" rel="stylesheet" type="text/css">
+	<script src="${cdn}js/video.js"></script>
 	
 	<!--[if lt IE 9]>
 	<script src="${cdn}js/html5shim.js"></script>
@@ -40,9 +41,9 @@
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">新闻动态管理</h2>
+				<h2 class="pull-left">课程管理</h2>
 				<div class="bread-crumb pull-right">
-					<a class="btn btn-default btn-sm" href="/news/add">新建新闻动态</a>
+					<a class="btn btn-default btn-sm" href="/course/add">新建课程</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -53,48 +54,60 @@
 						<div class="col-md-12">
 							<div class="widget wgreen">
 								<div class="widget-head">
-									<div class="pull-left">编辑新闻动态</div>
+									<div class="pull-left">编辑课程</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/news/update/${news.id}" method="post" enctype="multipart/form-data">
+										<form class="form-horizontal" role="form" action="/course/update/${course.id}" method="post" enctype="multipart/form-data">
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="title">标题:</label>
+												<label class="col-lg-5 control-label" for="name">课程名称:</label>
 												<div class="col-lg-7">
-													<input name="title" id="title" value="${news.title}" type="text" class="form-control" placeholder="标题"></input>
+													<input name="name" id="name" value="${course.name}" type="text" class="form-control" placeholder="课程名称"></input>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="type">类型:</label>
+												<label class="col-lg-5 control-label" for="speaker">主讲人:</label>
 												<div class="col-lg-7">
-													<jsp:include page="control/news-type.jsp">
-														<jsp:param value="${news.type}" name="type"/>
-														<jsp:param value="false" name="has_all"/>
-													</jsp:include>
+													<input name="speaker" id="speaker" value="${course.speaker}" type="text" class="form-control" placeholder="主讲人"></input>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-5 control-label" for="synopsis">摘要:</label>
+												<div class="col-lg-7">
+													<input name="synopsis" id="synopsis" value="${course.synopsis}" type="text" class="form-control" placeholder="摘要"></input>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-lg-5 control-label" for="time">时长(分钟):</label>
+												<div class="col-lg-7">
+													<input name="time" id="time" value="${course.time}" type="text" class="form-control" placeholder="时长(分钟)"></input>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="col-lg-5 control-label" for="status">状态:</label>
 												<div class="col-lg-7">
 													<jsp:include page="control/commons-status.jsp">
-														<jsp:param value="${news.status}" name="status"/>
+														<jsp:param value="${course.status}" name="status"/>
 														<jsp:param value="false" name="has_all"/>
 														<jsp:param value="false" name="update"/>
 													</jsp:include>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="synopsis">摘要:</label>
+												<label class="col-lg-5 control-label" for="free">是否免费:</label>
 												<div class="col-lg-7">
-													<input name="synopsis" id="synopsis" value="${news.synopsis}" type="text" class="form-control" placeholder="摘要"></input>
+													<select id="free" class="form-control" name="free">
+														<option value="1" <c:if test="${course.isFree}"> selected="selected" </c:if> >免费</option>
+														<option value="0" <c:if test="${!course.isFree}"> selected="selected" </c:if> >非免费</option>
+													</select>
 												</div>
 											</div>
 											
 											<div class="form-group">
 												<label class="col-lg-5 control-label">封皮:</label>
 												<div class="col-lg-7">
-												<img alt="${news.title}" src="${cdnDomain}${news.coverImg}"  width="500"></img>
+												<img alt="${course.name}" src="${cdnDomain}${course.coverImg}" width="500">
 												</div>
 											</div>
 											<div class="form-group">
@@ -103,10 +116,24 @@
 													<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
 												</div>
 											</div>
+											
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="article">内容:</label>
+												<label class="col-lg-5 control-label">视频:</label>
 												<div class="col-lg-7">
-													<textarea name="article" id="article" class="form-control" rows="3" placeholder="内容">${news.article}</textarea>
+												  <video id="cop.video.media" class="video-js vjs-default-skin" controls preload="none" width="500" height="300"
+												      poster="${cdnDomain}${course.url}?vframe/jpg/offset/0/w/600/h/600"
+												      data-setup="{}">
+												    <source src="${cdnDomain}${course.url}" type='video/mp4' />
+												    <source src="${cdnDomain}${course.url}" type='video/webm' />
+												    <source src="${cdnDomain}${course.url}" type='video/ogg' />
+												  </video>
+												</div>
+											</div>
+											
+											<div class="form-group">
+												<label class="col-lg-5 control-label" for="media">视频:</label>
+												<div class="col-lg-7">
+													<input name="media" id="media" type="file" class="form-control" placeholder="视频"></input>
 												</div>
 											</div>
 											
@@ -159,43 +186,6 @@
 	<script src="${cdn}js/filter.js"></script>
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
-	
-	<script charset="utf-8" src="${cdn}js/kindeditor/kindeditor-all-min.js"></script>
-	<script charset="utf-8" src="${cdn}js/kindeditor/lang/zh_CN.js"></script>
-	<script charset="utf-8" src="${cdn}js/kindeditor/plugins/autoheight/autoheight.js"></script>
-	
-	<script>
-	    KindEditor.ready(function(K) {
-	        window.editor = K.create('#article', {
-	            langType : 'zh_CN',
-	            uploadJson : '/editor/file_upload',
-	            items : [
-	                     'source', '|', 'undo', 'redo', '|', 'preview', 'template', 'code', 'cut', 'copy', 'paste',
-	                     'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-	                     'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-	                     'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
-	                     'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-	                     'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
-	                     'flash', 'media', 'insertfile', 'table', 'hr', 'baidumap', 'pagebreak',
-	                     'anchor', 'link', 'unlink'
-	            ],
-	            minHeight : 300,
-	            autoHeightMode : true,
-	            afterCreate : function() {
-	                this.loadPlugin('autoheight');
-	            }
-	        });
-	    });
-	</script>
-	
-	<!--
-	<script src="${cdn}js/ckeditor/ckeditor.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	    $(function() {
-	        CKEDITOR.replace("article");
-	    });
-	</script>
-	-->
 
 </body>
 </html>

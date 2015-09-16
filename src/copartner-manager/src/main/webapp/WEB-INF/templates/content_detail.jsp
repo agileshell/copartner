@@ -9,7 +9,7 @@
 	<meta name="keywords" content="dap" />
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>创客汇管理平台--文章详情</title>
+	<title>创客汇管理平台--政策解读详情</title>
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
 	<link rel="stylesheet" href="${cdn}css/jquery-ui.css"></link>
@@ -33,9 +33,9 @@
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">文章管理</h2>
+				<h2 class="pull-left">政策解读管理</h2>
 				<div class="bread-crumb pull-right">
-					<a class="btn btn-default btn-sm" href="/content/add">新建文章</a>
+					<a class="btn btn-default btn-sm" href="/content/add">新建政策解读</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -46,14 +46,14 @@
 						<div class="col-md-12">
 							<div class="widget wgreen">
 								<div class="widget-head">
-									<div class="pull-left">文章详情</div>
+									<div class="pull-left">政策解读详情</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
 									<div class="padd form-horizontal">
 										<c:if test="${!success}">
 											<div class="form-group">
-												<div class="col-lg-12" style="text-align: center;">文章不存在!!!</div>
+												<div class="col-lg-12" style="text-align: center;">政策解读不存在!!!</div>
 											</div>
 										</c:if>
 										<c:if test="${success}">

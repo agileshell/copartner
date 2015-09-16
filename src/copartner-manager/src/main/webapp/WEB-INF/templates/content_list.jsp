@@ -10,7 +10,7 @@
 	<meta name="keywords" content="dap" />
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>创客汇管理平台--文章列表</title>
+	<title>创客汇管理平台--政策解读列表</title>
 	
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
@@ -40,9 +40,9 @@
 		<jsp:include page="control/sidebar.jsp"></jsp:include>
 		<div class="mainbar">
 			<div class="page-head">
-				<h2 class="pull-left">文章管理</h2>
+				<h2 class="pull-left">政策解读管理</h2>
 				<div class="bread-crumb pull-right">
-					<a class="btn btn-default btn-sm" href="/content/add">新建文章</a>
+					<a class="btn btn-default btn-sm" href="/content/add">新建政策解读</a>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -58,7 +58,7 @@
 											<div class="form-group">
 												<label class="col-lg-2 control-label" for="id">ID:</label>
 												<div class="col-lg-4">
-													<input name="id" id="id" value="${req.id}" type="text" class="form-control" placeholder="文章ID">
+													<input name="id" id="id" value="${req.id}" type="text" class="form-control" placeholder="政策解读ID">
 												</div>
 												<label class="col-lg-2 control-label" for="title">标题:</label>
 												<div class="col-lg-4">
@@ -66,7 +66,7 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-2 control-label" for="type">状态:</label>
+												<label class="col-lg-1 control-label" for="status">状态:</label>
 												<div class="col-lg-4">
 													<jsp:include page="control/commons-status.jsp">
 														<jsp:param value="${req.status}" name="status"/>
@@ -74,7 +74,7 @@
 														<jsp:param value="false" name="update"/>
 													</jsp:include>
 												</div>
-												<label class="col-lg-2 control-label" for="type">类型:</label>
+												<label class="col-lg-1 control-label" for="type">类型:</label>
 												<div class="col-lg-4">
 													<jsp:include page="control/content-type.jsp">
 														<jsp:param value="${req.type}" name="type"/>
@@ -92,7 +92,7 @@
 							
 							<div class="widget">
 								<div class="widget-head">
-									<div class="pull-left">文章列表</div>
+									<div class="pull-left">政策解读列表</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="widget-content">
@@ -112,7 +112,7 @@
 										<tbody>
 											<c:if test="${!success}">
 												<tr><td colspan="7" style="text-align: center;">空空如也!!!</td></tr>
-												<tr><td colspan="7" style="text-align: center;"><a class="btn btn-default btn-sm" href="/content/add">新建文章</a></td></tr>
+												<tr><td colspan="7" style="text-align: center;"><a class="btn btn-default btn-sm" href="/content/add">新建政策解读</a></td></tr>
 											</c:if>
 											<c:if test="${success}">
 												<c:forEach var="c" items="${contentList}" varStatus="status">

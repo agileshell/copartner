@@ -53,11 +53,11 @@
 									<div class="padd">
 										<form class="form-horizontal" role="form" action="/feedback/list" method="get">
 											<div class="form-group">
-												<label class="col-lg-2 control-label" for="userId">用户ID:</label>
+												<label class="col-lg-1 control-label" for="userId">用户ID:</label>
 												<div class="col-lg-4">
 													<input name="userId" id="userId" value="${req.userId}" type="text" class="form-control" placeholder="用户ID">
 												</div>
-												<label class="col-lg-2 control-label" for="text">反馈内容:</label>
+												<label class="col-lg-1 control-label" for="text">反馈内容:</label>
 												<div class="col-lg-4">
 													<input name="text" id="text" value="${req.text}" type="text" class="form-control" placeholder="反馈内容">
 												</div>

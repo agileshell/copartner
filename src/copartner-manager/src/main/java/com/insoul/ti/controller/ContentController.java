@@ -120,7 +120,6 @@ public class ContentController extends WebBase {
 			    String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
 	            try {
 	                String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-	                log.error("file path : " + path);
 	                if (StringUtils.isNoneBlank(path)) content.setCoverImg(path);
 	            } catch (Exception e) {
 	                log.error("UploadFile Error.", e);
