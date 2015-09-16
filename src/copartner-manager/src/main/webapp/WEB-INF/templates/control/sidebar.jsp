@@ -18,7 +18,7 @@
 			<a <c:if test="${viewname == 'news_list'}"> class="open" </c:if> href="/news/list"><i class="icon-camera"></i>新闻动态</a>
 		</li>
         <li>
-			<a <c:if test="${viewname == 'course_list'}"> class="open" </c:if> href="/course/list"><i class="icon-question"></i>充电站</a>
+			<a <c:if test="${viewname == 'course_list'}"> class="open" </c:if> href="/course/list"><i class="icon-inbox"></i>充电站</a>
         </li>
 		
 		<li class="has_sub">
