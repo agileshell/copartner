@@ -45,8 +45,8 @@
 		</div>
 	</body>
 	<script id="friend-template" type="text/x-handlebars-template">
-		<li class="mui-table-view-cell" data-id="{{friendId}}">{{name}}
-			<button type="button" class="mui-btn mui-btn-danger add-frient">添加</button>
+		<li class="mui-table-view-cell">{{name}}
+			<button type="button" data-id="{{friendId}}" class="mui-btn mui-btn-danger add-frient">添加</button>
 		</li>
 	</script>
 	<script type="text/javascript" charset="UTF-8" src="../js/handlebars-v2.0.0.js"></script>
@@ -68,6 +68,7 @@
 							w.close();
 							var users = response.body;
 							if (users.length > 0) {
+								listEl.innerText = "";
 								for (var i = 0, len = users.length; i < len; i++) {
 									divEl.innerHTML = friendTemplate(users[i]);
 									listEl.appendChild(divEl.firstElementChild);

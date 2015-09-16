@@ -400,7 +400,7 @@
 
 				function upload(f) {
 					var wt = plus.nativeUI.showWaiting();
-					var task = plus.uploader.createUpload('http://120.24.228.100:8080/copartner/image', {
+					var task = plus.uploader.createUpload('http://120.24.228.100:8080/copartner/image?needThumbnail=true', {
 							method: "POST"
 						},
 						function(t, status) { //上传完成

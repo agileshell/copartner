@@ -1192,7 +1192,7 @@
 	};
 
 	owner.addFriend = function(friendId, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/user/friend/=' + friendId, {
+		mui.ajax('http://120.24.228.100:8080/copartner/user/friend/' + friendId, {
 			dataType: 'json',
 			type: 'post',
 			timeout: 5000,
