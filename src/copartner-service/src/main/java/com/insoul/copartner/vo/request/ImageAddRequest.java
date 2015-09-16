@@ -13,22 +13,12 @@ public class ImageAddRequest implements Serializable {
     @NotNull
     private MultipartFile image;
 
-    private Boolean needThumbnail = false;
-
     public MultipartFile getImage() {
         return image;
     }
 
     public void setImage(MultipartFile image) {
         this.image = image;
-    }
-
-    public Boolean getNeedThumbnail() {
-        return needThumbnail;
-    }
-
-    public void setNeedThumbnail(Boolean needThumbnail) {
-        this.needThumbnail = needThumbnail;
     }
 
 }

@@ -23,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,12 +48,12 @@ public class ImageController extends BaseController {
     @RequestMapping(value = "/image", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> uploadImg(@Valid ImageAddRequest imageAddRequest,
-            BindingResult validResult) throws CException {
+            BindingResult validResult, @RequestParam(required = false, defaultValue = "false") boolean needThumbnail)
+            throws CException {
         if (validResult.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
-        Map<String, String> result =
-                mediaService.uploadImage(imageAddRequest.getImage(), imageAddRequest.getNeedThumbnail());
+        Map<String, String> result = mediaService.uploadImage(imageAddRequest.getImage(), needThumbnail);
 
         return ResponseUtil.jsonSucceed(result, HttpStatus.OK);
     }
@@ -61,8 +62,8 @@ public class ImageController extends BaseController {
     public void getInventoryStatusList(@PathVariable("path") String path, HttpServletRequest request,
             HttpServletResponse response) throws CException {
         String fileType = FileUtil.getFileType(path);
-        StringBuilder basePath =
-                new StringBuilder(GlobalProperties.CDN_LOCAL_PATH.trim()).append(CommonConstant.SEPARATOR);
+        StringBuilder basePath = new StringBuilder(GlobalProperties.CDN_LOCAL_PATH.trim())
+                .append(CommonConstant.SEPARATOR);
 
         String absolutePath = basePath.toString().concat(CommonConstant.SEPARATOR).concat(path);
         response.setContentType(getContentType(fileType));
@@ -75,12 +76,10 @@ public class ImageController extends BaseController {
             if (params.length >= 5) {
                 int width = Integer.valueOf(params[3]);
                 int height = Integer.valueOf(params[5]);
-                String cachePath =
-                        basePath.append("cache").append(CommonConstant.SEPARATOR).append(width)
-                                .append(CommonConstant.SEPARATOR).append(height).append(CommonConstant.SEPARATOR)
-                                .toString();
-                String cacheFileName =
-                        new StringBuilder().append(MD5Encrypt.MD5Encode(path)).append(".").append(fileType).toString();
+                String cachePath = basePath.append("cache").append(CommonConstant.SEPARATOR).append(width)
+                        .append(CommonConstant.SEPARATOR).append(height).append(CommonConstant.SEPARATOR).toString();
+                String cacheFileName = new StringBuilder().append(MD5Encrypt.MD5Encode(path)).append(".")
+                        .append(fileType).toString();
                 File file = new File(cachePath.concat(cacheFileName));
                 if (!file.isFile()) {
                     try {
