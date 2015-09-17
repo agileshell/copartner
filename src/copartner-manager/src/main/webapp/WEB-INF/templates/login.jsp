@@ -35,13 +35,13 @@
 									<div class="form-group">
 										<label class="control-label col-lg-3" for="name">用户名:</label>
 										<div class="col-lg-9">
-											<input name="name" type="text" class="form-control" id="name" placeholder="用户名"></input>
+											<input name="name" type="text" class="form-control" id="name" placeholder="输入用户名"></input>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="control-label col-lg-3" for="password">密&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
 										<div class="col-lg-9">
-											<input name="password" type="password" class="form-control" id="password" placeholder="密码"></input>
+											<input name="password" type="password" class="form-control" id="password" placeholder="输入密码"></input>
 										</div>
 									</div>
 									<c:if test="${!success}">
