@@ -86,7 +86,7 @@
 					<div class="user-info">
 						<span class="user-name"><span id="user-name"></span></span>
 						<span class="user-item"><span id="user-lean" ></span></span>
-						<span class="user-item">目前状况：<span id="user-startup-status"></span></span>
+						<span class="user-item">角色：<span id="user-role"></span></span>
 						<span class="user-item">所属行业：<span id="user-domains"></span></span>
 					</div>
 				</div>
@@ -231,7 +231,7 @@
 							document.getElementById('user-avatar').src = userInfo.avatar;
 							document.getElementById('user-name').innerText = userInfo.name;
 							document.getElementById('user-lean').innerText = userInfo.fullLocation + '，' + userInfo.age + '，' + gender + (userInfo.startupRole ? '，' + userInfo.startupRole.name : '');
-							document.getElementById('user-startup-status').innerText = userInfo.startupStatus ? userInfo.startupStatus.name : '';
+							document.getElementById('user-role').innerText = userInfo.roleName;
 							document.getElementById('user-domains').innerText = userInfo.fullDomains;
 						},
 						errorCallback = function(err) {

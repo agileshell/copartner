@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style type="text/css">
+			body, .mui-content{
+			  	background-color: #333;
+			  	color:#fff;
+			  }
+		</style>
+	</head>
+	<body>
+		<div class="mui-content">
+			<p style="margin: 100px 20px;">
+				<button id="logout" type="button" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px;">退出</button>
+				<button id="update-version" type="button" class="mui-btn mui-btn-success mui-btn-block" style="padding: 5px 20px;">检查更新</button>
+			</p>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			/**
+			 * 关闭侧滑菜单
+			 */
+			function close() {
+				mui.fire(mui.currentWebview.opener(), "menu:close");
+			}
+			//在android4.4.2中的swipe事件，需要preventDefault一下，否则触发不正常
+			window.addEventListener('dragstart',function(e){
+				mui.gestures.touch.lockDirection = true; //锁定方向
+				mui.gestures.touch.startDirection = e.detail.direction;
+			});
+			window.addEventListener('dragleft', function(e) {
+				if(!mui.isScrolling){
+					e.detail.gesture.preventDefault();
+				}
+			});
+			//监听左滑事件，若菜单已展开，左滑要关闭菜单；
+			window.addEventListener("swipeleft",function (e) {
+				if(Math.abs(e.detail.angle)>170){
+					close();
+				}
+			});
+			//检查更新
+			document.getElementById("update-version").addEventListener("tap", function() {
+				var successCallback = function(data) {
+						var rdata = data.body, android_version = rdata.android_version;
+						if (android_version != plus.runtime.version) {
+							plus.ui.confirm("创始人最新版本已发布，为了方便您的使用请立即更新！", function(i) {
+								if (0 == i.index) {
+									console.log(rdata.android_downloadURL);
+									plus.runtime.openURL(rdata.android_downloadURL);
+								}
+							}, "版本更新", ["立即更新", "取　　消"]);
+						} else {
+							mui.toast('已是最新版本~')
+						}
+					},
+					errorCallback = function(err) {
+						plus.nativeUI.toast(err);
+					};
+				app.getAppVersion(successCallback, errorCallback);
+			});
+
+			document.getElementById("logout").addEventListener("tap", function() {
+				close();
+				app.setState({});
+			});
+		</script>
+	</body>
+</html>

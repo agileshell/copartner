@@ -1,27 +1,28 @@
 /**
- * 分组列表
+ * IndexedList
  * 类似联系人应用中的联系人列表，可以按首字母分组
  * 右侧的字母定位工具条，可以快速定位列表位置
  * varstion 1.0.0
  * by Houfeng
  * Houfeng@DCloud.io
  **/
+
 (function($, window, document) {
 
 	var classSelector = function(name) {
 		return '.' + $.className(name);
 	}
 
-	var GroupList = $.GroupList = $.Class.extend({
+	var IndexedList = $.IndexedList = $.Class.extend({
 		/**
-		 * 通过 element 和 options 构造 GroupList 实例
+		 * 通过 element 和 options 构造 IndexedList 实例
 		 **/
 		init: function(holder, options) {
 			var self = this;
 			self.options = options || {};
 			self.box = holder;
 			if (!self.box) {
-				throw "实例 GroupList 时需要指定 element";
+				throw "实例 IndexedList 时需要指定 element";
 			}
 			self.createDom();
 			self.findElements();
@@ -38,15 +39,15 @@
 		findElements: function() {
 			var self = this;
 			self.el = self.el || {};
-			self.el.search = self.box.querySelector(classSelector('group-list-search'));
-			self.el.searchInput = self.box.querySelector(classSelector('group-list-search-input'));
-			self.el.searchClear = self.box.querySelector(classSelector('group-list-search') + ' ' + classSelector('icon-clear'));
-			self.el.bar = self.box.querySelector(classSelector('group-list-bar'));
-			self.el.barItems = [].slice.call(self.box.querySelectorAll(classSelector('group-list-bar') + ' a'));
-			self.el.inner = self.box.querySelector(classSelector('group-list-inner'));
-			self.el.items = [].slice.call(self.box.querySelectorAll(classSelector('group-list-item')));
-			self.el.liArray = [].slice.call(self.box.querySelectorAll(classSelector('group-list-inner') + ' li'));
-			self.el.alert = self.box.querySelector(classSelector('group-list-alert'));
+			self.el.search = self.box.querySelector(classSelector('indexed-list-search'));
+			self.el.searchInput = self.box.querySelector(classSelector('indexed-list-search-input'));
+			self.el.searchClear = self.box.querySelector(classSelector('indexed-list-search') + ' ' + classSelector('icon-clear'));
+			self.el.bar = self.box.querySelector(classSelector('indexed-list-bar'));
+			self.el.barItems = [].slice.call(self.box.querySelectorAll(classSelector('indexed-list-bar') + ' a'));
+			self.el.inner = self.box.querySelector(classSelector('indexed-list-inner'));
+			self.el.items = [].slice.call(self.box.querySelectorAll(classSelector('indexed-list-item')));
+			self.el.liArray = [].slice.call(self.box.querySelectorAll(classSelector('indexed-list-inner') + ' li'));
+			self.el.alert = self.box.querySelector(classSelector('indexed-list-alert'));
 		},
 		caleLayout: function() {
 			var self = this;
@@ -121,7 +122,7 @@
 			self.hiddenGroups = [];
 			var checkGroup = function(currentIndex, last) {
 				if (itemCount >= currentIndex - groupIndex - (last ? 0 : 1)) {
-					selectorBuffer.push(classSelector('group-list-inner li') + ':nth-child(' + (groupIndex + 1) + ')');
+					selectorBuffer.push(classSelector('indexed-list-inner li') + ':nth-child(' + (groupIndex + 1) + ')');
 					self.hiddenGroups.push(liArray[groupIndex]);
 				};
 				groupIndex = currentIndex;
@@ -129,7 +130,7 @@
 			}
 			liArray.forEach(function(item) {
 				var currentIndex = liArray.indexOf(item);
-				if (item.classList.contains($.className('group-list-group'))) {
+				if (item.classList.contains($.className('indexed-list-group'))) {
 					checkGroup(currentIndex, false);
 				} else {
 					var text = (item.innerText || '').toLowerCase();
@@ -138,7 +139,7 @@
 					if (keyword && text.indexOf(keyword) < 0 &&
 						value.indexOf(keyword) < 0 &&
 						tags.indexOf(keyword) < 0) {
-						selectorBuffer.push(classSelector('group-list-inner li') + ':nth-child(' + (currentIndex + 1) + ')');
+						selectorBuffer.push(classSelector('indexed-list-inner li') + ':nth-child(' + (currentIndex + 1) + ')');
 						itemCount++;
 					}
 					if (currentIndex >= itemTotal - 1) {

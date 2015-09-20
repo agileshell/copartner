@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html>
-
+<html class="ui-page-login">
 	<head>
 		<meta charset="utf-8">
 		<title>创始人</title>
@@ -9,6 +8,14 @@
 		<link rel="stylesheet" href="css/mui.min.css">
 		<link rel="stylesheet" href="css/app.css" />
 		<style>
+			.ui-page-login,
+			body {
+				width: 100%;
+				height: 100%;
+				margin: 0px;
+				padding: 0px;
+			}
+			.mui-content{height: 100%;}
 			.mui-bar .mui-pull-left span {
 				font-size: 18px;
 			}
@@ -199,6 +206,11 @@
 							}
 						});
 					});
+					//
+					window.addEventListener('resize', function() {
+						oauthArea.style.display = document.body.clientHeight > 400 ? 'block' : 'none';
+					}, false);
+					//
 					doc.getElementById('goHome').addEventListener('tap', function() {
 						plus.webview.getLaunchWebview().show();
 					});

@@ -245,7 +245,7 @@
 						nameEl.value = profile.name;
 						mobileEl.value = profile.mobile;
 						emailEl.value = profile.email;
-						locationIdEl.value = profile.location.locationId;
+						locationIdEl.value = profile.locationId;
 						locationNameEl.value = profile.fullLocation;
 						genderEl.value = profile.gender;
 						genderNameEl.value = ('F' == profile.gender ? '男' : '女');
@@ -400,7 +400,7 @@
 
 				function upload(f) {
 					var wt = plus.nativeUI.showWaiting();
-					var task = plus.uploader.createUpload('http://120.24.228.100:8080/copartner/image?needThumbnail=true', {
+					var task = plus.uploader.createUpload('http://123.57.55.59:8080/image?needThumbnail=true', {
 							method: "POST"
 						},
 						function(t, status) { //上传完成

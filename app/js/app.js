@@ -12,6 +12,8 @@
 			return (password.length >= 6 && password.length <= 16 && password.match(/^[0-9a-zA-Z]*$/));
 		};
 
+	owner.apiURL = 'http://123.57.55.59:8080/';
+
 	/**
 	 * 用户登录
 	 **/
@@ -28,7 +30,7 @@
 		}
 		localStorage.setItem('$account', loginInfo.account);
 
-		mui.ajax('http://120.24.228.100:8080/copartner/account/signin', {
+		mui.ajax(owner.apiURL + 'account/signin', {
 			data: {
 				account: loginInfo.account,
 				password: loginInfo.password
@@ -96,13 +98,30 @@
 	};
 
 	/**
+	 * 获取版本信息
+	 **/
+	owner.getAppVersion = function(successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'appVersion', {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+
+	/**
 	 * 获取校验码
 	 **/
 	owner.getCode = function(mobile, type, callback) {
 		if (!checkMobile(mobile)) {
 			return callback('手机号码不正确');
 		}
-		mui.ajax('http://120.24.228.100:8080/copartner/code/send', {
+		mui.ajax(owner.apiURL + 'code/send', {
 			data: {
 				mobile: mobile,
 				type: type
@@ -145,12 +164,17 @@
 		if (accountInfo.code.length <= 0) {
 			return callback('校验码不能为空');
 		}
+		if (accountInfo.name.length < 2 || accountInfo.name.length  > 15) {
+			return callback('姓名必须是2-15个字符');
+		}
 
-		mui.ajax('http://120.24.228.100:8080/copartner/account/signup', {
+		mui.ajax(owner.apiURL + 'account/signup', {
 			data: {
 				account: accountInfo.account,
 				password: accountInfo.password,
-				code: accountInfo.code
+				code: accountInfo.code,
+				name: accountInfo.name,
+				roleId: accountInfo.roleId
 			},
 			dataType: 'json',
 			type: 'post',
@@ -197,7 +221,7 @@
 			return callback('确认密码和密码不匹配');
 		}
 
-		mui.ajax('http://120.24.228.100:8080/copartner/account/password/reset', {
+		mui.ajax(owner.apiURL + 'account/password/reset', {
 			data: {
 				account: accountInfo.account,
 				password: accountInfo.password,
@@ -225,7 +249,7 @@
 	};
 
 	owner.getProfile = function(successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/user/profile', {
+		mui.ajax(owner.apiURL + 'user/profile', {
 			dataType: 'json',
 			type: 'get',
 			timeout: 5000,
@@ -284,7 +308,7 @@
 			return callback('简介不能大于100个字符');
 		}
 
-		mui.ajax('http://120.24.228.100:8080/copartner/user/profile', {
+		mui.ajax(owner.apiURL + 'user/profile', {
 			data: profileInfo,
 			dataType: 'json',
 			type: 'post',
@@ -353,7 +377,7 @@
 			return callback('融资要求不能大于200个字符');
 		}
 
-		mui.ajax('http://120.24.228.100:8080/copartner/financing', {
+		mui.ajax(owner.apiURL + 'financing', {
 			data: {
 				projectName: rzInfo.projectName,
 				locationId: rzInfo.locationId,
@@ -390,7 +414,7 @@
 	};
 	owner.listUserRongzis = function(offset, limit, from, to, successCallback, errorCallback) {
 		var userId = owner.getUserId();
-		mui.ajax('http://120.24.228.100:8080/copartner/user/' + userId + '/financings', {
+		mui.ajax(owner.apiURL + 'user/' + userId + '/financings', {
 			data: {
 				offset: offset,
 				limit: limit,
@@ -415,7 +439,7 @@
 	};
 
 	owner.listRongzis = function(offset, limit, from, to, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/financings', {
+		mui.ajax(owner.apiURL + 'financings', {
 			data: {
 				offset: offset,
 				limit: limit,
@@ -483,7 +507,7 @@
 			return callback('回报不能大于50个字符');
 		}
 
-		mui.ajax('http://120.24.228.100:8080/copartner/demand', {
+		mui.ajax(owner.apiURL + 'demand', {
 			data: {
 				type: 1,
 				projectName: rzInfo.projectName,
@@ -521,7 +545,7 @@
 
 	owner.listUserRongzhis = function(offset, limit, from, to, successCallback, errorCallback) {
 		var userId = owner.getUserId();
-		mui.ajax('http://120.24.228.100:8080/copartner/user/' + userId + '/demands', {
+		mui.ajax(owner.apiURL + 'user/' + userId + '/demands', {
 			data: {
 				offset: offset,
 				limit: limit,
@@ -546,7 +570,7 @@
 	};
 
 	owner.listRongzhis = function(offset, limit, from, to, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/demands', {
+		mui.ajax(owner.apiURL + 'demands', {
 			data: {
 				offset: offset,
 				limit: limit,
@@ -615,7 +639,7 @@
 			return callback('实施条件不能大于200个字符');
 		}
 
-		mui.ajax('http://120.24.228.100:8080/copartner/project', {
+		mui.ajax(owner.apiURL + 'project', {
 			data: {
 				name: projectInfo.name,
 				logo: projectInfo.logo,
@@ -653,7 +677,7 @@
 
 	owner.listUserProjects = function(offset, limit, from, to, successCallback, errorCallback) {
 		var userId = owner.getUserId();
-		mui.ajax('http://120.24.228.100:8080/copartner/user/' + userId + '/projects', {
+		mui.ajax(owner.apiURL + 'user/' + userId + '/projects', {
 			data: {
 				offset: offset,
 				limit: limit,
@@ -678,7 +702,7 @@
 	};
 
 	owner.listProjects = function(offset, limit, from, to, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/projects', {
+		mui.ajax(owner.apiURL + 'projects', {
 			data: {
 				offset: offset,
 				limit: limit,
@@ -778,7 +802,7 @@
 	 * 获取news列表
 	 **/
 	owner.listnews = function(newsType, keyword, offset, limit, from, to, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/news', {
+		mui.ajax(owner.apiURL + 'news', {
 			data: {
 				type: newsType,
 				keyword: keyword,
@@ -802,7 +826,7 @@
 	 * 获取news详情
 	 **/
 	owner.getNewsByGuid = function(guid, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/news/' + guid, {
+		mui.ajax(owner.apiURL + 'news/' + guid, {
 			dataType: 'json',
 			type: 'get',
 			timeout: 5000,
@@ -835,7 +859,7 @@
 	 **/
 	owner.listContents = function(contentType, keyword, offset, limit, from, to, successCallback, errorCallback) {
 		console.log(keyword + offset + '-' + offset + '-' + from + '-' + to);
-		mui.ajax('http://120.24.228.100:8080/copartner/contents', {
+		mui.ajax(owner.apiURL + 'contents', {
 			data: {
 				type: contentType,
 				keyword: keyword,
@@ -859,7 +883,7 @@
 	 * 获取content详情
 	 **/
 	owner.getContentByGuid = function(guid, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/content/' + guid, {
+		mui.ajax(owner.apiURL + 'content/' + guid, {
 			dataType: 'json',
 			type: 'get',
 			timeout: 5000,
@@ -891,7 +915,7 @@
 	 * 获取course列表
 	 **/
 	owner.listcourses = function(isFree, keyword, offset, limit, from, to, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/courses', {
+		mui.ajax(owner.apiURL + 'courses', {
 			data: {
 				isFree: isFree,
 				keyword: keyword,
@@ -915,7 +939,7 @@
 	 * 获取course详情
 	 **/
 	owner.getCourseByGuid = function(guid, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/course/' + guid, {
+		mui.ajax(owner.apiURL + 'course/' + guid, {
 			dataType: 'json',
 			type: 'get',
 			timeout: 5000,
@@ -979,7 +1003,7 @@
 			return callback('简介不能大于100个字符');
 		}
 
-		mui.ajax('http://120.24.228.100:8080/copartner/course', {
+		mui.ajax(owner.apiURL + 'course', {
 			data: courseInfo,
 			dataType: 'json',
 			type: 'post',
@@ -1007,7 +1031,7 @@
 	 * 获取tutor列表
 	 **/
 	owner.listTutors = function(keyword, offset, limit, from, to, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/tutors', {
+		mui.ajax(owner.apiURL + 'tutors', {
 			data: {
 				keyword: keyword,
 				offset: offset,
@@ -1030,7 +1054,7 @@
 	 * 获取tutor详情
 	 **/
 	owner.getTutorByGuid = function(guid, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/tutor/' + guid, {
+		mui.ajax(owner.apiURL + 'tutor/' + guid, {
 			dataType: 'json',
 			type: 'get',
 			timeout: 5000,
@@ -1064,7 +1088,7 @@
 	 * 获取question列表
 	 **/
 	owner.listQuestions = function(keyword, offset, limit, from, to, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/questions', {
+		mui.ajax(owner.apiURL + 'questions', {
 			data: {
 				keyword: keyword,
 				offset: offset,
@@ -1085,7 +1109,7 @@
 	};
 
 	owner.listQuestionCategories = function(successCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/question/categories', {
+		mui.ajax(owner.apiURL + 'question/categories', {
 			dataType: 'json',
 			type: 'get',
 			timeout: 5000,
@@ -1135,7 +1159,7 @@
 			return callback('内容不能大于200个字符');
 		}
 
-		mui.ajax('http://120.24.228.100:8080/copartner/question', {
+		mui.ajax(owner.apiURL + 'question', {
 			data: questionInfo,
 			dataType: 'json',
 			type: 'post',
@@ -1163,7 +1187,7 @@
 	 * 获取course详情
 	 **/
 	owner.getQuestionByGuid = function(guid, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/question/' + guid, {
+		mui.ajax(owner.apiURL + 'question/' + guid, {
 			dataType: 'json',
 			type: 'get',
 			timeout: 5000,
@@ -1178,7 +1202,7 @@
 
 
 	owner.searchFriends = function(keyword, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/user/friends/search?keyword=' + keyword, {
+		mui.ajax(owner.apiURL + 'user/friends/search?keyword=' + keyword, {
 			dataType: 'json',
 			type: 'get',
 			timeout: 5000,
@@ -1192,7 +1216,7 @@
 	};
 
 	owner.addFriend = function(friendId, successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/user/friend/' + friendId, {
+		mui.ajax(owner.apiURL + 'user/friend/' + friendId, {
 			dataType: 'json',
 			type: 'post',
 			timeout: 5000,
@@ -1206,7 +1230,7 @@
 	};
 
 	owner.listFriends = function(successCallback, errorCallback) {
-		mui.ajax('http://120.24.228.100:8080/copartner/user/friends', {
+		mui.ajax(owner.apiURL + 'user/friends', {
 			dataType: 'json',
 			type: 'get',
 			timeout: 5000,
