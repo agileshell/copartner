@@ -50,7 +50,6 @@ import com.insoul.copartner.util.ValidationUtil;
 import com.insoul.copartner.util.mail.MailUtil;
 import com.insoul.copartner.util.sms.SMSUtil;
 import com.insoul.copartner.vo.IndustryDomainVO;
-import com.insoul.copartner.vo.LocationVO;
 import com.insoul.copartner.vo.ResumeVO;
 import com.insoul.copartner.vo.StartupRoleVO;
 import com.insoul.copartner.vo.StartupStatusVO;
@@ -122,7 +121,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         }
 
         Date now = new Date();
-        user.setName(account);
+        user.setName(StringUtils.isNotBlank(userAddRequest.getName()) ? userAddRequest.getName() : account);
+        user.setRoleId(userAddRequest.getRoleId());
         user.setClientIp(getIp());
         user.setCreated(now);
         String salt = PasswordUtil.genSalt();
@@ -447,22 +447,17 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         userDetailVO.setIsEmailVerified(user.getIsEmailVerified());
         userDetailVO.setImId(user.getImId());
 
-        if (null != user.getLocationId()) {
-            Location location = locationDao.get(user.getLocationId());
-            if (null != location) {
-                LocationVO locationVO = new LocationVO();
-                locationVO.setLocationId(location.getId());
-                locationVO.setParentId(location.getParentId());
-                locationVO.setName(location.getName());
-                locationVO.setPinyin(location.getPinyin());
-                locationVO.setLatitude(location.getLatitude());
-                locationVO.setLongitude(location.getLongitude());
-
-                userDetailVO.setLocation(locationVO);
-
-                userDetailVO.setFullLocation(user.getFullLocation());
-            }
+        long roleId = user.getRoleId();
+        if (roleId == 1) {
+            userDetailVO.setRoleName("创业者");
+        } else if (roleId == 2) {
+            userDetailVO.setRoleName("投资人");
+        } else {
+            userDetailVO.setRoleName("导师");
         }
+
+        userDetailVO.setLocationId(user.getLocationId());
+        userDetailVO.setFullLocation(user.getFullLocation());
 
         if (null != user.getStartupStatusId()) {
             StartupStatus startupStatus = startupStatusDao.get(user.getStartupStatusId());

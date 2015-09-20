@@ -10,6 +10,8 @@ public class UserAddRequest implements Serializable {
 
     private static final long serialVersionUID = -8218298663013977302L;
 
+    private String name;
+
     @NotBlank
     @StringPattern(regexp = "^(1[0-9]{10})|([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)"
             + "|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")
@@ -19,6 +21,16 @@ public class UserAddRequest implements Serializable {
     private String password;
 
     private String code;
+
+    private Long roleId = 1L;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getAccount() {
         return account;
@@ -42,6 +54,14 @@ public class UserAddRequest implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
 }

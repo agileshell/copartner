@@ -21,7 +21,7 @@ public class UserDetailVO implements Serializable {
 
     private String avatar;
 
-    private LocationVO location;
+    private Long locationId;
 
     private String fullLocation;
 
@@ -48,6 +48,10 @@ public class UserDetailVO implements Serializable {
     private Set<ResumeVO> workResumes;
 
     private Long imId;
+
+    private Long roleId;
+
+    private String roleName;
 
     public Long getUserId() {
         return userId;
@@ -105,12 +109,12 @@ public class UserDetailVO implements Serializable {
         this.avatar = avatar;
     }
 
-    public LocationVO getLocation() {
-        return location;
+    public Long getLocationId() {
+        return locationId;
     }
 
-    public void setLocation(LocationVO location) {
-        this.location = location;
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
     }
 
     public String getFullLocation() {
@@ -215,6 +219,22 @@ public class UserDetailVO implements Serializable {
 
     public void setImId(Long imId) {
         this.imId = imId;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
 }
