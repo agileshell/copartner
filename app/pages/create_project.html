@@ -312,7 +312,7 @@
 
 				function upload(f) {
 					var wt = plus.nativeUI.showWaiting();
-					var task = plus.uploader.createUpload('http://123.57.55.59:8080/image?needThumbnail=true', {
+					var task = plus.uploader.createUpload('http://123.57.55.59:8080/image', {
 							method: "POST"
 						},
 						function(t, status) { //上传完成
@@ -335,6 +335,7 @@
 					task.addFile(f.fullPath, {
 						key: 'image'
 					});
+					task.addData("needThumbnail", "true");
 					task.start();
 				}
 			});
