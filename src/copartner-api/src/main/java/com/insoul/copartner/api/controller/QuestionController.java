@@ -69,7 +69,7 @@ public class QuestionController extends BaseController {
 
     @RequestMapping(value = "/question/{questionId}/answer", method = RequestMethod.POST)
     @ResponseBody
-    private ResponseEntity<Map<String, Object>> answer(@PathVariable Long questionId, String content) throws CException {
+    public ResponseEntity<Map<String, Object>> answer(@PathVariable Long questionId, String content) throws CException {
         if (questionId <= 0 || StringUtils.isBlank(content)) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
