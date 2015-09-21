@@ -90,7 +90,6 @@
 					main = null;
 				var showMenu = false;
 				mui.init({
-					swipeBack: false,
 					statusBarBackground: '#f7f7f7'
 				});
 				mui.plusReady(function() {
@@ -240,6 +239,8 @@
 						return;
 					}
 					if (!showMenu) {
+						mui.fire(menu, 'mui.view.beforeshow', {});
+
 						//侧滑菜单处于隐藏状态，则立即显示出来；
 						isInTransition = true;
 						menu.setStyle({
@@ -319,6 +320,7 @@
 				mui.back = function(event) {
 					backButtonPress++;
 					if (backButtonPress > 1) {
+						app.setState({});
 						plus.runtime.quit();
 					} else {
 						plus.nativeUI.toast('再按一次退出应用');

@@ -10,22 +10,65 @@
 
 		<link rel="stylesheet" href="css/mui.min.css">
 		<style type="text/css">
-			body, .mui-content{
-			  	background-color: #333;
-			  	color:#fff;
-			  }
+			body,
+			.mui-content {
+				background-color: #333;
+				color: #fff;
+			}
+			.user-avatar {
+				border-radius: 50%;
+				width: 65px;
+			}
+			.hide {
+				display: none;
+			}
 		</style>
 	</head>
 	<body>
-		<div class="mui-content">
-			<p style="margin: 100px 20px;">
-				<button id="logout" type="button" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px;">退出</button>
-				<button id="update-version" type="button" class="mui-btn mui-btn-success mui-btn-block" style="padding: 5px 20px;">检查更新</button>
+		<div class="mui-content" style="text-align: center;">
+			<div id="logon" style="margin-top: 50px;" class="hide">
+				<p>
+					<img id="user-avatar" src="images/blank.jpg" class="user-avatar">
+				</p>
+				<p style="margin: 10px;">
+					<span id="user-name" style="font-size: 18px; color: white;"></span>
+				</p>
+				<p style="margin: 0px 20px;">
+					<button id="logout" type="button" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px;">退出</button>
+				</p>
+			</div>
+			<div id="unlogon" style="margin-top: 50px;" class="hide">
+				<p style="margin: 0px 20px;">
+					<button id="login" type="button" class="mui-btn mui-btn-primary mui-btn-block" style="padding: 5px;">登录</button>
+				</p>
+			</div>
+			<p style="margin: 0px 20px;">
+				<button id="update-version" type="button" class="mui-btn mui-btn-success mui-btn-block" style="padding: 5px;">检查更新</button>
 			</p>
 		</div>
 		<script src="js/mui.min.js"></script>
 		<script src="js/app.js"></script>
 		<script type="text/javascript" charset="utf-8">
+		(function() {
+			var loginPage = null, profilePage = null;
+			document.addEventListener('mui.view.beforeshow', function(event) {
+				var state = app.getState();
+				console.log(JSON.stringify(state));
+				//检查 "登录状态"
+				if (state.userId) {
+					document.getElementById('user-avatar').src = state.avatar;
+					document.getElementById('user-name').innerText = state.name;
+					document.getElementById("logon").classList.remove('hide');
+					document.getElementById("unlogon").classList.add('hide');
+				} else {
+					document.getElementById("logon").classList.add('hide');
+					document.getElementById("unlogon").classList.remove('hide');
+				}
+			});
+			//重写back
+			mui.back = function(event) {
+				//empty
+			};
 			/**
 			 * 关闭侧滑菜单
 			 */
@@ -68,11 +111,29 @@
 					};
 				app.getAppVersion(successCallback, errorCallback);
 			});
-
+			document.getElementById("login").addEventListener("tap", function() {
+				close();
+				if (!loginPage) {
+					loginPage = plus.webview.getWebviewById('login');
+				}
+				loginPage.show();
+				return;
+			});
 			document.getElementById("logout").addEventListener("tap", function() {
 				close();
 				app.setState({});
 			});
+			document.getElementById("user-avatar").addEventListener("tap", function() {
+				close();
+				if (!profilePage) {
+					profilePage = plus.webview.getWebviewById('profile');
+				}
+				mui.fire(profilePage, 'mui.view.beforeshow', {
+					needReflush: false
+				});
+				profilePage.show();
+			});
+		})();
 		</script>
 	</body>
 </html>

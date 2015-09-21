@@ -126,6 +126,7 @@
 		<script type="text/javascript">
 			var titleEl = document.getElementById("c-article-title"),
 				articleEl = document.getElementById("c-article-article"),
+				nameEl = document.getElementById("user-name"),
 				avatarEl = document.getElementById("user-avatar"),
 				categoryEl = document.getElementById("category"),
 				createdEl = document.getElementById("created");
@@ -136,7 +137,6 @@
 				receiveSource = document.getElementById("receive-template").innerText,
 				receiveTemplate = Handlebars.compile(receiveSource);
 			mui.init({
-				swipeBack: true, //启用右滑关闭功能
 				beforeback: function() {
 					setTimeout(function() {
 						titleEl.innerText = '';
@@ -158,11 +158,11 @@
 						return;
 					}
 					document.body.classList.add('c-overlay');
-					
 					var success = function(response) {
 							question = response.body;
 							titleEl.innerText = question.title;
 							articleEl.innerText = question.content;
+							nameEl.innerText = question.questioner.name;
 							avatarEl.src = question.questioner.avatar;
 							categoryEl.innerText = question.categoryName;
 							createdEl.innerText = question.created;

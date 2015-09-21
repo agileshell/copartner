@@ -102,17 +102,34 @@
 		categoryName.value = '';
 		tutorId.value = '';
 		tutorName.value = '';
-		var categories = [];
+		var categories = [], tutors = [];
 		(function($, doc) {
 			app.listQuestionCategories(function(response) {
 				categories = response.body;
-				console.log(JSON.stringify(categories));
 				var categoryPicker = new $.PopPicker();
 				categoryPicker.setData(categories);
 				categoryName.addEventListener('tap', function(event) {
 					categoryPicker.show(function(items) {
 						categoryId.value = items[0].value;
 						categoryName.value = items[0].text;
+					});
+				}, false);
+			})
+			app.listSelectTutors(function(response) {
+				tutorTmps = response.body;
+				for (var i = 0, len = tutorTmps.length; i < len; i++) {
+					var tutor = {
+						'text': tutorTmps[i].name,
+						'value': tutorTmps[i].tutorId
+					}
+					tutors[i] = tutor;
+				}
+				var tutorPicker = new $.PopPicker();
+				tutorPicker.setData(tutors);
+				tutorName.addEventListener('tap', function(event) {
+					tutorPicker.show(function(items) {
+						tutorId.value = items[0].value;
+						tutorName.value = items[0].text;
 					});
 				}, false);
 			})
@@ -153,17 +170,6 @@
 						}, 200);
 					});
 				};
-				var tutorPicker = new $.PopPicker();
-				tutorPicker.setData([{
-					value: '2',
-					text: 'Pointer'
-				}]);
-				tutorName.addEventListener('tap', function(event) {
-					tutorPicker.show(function(items) {
-						tutorId.value = items[0].value;
-						tutorName.value = items[0].text;
-					});
-				}, false);
 				permissionSwitch.addEventListener('toggle', function(event) {
 					permissionEl.value = event.detail.isActive ? '1' : '2';
 				});

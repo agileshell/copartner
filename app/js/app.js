@@ -44,6 +44,8 @@
 						var state = owner.getState();
 						state.userId = data.body.userId;
 						state.imId = data.body.imId;
+						state.name = data.body.name;
+						state.avatar = data.body.avatar;
 						owner.setState(state);
 						return callback();
 					} else {
@@ -64,7 +66,6 @@
 	 **/
 	owner.logingByAuth = function(authUserInfo, callback) {
 		//TODO
-		var state = owner.getState();
 		var state = owner.getState();
 		state.userId = 1;
 		state.imId = 1;
@@ -186,6 +187,8 @@
 						var state = owner.getState();
 						state.userId = data.body.userId;
 						state.imId = data.body.imId;
+						state.name = data.body.name;
+						state.avatar = data.body.avatar;
 						owner.setState(state);
 						return callback();
 					} else {
@@ -1050,6 +1053,16 @@
 			}
 		})
 	};
+    owner.listSelectTutors = function(successCallback) {
+		mui.ajax(owner.apiURL + 'tutors', {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			}
+		})
+	};
 	/**
 	 * 获取tutor详情
 	 **/
@@ -1073,12 +1086,17 @@
 		var tutorInfo = {};
 		tutorInfo.id = tutor.tutorId;
 		tutorInfo.name = tutor.name;
-		tutorInfo.domainId = tutor.domain.id;
-		tutorInfo.domainName = tutor.domain.name;
 		if (!tutor.avatar) {
 			tutorInfo.avatar = 'images/blank.jpg';
 		} else {
 			tutorInfo.avatar = tutor.avatar;
+		}
+		if (tutor.domain != null) {
+			tutorInfo.domainId = tutor.domain.id;
+			tutorInfo.domainName = tutor.domain.name;
+		} else {
+			tutorInfo.domainId = 0;
+			tutorInfo.domainName = '';
 		}
 
 		return tutorInfo;
