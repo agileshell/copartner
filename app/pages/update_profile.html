@@ -409,7 +409,6 @@
 								var data = JSON.parse(t.responseText);
 								if (data.status == 'SUCCEED') {
 									plus.nativeUI.toast("上传成功");
-									console.log(data.body.image_path);
 									doc.getElementById("avatar").value = data.body.image_path;
 								} else {
 									plus.nativeUI.toast("上传失败, " + app.ajaxFailedHandler(data.body.error.code));
