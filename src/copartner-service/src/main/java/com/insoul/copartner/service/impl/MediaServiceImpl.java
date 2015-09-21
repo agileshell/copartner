@@ -12,6 +12,7 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 
 import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.Thumbnails.Builder;
 import net.coobird.thumbnailator.geometry.Positions;
 
 import org.springframework.stereotype.Service;
@@ -32,17 +33,29 @@ public class MediaServiceImpl extends BaseServiceImpl implements IMediaService {
 
     @Override
     public Map<String, String> uploadImage(MultipartFile imageFile, boolean needThumbnail) throws CException {
+        String fileType = FileUtil.getFileType(imageFile.getOriginalFilename());
+
         InputStream in = null;
         if (needThumbnail) {
-            ByteArrayOutputStream out;
             try {
                 BufferedImage image = ImageIO.read(imageFile.getInputStream());
-                int min = Math.min(image.getHeight(), image.getWidth());
-                out = new ByteArrayOutputStream();
+                int imageWidth = image.getWidth();
+                int imageHeitht = image.getHeight();
                 int a = CommonConstant.IMAGE_STANDARD;
-                Thumbnails.of(imageFile.getInputStream()).scale(a * 1.0f / min).sourceRegion(Positions.CENTER, a, a)
-                        .size(a, a).keepAspectRatio(false).toOutputStream(out);
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                Builder<BufferedImage> builder = null;
+                if (1.0f != (float) imageWidth / imageHeitht) {
+                    if (imageWidth > imageHeitht) {
+                        image = Thumbnails.of(imageFile.getInputStream()).height(a).asBufferedImage();
+                    } else {
+                        image = Thumbnails.of(imageFile.getInputStream()).width(a).asBufferedImage();
+                    }
+                    builder = Thumbnails.of(image).sourceRegion(Positions.CENTER, a, a).size(a, a);
+                } else {
+                    builder = Thumbnails.of(image).size(a, a);
+                }
 
+                builder.outputFormat(fileType).toOutputStream(out);
                 in = new ByteArrayInputStream(out.toByteArray());
             } catch (Exception e) {
                 throw CExceptionFactory.getException(CException.class, ResponseCode.FILE_UPLOAD_ERROR);
@@ -68,7 +81,6 @@ public class MediaServiceImpl extends BaseServiceImpl implements IMediaService {
             }
         }
 
-        String fileType = FileUtil.getFileType(imageFile.getOriginalFilename());
         String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
         String path = CDNUtil.uploadFile(in, fileName);
 
