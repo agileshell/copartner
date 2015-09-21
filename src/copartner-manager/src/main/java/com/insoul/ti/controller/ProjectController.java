@@ -23,6 +23,7 @@ import com.insoul.ti.WebBase;
 import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.ProjectListRequest;
 import com.insoul.ti.req.ViewRequest;
+import com.insoul.ti.shiro.Permission;
 import com.insoul.ti.vo.ProjectVO;
 
 /**
@@ -33,6 +34,7 @@ import com.insoul.ti.vo.ProjectVO;
  */
 @Controller
 @RequestMapping("/project")
+@Permission("authc")
 public class ProjectController extends WebBase {
 
     private static final String PROJECT_LIST = "project_list";

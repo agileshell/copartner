@@ -10,11 +10,11 @@ import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.shiro.SecurityUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -47,7 +47,6 @@ import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.domain.Admin;
 import com.insoul.copartner.domain.StartupRole;
 import com.insoul.ti.req.ViewRequest;
-import com.insoul.ti.utils.Constants;
 import com.insoul.ti.utils.Utils;
 
 /**
@@ -151,8 +150,6 @@ public class WebBase implements ServletContextAware {
 		mv.addObject("cdn", "/assets/");
         mv.addObject("cdnDomain", GlobalProperties.CDN_DOMAIN);
 		mv.addObject("viewname", viewName);
-		HttpSession session = request.getSession();
-		mv.addObject(Constants.ADMIN_ONLINE, session.getAttribute(Constants.ADMIN_ONLINE));
 		return mv;
 	}
 
@@ -162,8 +159,6 @@ public class WebBase implements ServletContextAware {
         mv.addObject("cdnDomain", GlobalProperties.CDN_DOMAIN);
 		mv.addObject("utils", new Utils());
 		mv.addObject("viewname", StringUtils.defaultIfBlank(req.getV(), viewName));
-		HttpSession session = request.getSession();
-		mv.addObject(Constants.ADMIN_ONLINE, session.getAttribute(Constants.ADMIN_ONLINE));
 		return mv;
 	}
 	
@@ -197,8 +192,7 @@ public class WebBase implements ServletContextAware {
 	}
 	
 	protected long getAdminId() {
-		HttpSession session = request.getSession();
-		Object admin = session.getAttribute(Constants.ADMIN_ONLINE);
+		Object admin = SecurityUtils.getSubject().getPrincipal();
 		if (admin == null) {
 			return 0L;
 		}

@@ -19,6 +19,7 @@ import com.insoul.ti.WebBase;
 import com.insoul.ti.req.StatusListRequest;
 import com.insoul.ti.req.StatusRequest;
 import com.insoul.ti.req.ViewRequest;
+import com.insoul.ti.shiro.Permission;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -28,6 +29,7 @@ import com.insoul.ti.req.ViewRequest;
  */
 @Controller
 @RequestMapping("/status")
+@Permission("authc")
 public class StatusController extends WebBase {
 
     private static final String STATUS_EDIT = "status_edit";

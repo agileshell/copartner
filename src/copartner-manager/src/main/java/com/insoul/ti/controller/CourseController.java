@@ -26,6 +26,7 @@ import com.insoul.ti.req.CourseListRequest;
 import com.insoul.ti.req.CourseRequest;
 import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.ViewRequest;
+import com.insoul.ti.shiro.Permission;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -35,6 +36,7 @@ import com.insoul.ti.req.ViewRequest;
  */
 @Controller
 @RequestMapping("/course")
+@Permission("authc")
 public class CourseController extends WebBase {
 
 	private static final String COURSE_EDIT = "course_edit";

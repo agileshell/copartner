@@ -22,6 +22,7 @@ import com.insoul.ti.WebBase;
 import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.ProjectListRequest;
 import com.insoul.ti.req.ViewRequest;
+import com.insoul.ti.shiro.Permission;
 import com.insoul.ti.vo.DemandVO;
 
 /**
@@ -32,6 +33,7 @@ import com.insoul.ti.vo.DemandVO;
  */
 @Controller
 @RequestMapping("/demand")
+@Permission("authc")
 public class DemandController extends WebBase {
 
     private static final String DEMAND_DETAIL = "demand_detail";

@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="navbar navbar-fixed-top bs-docs-nav" role="banner">
 	<div class="conjtainer">
@@ -21,10 +22,12 @@
 			<ul class="nav navbar-nav pull-right">
 				<li class="dropdown pull-right">
 					<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-					<i class="icon-user"></i> ${admin_online.name} <b class="caret"></b>
+					<i class="icon-user"></i> <shiro:principal property="name"/> <b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a href="#"><i class="icon-cogs"></i>设置</a></li>
+						<shiro:hasRole name="sadmin">
+							<li><a href="#"><i class="icon-cogs"></i>设置</a></li>
+						</shiro:hasRole>
 						<li><a href="/logout"><i class="icon-off"></i>退出</a></li>
 					</ul>
 				</li>

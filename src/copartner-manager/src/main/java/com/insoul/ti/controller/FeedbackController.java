@@ -15,6 +15,7 @@ import com.insoul.copartner.domain.Feedback;
 import com.insoul.ti.WebBase;
 import com.insoul.ti.req.FeedbackListRequest;
 import com.insoul.ti.req.PageQuery;
+import com.insoul.ti.shiro.Permission;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -24,6 +25,7 @@ import com.insoul.ti.req.PageQuery;
  */
 @Controller
 @RequestMapping("/feedback")
+@Permission("authc")
 public class FeedbackController extends WebBase {
 
 	private static final String FEEDBACK_LIST = "feedback_list";

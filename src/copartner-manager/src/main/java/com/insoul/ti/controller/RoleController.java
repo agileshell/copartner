@@ -19,6 +19,7 @@ import com.insoul.ti.WebBase;
 import com.insoul.ti.req.RoleListRequest;
 import com.insoul.ti.req.RoleRequest;
 import com.insoul.ti.req.ViewRequest;
+import com.insoul.ti.shiro.Permission;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -28,6 +29,7 @@ import com.insoul.ti.req.ViewRequest;
  */
 @Controller
 @RequestMapping("/role")
+@Permission("authc")
 public class RoleController extends WebBase {
 
     private static final String ROLE_EDIT = "role_edit";

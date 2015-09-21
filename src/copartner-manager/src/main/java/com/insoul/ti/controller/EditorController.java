@@ -26,6 +26,7 @@ import com.insoul.copartner.constant.GlobalProperties;
 import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.FileUtil;
 import com.insoul.ti.WebBase;
+import com.insoul.ti.shiro.Permission;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -35,6 +36,7 @@ import com.insoul.ti.WebBase;
  */
 @Controller
 @RequestMapping("/editor")
+@Permission("authc")
 public class EditorController extends WebBase {
 
     @RequestMapping(value = "file_upload", method = RequestMethod.POST)

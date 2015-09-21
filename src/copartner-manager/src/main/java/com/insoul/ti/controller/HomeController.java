@@ -3,14 +3,17 @@ package com.insoul.ti.controller;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.insoul.copartner.dao.criteria.UserCriteria;
@@ -19,8 +22,10 @@ import com.insoul.copartner.domain.User;
 import com.insoul.copartner.util.IpUtil;
 import com.insoul.copartner.util.PasswordUtil;
 import com.insoul.ti.WebBase;
+import com.insoul.ti.req.AddAdminRequest;
 import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.UserListRequest;
+import com.insoul.ti.shiro.Permission;
 import com.insoul.ti.utils.Constants;
 
 /**
@@ -33,20 +38,31 @@ import com.insoul.ti.utils.Constants;
 @RequestMapping("/")
 public class HomeController extends WebBase {
 
-    private static final String DEFAULT_ADMIN_SALT = "68742f";
+    @RequestMapping("/unauthorized")
+    @Permission("anon")
+    private ModelAndView unauthorized() {
+        ModelAndView mv = createModelView("error");
+        mv.addObject("status", 100);
+        mv.addObject("message", "授权认证失败!");
+        return mv;
+    }
 
     @RequestMapping("/login")
+    @Permission("anon")
     public ModelAndView login() {
         ModelAndView mv = createModelView("login");
         return mv;
     }
 
     @RequestMapping("/logout")
+//    @Permission("logout")
+    @Permission("anon")
     public ModelAndView logout() {
-        HttpSession session = request.getSession(true);
-        session.invalidate();
-        ModelAndView mv = createModelView("login");
-        return mv;
+        Subject subjects = SecurityUtils.getSubject();
+        if (subjects != null) {
+            subjects.logout();
+        }
+        return new ModelAndView("redirect:/login");
     }
 
     private ModelAndView loginError(String errorMessage) {
@@ -56,29 +72,35 @@ public class HomeController extends WebBase {
         return mv;
     }
 
+    @RequestMapping("/add_admin_action")
+    @Permission("authc")
+    public ModelAndView addAdmin(AddAdminRequest request) {
+        return null;
+    }
+
     @RequestMapping("/login_action")
-    public ModelAndView login_action() {
-        String loginName = request.getParameter("name");
-        String password = request.getParameter("password");
-        if (StringUtils.isBlank(loginName) || StringUtils.isBlank(password)) {
+    @Permission("anon")
+    public ModelAndView login_action(@RequestParam(value = "name") String name, @RequestParam(value = "password") String password) {
+        if (StringUtils.isBlank(name) || StringUtils.isBlank(password)) {
             return loginError("请输入用户名密码!!!");
         }
         Admin admin = null;
         try {
-            admin = adminDAO.queryAdmin(loginName);
+            admin = adminDAO.queryAdmin(name);
             if (admin == null) {
                 return loginError("用户不存在!!!");
             }
         } catch (Throwable e) {
             return loginError("用户不存在!!!");
         }
-        if (StringUtils.equals(PasswordUtil.encodePassword(password, DEFAULT_ADMIN_SALT), admin.getPassword())) {
+        if (StringUtils.equals(PasswordUtil.encodePassword(password, Constants.DEFAULT_ADMIN_SALT), admin.getPassword())) {
             try {
                 admin.setLastLogin(new Date());
                 admin.setLastIp(IpUtil.ip2Long(IpUtil.getIpAddr(request)));
                 adminDAO.update(admin);
-                HttpSession session = request.getSession();
-                session.setAttribute(Constants.ADMIN_ONLINE, admin);
+                UsernamePasswordToken token = new UsernamePasswordToken(name, password);
+                Subject subject = SecurityUtils.getSubject();
+                subject.login(token);
                 return new ModelAndView("redirect:/home");
             } catch (Throwable e) {
                 return loginError("登录异常!!!");
@@ -88,6 +110,7 @@ public class HomeController extends WebBase {
     }
 
     @RequestMapping("/home")
+    @Permission("authc")
     public ModelAndView home(@Valid UserListRequest request, BindingResult result) {
         ModelAndView mv = createModelView("home", request);
         PageQuery query = request.init().getQuery();

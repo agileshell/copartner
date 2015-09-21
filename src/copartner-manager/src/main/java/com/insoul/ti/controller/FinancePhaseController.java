@@ -19,6 +19,7 @@ import com.insoul.ti.WebBase;
 import com.insoul.ti.req.FinancePhaseListRequest;
 import com.insoul.ti.req.FinancePhaseRequest;
 import com.insoul.ti.req.ViewRequest;
+import com.insoul.ti.shiro.Permission;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -28,6 +29,7 @@ import com.insoul.ti.req.ViewRequest;
  */
 @Controller
 @RequestMapping("/finaphase")
+@Permission("authc")
 public class FinancePhaseController extends WebBase {
 
 	private static final String PHASE_EDIT = "finaphase_edit";

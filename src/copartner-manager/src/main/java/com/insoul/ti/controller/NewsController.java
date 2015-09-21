@@ -26,6 +26,7 @@ import com.insoul.ti.req.NewsListRequest;
 import com.insoul.ti.req.NewsRequest;
 import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.ViewRequest;
+import com.insoul.ti.shiro.Permission;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -35,6 +36,7 @@ import com.insoul.ti.req.ViewRequest;
  */
 @Controller
 @RequestMapping("/news")
+@Permission("authc")
 public class NewsController extends WebBase {
 
     private static final String NEWS_EDIT = "news_edit";

@@ -9,9 +9,15 @@ import java.nio.charset.Charset;
  * @since 2015年7月5日 下午11:02:00
  */
 public interface Constants {
-	
-	String ADMIN_ONLINE = "admin_online";
+    
+    String SUPER_ADMIN = "1";
+    
+    String ADMIN = "2";
+    
+    String BACK_USER = "3";
 
+    String DEFAULT_ADMIN_SALT = "68742f";
+	
 	String MAIL_SPLIT = ";";
 	
 	int DEFAULT_PAGE_SIZE = 10;

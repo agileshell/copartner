@@ -31,6 +31,8 @@
 		"
 	default-lazy-init="false" default-autowire="byName">
 
+    <mvc:view-controller path="/" view-name="redirect:/login" />
+    
 	<bean class="com.insoul.ti.handler.GlobalExceptionHandler" />
 	<context:property-placeholder location="classpath*:config.properties" />
 	<aop:aspectj-autoproxy proxy-target-class="true" />
@@ -57,64 +59,8 @@
 		</property>
 	</bean>
 
-	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
 	
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/content/*"/>
-			<mvc:mapping path="/content/*/*"/>
-			<mvc:mapping path="/content/*/*/*"/>
-			<mvc:mapping path="/editor/*"/>
-			<mvc:mapping path="/editor/*/*"/>
-			<mvc:mapping path="/editor/*/*/*"/>
-			<mvc:mapping path="/feedback/*"/>
-			<mvc:mapping path="/feedback/*/*"/>
-			<mvc:mapping path="/feedback/*/*/*"/>
-			<mvc:mapping path="/industry/*"/>
-			<mvc:mapping path="/industry/*/*"/>
-			<mvc:mapping path="/industry/*/*/*"/>
-			<mvc:mapping path="/news/*"/>
-			<mvc:mapping path="/news/*/*"/>
-			<mvc:mapping path="/news/*/*/*"/>
-			<mvc:mapping path="/phase/*"/>
-			<mvc:mapping path="/phase/*/*"/>
-			<mvc:mapping path="/phase/*/*/*"/>
-			<mvc:mapping path="/project/*"/>
-			<mvc:mapping path="/project/*/*"/>
-			<mvc:mapping path="/project/*/*/*"/>
-			<mvc:mapping path="/role/*"/>
-			<mvc:mapping path="/role/*/*"/>
-			<mvc:mapping path="/role/*/*/*"/>
-			<mvc:mapping path="/status/*"/>
-			<mvc:mapping path="/status/*/*"/>
-			<mvc:mapping path="/status/*/*/*"/>
-			<mvc:mapping path="/user/*"/>
-			<mvc:mapping path="/user/*/*"/>
-			<mvc:mapping path="/user/*/*/*"/>
-			<mvc:mapping path="/comments/*"/>
-			<mvc:mapping path="/comments/*/*"/>
-			<mvc:mapping path="/comments/*/*/*"/>
-			<mvc:mapping path="/team/*"/>
-			<mvc:mapping path="/team/*/*"/>
-			<mvc:mapping path="/team/*/*/*"/>
-			<mvc:mapping path="/home"/>
-			<mvc:mapping path="/demand/*"/>
-			<mvc:mapping path="/demand/*/*"/>
-			<mvc:mapping path="/demand/*/*/*"/>
-			<mvc:mapping path="/finaphase/*"/>
-			<mvc:mapping path="/finaphase/*/*"/>
-			<mvc:mapping path="/finaphase/*/*/*"/>
-			<mvc:mapping path="/finance/*"/>
-			<mvc:mapping path="/finance/*/*"/>
-			<mvc:mapping path="/finance/*/*/*"/>
-			<mvc:mapping path="/question/**"/>
-			<ref bean="authInterceptor"/>
-		</mvc:interceptor>
-	</mvc:interceptors>
-	
-	<bean id="authInterceptor" class="com.insoul.ti.handler.AuthInterceptor"/>
-
 	<mvc:resources location="/WEB-INF/assets/images/" mapping="/assets/image/**" cache-period="315569262" />
 	<mvc:resources location="/WEB-INF/assets/js/" mapping="/assets/js/**" cache-period="315569261" />
 	<mvc:resources location="/WEB-INF/assets/css/" mapping="/assets/css/**" cache-period="315569263" />

@@ -19,6 +19,7 @@ import com.insoul.ti.WebBase;
 import com.insoul.ti.req.IndustryListRequest;
 import com.insoul.ti.req.IndustryRequest;
 import com.insoul.ti.req.ViewRequest;
+import com.insoul.ti.shiro.Permission;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -28,6 +29,7 @@ import com.insoul.ti.req.ViewRequest;
  */
 @Controller
 @RequestMapping("/industry")
+@Permission("authc")
 public class IndustryController extends WebBase {
 
     private static final String INDUSTRY_EDIT = "industry_edit";

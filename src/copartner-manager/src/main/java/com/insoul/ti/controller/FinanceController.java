@@ -23,6 +23,7 @@ import com.insoul.ti.WebBase;
 import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.ProjectListRequest;
 import com.insoul.ti.req.ViewRequest;
+import com.insoul.ti.shiro.Permission;
 import com.insoul.ti.vo.FinanceVO;
 
 /**
@@ -33,6 +34,7 @@ import com.insoul.ti.vo.FinanceVO;
  */
 @Controller
 @RequestMapping("/finance")
+@Permission("authc")
 public class FinanceController extends WebBase {
 
     private static final String FINANCE_DETAIL = "financing_detail";
