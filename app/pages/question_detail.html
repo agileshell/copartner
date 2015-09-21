@@ -66,7 +66,7 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 id="title" class="mui-title c-title">问题详情</h1>
 		</header>
-		<div class="mui-content">
+		<div class="mui-content" style="padding-bottom: 60px;">
 			<div class="c-article-content">
 				<h4 id="c-article-title" class="c-article-title"></h4>
 				<div class="c-article-meta">
@@ -77,20 +77,21 @@
 						<span id="created"><span>
 					</div>
 				</div>
-
 				<p class="border-bottom-1px"></p>
 				<div id="c-article-article" class="c-article-article">
 				</div>
 			</div>
 			<div id="message-history" class="message-history">
 			</div>
+		</div>
+		<nav class="mui-bar mui-bar-tab">
 			<div class="send-message">
-				<div class="send-msg-btn">发送</div>
+				<div id="send-msg" class="send-msg-btn">发送</div>
 				<div class="message-input-box">
-					<input name="content" type="text" class="message-input" placeholder="输入消息内容">
+					<input id="reply-content" name="content" type="text" class="message-input" placeholder="输入消息内容">
 				</div>
 			</div>
-		</div>
+		</nav>
 		<div id="loader" class="c-loader">加载中...</div>
 		<script id="receive-template" type="text/x-handlebars-template">
 				<div class="message-receive">
@@ -129,13 +130,17 @@
 				nameEl = document.getElementById("user-name"),
 				avatarEl = document.getElementById("user-avatar"),
 				categoryEl = document.getElementById("category"),
-				createdEl = document.getElementById("created");
+				createdEl = document.getElementById("created"),
+				questionId = 0,
+				name = '',
+				avatar = '';
 			var divEl = document.createElement("div"),
 				historyEl = document.getElementById("message-history"),
 				replySource = document.getElementById("reply-template").innerText,
 				replyTemplate = Handlebars.compile(replySource),
 				receiveSource = document.getElementById("receive-template").innerText,
-				receiveTemplate = Handlebars.compile(receiveSource);
+				receiveTemplate = Handlebars.compile(receiveSource),
+				contentEl = document.getElementById("reply-content");
 			mui.init({
 				beforeback: function() {
 					setTimeout(function() {
@@ -160,15 +165,16 @@
 					document.body.classList.add('c-overlay');
 					var success = function(response) {
 							question = response.body;
+							name = question.questioner.name;
+							avatar = question.questioner.avatar;
 							titleEl.innerText = question.title;
 							articleEl.innerText = question.content;
-							nameEl.innerText = question.questioner.name;
-							avatarEl.src = question.questioner.avatar;
+							nameEl.innerText = name;
+							avatarEl.src = avatar;
 							categoryEl.innerText = question.categoryName;
 							createdEl.innerText = question.created;
 							answers = question.answers;
-							console.log(JSON.stringify(answers));
-							for (var i = 0, len = answers.length; i < len; i++) {
+							for (var i = answers.length - 1; i >= 0; i--) {
 								if (i % 2 == 1) {
 									divEl.innerHTML = replyTemplate(answers[i]);
 								} else {
@@ -186,8 +192,36 @@
 						error = function(errorType) {
 							mui.toast(app.ajaxErrorHandler(errorType));
 						};
-					app.getQuestionByGuid(event.detail.guid, success, error);
+						questionId = event.detail.guid;
+					app.getQuestionByGuid(questionId, success, error);
 				});	
+				document.getElementById("send-msg").addEventListener("tap", function() {
+					answerQuestion();
+				});	
+				function answerQuestion() {
+					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
+					var content = contentEl.value;
+					app.answerQuestion(questionId, content, function(err) {
+						setTimeout(function() {
+							wait.close();
+							if (err) {
+								plus.nativeUI.toast(err);
+								return;
+							} else {
+								contentEl.value = '';
+
+								var answer = {}, answeror={};
+								answeror.name = name;
+								answeror.avatar = avatar;
+								answer.answeror = answeror;
+								answer.content = content;
+								answer.created = new Date().toLocaleTimeString();
+								divEl.innerHTML = replyTemplate(answer);
+								historyEl.appendChild(divEl.firstElementChild);
+							}
+						}, 200);
+					});
+				};
 			})(mui);
 		</script>
 	</body>

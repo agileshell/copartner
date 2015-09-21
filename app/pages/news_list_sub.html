@@ -23,11 +23,11 @@
 		<div class="mui-content">
 			<div id="pullrefresh" class="mui-scroll-wrapper">
 				<div id="industry-item" class="mui-control-content mui-active">
-					<ul id="industry-news-list" class="mui-table-view mui-table-view-chevron">
+					<ul id="industry-news-list" class="mui-table-view">
 					</ul>
 				</div>
 				<div id="location-item" class="mui-control-content">
-					<ul id="location-news-list" class="mui-table-view mui-table-view-chevron">
+					<ul id="location-news-list" class="mui-table-view">
 					</ul>
 				</div>
 			</div>
@@ -35,10 +35,10 @@
 	</body>
 	<script id="news-template" type="text/x-handlebars-template">
 		<li id="news_{{id}}" class="mui-table-view-cell mui-media">
-			<a class='mui-navigate-right' href="news_detail.html?id={{id}}" data-guid="{{id}}">
+			<a href="news_detail.html?id={{id}}" data-guid="{{id}}">
 				<img class="mui-media-object mui-pull-left" src="{{image}}">
 				<div class="mui-media-body">
-					{{title}}
+					<span class="mui-ellipsis-2">{{title}}</span>
 					<p class="mui-ellipsis-2">{{synopsis}}</p>
 				</div>
 			</a>

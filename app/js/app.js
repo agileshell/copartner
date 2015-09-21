@@ -1173,7 +1173,7 @@
 		}
 		if (questionInfo.content.length <= 0) {
 			return callback('内容不能为空');
-		} else if (questionInfo.title.length > 200) {
+		} else if (questionInfo.content.length > 200) {
 			return callback('内容不能大于200个字符');
 		}
 
@@ -1194,6 +1194,39 @@
 				if (errorThrown == 'Forbidden') {
 					app.setState({});
 					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
+	};
+
+	owner.answerQuestion = function(questionId, content, callback) {
+		if (content.length <= 0) {
+			return callback('内容不能为空');
+		} else if (content.length > 200) {
+			return callback('内容不能大于200个字符');
+		}
+
+		mui.ajax(owner.apiURL + 'question/'+ questionId +'/answer', {
+			data: {
+				content: content
+			},
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					app.setState({});
+					owner.openLoginPage();
+					return callback(owner.ajaxErrorHandler(type));
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
 				}

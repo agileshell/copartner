@@ -76,7 +76,7 @@
 }
 .send-message {
 	position: relative;
-	margin-top: 7px;
+	margin: 5px 5px 5px 5px;
 	height: 40px;
 }
 .send-message .send-msg-btn {

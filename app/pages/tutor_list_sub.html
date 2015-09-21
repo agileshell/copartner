@@ -63,7 +63,10 @@
 						<span class="tutor-info">{{name}}</span>
 					</div>
 					<div class="mui-media-body" style="padding-left: 45px;">
-						<span class="tutor-item">领域：{{domainName}}</span>
+						<div class="tutor-item">
+							<span class="mui-badge mui-badge-success">领域</span>
+							<span>{{domainName}}</span>
+						</div>
 					</div>
 				</a>
 			</li>
@@ -76,10 +79,10 @@
 						<span class="tutor-info">{{questioner.name}}</span>
 					</div>
 					<div class="mui-media-body" style="padding-left: 45px;">
-						<span class="question-name">{{title}}</span>
+						<span class="question-name mui-ellipsis-2">{{title}}</span>
 						<span class="tutor-item">类别：{{categoryName}}</span>
+						<span class="tutor-item mui-ellipsis-2">问题：{{content}}</span>
 						<span class="tutor-item">提问时间：{{created}}</span>
-						<span class="tutor-item">问题：{{content}}</span>
 					</div>
 				</a>
 			</li>
