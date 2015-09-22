@@ -69,7 +69,7 @@ public class WebAuthRealm extends AuthorizingRealm {
             log.error(ex.getMessage());
             throw new AuthenticationException(ex);
         }
-        if (StringUtils.equals(PasswordUtil.encodePassword(new String(token.getPassword()), Constants.DEFAULT_ADMIN_SALT), admin.getPassword())) {
+        if (StringUtils.equals(PasswordUtil.encodePassword(new String(token.getPassword()), Constants.DEFAULT_ADMIN_PASSWORD_SALT), admin.getPassword())) {
             authenticationInfo = new SimpleAuthenticationInfo(admin, token.getPassword(), token.getUsername());
         }
         return authenticationInfo;

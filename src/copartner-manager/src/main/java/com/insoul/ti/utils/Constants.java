@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
  */
 public interface Constants {
     
-    String DEFAULT_ADMIN_SALT = "68742f";
+    String DEFAULT_ADMIN_PASSWORD_SALT = "68742f";
 	
 	String MAIL_SPLIT = ";";
 	

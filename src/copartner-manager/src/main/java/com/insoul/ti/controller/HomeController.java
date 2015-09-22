@@ -22,7 +22,7 @@ import com.insoul.copartner.domain.User;
 import com.insoul.copartner.util.IpUtil;
 import com.insoul.copartner.util.PasswordUtil;
 import com.insoul.ti.WebBase;
-import com.insoul.ti.req.AddAdminRequest;
+import com.insoul.ti.req.AdminRequest;
 import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.UserListRequest;
 import com.insoul.ti.shiro.Permission;
@@ -71,11 +71,36 @@ public class HomeController extends WebBase {
         mv.addObject("message", errorMessage);
         return mv;
     }
+    
+    @RequestMapping("/mgr/list")
+    @Permission("authc")
+    public ModelAndView mgrList() {
+        
+        return null;
+    }
+    
+    @RequestMapping("/mgr/add")
+    @Permission("authc")
+    public ModelAndView addAdminPage() {
+        
+        return null;
+    }
 
     @RequestMapping("/add_admin_action")
     @Permission("authc")
-    public ModelAndView addAdmin(AddAdminRequest request) {
-        return null;
+    public ModelAndView addAdmin(AdminRequest request) {
+        Admin admin = new Admin();
+        Date date = new Date();
+        admin.setCreated(date);
+        admin.setUpdated(date);
+        admin.setLastIp(IpUtil.ip2Long(IpUtil.getIpAddr(this.request)));
+        admin.setLoginName(request.getLoginName());
+        admin.setName(request.getName());
+        admin.setPassword(PasswordUtil.encodePassword(request.getPassword(), Constants.DEFAULT_ADMIN_PASSWORD_SALT));
+        admin.setPermission(request.getPermission());
+        admin.setStatus(request.getStatus());
+        adminDAO.save(admin);
+        return new ModelAndView("redirect:/mgr/list");
     }
 
     @RequestMapping("/login_action")
@@ -90,10 +115,13 @@ public class HomeController extends WebBase {
             if (admin == null) {
                 return loginError("用户不存在!!!");
             }
+            if (admin.getStatus() <= 0) {
+                return loginError("用户已经被锁定!!!");
+            }
         } catch (Throwable e) {
             return loginError("用户不存在!!!");
         }
-        if (StringUtils.equals(PasswordUtil.encodePassword(password, Constants.DEFAULT_ADMIN_SALT), admin.getPassword())) {
+        if (StringUtils.equals(PasswordUtil.encodePassword(password, Constants.DEFAULT_ADMIN_PASSWORD_SALT), admin.getPassword())) {
             try {
                 admin.setLastLogin(new Date());
                 admin.setLastIp(IpUtil.ip2Long(IpUtil.getIpAddr(request)));

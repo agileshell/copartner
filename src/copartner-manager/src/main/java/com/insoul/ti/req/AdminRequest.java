@@ -6,13 +6,33 @@ package com.insoul.ti.req;
  * @version 1.0.0
  * @since 2015年9月21日 上午11:06:34
  */
-public class AddAdminRequest {
+public class AdminRequest {
 
     private String loginName;// 姓名
 
     private String name;
 
     private String password;// 密码
+    
+    private Integer permission;
+    
+    private Byte status = 1;
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    public Integer getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Integer permission) {
+        this.permission = permission;
+    }
 
     public String getLoginName() {
         return loginName;
