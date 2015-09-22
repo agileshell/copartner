@@ -53,9 +53,9 @@
 								</div>
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/industry/update/${industry.id}" method="post">
+										<form id="edit_industry_form" class="form-horizontal" role="form" action="/industry/update/${industry.id}" method="post">
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="name">行业名称:</label>
+												<label class="col-lg-5 control-label" for="name">行业名称<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<input name="name" id="name" value="${industry.name}" type="text" class="form-control" placeholder="行业名称"></input>
 												</div>
@@ -115,5 +115,32 @@
 	<script src="${cdn}js/filter.js"></script>
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
+	
+	<script src="${cdn}js/jquery.validate.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#name').focus();
+	        $('#edit_industry_form').validate({
+	            rules: {
+	            	name: {
+	                    required: true,
+	                    minlength: 2,
+	                    maxlength: 64
+	                }
+	            },
+	            messages: {
+	            	name: {
+	                    required: '名称不能为空',
+	                    minlength: "名称长度不能小于2个字符",
+	                    maxlength: "名称长度不能大于64个字符"
+	                }
+	            },
+	            submitHandler: function(form) {
+	                form.submit();
+	            }
+	        });
+		});
+	</script>
+	
 </body>
 </html>

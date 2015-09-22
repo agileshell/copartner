@@ -60,33 +60,33 @@
 								</div>
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/course/update/${course.id}" method="post" enctype="multipart/form-data">
+										<form id="edit_course_form" class="form-horizontal" role="form" action="/course/update/${course.id}" method="post" enctype="multipart/form-data">
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="name">课程名称:</label>
+												<label class="col-lg-5 control-label" for="name">课程名称<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<input name="name" id="name" value="${course.name}" type="text" class="form-control" placeholder="课程名称"></input>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="speaker">主讲人:</label>
+												<label class="col-lg-5 control-label" for="speaker">主讲人<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<input name="speaker" id="speaker" value="${course.speaker}" type="text" class="form-control" placeholder="主讲人"></input>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="synopsis">摘要:</label>
+												<label class="col-lg-5 control-label" for="synopsis">摘要<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<input name="synopsis" id="synopsis" value="${course.synopsis}" type="text" class="form-control" placeholder="摘要"></input>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="time">时长(分钟):</label>
+												<label class="col-lg-5 control-label" for="time">时长(分钟)<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<input name="time" id="time" value="${course.time}" type="text" class="form-control" placeholder="时长(分钟)"></input>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="status">状态:</label>
+												<label class="col-lg-5 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<jsp:include page="control/commons-status.jsp">
 														<jsp:param value="${course.status}" name="status"/>
@@ -96,7 +96,7 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="free">是否免费:</label>
+												<label class="col-lg-5 control-label" for="free">是否免费<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<select id="free" class="form-control" name="free">
 														<option value="1" <c:if test="${course.isFree}"> selected="selected" </c:if> >免费</option>
@@ -188,5 +188,60 @@
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
 
+	<script src="${cdn}js/jquery.validate.min.js"></script>
+	
+	<script>
+		$(document).ready(function() {
+			$('#name').focus();
+	        $('#edit_course_form').validate({
+	            rules: {
+	            	name: {
+	                    required: true,
+	                    minlength: 2,
+	                    maxlength: 64
+	                },
+	                speaker: {
+	                	required: true,
+	                    minlength: 2,
+	                    maxlength: 20
+	                },
+	                synopsis: {
+	                	required: true,
+	                    minlength: 2,
+	                    maxlength: 256
+	                },
+	                time: {
+	                	required: true,
+	                	digits: true
+	                }
+	            },
+	            messages: {
+	            	name: {
+	                    required: '名称不能为空',
+	                    minlength: "名称长度不能小于2个字符",
+	                    maxlength: "名称长度不能大于64个字符"
+	                },
+	                speaker: {
+	                    required: '主讲人不能为空',
+	                    minlength: "主讲人长度不能小于2个字符",
+	                    maxlength: "主讲人长度不能大于20个字符"
+	                },
+	                synopsis: {
+	                    required: '摘要不能为空',
+	                    minlength: "摘要长度不能小于2个字符",
+	                    maxlength: "摘要长度不能大于256个字符"
+	                },
+	                time: {
+	                    required: '时长不能为空',
+	                    digits: "只能输入整数"
+	                }
+	            },
+	            submitHandler: function(form) {
+	                form.submit();
+	            }
+	        });
+		});
+	</script>
+	
 </body>
 </html>

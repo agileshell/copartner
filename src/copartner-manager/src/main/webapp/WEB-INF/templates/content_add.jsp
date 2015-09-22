@@ -28,6 +28,10 @@
 	
 	<link href="${cdn}js/kindeditor/themes/default/default.css" rel="stylesheet" />
 	
+	<!--
+	<link href="${cdn}js/uploadify/uploadify.css" rel="stylesheet" />
+	-->
+	
 	<!--[if lt IE 9]>
 	<script src="${cdn}js/html5shim.js"></script>
 	<![endif]-->
@@ -59,15 +63,15 @@
 								</div>
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/content/save" method="post" enctype="multipart/form-data">
+										<form id="add_content_form" class="form-horizontal" role="form" action="/content/save" method="post" enctype="multipart/form-data">
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="title">标题:</label>
+												<label class="col-lg-5 control-label" for="title">标题<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<input name="title" id="title" type="text" class="form-control" placeholder="标题"></input>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="type">类型:</label>
+												<label class="col-lg-5 control-label" for="type">类型<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<jsp:include page="control/content-type.jsp">
 														<jsp:param value="1" name="type"/>
@@ -76,7 +80,7 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="status">状态:</label>
+												<label class="col-lg-5 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<jsp:include page="control/commons-status.jsp">
 														<jsp:param value="active" name="status"/>
@@ -86,13 +90,13 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="synopsis">摘要:</label>
+												<label class="col-lg-5 control-label" for="synopsis">摘要<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<input name="synopsis" id="synopsis" type="text" class="form-control" placeholder="摘要"></input>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="coverImg">封皮:</label>
+												<label class="col-lg-5 control-label" for="coverImg">封皮<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
 												</div>
@@ -154,6 +158,10 @@
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
 	
+	<script src="${cdn}js/jquery.validate.min.js"></script>
+	
+	<!-- <script src="${cdn}js/require.js"></script> -->
+	
 	<script charset="utf-8" src="${cdn}js/kindeditor/kindeditor-all-min.js"></script>
 	<script charset="utf-8" src="${cdn}js/kindeditor/lang/zh_CN.js"></script>
 	<script charset="utf-8" src="${cdn}js/kindeditor/plugins/autoheight/autoheight.js"></script>
@@ -180,16 +188,85 @@
 	            }
 	        });
 	    });
+	    
+		$(document).ready(function() {
+			
+			$('#title').focus();
+	        $('#add_content_form').validate({
+	            rules: {
+	            	title: {
+	                    required: true,
+	                    minlength: 2,
+	                    maxlength: 64
+	                },
+	                synopsis: {
+	                	required: true,
+	                    minlength: 2,
+	                    maxlength: 256
+	                },
+	                coverImg: {
+	                	required: true
+	                }
+	            },
+	            messages: {
+	            	title: {
+	                    required: '标题不能为空',
+	                    minlength: "标题长度不能小于2个字符",
+	                    maxlength: "标题长度不能大于64个字符"
+	                },
+	                synopsis: {
+	                    required: '摘要不能为空',
+	                    minlength: "摘要长度不能小于2个字符",
+	                    maxlength: "摘要长度不能大于256个字符"
+	                },
+	                coverImg: {
+	                	required: "必须上传封面图片"
+	                }
+	            },
+	            submitHandler: function(form) {
+	                form.submit();
+	            }
+	        });
+	        
+	        /**
+	        require(["/assets/js/require-config"], function() {
+	            require(['jquery', 'uploadify'], function() {
+	            	$('#coverImg').uploadify({
+	    	            'removeTimeout': 1,
+	    	            'successTimeout': 300,
+	    	            'auto': true,
+	    	            'buttonText': '选择图片',
+	    	            'fileSizeLimit': '20MB',
+	    	            'fileTypeDesc': 'Image File Types',
+	    	            'fileTypeExts': '*.gif; *.jpg; *.png; *.jpeg;',
+	    	            'width':'120',
+	    	            'height':'32',
+	    	            'multi': false,
+	    	            'swf': '/assets/js/uploadify/uploadify.swf?ver=' + Math.random(),
+	    	            'uploader': '/editor/upload',
+	    	            'onFallback': function() {
+	    	                console.log('Flash was not detected.');
+	    	            },
+	    	            'onUploadSuccess': function(file, data, response) {
+	    	                if (response && data) {
+	    	                    var imageInfo = JSON.parse(data),
+	    	                    var strHtml = '';
+	    	                    if (imageInfo.success) {
+	    	                        strHtml += "<input type='hidden' name='coverImage' value=" + imageInfo.image + ">";
+	    	                        jQuery('#coverImgView').html("<img style='height: 230px' src='" + imageInfo.image + "' class='img-rounded'/>");
+	    	                    } else {
+	    	                    	alert('上传失败');
+	    	                    }
+	    	                }
+	    	            }
+	    	        });
+	            });
+	        });
+	        **/
+	        
+		});
+		
 	</script>
-	
-	<!--
-	<script src="${cdn}js/ckeditor/ckeditor.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	    $(function() {
-	        CKEDITOR.replace("article");
-	    });
-	</script>
-	-->
 	
 </body>
 </html>

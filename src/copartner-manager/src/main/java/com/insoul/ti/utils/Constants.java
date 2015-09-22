@@ -10,12 +10,6 @@ import java.nio.charset.Charset;
  */
 public interface Constants {
     
-    String SUPER_ADMIN = "1";
-    
-    String ADMIN = "2";
-    
-    String BACK_USER = "3";
-
     String DEFAULT_ADMIN_SALT = "68742f";
 	
 	String MAIL_SPLIT = ";";

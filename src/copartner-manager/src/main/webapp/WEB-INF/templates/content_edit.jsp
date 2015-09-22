@@ -59,15 +59,15 @@
 								</div>
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/content/update/${content.id}" method="post" enctype="multipart/form-data">
+										<form class="form-horizontal" id="edit_content_form" role="form" action="/content/update/${content.id}" method="post" enctype="multipart/form-data">
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="title">标题:</label>
+												<label class="col-lg-5 control-label" for="title">标题<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<input name="title" id="title" value="${content.title}" type="text" class="form-control" placeholder="标题"></input>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="type">类型:</label>
+												<label class="col-lg-5 control-label" for="type">类型<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<jsp:include page="control/content-type.jsp">
 														<jsp:param value="${content.type}" name="type"/>
@@ -76,7 +76,7 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="status">状态:</label>
+												<label class="col-lg-5 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<jsp:include page="control/commons-status.jsp">
 														<jsp:param value="${content.status}" name="status"/>
@@ -99,7 +99,7 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="coverImg">封皮:</label>
+												<label class="col-lg-5 control-label" for="coverImg">封皮<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
 												</div>
@@ -161,6 +161,8 @@
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
 	
+	<script src="${cdn}js/jquery.validate.min.js"></script>
+	
 	<script charset="utf-8" src="${cdn}js/kindeditor/kindeditor-all-min.js"></script>
 	<script charset="utf-8" src="${cdn}js/kindeditor/lang/zh_CN.js"></script>
 	<script charset="utf-8" src="${cdn}js/kindeditor/plugins/autoheight/autoheight.js"></script>
@@ -187,16 +189,43 @@
 	            }
 	        });
 	    });
+	    
+		$(document).ready(function() {
+			
+			$('#title').focus();
+	        $('#edit_content_form').validate({
+	            rules: {
+	            	title: {
+	                    required: true,
+	                    minlength: 2,
+	                    maxlength: 64
+	                },
+	                synopsis: {
+	                	required: true,
+	                    minlength: 2,
+	                    maxlength: 256
+	                }
+	            },
+	            messages: {
+	            	title: {
+	                    required: '标题不能为空',
+	                    minlength: "标题长度不能小于2个字符",
+	                    maxlength: "标题长度不能大于64个字符"
+	                },
+	                synopsis: {
+	                    required: '摘要不能为空',
+	                    minlength: "摘要长度不能小于2个字符",
+	                    maxlength: "摘要长度不能大于256个字符"
+	                }
+	            },
+	            submitHandler: function(form) {
+	                form.submit();
+	            }
+	        });
+	        
+		});
+	    
 	</script>
-	
-	<!--
-	<script src="${cdn}js/ckeditor/ckeditor.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	    $(function() {
-	        CKEDITOR.replace("article");
-	    });
-	</script>
-	-->
 
 </body>
 </html>

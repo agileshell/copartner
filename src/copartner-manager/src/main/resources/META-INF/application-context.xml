@@ -9,97 +9,14 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
         
-	<import resource="classpath*:/META-INF/persistence-context.xml" />
 	<context:property-placeholder location="classpath*:config.properties" />
 	<context:component-scan base-package="com.insoul.copartner.dao.impl" />
 	<context:component-scan base-package="com.insoul.copartner.service.impl" />
 	<context:component-scan base-package="com.insoul.copartner.util" />
 	<aop:aspectj-autoproxy />
-
-	<bean id="hashedCredentialsMatcher" class="com.insoul.ti.shiro.LimitRetryHashedMatcher">
-		<property name="hashAlgorithmName" value="MD5"/>
-		<property name="storedCredentialsHexEncoded" value="true"/>
-		<property name="hashIterations" value="1"/>
-	</bean>
-
-	<bean id="myRealm" class="com.insoul.ti.shiro.WebAuthRealm">
-		<property name="credentialsMatcher" ref="hashedCredentialsMatcher"/>
-		<property name="authorizationCacheName" value="shiro-authorizationCache"/>
-	</bean>
-
-	<bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
-
-	<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.MemorySessionDAO">
-		<property name="sessionIdGenerator" ref="sessionIdGenerator" />
-	</bean>
-
-	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
-		<constructor-arg value="sid" />
-		<property name="httpOnly" value="true" />
-		<property name="maxAge" value="180000" />
-	</bean>
-
-	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-		<property name="globalSessionTimeout" value="1800000" />
-		<property name="deleteInvalidSessions" value="true" />
-		<property name="sessionValidationSchedulerEnabled" value="true" />
-		<property name="sessionIdCookieEnabled" value="true" />
-		<property name="sessionIdCookie" ref="sessionIdCookie" />
-		<property name="sessionDAO" ref="sessionDAO" />
-	</bean>
-
-	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="authenticator" ref="authenticator" />
-		<property name="realms" ref="myRealm" />
-		<property name="sessionManager" ref="sessionManager" />
-	</bean>
-
-	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator" />
-
-	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-		<property name="securityManager" ref="securityManager" />
-		<property name="loginUrl" value="/login" />
-		<property name="successUrl" value="/home" />
-		<property name="unauthorizedUrl" value="/unauthorized" />
-		<property name="filterChainDefinitions">
-	        <value>
-	        	
-	        	/unauthorized = anon
-	        	/logout = anon
-	            /login = anon
-	            /login_action = anon
-	            
-	            /add_admin_action = authc
-	            /home = authc
-	            /comments/** = authc
-	            /content/** = authc
-	            /course/** = authc
-	            /demand/** = authc
-	            /editor/** = authc
-	            /feedback/** = authc
-	            /finance/** = authc
-	            /finaphase/** = authc
-	            /industry/** = authc
-	            /news/** = authc
-	            /project/** = authc
-	            /phase/** = authc
-	            /question/** = authc
-	            /role/** = authc
-	            /status/** = authc
-	            /team/** = authc
-	            /user/** = authc
-	            
-	        </value>  
-	    </property>
-	</bean>
-
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
-
-	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-		depends-on="lifecycleBeanPostProcessor" />
-
-	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-		<property name="securityManager" ref="securityManager" />
-	</bean>
-
+	
+	<import resource="classpath*:/META-INF/persistence-context.xml" />
+	
+	<import resource="classpath*:/META-INF/shiro-context.xml" />
+	
 </beans>

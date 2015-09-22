@@ -1,5 +1,6 @@
 package com.insoul.ti.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,6 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,6 +40,36 @@ import com.insoul.ti.shiro.Permission;
 @RequestMapping("/editor")
 @Permission("authc")
 public class EditorController extends WebBase {
+
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public void uploadImg(@RequestParam(value = "Filedata", required = true) MultipartFile image, HttpServletResponse response) throws Exception {
+        JSONObject json = new JSONObject();
+        json.put("success", false);
+        try {
+            String uri = CDNUtil.uploadFile(image.getInputStream(), image.getOriginalFilename());
+            json.put("success", true);
+            json.put("image", GlobalProperties.CDN_DOMAIN + uri);
+        } catch (Throwable e) {
+            json.put("success", false);
+        }
+        response.setContentType("application/json,charset=utf-8");
+        ServletOutputStream out = null;
+        try {
+            out = response.getOutputStream();
+            out.print(json.toString());
+            out.flush();
+        } catch (IOException e) {
+            // NULL
+        } finally {
+            try {
+                if (null != out) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                // NULL
+            }
+        }
+    }
 
     @RequestMapping(value = "file_upload", method = RequestMethod.POST)
     public void fileUploadForKindeditor(HttpServletRequest request, HttpServletResponse response) throws Exception {

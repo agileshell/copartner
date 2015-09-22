@@ -53,15 +53,15 @@
 								</div>
 								<div class="widget-content">
 									<div class="padd">
-										<form class="form-horizontal" role="form" action="/team/save" method="post">
+										<form id="add_team_form" class="form-horizontal" role="form" action="/team/save" method="post">
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="name">团队规模名称:</label>
+												<label class="col-lg-5 control-label" for="name">团队规模名称<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<input name="name" id="name" type="text" class="form-control" placeholder="团队规模名称"></input>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-lg-5 control-label" for="type">显示:</label>
+												<label class="col-lg-5 control-label" for="type">显示<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-7">
 													<jsp:include page="control/commons-listed.jsp">
 														<jsp:param value="1" name="listed"/>
@@ -115,5 +115,33 @@
 	<script src="${cdn}js/filter.js"></script>
 	<script src="${cdn}js/custom.js"></script>
 	<script src="${cdn}js/charts.js"></script>
+	
+	<script src="${cdn}js/jquery.validate.min.js"></script>
+	
+	<script>
+		$(document).ready(function() {
+			$('#name').focus();
+	        $('#add_team_form').validate({
+	            rules: {
+	            	name: {
+	                    required: true,
+	                    minlength: 2,
+	                    maxlength: 64
+	                }
+	            },
+	            messages: {
+	            	name: {
+	                    required: '名称不能为空',
+	                    minlength: "名称长度不能小于2个字符",
+	                    maxlength: "名称长度不能大于64个字符"
+	                }
+	            },
+	            submitHandler: function(form) {
+	                form.submit();
+	            }
+	        });
+		});
+	</script>
+	
 </body>
 </html>

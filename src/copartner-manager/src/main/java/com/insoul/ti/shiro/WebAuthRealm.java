@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import com.insoul.copartner.dao.AdminDAO;
 import com.insoul.copartner.domain.Admin;
 import com.insoul.copartner.util.PasswordUtil;
+import com.insoul.copartner.utils.Permission;
 import com.insoul.ti.utils.Constants;
 
 public class WebAuthRealm extends AuthorizingRealm {
@@ -45,13 +46,13 @@ public class WebAuthRealm extends AuthorizingRealm {
         }
         Admin admin = (Admin) SecurityUtils.getSubject().getPrincipal();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        if (StringUtils.equals(Constants.SUPER_ADMIN, admin.getPermission())) {
+        if (admin.hasPermission(Permission.SuperAdmin)) {
             info.addRole("sadmin");
         }
-        if (StringUtils.equals(Constants.ADMIN, admin.getPermission())) {
+        if (admin.hasPermission(Permission.Admin)) {
             info.addRole("admin");
         }
-        if (StringUtils.equals(Constants.BACK_USER, admin.getPermission())) {
+        if (admin.hasPermission(Permission.User)) {
             info.addRole("buser");
         }
         return info;

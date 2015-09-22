@@ -10,6 +10,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.insoul.copartner.utils.Permission;
+
 /**
  * 管理员
  * 
@@ -40,7 +42,7 @@ public class Admin extends BaseEntity {
 	private Byte status = 1;// 状态
 
     @Column(name = "permission", nullable = false)
-	private String permission;// 系统管理权限 1:超级管理员 2:管理员 3:一般用户
+	private Integer permission;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "last_login")
@@ -48,12 +50,35 @@ public class Admin extends BaseEntity {
 
 	@Column(name = "last_ip", nullable = false)
 	private Long lastIp = 0L;// 最后登录时所在的ip
+	
+	public boolean hasPermission(Permission permission) {
+        if (this.permission == null) {
+            return false;
+        }
+        return (this.permission >> permission.code) > 0;
+    }
+    
+    public Admin addPermission(Permission permission) {
+        if (this.permission == null) {
+            this.permission = 1;
+        }
+        this.permission <<= permission.code;
+        return this;
+    }
+    
+    public Admin dividePermission(Permission permission) {
+        if (this.permission == null) {
+            this.permission = 1;
+        }
+        this.permission >>= permission.code;
+        return this;
+    }
 
-	public String getPermission() {
+	public Integer getPermission() {
         return permission;
     }
 
-    public void setPermission(String permission) {
+    public void setPermission(Integer permission) {
         this.permission = permission;
     }
 
