@@ -2,6 +2,9 @@ package com.insoul.copartner.constant;
 
 import java.util.Properties;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
 import com.insoul.copartner.util.PropertiesUtil;
 
 public final class GlobalProperties {
@@ -44,8 +47,20 @@ public final class GlobalProperties {
 
     public static Integer DEFAULT_LOCATION_ID = 0;
 
+    public static String IM_SERVER;// = "123.57.55.59";
+
+    public static Integer IM_PORT;// = 9100;
+
     static {
         Properties globalProperties = PropertiesUtil.getProperties(PROPERTIES_PATH);
+        
+        if (PropertiesUtil.get(globalProperties, "im.server.ip") != null) {
+            IM_SERVER = StringUtils.defaultString(PropertiesUtil.get(globalProperties, "im.server.ip"), "123.57.55.59");
+        }
+        if (PropertiesUtil.get(globalProperties, "im.server.port") != null) {
+            IM_PORT = NumberUtils.toInt(PropertiesUtil.get(globalProperties, "im.server.port"), 9100);
+        }
+        
         if (PropertiesUtil.get(globalProperties, "cdn_provider") != null) {
             CDN_PROVIDER = PropertiesUtil.get(globalProperties, "cdn_provider");
         }

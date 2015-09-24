@@ -8,7 +8,7 @@ import com.insoul.copartner.im.packet.OutRegister;
 import com.insoul.copartner.util.JsonUtil;
 
 public class IMUtils {
-
+    
     public static Long register(Long userId, String nick, String avatar) {
         Long imId = 0L;
 

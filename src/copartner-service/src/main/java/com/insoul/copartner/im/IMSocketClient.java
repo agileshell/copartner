@@ -7,6 +7,7 @@ import java.net.Socket;
 
 import org.apache.commons.io.Charsets;
 
+import com.insoul.copartner.constant.GlobalProperties;
 import com.insoul.copartner.constant.IMVersion;
 import com.insoul.copartner.util.ByteUtil;
 
@@ -24,7 +25,7 @@ public class IMSocketClient {
         InputStream in = null;
         OutputStream out = null;
         try {
-            socket = new Socket("120.24.228.100", 9100);
+            socket = new Socket(GlobalProperties.IM_SERVER, GlobalProperties.IM_PORT);
             socket.setKeepAlive(false);
             socket.setSoTimeout(30000);
             in = socket.getInputStream();
