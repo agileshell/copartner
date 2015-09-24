@@ -17,8 +17,8 @@ public class AdminTest {
     public void test() {
         Admin admin = new Admin();
         admin
-//        .addPermission(Permission.SuperAdmin)
-//        .addPermission(Permission.Admin)
+        .addPermission(Permission.SuperAdmin)
+        .addPermission(Permission.Admin)
         .addPermission(Permission.User)
         ;
         System.out.println(admin.getPermission());
