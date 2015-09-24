@@ -33,14 +33,13 @@
 											<th>显示姓名</th>
 											<th>状态</th>
 											<th>权限</th>
-											<th>最后登录时间</th>
 											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
 										<c:if test="${!success}">
-											<tr><td colspan="7" style="text-align: center;">空空如也!!!</td></tr>
-											<tr><td colspan="7" style="text-align: center;"><a class="btn btn-default btn-sm" href="/admin/add">新建管理员</a></td></tr>
+											<tr><td colspan="6" style="text-align: center;">空空如也!!!</td></tr>
+											<tr><td colspan="6" style="text-align: center;"><a class="btn btn-default btn-sm" href="/admin/add">新建管理员</a></td></tr>
 										</c:if>
 										<c:if test="${success}">
 											<c:forEach var="c" items="${adminList}" varStatus="status">
