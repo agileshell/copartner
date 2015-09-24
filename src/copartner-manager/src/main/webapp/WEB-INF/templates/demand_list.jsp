@@ -42,7 +42,7 @@
 													<jsp:param value="false" name="update"/>
 												</jsp:include>
 											</div>
-											<div class="col-lg-2">
+											<div class="col-lg-1">
 												<button type="submit" class="btn btn-default">查询</button>
 											</div>
 										</div>

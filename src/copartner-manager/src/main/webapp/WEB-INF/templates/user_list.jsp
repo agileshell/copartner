@@ -41,7 +41,7 @@
 											<div class="col-lg-4">
 												<input name="mobile" id="mobile" value="${req.mobile}" type="text" class="form-control" placeholder="用户手机号">
 											</div>
-											<div class="col-lg-2">
+											<div class="col-lg-1">
 												<button type="submit" class="btn btn-default">查询</button>
 											</div>
 										</div>
