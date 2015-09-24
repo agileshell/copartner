@@ -26,9 +26,10 @@
 					</a>
 					<ul class="dropdown-menu">
 						<shiro:hasRole name="sadmin">
-							<li><a href="#"><i class="icon-cogs"></i>设置</a></li>
+							<li><a href="/admin/list"><i class="icon-cogs"></i>管理设置</a></li>
 						</shiro:hasRole>
                 		<li><a href="#" data-toggle="modal" data-target="#changePassword">修改密码</a></li>
+                		
 						<li><a href="/logout"><i class="icon-off"></i>退出</a></li>
 					</ul>
 				</li>
@@ -48,17 +49,17 @@
 	               		
 	                   <div class="input-group input-group-lg">
 	                       <span class="input-group-addon">原始密码:</span>
-	                       <input type="text" name="old_password" class="form-control" placeholder="原始密码">
+	                       <input type="password" name="old_password" id="old_password" class="form-control" placeholder="原始密码">
 	                   </div>
 	                   
 	                   <div class="input-group input-group-lg">
 	                       <span class="input-group-addon">新的密码:</span>
-	                       <input type="text" name="new_password" class="form-control" placeholder="新的密码">
+	                       <input type="password" name="new_password" id="new_password" class="form-control" placeholder="新的密码">
 	                   </div>
 	                   
 	                   <div class="input-group input-group-lg">
 	                       <span class="input-group-addon">确认密码:</span>
-	                       <input type="text" name="new_password2" class="form-control" placeholder="确认密码">
+	                       <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="确认密码">
 	                   </div>
 	
 	               </div>
@@ -93,7 +94,7 @@
 					required : true,
 					minlength : 6
 				},
-				new_password2 : {
+				confirm_password : {
 					required : true,
 					minlength : 6,
 					equalTo : "#new_password"
@@ -108,18 +109,13 @@
 					required : '请输入新密码',
 					minlength : "密码不能小于6个字符"
 				},
-				new_password2 : {
+				confirm_password : {
 					required : "请确认新密码",
 					minlength : "密码不能小于6个字符",
 					equalTo : "两次输入密码不一致!!!"
 				}
 			},
 			submitHandler : function(form) {
-				// form.submit();
-				if ($("#new_password").val() != $("#new_password2").val()) {
-					alert("两次输入密码不一致!!!");
-					return;
-				}
 				$.ajax({
 					type : "POST",
 					url : form.action,
@@ -134,6 +130,7 @@
 					complete : function(XMLHttpRequest, status) {
 						// status = success, error or timeout
 						// if (status == 'timeout') {}
+						form.reset();
 					},
 					success : function(data) {
 						if (data.success) {

@@ -47,9 +47,7 @@
 		<sitemesh:write property="body"/>
 		<div class="clearfix"></div>
 	</div>
-	<!--
-	<jsp:include page="control/copy-rights.jsp"/>
-	-->
+	<jsp:include page="../control/copy-rights.jsp"/>
 	<!--
 	<script src="${cdn}js/jquery-ui-1.9.2.custom.min.js"></script>
 	<script src="${cdn}js/fullcalendar.min.js"></script>

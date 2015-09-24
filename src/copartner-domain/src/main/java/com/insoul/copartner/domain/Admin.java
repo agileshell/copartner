@@ -10,6 +10,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.insoul.copartner.utils.Permission;
 
 /**
@@ -51,6 +53,13 @@ public class Admin extends BaseEntity {
 	@Column(name = "last_ip", nullable = false)
 	private Long lastIp = 0L;// 最后登录时所在的ip
 	
+	public String getLastLoginString() {
+        if (lastLogin == null) {
+            return StringUtils.EMPTY;
+        }
+        return formatter.format(lastLogin);
+    }
+	
 	public boolean hasPermission(Permission permission) {
         if (this.permission == null) {
             return false;
@@ -64,6 +73,45 @@ public class Admin extends BaseEntity {
         }
         this.permission <<= permission.code;
         return this;
+    }
+    
+    public int getPermissionCode() {
+        if (hasPermission(Permission.SuperAdmin)) {
+            return 2;
+        }
+        if (hasPermission(Permission.Admin)) {
+            return 1;
+        }
+        if (hasPermission(Permission.User)) {
+            return 0;
+        }
+        return 0;
+    }
+    
+    public String getPermissionString() {
+        if (hasPermission(Permission.SuperAdmin)) {
+            return "超级管理员";
+        }
+        if (hasPermission(Permission.Admin)) {
+            return "管理员";
+        }
+        if (hasPermission(Permission.User)) {
+            return "一般用户";
+        }
+        return "无任何权限";
+    }
+    
+    public boolean isPermissionLogin() {
+        if (hasPermission(Permission.SuperAdmin)) {
+            return true;
+        }
+        if (hasPermission(Permission.Admin)) {
+            return true;
+        }
+        if (hasPermission(Permission.User)) {
+            return true;
+        }
+        return false;
     }
     
     public Admin dividePermission(Permission permission) {

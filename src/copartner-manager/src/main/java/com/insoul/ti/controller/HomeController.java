@@ -79,6 +79,9 @@ public class HomeController extends WebBase {
             if (admin.getStatus() <= 0) {
                 return loginError("用户已经被锁定!!!");
             }
+            if (admin.isPermissionLogin()) {
+                return loginError("无权限!!!");
+            }
         } catch (Throwable e) {
             return loginError("用户不存在!!!");
         }

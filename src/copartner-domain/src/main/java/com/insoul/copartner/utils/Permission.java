@@ -18,6 +18,15 @@ public enum Permission {
     public int code;
     public String description;
     
+    public static Permission parse(int code) {
+        for (Permission p : values()) {
+            if (code == p.code) {
+                return p;
+            }
+        }
+        return User;
+    }
+    
     private Permission(int code, String description) {
         this.code = code;
         this.description = description;
