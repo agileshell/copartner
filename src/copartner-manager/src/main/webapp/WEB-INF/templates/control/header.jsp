@@ -28,7 +28,7 @@
 						<shiro:hasRole name="sadmin">
 							<li><a href="/admin/list"><i class="icon-cogs"></i>管理设置</a></li>
 						</shiro:hasRole>
-                		<li><a href="#" data-toggle="modal" data-target="#changePassword">修改密码</a></li>
+                		<li><a href="#" data-toggle="modal" data-target="#changePassword"><i class="icon-dashboard"></i>修改密码</a></li>
                 		
 						<li><a href="/logout"><i class="icon-off"></i>退出</a></li>
 					</ul>
