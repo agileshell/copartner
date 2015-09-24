@@ -28,13 +28,129 @@
 						<shiro:hasRole name="sadmin">
 							<li><a href="#"><i class="icon-cogs"></i>设置</a></li>
 						</shiro:hasRole>
+                		<li><a href="#" data-toggle="modal" data-target="#changePassword">修改密码</a></li>
 						<li><a href="/logout"><i class="icon-off"></i>退出</a></li>
 					</ul>
 				</li>
 			</ul>
 		</nav>
 	</div>
+	
+	<div class="modal fade" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+       		<form id="password_change_form" class="form-horizontal" role="form" action="/async/password/change" method="POST">
+       			<div class="modal-content">
+	               <div class="modal-header">
+	                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                   <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+	               </div>
+	               <div class="modal-body">
+	               		
+	                   <div class="input-group input-group-lg">
+	                       <span class="input-group-addon">原始密码:</span>
+	                       <input type="text" name="old_password" class="form-control" placeholder="原始密码">
+	                   </div>
+	                   
+	                   <div class="input-group input-group-lg">
+	                       <span class="input-group-addon">新的密码:</span>
+	                       <input type="text" name="new_password" class="form-control" placeholder="新的密码">
+	                   </div>
+	                   
+	                   <div class="input-group input-group-lg">
+	                       <span class="input-group-addon">确认密码:</span>
+	                       <input type="text" name="new_password2" class="form-control" placeholder="确认密码">
+	                   </div>
+	
+	               </div>
+	               <div class="modal-footer">
+	                   <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	                   <input type="submit" value="确认" class="btn btn-primary"/>
+	               </div>
+	           </div>
+       		</form>
+       </div>
+   </div>
+	
 </div>
 <header>
     <div class="container" style="height: 1px;"></div>
 </header>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#old_password').focus();
+		$('#password_change_form').validate({
+			onsubmit : true,
+			onfocusout : false,
+			onkeyup : false,
+			onkeyup : false,
+			onclick : false,
+			rules : {
+				old_password : {
+					required : true,
+					minlength : 6
+				},
+				new_password : {
+					required : true,
+					minlength : 6
+				},
+				new_password2 : {
+					required : true,
+					minlength : 6,
+					equalTo : "#new_password"
+				}
+			},
+			messages : {
+				old_password : {
+					required : '请输入原密码',
+					minlength : "密码不能小于6个字符"
+				},
+				new_password : {
+					required : '请输入新密码',
+					minlength : "密码不能小于6个字符"
+				},
+				new_password2 : {
+					required : "请确认新密码",
+					minlength : "密码不能小于6个字符",
+					equalTo : "两次输入密码不一致!!!"
+				}
+			},
+			submitHandler : function(form) {
+				// form.submit();
+				if ($("#new_password").val() != $("#new_password2").val()) {
+					alert("两次输入密码不一致!!!");
+					return;
+				}
+				$.ajax({
+					type : "POST",
+					url : form.action,
+					timeout : 5000,
+					dataType : "JSON",
+					data : {
+						old_password : $("#old_password").val(),
+						new_password : $("#new_password").val()
+					},
+					beforeSend : function(XMLHttpRequest) {
+					},
+					complete : function(XMLHttpRequest, status) {
+						// status = success, error or timeout
+						// if (status == 'timeout') {}
+					},
+					success : function(data) {
+						if (data.success) {
+							alert(data.message);
+							window.location.href = "/logout";
+							return;
+						}
+						alert(data.message);
+					},
+					failure : function(data) {
+
+					}
+				});
+
+			}
+		});
+
+	});
+</script>
+

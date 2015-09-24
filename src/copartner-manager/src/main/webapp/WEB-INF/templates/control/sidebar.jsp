@@ -64,7 +64,7 @@
         
         <shiro:hasRole name="sadmin">
         	<li>
-				<a <c:if test="${viewname == 'feedback_list'}"> class="open" </c:if> href="/feedback/list"><i class="icon-envelope"></i>系统设置</a>
+				<a <c:if test="${viewname == ''}"> class="open" </c:if> href=""><i class="icon-dashboard"></i>系统设置</a>
 	        </li>
         </shiro:hasRole>
         

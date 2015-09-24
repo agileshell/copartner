@@ -46,9 +46,6 @@ public class SimpleFilterFactoryBean extends ShiroFilterFactoryBean implements A
         this.context = applicationContext;
     }
 
-    /**
-     * 通过定义的Shiro注解元素进行配置
-     */
     @Override
     public final void afterPropertiesSet() throws Exception {
         log.error("Enter SimpleFilterFactoryBean...");

@@ -11,6 +11,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +23,6 @@ import com.insoul.copartner.domain.User;
 import com.insoul.copartner.util.IpUtil;
 import com.insoul.copartner.util.PasswordUtil;
 import com.insoul.ti.WebBase;
-import com.insoul.ti.req.AdminRequest;
 import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.UserListRequest;
 import com.insoul.ti.shiro.Permission;
@@ -35,9 +35,8 @@ import com.insoul.ti.utils.Constants;
  * @since 2015年7月4日 下午11:37:23
  */
 @Controller
-@RequestMapping("/")
 public class HomeController extends WebBase {
-
+    
     @RequestMapping("/unauthorized")
     @Permission("anon")
     private ModelAndView unauthorized() {
@@ -55,7 +54,6 @@ public class HomeController extends WebBase {
     }
 
     @RequestMapping("/logout")
-//    @Permission("logout")
     @Permission("anon")
     public ModelAndView logout() {
         Subject subjects = SecurityUtils.getSubject();
@@ -65,46 +63,9 @@ public class HomeController extends WebBase {
         return new ModelAndView("redirect:/login");
     }
 
-    private ModelAndView loginError(String errorMessage) {
-        ModelAndView mv = createModelView("login");
-        mv.addObject("success", false);
-        mv.addObject("message", errorMessage);
-        return mv;
-    }
-    
-    @RequestMapping("/mgr/list")
-    @Permission("authc")
-    public ModelAndView mgrList() {
-        
-        return null;
-    }
-    
-    @RequestMapping("/mgr/add")
-    @Permission("authc")
-    public ModelAndView addAdminPage() {
-        
-        return null;
-    }
-
-    @RequestMapping("/add_admin_action")
-    @Permission("authc")
-    public ModelAndView addAdmin(AdminRequest request) {
-        Admin admin = new Admin();
-        Date date = new Date();
-        admin.setCreated(date);
-        admin.setUpdated(date);
-        admin.setLastIp(IpUtil.ip2Long(IpUtil.getIpAddr(this.request)));
-        admin.setLoginName(request.getLoginName());
-        admin.setName(request.getName());
-        admin.setPassword(PasswordUtil.encodePassword(request.getPassword(), Constants.DEFAULT_ADMIN_PASSWORD_SALT));
-        admin.setPermission(request.getPermission());
-        admin.setStatus(request.getStatus());
-        adminDAO.save(admin);
-        return new ModelAndView("redirect:/mgr/list");
-    }
-
     @RequestMapping("/login_action")
     @Permission("anon")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
     public ModelAndView login_action(@RequestParam(value = "name") String name, @RequestParam(value = "password") String password) {
         if (StringUtils.isBlank(name) || StringUtils.isBlank(password)) {
             return loginError("请输入用户名密码!!!");
@@ -158,6 +119,13 @@ public class HomeController extends WebBase {
         mv.addObject("project_count", projectDAO.count());
         mv.addObject("content_count", contentDAO.count());
         mv.addObject("startupRoles", getStartupRoleMap());
+        return mv;
+    }
+
+    private ModelAndView loginError(String errorMessage) {
+        ModelAndView mv = createModelView("login");
+        mv.addObject("success", false);
+        mv.addObject("message", errorMessage);
         return mv;
     }
 }

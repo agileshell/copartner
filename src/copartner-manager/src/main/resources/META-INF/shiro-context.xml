@@ -49,41 +49,11 @@
 
 	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator" />
 
-	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+	<bean id="shiroFilter" class="com.insoul.ti.shiro.SimpleFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login" />
 		<property name="successUrl" value="/home" />
 		<property name="unauthorizedUrl" value="/unauthorized" />
-		<property name="filterChainDefinitions">
-	        <value>
-	        	
-	        	/unauthorized = anon
-	        	/logout = anon
-	            /login = anon
-	            /login_action = anon
-	            
-	            /add_admin_action = authc
-	            /home = authc
-	            /comments/** = authc
-	            /content/** = authc
-	            /course/** = authc
-	            /demand/** = authc
-	            /editor/** = authc
-	            /feedback/** = authc
-	            /finance/** = authc
-	            /finaphase/** = authc
-	            /industry/** = authc
-	            /news/** = authc
-	            /project/** = authc
-	            /phase/** = authc
-	            /question/** = authc
-	            /role/** = authc
-	            /status/** = authc
-	            /team/** = authc
-	            /user/** = authc
-	            
-	        </value>  
-	    </property>
 	</bean>
 
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />

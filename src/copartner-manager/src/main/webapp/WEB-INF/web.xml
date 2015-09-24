@@ -6,14 +6,17 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:/META-INF/application-context.xml</param-value>
+		<param-value>
+		classpath:/META-INF/application-context.xml
+		/WEB-INF/web-mvc.xml
+		</param-value>
 	</context-param>
 
 	<context-param>
 		<param-name>webAppRootKey</param-name>
 		<param-value>oss.manager.root</param-value>
 	</context-param>
-	
+
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>/WEB-INF/log4j.xml</param-value>
@@ -46,13 +49,26 @@
 			<param-value>true</param-value>
 		</init-param>
 	</filter>
-	
+
 	<filter>
 		<filter-name>shiroFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 		<init-param>
 			<param-name>targetFilterLifecycle</param-name>
 			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>sitemeshFilter</filter-name>
+		<filter-class>org.sitemesh.config.ConfigurableSiteMeshFilter</filter-class>
+		<init-param>
+			<param-name>TemplatePath</param-name>
+			<param-value>/</param-value>
+		</init-param>
+		<init-param>
+			<param-name>default_encoding</param-name>
+			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
 
@@ -65,7 +81,7 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
+
 	<filter>
 		<filter-name>entityManagerInViewFilter</filter-name>
 		<filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
@@ -74,30 +90,36 @@
 			<param-value>coreEntityManagerFactory</param-value>
 		</init-param>
 	</filter>
-	
+
 	<filter-mapping>
 		<filter-name>shiroFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 	<filter-mapping>
 		<filter-name>setCharacterEncoding</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 	<filter-mapping>
 		<filter-name>entityManagerInViewFilter</filter-name>
 		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>sitemeshFilter</filter-name>
+		<url-pattern>*</url-pattern>
 	</filter-mapping>
 
 	<servlet-mapping>
 		<servlet-name>controller</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
@@ -107,9 +129,9 @@
 	<listener>
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>
-	
+
 	<session-config>
 		<session-timeout>40</session-timeout>
 	</session-config>
-	
+
 </web-app>

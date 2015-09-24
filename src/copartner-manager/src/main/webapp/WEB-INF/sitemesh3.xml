@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+	
+	<mapping path="/admin/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/comments/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/content/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/course/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/demand/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/editor/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/feedback/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/finance/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/finaphase/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/industry/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/news/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/project/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/phase/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/question/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/role/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/status/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/team/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/user/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	
+	<mapping path="/commons/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/home" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	
+	<mapping path="/assets/*" exclue="true"/>
+	<mapping path="/login" exclue="true"/>
+	<mapping path="/logout" exclue="true"/>
+	<mapping path="/login_action" exclue="true"/>
+	<mapping path="/async/*" exclue="true"/>
+	<mapping path="/unauthorized" exclue="true"/>
+</sitemesh>

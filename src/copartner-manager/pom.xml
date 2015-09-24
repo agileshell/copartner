@@ -12,6 +12,11 @@
 	<description>Copartner Manager</description>
 	<dependencies>
 		<dependency>
+			<groupId>org.sitemesh</groupId>
+			<artifactId>sitemesh</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+		<dependency>
 			<groupId>com.insoul</groupId>
 			<artifactId>copartner-service</artifactId>
 			<version>${project.version}</version>
@@ -31,7 +36,7 @@
 			<artifactId>standard</artifactId>
 			<version>1.1.2</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
