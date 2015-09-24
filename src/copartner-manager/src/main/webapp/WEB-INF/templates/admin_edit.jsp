@@ -41,12 +41,6 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label col-lg-3" for="password">密码<span class="cofrequired">*</span>:</label>
-												<div class="col-lg-6">
-													<input type="password" value="${admin.password}" class="form-control" id="password" name="password" placeholder="密码">
-												</div>
-											</div>
-											<div class="form-group">
 												<label class="control-label col-lg-3" for="permission">权限<span class="cofrequired">*</span>:</label>
 												<div class="col-lg-6">
 													<select class="form-control" name="permission">
@@ -102,10 +96,6 @@
 						required : true,
 						minlength : 2,
 						maxlength : 20
-					},
-					password : {
-						required : true,
-						minlength : 6
 					}
 				},
 				messages : {
@@ -118,10 +108,6 @@
 						required : '登录名不能为空',
 						minlength : "登录名长度不能小于2个字符",
 						maxlength : "登录名长度不能大于20个字符"
-					},
-					password : {
-						required : '密码不能为空',
-						minlength : "密码长度不能小于6个字符"
 					}
 				},
 				submitHandler : function(form) {

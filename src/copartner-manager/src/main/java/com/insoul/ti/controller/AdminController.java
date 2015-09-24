@@ -80,7 +80,7 @@ public class AdminController extends WebBase {
         admin.setUpdated(new Date());
         admin.setLoginName(request.getLoginName());
         admin.setName(request.getName());
-        admin.setPassword(PasswordUtil.encodePassword(request.getPassword(), Constants.DEFAULT_ADMIN_PASSWORD_SALT));
+//        admin.setPassword(PasswordUtil.encodePassword(request.getPassword(), Constants.DEFAULT_ADMIN_PASSWORD_SALT));
         admin.setPermission(request.getPermission());
         admin.setStatus(request.getStatus());
         adminDAO.update(admin);
