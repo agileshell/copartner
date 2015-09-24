@@ -91,6 +91,7 @@ public class HomeController extends WebBase {
                 admin.setLastIp(IpUtil.ip2Long(IpUtil.getIpAddr(request)));
                 adminDAO.update(admin);
                 UsernamePasswordToken token = new UsernamePasswordToken(name, password);
+                token.setRememberMe(true);
                 Subject subject = SecurityUtils.getSubject();
                 subject.login(token);
                 return new ModelAndView("redirect:/home");
