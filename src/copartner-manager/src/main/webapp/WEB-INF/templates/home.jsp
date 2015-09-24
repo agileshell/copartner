@@ -74,7 +74,12 @@
 															<tr>
 																<td>${c.id}</td>
 																<td>${c.name}</td>
-																<td>${startupRoles.get(c.startupRoleId)}</td>
+																<td>
+																	<%-- ${startupRoles.get(c.startupRoleId)} --%>
+																	<c:if test="${c.roleId == 1}"> 创业者 </c:if>
+																	<c:if test="${c.roleId == 2}"> 投资人 </c:if>
+																	<c:if test="${c.roleId == 3}"> 导师 </c:if>
+																</td>
 																<td>${c.email}</td>
 																<td>${c.mobile}</td>
 																<td>${c.fullLocation}</td>

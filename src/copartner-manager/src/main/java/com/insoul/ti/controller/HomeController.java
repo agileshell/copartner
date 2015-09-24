@@ -105,7 +105,7 @@ public class HomeController extends WebBase {
     @RequestMapping("/home")
     @Permission("authc")
     public ModelAndView home(@Valid UserListRequest request, BindingResult result) {
-        ModelAndView mv = createModelView("home", request);
+        ModelAndView mv = createModelView("home_2_0", request);
         PageQuery query = request.init().getQuery();
         UserCriteria criteria = new UserCriteria();
         criteria.setLimit(query.getPage_size() * 100);

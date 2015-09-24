@@ -11,7 +11,7 @@
 	<meta name="description" content="dap" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="author" content="fei.liu" />
-	<title>创客汇管理平台--登录</title>
+	<title>创始人平台--登录</title>
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
 	<link rel="stylesheet" href="${cdn}css/font-awesome.css"></link>
 	<link rel="stylesheet" href="${cdn}css/style.css"></link>
@@ -27,7 +27,7 @@
 				<div class="col-md-12">
 					<div class="widget worange">
 						<div class="widget-head">
-							<i class="icon-lock"></i>&nbsp;&nbsp;创客汇管理平台--登录
+							<i class="icon-lock"></i>&nbsp;&nbsp;创始人平台--登录
 						</div>
 						<div class="widget-content">
 							<div class="padd">

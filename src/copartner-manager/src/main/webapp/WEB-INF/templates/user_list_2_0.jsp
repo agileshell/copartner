@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="/WEB-INF/ti-tags.tld" prefix="t"%>
 <head>
 	<title>用户列表</title>
 </head>
@@ -55,72 +56,48 @@
 								<div class="clearfix"></div>
 							</div>
 							<div class="widget-content">
-								<table class="table table-striped table-bordered table-hover">
-									<thead>
-										<tr>
-											<th>ID</th>
-											<th>姓名</th>
-											<th>角色</th>
-											<th>邮箱</th>
-											<th>手机号</th>
-											<th>地址</th>
-											<th>性别</th>
-											<th>年龄</th>
-											<th>状态</th>
-											<th>注册时间</th>
-											<th>操作</th>
-										</tr>
-									</thead>
-									<tbody>
-										<c:if test="${!success}">
-											<tr><td colspan="11" style="text-align: center;">空空如也!!!</td></tr>
-										</c:if>
-										<c:if test="${success}">
-											<c:forEach var="c" items="${userList}" varStatus="status">
-												<tr>
-													<td>${c.id}</td>
-													<td>${c.name}</td>
-													<td>
-														<%-- ${startupRoles.get(c.startupRoleId)} --%>
-														<c:if test="${c.roleId == 1}"> 创业者 </c:if>
-														<c:if test="${c.roleId == 2}"> 投资人 </c:if>
-														<c:if test="${c.roleId == 3}"> 导师 </c:if>
-													</td>
-													<td>${c.email}</td>
-													<td>${c.mobile}</td>
-													<td>${c.fullLocation}</td>
-													<td>
-														<c:if test="${c.gender == 'F'}"> <i class="icon-female"></i> </c:if>
-														<c:if test="${c.gender == 'M'}"> <i class="icon-male"></i> </c:if>
-													</td>
-													<td>${c.age}</td>
-													<td>
-														<jsp:include page="control/commons-status.jsp">
-															<jsp:param value="${c.status}" name="status"/>
-															<jsp:param value="false" name="has_all"/>
-															<jsp:param value="true" name="update"/>
-															<jsp:param value="${c.id}" name="id"/>
-															<jsp:param value="/user/update_status/${c.id}" name="url"/>
-														</jsp:include>
-													</td>
-													<td>${c.gmtcreated}</td>
-													<td>
-														<div class="btn-group">
-															<a class="btn btn-xs btn-default" href="/user/detail/${c.id}">
-																详情
-															</a>
-															<!--
-															<a class="btn btn-xs btn-default" href="/user/chat/${c.id}" target="_self">
-																即时聊天
-															</a>
-															-->
+								<div class="row">
+									<div class="col-md-12">
+										<c:forEach var="c" items="${userList}" varStatus="status">
+											<div class="col-md-3">
+												<div class="widget">
+													<div class="widget-head">
+														<div class="pull-left">
+															<c:if test="${c.roleId == 1}">创业者&nbsp;:&nbsp;</c:if>
+															<c:if test="${c.roleId == 2}">投资人&nbsp;:&nbsp;</c:if>
+															<c:if test="${c.roleId == 3}">导师&nbsp;:&nbsp;</c:if>
+															<a href="/user/detail/${c.id}"><t:short content="${c.name}" length="6"></t:short></a>
 														</div>
-													</td>
-												</tr>
-											</c:forEach>
-										</c:if>
-									</tbody>
-								</table>
+														<div class="widget-icons pull-right">
+															<c:if test="${c.gender == 'F'}"> <i class="icon-female"></i> </c:if>
+															<c:if test="${c.gender == 'M'}"> <i class="icon-male"></i> </c:if>
+														</div>
+														<div class="clearfix"></div>
+													</div>
+													<div class="widget-content">
+														<div class="padd">
+															<ul class="task">
+											                	<li><span class="uni">手机&nbsp;:&nbsp;</span>${c.mobile}
+											                	</li>
+											                	<li><span class="uni">地址&nbsp;:&nbsp;</span>${c.fullLocation}
+											                	</li>
+											                </ul>
+														</div>
+														<div class="widget-foot">
+															<jsp:include page="control/commons-status.jsp">
+																<jsp:param value="${c.status}" name="status"/>
+																<jsp:param value="false" name="has_all"/>
+																<jsp:param value="true" name="update"/>
+																<jsp:param value="${c.id}" name="id"/>
+																<jsp:param value="/user/update_status/${c.id}" name="url"/>
+															</jsp:include>
+														</div>
+													</div>
+												</div>
+											</div>
+										</c:forEach>
+									</div>
+								</div>
 								<jsp:include page="control/pagination.jsp"/>
 							</div>
 						</div>

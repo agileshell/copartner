@@ -2,7 +2,7 @@
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <head>
-	<title>创客汇管理平台--项目阶段列表</title>
+	<title>项目阶段列表</title>
 </head>
 <body>
 	<div class="mainbar">
