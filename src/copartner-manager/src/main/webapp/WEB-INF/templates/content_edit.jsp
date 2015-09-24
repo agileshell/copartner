@@ -55,7 +55,8 @@
 										<div class="form-group">
 											<label class="col-lg-5 control-label" for="synopsis">摘要:</label>
 											<div class="col-lg-7">
-												<input name="synopsis" id="synopsis" value="${content.synopsis}" type="text" class="form-control" placeholder="摘要"></input>
+												<textarea name="synopsis" id="synopsis" class="form-control" rows="3" placeholder="摘要">${content.synopsis}</textarea>
+												<!-- <input name="synopsis" id="synopsis" value="${content.synopsis}" type="text" class="form-control" placeholder="摘要"></input> -->
 											</div>
 										</div>
 										
