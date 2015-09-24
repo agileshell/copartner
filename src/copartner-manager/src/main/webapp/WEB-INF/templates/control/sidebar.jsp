@@ -23,10 +23,10 @@
         </li>
 		
 		<li class="has_sub">
-			<a href="#" <c:if test="${viewname == 'project_list' || viewname == 'demand_list' || viewname == 'financing_list'}"> class="subdrop" </c:if>>
+			<a href="#" <c:if test="${viewname == 'project_list' || viewname == 'demand_list' || viewname == 'financing_list' || viewname == 'comments_list'}"> class="subdrop" </c:if>>
 				<i class="icon-star"></i>融资融智<span class="pull-right"><i class="icon-chevron-right"></i></span>
 			</a>
-			<ul <c:if test="${viewname == 'project_list' || viewname == 'demand_list' || viewname == 'financing_list'}"> style="display: block;" </c:if>>
+			<ul <c:if test="${viewname == 'project_list' || viewname == 'demand_list' || viewname == 'financing_list' || viewname == 'comments_list'}"> style="display: block;" </c:if>>
 			  	<li>
 					<a <c:if test="${viewname == 'project_list'}"> class="open" </c:if> href="/project/list"><i class="icon-bookmark"></i>项目管理</a>
 				</li>
