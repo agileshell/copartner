@@ -40,7 +40,7 @@ import com.insoul.copartner.util.ResponseUtil;
 import com.insoul.copartner.vo.request.ImageAddRequest;
 
 @Controller
-public class ImageController extends BaseController {
+public class MediaController extends BaseController {
 
     @Resource
     private IMediaService mediaService;
