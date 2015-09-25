@@ -8,8 +8,6 @@ package com.insoul.ti.req;
  */
 public abstract class PageRequest extends ViewRequest {
 
-	public static final int DEFAULT_PAGE_LIMIT = 20;
-
 	private PageQuery query;
 
 	private int page = 1;
@@ -18,7 +16,7 @@ public abstract class PageRequest extends ViewRequest {
     
 	public PageRequest init() {
 		if (limit <= 0) {
-			limit = DEFAULT_PAGE_LIMIT;
+			limit = PageQuery.DEFAULT_PAGE_SIZE;
 		}
 		query = new PageQuery(limit, page);
 		Q();
