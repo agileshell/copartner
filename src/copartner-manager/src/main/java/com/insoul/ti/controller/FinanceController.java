@@ -51,6 +51,8 @@ public class FinanceController extends WebBase {
         criteria.setProjectName(request.getName());
         criteria.setUserId(request.getId());
         List<Financing> list = financingDAO.queryFinancing(criteria);
+        Long count = financingDAO.countFinancing(criteria);
+        query.setCount((count == null || count <= 0L) ? 0 : count.intValue());
         mv.addObject("query", query);
         mv.addObject("financingList", list);
         mv.addObject("success", CollectionUtils.isNotEmpty(list));

@@ -40,6 +40,8 @@ public class FeedbackController extends WebBase {
 		criteria.setUserId(request.getUserId());
 		criteria.setText(request.getText());
 		List<Feedback> list = feedbackDAO.query(criteria);
+        Long count = feedbackDAO.count(criteria);
+        query.setCount((count == null || count <= 0L) ? 0 : count.intValue());
 		mv.addObject("query", query);
 		mv.addObject("feedbackList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));

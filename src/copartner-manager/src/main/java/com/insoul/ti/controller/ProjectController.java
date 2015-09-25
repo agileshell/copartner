@@ -50,6 +50,8 @@ public class ProjectController extends WebBase {
         criteria.setName(request.getName());
         criteria.setUserId(request.getId());
         List<Project> list = projectDAO.queryProject(criteria);
+        Long count = projectDAO.countProject(criteria);
+        query.setCount((count == null || count <= 0L) ? 0 : count.intValue());
         mv.addObject("query", query);
         mv.addObject("projectList", list);
         mv.addObject("success", CollectionUtils.isNotEmpty(list));

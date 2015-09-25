@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -60,6 +61,8 @@ public class ContentController extends WebBase {
 		criteria.setId(request.getId());
 		criteria.setTitle(request.getTitle());
 		List<Content> list = contentDAO.queryContent(criteria);
+		Long count = contentDAO.countContent(criteria);
+		query.setCount((count == null || count <= 0L) ? 0 : count.intValue());
 		mv.addObject("query", query);
 		mv.addObject("contentList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));

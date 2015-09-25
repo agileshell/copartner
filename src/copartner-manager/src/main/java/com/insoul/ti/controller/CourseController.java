@@ -50,7 +50,7 @@ public class CourseController extends WebBase {
 		PageQuery query = request.init().getQuery();
 		CourseCriteria criteria = new CourseCriteria();
 		criteria.setLimit(query.getPage_size());
-		criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
+		criteria.setOffset(query.getIndex());
 		String[] status = null;
 		if (StringUtils.isNotBlank(request.getStatus())) {
 			status = new String[] { request.getStatus() };
@@ -58,6 +58,8 @@ public class CourseController extends WebBase {
 		criteria.setStatus(status);
 		criteria.setKeyword(request.getKeyword());
 		List<Course> list = courseDAO.queryCourse(criteria);
+        Long count = courseDAO.countCourse(criteria);
+        query.setCount((count == null || count <= 0L) ? 0 : count.intValue());
 		mv.addObject("query", query);
 		mv.addObject("coursetList", list);
 		mv.addObject("success", CollectionUtils.isNotEmpty(list));

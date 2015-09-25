@@ -59,6 +59,8 @@ public class NewsController extends WebBase {
         criteria.setStatus(status);
         criteria.setTitle(request.getTitle());
         List<News> list = newsDAO.queryNews(criteria);
+        Long count = newsDAO.countNews(criteria);
+        query.setCount((count == null || count <= 0L) ? 0 : count.intValue());
         mv.addObject("query", query);
         mv.addObject("newsList", list);
         mv.addObject("success", CollectionUtils.isNotEmpty(list));

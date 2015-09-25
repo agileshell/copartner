@@ -15,7 +15,7 @@ public abstract class PageRequest extends ViewRequest {
 	private int page = 1;
 
 	private int limit;
-
+    
 	public PageRequest init() {
 		if (limit <= 0) {
 			limit = DEFAULT_PAGE_LIMIT;
@@ -46,4 +46,9 @@ public abstract class PageRequest extends ViewRequest {
 	public void setLimit(int limit) {
 		this.limit = limit;
 	}
+
+    public void setCount(int count) {
+        this.query.setCount(count);
+        
+    }
 }

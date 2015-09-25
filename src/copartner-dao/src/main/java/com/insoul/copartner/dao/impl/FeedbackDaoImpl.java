@@ -22,7 +22,12 @@ public class FeedbackDaoImpl extends BaseDaoImpl<Feedback, Long> implements IFee
 		return generateQuery(criteria, false).getResultList();
 	}
 
-	private Query generateQuery(FeedbackCriteria criteria, boolean isCount) {
+	@Override
+    public Long count(FeedbackCriteria criteria) {
+	    return (Long) generateQuery(criteria, true).getSingleResult();
+    }
+
+    private Query generateQuery(FeedbackCriteria criteria, boolean isCount) {
 		StringBuilder conditionStr = new StringBuilder();
 		Map<String, Object> params = new HashMap<String, Object>();
 		if (null != criteria.getUserId() && criteria.getUserId() > 0L) {

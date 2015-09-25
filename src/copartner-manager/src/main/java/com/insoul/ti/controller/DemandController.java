@@ -45,11 +45,13 @@ public class DemandController extends WebBase {
         PageQuery query = request.init().getQuery();
         DemandCriteria criteria = new DemandCriteria();
         criteria.setLimit(query.getPage_size());
-        criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
+        criteria.setOffset(query.getIndex());
         criteria.setStatus(new String[] { request.getStatus() });
         criteria.setProjectName(request.getName());
         criteria.setUserId(request.getId());
         List<Demand> list = demandDAO.queryDemand(criteria);
+        Long count = demandDAO.countDemand(criteria);
+        query.setCount((count == null || count <= 0L) ? 0 : count.intValue());
         mv.addObject("query", query);
         mv.addObject("demandList", list);
         mv.addObject("success", CollectionUtils.isNotEmpty(list));

@@ -59,6 +59,8 @@ public class QuestionController extends WebBase {
         criteria.setStatus(status);
         criteria.setKeyword(request.getKeyword());
         List<Question> list = questionDAO.queryQuestion(criteria);
+        Long count = questionDAO.countQuestion(criteria);
+        query.setCount((count == null || count <= 0L) ? 0 : count.intValue());
         mv.addObject("query", query);
         mv.addObject("questionList", list);
         mv.addObject("success", CollectionUtils.isNotEmpty(list));

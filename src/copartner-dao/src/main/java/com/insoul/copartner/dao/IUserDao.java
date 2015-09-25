@@ -16,6 +16,8 @@ public interface IUserDao extends IBaseDao<User, Long> {
     List<User> getUserByIds(Set<Long> userIds);
 
     List<User> query(UserCriteria criteria);
+    
+    Long count(UserCriteria criteria);
 
     long count();
 

@@ -42,19 +42,23 @@ public class CommentsController extends WebBase {
 		if (request.getType() == 1) {
 			DemandCommentCriteria criteria = new DemandCommentCriteria();
 			criteria.setLimit(query.getPage_size());
-			criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
+			criteria.setOffset(query.getIndex());
 			criteria.setDemandId(request.getDomainId());
 			criteria.setStatus(request.getStatus());
 			List<DemandComments> list = demandCommentsDao.queryComments(criteria);
+	        Long count = demandCommentsDao.countComments(criteria);
+	        query.setCount((count == null || count <= 0L) ? 0 : count.intValue());
 			mv.addObject("commentsList", list);
 			mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		} else if (request.getType() == 2) {
 			ProjectCommentCriteria criteria = new ProjectCommentCriteria();
 			criteria.setLimit(query.getPage_size());
-			criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
+			criteria.setOffset(query.getIndex());
 			criteria.setProjectId(request.getDomainId());
 			criteria.setStatus(request.getStatus());
 			List<ProjectComments> list = projectCommentsDao.queryComments(criteria);
+	        Long count = projectCommentsDao.countComments(criteria);
+	        query.setCount((count == null || count <= 0L) ? 0 : count.intValue());
 			mv.addObject("commentsList", list);
 			mv.addObject("success", CollectionUtils.isNotEmpty(list));
 		}

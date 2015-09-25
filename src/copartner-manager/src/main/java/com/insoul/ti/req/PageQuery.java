@@ -1,5 +1,7 @@
 package com.insoul.ti.req;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author 刘飞
  * 
@@ -18,9 +20,11 @@ public class PageQuery {
 
 	private int next_page;
 	
-	private long index;
+	private int index;
 	
 	private String queryString;
+	
+	private int count;
 
 	public PageQuery(int page) {
 		this(DEFAULT_PAGE_SIZE, page);
@@ -38,8 +42,47 @@ public class PageQuery {
 			this.page = page;
 			next_page = page + 1;
 		}
-		index = Long.valueOf((this.page - 1) * this.page_size);
+		index = (this.page - 1) * this.page_size;
 	}
+	
+	public boolean isLastPage() {
+	    return (count % page_size == 0 ? (count / page_size) : ((count / page_size) + 1)) == page;
+	}
+	
+	public int getLastPageNum() {
+	    return count % page_size == 0 ? (count / page_size) : ((count / page_size) + 1);
+	}
+	
+	public boolean isHomePage() {
+	    return page == 1;
+	}
+	
+	public boolean isPage_1() {
+	    int lastPage = getLastPageNum();
+	    return page + 1 < lastPage;
+	}
+	
+	public int getPage_1Num() {
+	    return page + 1;
+	}
+    
+    public boolean isPage_2() {
+        int lastPage = getLastPageNum();
+        return page + 2 < lastPage;
+    }
+    
+    public int getPage_2Num() {
+        return page + 2;
+    }
+    
+    public boolean isPage_3() {
+        int lastPage = getLastPageNum();
+        return page + 3 < lastPage;
+    }
+    
+    public int getPage_3Num() {
+        return page + 3;
+    }
 	
 	public PageQuery reset() {
 		pre_page = page - 1;
@@ -47,11 +90,11 @@ public class PageQuery {
 		return this;
 	}
 
-	public long getIndex() {
+	public int getIndex() {
 		return index;
 	}
 
-	public void setIndex(long index) {
+	public void setIndex(int index) {
 		this.index = index;
 	}
 
@@ -88,10 +131,18 @@ public class PageQuery {
 	}
 
 	public String getQueryString() {
-		return queryString;
+		return "&limit=" + this.page_size + (StringUtils.isBlank(queryString) ? "" : "&") + StringUtils.defaultString(queryString, StringUtils.EMPTY);
 	}
 
 	public void setQueryString(String queryString) {
 		this.queryString = queryString;
 	}
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 }
