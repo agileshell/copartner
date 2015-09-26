@@ -1,84 +1,22 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<meta charset="utf-8">
 		<title>创始人</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<link rel="stylesheet" href="../css/message.css" />
-		<style>
-			footer {
-				position: fixed;
-				width: 100%;
-				height: 50px;
-				min-height: 50px;
-				border-top: solid 1px #bbb;
-				left: 0px;
-				bottom: 0px;
-				overflow: hidden;
-				padding: 0px 50px 0 10px;
-				background-color: #fafafa;
-			}
-			.footer-left {
-				position: absolute;
-				width: 50px;
-				height: 50px;
-				left: 0px;
-				bottom: 0px;
-				text-align: center;
-				vertical-align: middle;
-				line-height: 100%;
-				padding: 12px 4px;
-			}
-			.footer-right {
-				position: absolute;
-				width: 50px;
-				height: 50px;
-				right: 0px;
-				bottom: 0px;
-				text-align: center;
-				vertical-align: middle;
-				line-height: 100%;
-				padding: 12px 5px;
-				display: inline-block;
-			}
-			.footer-center {
-				height: 100%;
-				padding: 5px 0px;
-			}
-			.footer-center [class*=input] {
-				width: 100%;
-				height: 100%;
-				border-radius: 5px;
-			}
-			.footer-center .input-text {
-				background: #fff;
-				border: solid 1px #ddd;
-				padding: 10px !important;
-				font-size: 16px !important;
-				line-height: 18px !important;
-				font-family: verdana !important;
-				overflow: hidden;
-			}
-			.mui-content {
-				height: 100%;
-				padding: 44px 0px 50px 0px;
-				overflow: auto;
-				background-color: #eaeaea;
-			}
-		</style>
 	</head>
-
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 id="title" class="mui-title c-title">聊天</h1>
 		</header>
 		<div class="mui-content">
-			<div class="message-history">
+			<div class="message-history" id="message-history">
+				
+				<!--
 				<div class="message-reply">
 					<div class="message-time">2014-2-21 9:32:57</div>
 					<div class="message-info">
@@ -91,6 +29,8 @@
 						</div>
 					</div>
 				</div>
+				
+				
 				
 				<div class="message-receive">
 					<div class="message-time">2014-2-21 9:32:57</div>
@@ -105,6 +45,8 @@
 					</div>
 				</div>
 				
+                -->
+				
 			</div>
 		</div>
 		<footer>
@@ -116,10 +58,67 @@
 			</label>
 		</footer>
 	</body>
+	
+	
+	<script id="message-reply-template" type="text/x-handlebars-template">
+		<div class="message-reply">
+			<div class="message-time">2014-2-21 9:32:57</div>
+			<div class="message-info">
+				<div class="user-info">
+					<img class="user-avatar" src="../images/blank.jpg">
+				</div>
+				<div class="message-content-box">
+					<div class="arrow"></div>
+					<div class="message-content">这个东西不错呀！</div>
+				</div>
+			</div>
+		</div>
+	</script>
+	
+	<script id="message-receive-template" type="text/x-handlebars-template">
+		<div class="message-receive">
+			<div class="message-time">2014-2-21 9:32:57</div>
+			<div class="message-info">
+				<div class="user-info">
+					<img class="user-avatar" src="../images/user-photo.png">
+				</div>
+				<div class="message-content-box">
+					<div class="arrow"></div>
+					<div class="message-content">Good football</div>
+				</div>
+			</div>
+		</div>
+	</script>
+	
+	<script type="text/javascript" charset="UTF-8" src="../js/handlebars-v2.0.0.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/jquery-1.10.2.min.js" ></script>
 	<script type="text/javascript" charset="utf-8">
-		var ws;
+		
+		Date.prototype.format = function(format) {
+			var o = {
+				"M+": this.getMonth() + 1,
+				"d+": this.getDate(),
+				"h+": this.getHours(),
+				"m+": this.getMinutes(),
+				"s+": this.getSeconds(),
+				"q+": Math.floor((this.getMonth() + 3) / 3),
+				"S": this.getMilliseconds()
+			}
+	
+			if (/(y+)/.test(format)) {
+				format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+			}
+			for (var k in o) {
+				if (new RegExp("(" + k + ")").test(format)) {
+					format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+				}
+			}
+			return format;
+		}
+		
+		var ws;// websocket object
 		var msg = document.getElementById("msg-text");
 		function deliver(message) {
 			if (!window.WebSocket) {
@@ -127,11 +126,29 @@
 			}
 			if (ws.readyState == WebSocket.OPEN) {
 				ws.send(message);
+				console.log("发送消息 : " + message);
 			} else {
 				plus.nativeUI.toast("网络无法连接");
 			}
 		}
-		(function( doc) {
+		
+		function buildIQ(mid) {
+			mid = 2;
+			return "{\"type\":1,\"mid\":" + mid + "}";
+		};
+		
+		function buildMessage(mid, tid, body) {
+			mid = 2;
+			tid = 1;
+			return "{\"type\":2,\"mid\":" + mid + ",\"tid\":" + tid + ",\"body\":\"" + body + "\",\"gmt_created\":" + new Date().getTime() + "}";
+		};
+		
+		function buildPresence(mid) {
+			mid = 2;
+			return "{\"type\":3,\"mid\":" + mid + ",\"passwd\":\"123456\"}";
+		};
+		
+		(function(doc) {
 			mui.init({
 				gestureConfig: {
 					tap: true, //默认为true
@@ -144,11 +161,16 @@
 				}
 			});
 			doc.addEventListener('mui.view.beforeshow', function(event) {
+				// TODO 获取MID
 				mui.currentWebview.show();
+				var mid = 5;// 获取我自己的mid
+				var tid = 1;// 获取对方的mid
+				
+				localStorage.setItem('$mid', mid);
+				localStorage.setItem('$tid', tid);
+				
 			});
-			
-			//chat
-			var presenceMsg = "{\"type\":3,\"mid\":5,\"passwd\":\"123456\"}";
+			var presenceMsg = buildPresence(localStorage.getItem('$mid'));
 			if (!window.WebSocket) {
 				window.WebSocket = window.MozWebSocket;
 			}
@@ -157,33 +179,51 @@
 			}
 			ws.onopen = function(event) {
 				deliver(presenceMsg);
+				setTimeout(function() {// 3分钟定时检查是否在线
+					deliver(buildIQ(localStorage.getItem('$mid')));
+				}, 180000);
 			};
 			ws.onmessage = function(event) {
-				var messgae = event.data;
-				console.log(messgae);
-				switch (messgae.type){
+				var message = JSON.parse(event.data);
+				console.log("接收到消息 : " + JSON.stringify(message));
+				
+				switch (message.type) {
 					case 1 : {// IQ
-						if (messgae.status == 2) {// 离线
+						if (message.status == 2) {// 离线
 							deliver(presenceMsg);
 						}
 						break;
 					}
 					case 2 : {// Message
-						var fromMid = messgae.mid,
-							party_id = messgae.party_id,
-							nick = messgae.nick,
-							avatar = messgae.avatar,
-							toMid = messgae.tid,
-							msgBody = messgae.body,
-							gmt_created = new Date(messgae.gmt_created),
-							status = messgae.status;
+						var fromMid = message.mid,// 对方的mid
+							party_id = message.party_id,
+							nick = message.nick,
+							avatar = message.avatar,
+							toMid = message.tid,
+							msgBody = message.body || "",
+							gmt_created = new Date(message.gmt_created);
+						var receiveMessageHtml = 
+						"<div class=\"message-receive\">" + 
+							"<div class=\"message-time\">" + gmt_created.format("yyyy-MM-dd hh:mm:ss") + "</div>" + 
+							"<div class=\"message-info\">" + 
+								"<div class=\"user-info\">" + 
+									"<img class=\"user-avatar\" src=\"" + avatar + "\">" + 
+								"</div>" + 
+								"<div class=\"message-content-box\">" + 
+									"<div class=\"arrow\"></div>" + 
+									"<div class=\"message-content\">" + msgBody + "</div>" + 
+								"</div>" + 
+							"</div>" + 
+						"</div>";
+						console.log("接收到消息 : " + receiveMessageHtml);
+						jQuery("#message-history").append(receiveMessageHtml);
 						break;
 					}
 					case 3 : {// Presence
-						if (messgae.status == 1) {// 成功出席
-							deliver(presenceMsg);
-						} else if (messgae.status == 2) {// 出席失败
-							deliver(presenceMsg);
+						if (message.status == 1) {// 成功出席
+							// deliver(presenceMsg);
+						} else if (message.status == 2) {// 出席失败
+							// deliver(presenceMsg);
 						}
 						break;
 					}
@@ -191,7 +231,7 @@
 						break;
 					}
 					case 5 : {// Acknowledge
-						if (messgae.status == 1) {
+						if (message.status == 1) {
 						 	plus.nativeUI.toast("发送成功");
 						}
 						break;
@@ -200,10 +240,26 @@
 						break;
 					}
 				}
+				// end switch
+				
 			};
 			document.getElementById('send-msg').addEventListener('tap', function() {
-				console.log(msg.value);
-				var message = "{\"type\":2,\"mid\":5,\"tid\":1,\"body\":\"" + msg.value + "\",\"gmt_created\":1443251109367}";
+				var message = buildMessage(localStorage.getItem('$mid'), localStorage.getItem('$tid'), msg.value);
+				var replyMessageHtml = 
+				"<div class=\"message-reply\">" + 
+					"<div class=\"message-time\">" + new Date().format("yyyy-MM-dd hh:mm:ss") + "</div>" + 
+					"<div class=\"message-info\">" + 
+						"<div class=\"user-info\">" + 
+							"<img class=\"user-avatar\" src=\"../images/blank.jpg\">" + 
+						"</div>" + 
+						"<div class=\"message-content-box\">" + 
+							"<div class=\"arrow\"></div>" + 
+							"<div class=\"message-content\">" + msg.value + "</div>" + 
+						"</div>" + 
+					"</div>" + 
+				"</div>";
+				jQuery("#message-history").append(replyMessageHtml);
+				msg.value = "";
 				deliver(message);
 			});
 		}(document));
