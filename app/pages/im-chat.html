@@ -90,6 +90,7 @@
 			var ws;
 			mui.init();
 			mui.plusReady(function() {
+				var presenceMsg = "{\"type\":3,\"mid\":5,\"passwd\":\"123456\"}";
 				if (!window.WebSocket) {
 					window.WebSocket = window.MozWebSocket;
 				}
@@ -98,11 +99,55 @@
 				}
 				ws.onopen = function(event) {
 					plus.nativeUI.toast("onopen : " + event.data);
-					var presenceMsg = "{\"type\":3,\"mid\":5,\"passwd\":\"123456\"}";
 					deliver(presenceMsg);
 				};
 				ws.onmessage = function(event) {
-					plus.nativeUI.toast("onmessage : " + event.data);
+					var messgae = JSON.parse(event.data);
+					switch (messgae.type){
+						case 1 : {// IQ
+							if (messgae.status == 2) {// 离线
+								deliver(presenceMsg);
+							}
+							break;
+						}
+						case 2 : {// Message
+							
+							var fromMid = messgae.mid,
+								party_id = messgae.party_id,
+								nick = messgae.nick,
+								avatar = messgae.avatar,
+								toMid = messgae.tid,
+								msgBody = messgae.body,
+								gmt_created = new Date(messgae.gmt_created),
+								status = messgae.status;
+								
+							
+							
+							break;
+						}
+						case 3 : {// Presence
+							if (messgae.status == 1) {// 成功出席
+								deliver(presenceMsg);
+							} else if (messgae.status == 2) {// 出席失败
+								deliver(presenceMsg);
+							}
+							break;
+						}
+						case 4 : {// Register
+							
+							break;
+						}
+						case 5 : {// Acknowledge
+							if (messgae.status == 1) {
+							 	plus.nativeUI.toast("发送成功");
+							}
+							break;
+						}
+						case 6 : {// Revise
+							break;
+						}
+					}
+					// plus.nativeUI.toast("onmessage : " + event.data);
 				};
 				/**
 				ws.onerror = function(event) {
@@ -153,6 +198,7 @@
 						</div>
 					</div>
 				</div>
+				
 				<div class="message-receive">
 					<div class="message-time">2014-2-21 9:32:57</div>
 					<div class="message-info">
@@ -165,6 +211,7 @@
 						</div>
 					</div>
 				</div>
+				
 			</div>
 		</div>
 		<footer>
