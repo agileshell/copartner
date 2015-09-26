@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创始人</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<link rel="stylesheet" href="../css/message.css" />
+		<style>
+			footer {
+				position: fixed;
+				width: 100%;
+				height: 50px;
+				min-height: 50px;
+				border-top: solid 1px #bbb;
+				left: 0px;
+				bottom: 0px;
+				overflow: hidden;
+				padding: 0px 50px 0 10px;
+				background-color: #fafafa;
+			}
+			.footer-left {
+				position: absolute;
+				width: 50px;
+				height: 50px;
+				left: 0px;
+				bottom: 0px;
+				text-align: center;
+				vertical-align: middle;
+				line-height: 100%;
+				padding: 12px 4px;
+			}
+			.footer-right {
+				position: absolute;
+				width: 50px;
+				height: 50px;
+				right: 0px;
+				bottom: 0px;
+				text-align: center;
+				vertical-align: middle;
+				line-height: 100%;
+				padding: 12px 5px;
+				display: inline-block;
+			}
+			.footer-center {
+				height: 100%;
+				padding: 5px 0px;
+			}
+			.footer-center [class*=input] {
+				width: 100%;
+				height: 100%;
+				border-radius: 5px;
+			}
+			.footer-center .input-text {
+				background: #fff;
+				border: solid 1px #ddd;
+				padding: 10px !important;
+				font-size: 16px !important;
+				line-height: 18px !important;
+				font-family: verdana !important;
+				overflow: hidden;
+			}
+			.mui-content {
+				height: 100%;
+				padding: 44px 0px 50px 0px;
+				overflow: auto;
+				background-color: #eaeaea;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">聊天</h1>
+		</header>
+		<div class="mui-content">
+			<div class="message-history">
+				<div class="message-reply">
+					<div class="message-time">2014-2-21 9:32:57</div>
+					<div class="message-info">
+						<div class="user-info">
+							<img class="user-avatar" src="../images/blank.jpg">
+						</div>
+						<div class="message-content-box">
+							<div class="arrow"></div>
+							<div class="message-content">这个东西不错呀！</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="message-receive">
+					<div class="message-time">2014-2-21 9:32:57</div>
+					<div class="message-info">
+						<div class="user-info">
+							<img class="user-avatar" src="../images/user-photo.png">
+						</div>
+						<div class="message-content-box">
+							<div class="arrow"></div>
+							<div class="message-content">Good football</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<footer>
+			<div class="footer-center">
+				<textarea id='msg-text' type="text" class='input-text' placeholder="输入消息内容"></textarea>
+			</div>
+			<label class="footer-right">
+				<span id="send-msg">发送</span>
+			</label>
+		</footer>
+	</body>
+	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		var ws;// websocket object
+		var msg = document.getElementById("msg-text");
+		/**
+		 * 发送消息
+		 */
+		function deliver(message) {
+			if (!window.WebSocket) {
+				return;
+			}
+			if (ws.readyState == WebSocket.OPEN) {
+				ws.send(message);
+			} else {
+				plus.nativeUI.toast("网络无法连接");
+			}
+		}
+		
+		(function(doc) {
+			mui.init({
+				gestureConfig: {
+					tap: true, //默认为true
+					doubletap: true, //默认为false
+					longtap: true, //默认为false
+					swipe: true, //默认为true
+					drag: true, //默认为true
+					hold: true, //默认为false，不监听
+					release: true //默认为false，不监听
+				}
+			});
+			doc.addEventListener('mui.view.beforeshow', function(event) {
+				// TODO 获取MID
+				mui.currentWebview.show();
+				var mid;// 获取mid
+				localStorage.setItem('$mid', mid);
+				
+			});
+			//chat
+			var presenceMsg = "{\"type\":3,\"mid\":5,\"passwd\":\"123456\"}";
+			if (!window.WebSocket) {
+				window.WebSocket = window.MozWebSocket;
+			}
+			if (window.WebSocket) {
+				ws = new WebSocket("ws://123.57.55.59:9099");
+			}
+			ws.onopen = function(event) {
+				deliver(presenceMsg);
+			};
+			ws.onmessage = function(event) {
+				var messgae = event.data;
+				console.log(messgae);
+				switch (messgae.type){
+					case 1 : {// IQ
+						if (messgae.status == 2) {// 离线
+							deliver(presenceMsg);
+						}
+						break;
+					}
+					case 2 : {// Message
+						var fromMid = messgae.mid,
+							party_id = messgae.party_id,
+							nick = messgae.nick,
+							avatar = messgae.avatar,
+							toMid = messgae.tid,
+							msgBody = messgae.body,
+							gmt_created = new Date(messgae.gmt_created),
+							status = messgae.status;
+						break;
+					}
+					case 3 : {// Presence
+						if (messgae.status == 1) {// 成功出席
+							deliver(presenceMsg);
+						} else if (messgae.status == 2) {// 出席失败
+							deliver(presenceMsg);
+						}
+						break;
+					}
+					case 4 : {// Register
+						break;
+					}
+					case 5 : {// Acknowledge
+						if (messgae.status == 1) {
+						 	plus.nativeUI.toast("发送成功");
+						}
+						break;
+					}
+					case 6 : {// Revise
+						break;
+					}
+				}
+			};
+			document.getElementById('send-msg').addEventListener('tap', function() {
+				console.log(msg.value);
+				var message = "{\"type\":2,\"mid\":5,\"tid\":1,\"body\":\"" + msg.value + "\",\"gmt_created\":1443251109367}";
+				deliver(message);
+			});
+		}(document));
+	</script>
+</html>
