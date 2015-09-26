@@ -162,7 +162,7 @@
 		var chatWebview = null;
 		function open_chat(id) {
 			if (!chatWebview) {
-				chatWebview = plus.webview.getWebviewById('im_chat');
+				chatWebview = plus.webview.getWebviewById('im-chat');
 			}
 			mui.fire(chatWebview, 'mui.view.beforeshow', {
 				guid: id

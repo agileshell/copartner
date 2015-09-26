@@ -9,6 +9,8 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<link rel="stylesheet" href="../css/message.css" />
+		<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+		<script type="text/javascript" charset="UTF-8" src="../js/mui.indexedlist.js"></script>
 		<style>
 			footer {
 				position: fixed;
@@ -70,6 +72,66 @@
 				background-color: #eaeaea;
 			}
 		</style>
+		
+		<script type="text/javascript">
+			
+			
+			
+			/**
+			(function($) {
+				document.addEventListener('mui.view.beforeshow', function(event) {
+					event.detail.guid;
+				});
+			})(mui);
+			**/
+			
+			
+			
+			var ws;
+			mui.init();
+			mui.plusReady(function() {
+				if (!window.WebSocket) {
+					window.WebSocket = window.MozWebSocket;
+				}
+				if (window.WebSocket) {
+					ws = new WebSocket("ws://123.57.55.59:9099");
+				}
+				ws.onopen = function(event) {
+					plus.nativeUI.toast("onopen : " + event.data);
+					var presenceMsg = "{\"type\":3,\"mid\":5,\"passwd\":\"123456\"}";
+					deliver(presenceMsg);
+				};
+				ws.onmessage = function(event) {
+					plus.nativeUI.toast("onmessage : " + event.data);
+				};
+				/**
+				ws.onerror = function(event) {
+					plus.nativeUI.toast("onerror : " + event.data);
+				};
+				ws.onclose = function(event) {
+					plus.nativeUI.toast("onclose : " + event.data);
+				};
+				**/
+			});
+	
+	        mui('#send-msg').on('tap', function() {
+	        		var body = mui('#msg-text').val();
+	        		var message = "{\"type\":2,\"mid\":5,\"tid\":1,\"body\":\"" + body + "\",\"gmt_created\":1443251109367}";
+				deliver(message);
+			});
+	
+			function deliver(message) {
+				if (!window.WebSocket) {
+					return;
+				}
+				if (ws.readyState == WebSocket.OPEN) {
+					ws.send(message);
+				} else {
+					plus.nativeUI.toast("网络无法连接");
+				}
+			}
+			</script>
+		
 	</head>
 
 	<body>
@@ -110,7 +172,7 @@
 				<textarea id='msg-text' type="text" class='input-text' placeholder="输入消息内容"></textarea>
 			</div>
 			<label class="footer-right">
-				<span id="send-msg">send</span>
+				<span id="send-msg">发送</span>
 			</label>
 		</footer>
 	</body>
