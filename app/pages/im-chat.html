@@ -9,8 +9,6 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<link rel="stylesheet" href="../css/message.css" />
-		<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
-		<script type="text/javascript" charset="UTF-8" src="../js/mui.indexedlist.js"></script>
 		<style>
 			footer {
 				position: fixed;
@@ -72,111 +70,6 @@
 				background-color: #eaeaea;
 			}
 		</style>
-		
-		<script type="text/javascript">
-			
-			
-			
-			/**
-			(function($) {
-				document.addEventListener('mui.view.beforeshow', function(event) {
-					event.detail.guid;
-				});
-			})(mui);
-			**/
-			
-			
-			
-			var ws;
-			mui.init();
-			mui.plusReady(function() {
-				var presenceMsg = "{\"type\":3,\"mid\":5,\"passwd\":\"123456\"}";
-				if (!window.WebSocket) {
-					window.WebSocket = window.MozWebSocket;
-				}
-				if (window.WebSocket) {
-					ws = new WebSocket("ws://123.57.55.59:9099");
-				}
-				ws.onopen = function(event) {
-					plus.nativeUI.toast("onopen : " + event.data);
-					deliver(presenceMsg);
-				};
-				ws.onmessage = function(event) {
-					var messgae = JSON.parse(event.data);
-					switch (messgae.type){
-						case 1 : {// IQ
-							if (messgae.status == 2) {// 离线
-								deliver(presenceMsg);
-							}
-							break;
-						}
-						case 2 : {// Message
-							
-							var fromMid = messgae.mid,
-								party_id = messgae.party_id,
-								nick = messgae.nick,
-								avatar = messgae.avatar,
-								toMid = messgae.tid,
-								msgBody = messgae.body,
-								gmt_created = new Date(messgae.gmt_created),
-								status = messgae.status;
-								
-							
-							
-							break;
-						}
-						case 3 : {// Presence
-							if (messgae.status == 1) {// 成功出席
-								deliver(presenceMsg);
-							} else if (messgae.status == 2) {// 出席失败
-								deliver(presenceMsg);
-							}
-							break;
-						}
-						case 4 : {// Register
-							
-							break;
-						}
-						case 5 : {// Acknowledge
-							if (messgae.status == 1) {
-							 	plus.nativeUI.toast("发送成功");
-							}
-							break;
-						}
-						case 6 : {// Revise
-							break;
-						}
-					}
-					// plus.nativeUI.toast("onmessage : " + event.data);
-				};
-				/**
-				ws.onerror = function(event) {
-					plus.nativeUI.toast("onerror : " + event.data);
-				};
-				ws.onclose = function(event) {
-					plus.nativeUI.toast("onclose : " + event.data);
-				};
-				**/
-			});
-	
-	        mui('#send-msg').on('tap', function() {
-	        		var body = mui('#msg-text').val();
-	        		var message = "{\"type\":2,\"mid\":5,\"tid\":1,\"body\":\"" + body + "\",\"gmt_created\":1443251109367}";
-				deliver(message);
-			});
-	
-			function deliver(message) {
-				if (!window.WebSocket) {
-					return;
-				}
-				if (ws.readyState == WebSocket.OPEN) {
-					ws.send(message);
-				} else {
-					plus.nativeUI.toast("网络无法连接");
-				}
-			}
-			</script>
-		
 	</head>
 
 	<body>
@@ -223,5 +116,96 @@
 			</label>
 		</footer>
 	</body>
-
+	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		var ws;
+		var msg = document.getElementById("msg-text");
+		function deliver(message) {
+			if (!window.WebSocket) {
+				return;
+			}
+			if (ws.readyState == WebSocket.OPEN) {
+				ws.send(message);
+			} else {
+				plus.nativeUI.toast("网络无法连接");
+			}
+		}
+		(function( doc) {
+			mui.init({
+				gestureConfig: {
+					tap: true, //默认为true
+					doubletap: true, //默认为false
+					longtap: true, //默认为false
+					swipe: true, //默认为true
+					drag: true, //默认为true
+					hold: true, //默认为false，不监听
+					release: true //默认为false，不监听
+				}
+			});
+			doc.addEventListener('mui.view.beforeshow', function(event) {
+				mui.currentWebview.show();
+			});
+			
+			//chat
+			var presenceMsg = "{\"type\":3,\"mid\":5,\"passwd\":\"123456\"}";
+			if (!window.WebSocket) {
+				window.WebSocket = window.MozWebSocket;
+			}
+			if (window.WebSocket) {
+				ws = new WebSocket("ws://123.57.55.59:9099");
+			}
+			ws.onopen = function(event) {
+				deliver(presenceMsg);
+			};
+			ws.onmessage = function(event) {
+				var messgae = event.data;
+				console.log(messgae);
+				switch (messgae.type){
+					case 1 : {// IQ
+						if (messgae.status == 2) {// 离线
+							deliver(presenceMsg);
+						}
+						break;
+					}
+					case 2 : {// Message
+						var fromMid = messgae.mid,
+							party_id = messgae.party_id,
+							nick = messgae.nick,
+							avatar = messgae.avatar,
+							toMid = messgae.tid,
+							msgBody = messgae.body,
+							gmt_created = new Date(messgae.gmt_created),
+							status = messgae.status;
+						break;
+					}
+					case 3 : {// Presence
+						if (messgae.status == 1) {// 成功出席
+							deliver(presenceMsg);
+						} else if (messgae.status == 2) {// 出席失败
+							deliver(presenceMsg);
+						}
+						break;
+					}
+					case 4 : {// Register
+						break;
+					}
+					case 5 : {// Acknowledge
+						if (messgae.status == 1) {
+						 	plus.nativeUI.toast("发送成功");
+						}
+						break;
+					}
+					case 6 : {// Revise
+						break;
+					}
+				}
+			};
+			document.getElementById('send-msg').addEventListener('tap', function() {
+				console.log(msg.value);
+				var message = "{\"type\":2,\"mid\":5,\"tid\":1,\"body\":\"" + msg.value + "\",\"gmt_created\":1443251109367}";
+				deliver(message);
+			});
+		}(document));
+	</script>
 </html>
