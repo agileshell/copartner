@@ -83,7 +83,6 @@ public class UserController extends WebBase {
 			User user = userDAO.get(userId);
 			mv.addObject("user", user);
 			mv.addObject("success", user != null);
-			
 		} catch (Exception e) {
 			mv.addObject("success", false);
 		}
