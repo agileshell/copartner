@@ -52,10 +52,10 @@ public class DefaultInvestOrgDAO extends BaseDaoImpl<InvestOrg, Long> implements
         Query query = null;
         StringBuilder hql = new StringBuilder();
         if (count) {
-            hql.append("SELECT COUNT(*) FROM InvestOrganization WHERE 1 = 1 ").append(conditionStr);
+            hql.append("SELECT COUNT(*) FROM InvestOrg WHERE 1 = 1 ").append(conditionStr);
             query = createQuery(hql.toString(), params);
         } else {
-            hql.append("FROM InvestOrganization WHERE 1=1").append(conditionStr).append(" ORDER BY created DESC");
+            hql.append("FROM InvestOrg WHERE 1=1").append(conditionStr).append(" ORDER BY created DESC");
             query = createQuery(hql.toString(), params);
             if ((criteria.getLimit() != null) && (criteria.getLimit() != 0)) {
                 query.setMaxResults(criteria.getLimit());

@@ -23,9 +23,19 @@ public class InvestOrgVO implements Serializable {
     private String specials;// 特色
 
     private String hardware;// 硬件
+    
+    private String logo;
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
 
     public Long getId() {
         return id;

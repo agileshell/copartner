@@ -1,5 +1,7 @@
 package com.insoul.ti.handler;
 
+import java.util.Arrays;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,10 +25,10 @@ public class GlobalExceptionHandler extends WebBase implements HandlerExceptionR
 		ModelAndView mv = createModelView("error");
 		if (ex != null) {
 		    mv.addObject("status", 500);
-	        mv.addObject("message", ExceptionUtils.getStackTrace(ex));
+	        mv.addObject("messageList", Arrays.asList(ExceptionUtils.getStackFrames(ex)));
 		} else {
 		    mv.addObject("status", 400);
-	        mv.addObject("message", "系统响应异常!");
+	        mv.addObject("messageList", Arrays.asList("系统响应异常!"));
 		}
 		return mv;
 	}

@@ -23,6 +23,20 @@
         </li>
 		
 		<li class="has_sub">
+			<a href="#" <c:if test="${viewname == 'pioneerpark_list' || viewname == 'investorg_list'}"> class="subdrop" </c:if>>
+				<i class="icon-star"></i>公共资源<span class="pull-right"><i class="icon-chevron-right"></i></span>
+			</a>
+			<ul <c:if test="${viewname == 'pioneerpark_list' || viewname == 'investorg_list'}"> style="display: block;" </c:if>>
+			  	<li>
+					<a <c:if test="${viewname == 'pioneerpark_list'}"> class="open" </c:if> href="/pioneerpark/list"><i class="icon-road"></i>创业园</a>
+				</li>
+		        <li>
+					<a <c:if test="${viewname == 'investorg_list'}"> class="open" </c:if> href="/investorg/list"><i class="icon-map-marker"></i>投资机构</a>
+				</li>
+			</ul>
+        </li>
+		
+		<li class="has_sub">
 			<a href="#" <c:if test="${viewname == 'project_list' || viewname == 'demand_list' || viewname == 'financing_list' || viewname == 'comments_list'}"> class="subdrop" </c:if>>
 				<i class="icon-star"></i>融资融智<span class="pull-right"><i class="icon-chevron-right"></i></span>
 			</a>

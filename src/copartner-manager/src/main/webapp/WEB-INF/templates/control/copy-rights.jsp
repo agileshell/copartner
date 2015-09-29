@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<p class="copy" style="text-align: center;">
-					2015 &copy; <a href="#">创始人</a>, Inc. All rights reserved.&nbsp;&nbsp;沪ICP备13003262号
+					2015 &copy; 创始人, Inc. All rights reserved.&nbsp;&nbsp;豫ICP备11007124号-1
 				</p>
 			</div>
 		</div>

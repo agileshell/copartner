@@ -27,9 +27,19 @@ public class InvestOrgDetailVO implements Serializable {
      * 简介
      */
     private String content;
+    
+    private String logo;
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
 
     public String getContent() {
         return content;

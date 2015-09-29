@@ -47,7 +47,7 @@ public class PioneerPark extends BaseEntity {
     /**
      * 简介
      */
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
     public String getName() {

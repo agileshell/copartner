@@ -33,7 +33,9 @@ import com.insoul.copartner.dao.IFeedbackDao;
 import com.insoul.copartner.dao.IFinancingDao;
 import com.insoul.copartner.dao.IFinancingPhaseDao;
 import com.insoul.copartner.dao.IIndustryDomainDao;
+import com.insoul.copartner.dao.IInvestOrgDAO;
 import com.insoul.copartner.dao.INewsDao;
+import com.insoul.copartner.dao.IPioneerParkDAO;
 import com.insoul.copartner.dao.IProjectCommentsDao;
 import com.insoul.copartner.dao.IProjectDao;
 import com.insoul.copartner.dao.IProjectPhaseDao;
@@ -133,6 +135,12 @@ public class WebBase implements ServletContextAware {
 
     @Resource
     protected ICourseDao courseDAO;
+
+    @Resource
+    protected IPioneerParkDAO pioneerParkDAO;
+
+    @Resource
+    protected IInvestOrgDAO investOrgDAO;
     
     protected static final String COMMONS_RESOURCES_MANAGER_VIEW_NAME = "resources_manager";
     

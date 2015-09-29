@@ -15,6 +15,7 @@ import com.insoul.copartner.domain.InvestOrg;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.service.IInvestOrgService;
+import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.vo.InvestOrgDetailVO;
 import com.insoul.copartner.vo.InvestOrgVO;
 import com.insoul.copartner.vo.Pagination;
@@ -49,6 +50,7 @@ public class DefaultInvestOrgService extends BaseServiceImpl implements IInvestO
                 vo.setId(p.getId());
                 vo.setName(p.getName());
                 vo.setSpecials(p.getSpecials());
+                vo.setLogo(CDNUtil.getFullPath(p.getLogo()));
                 investOrgVOs.add(vo);
             }
         }
@@ -68,6 +70,7 @@ public class DefaultInvestOrgService extends BaseServiceImpl implements IInvestO
         detail.setId(io.getId());
         detail.setName(io.getName());
         detail.setSpecials(io.getSpecials());
+        detail.setLogo(CDNUtil.getFullPath(io.getLogo()));
         return detail;
     }
 }

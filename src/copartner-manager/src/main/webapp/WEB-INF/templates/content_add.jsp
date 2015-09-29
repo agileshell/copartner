@@ -105,7 +105,8 @@
 	            autoHeightMode : true,
 	            afterCreate : function() {
 	                this.loadPlugin('autoheight');
-	            }
+	            },
+	            afterBlur: function(){this.sync();}
 	        });
 	    });
 		$(document).ready(function() {

@@ -1,5 +1,6 @@
 package com.insoul.ti.controller;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class HomeController extends WebBase {
     private ModelAndView unauthorized() {
         ModelAndView mv = createModelView("error");
         mv.addObject("status", 100);
-        mv.addObject("message", "授权认证失败!");
+        mv.addObject("messageList", Arrays.asList("授权认证失败!"));
         return mv;
     }
 

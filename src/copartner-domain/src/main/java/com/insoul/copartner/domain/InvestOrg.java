@@ -27,10 +27,13 @@ public class InvestOrg extends BaseEntity {
     @Column(name = "hardware", nullable = false)
     private String hardware;// 硬件
     
+    @Column(name = "logo")
+    private String logo;
+    
     /**
      * 简介
      */
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
     public String getName() {
@@ -65,46 +68,11 @@ public class InvestOrg extends BaseEntity {
         this.content = content;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((content == null) ? 0 : content.hashCode());
-        result = prime * result + ((hardware == null) ? 0 : hardware.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((specials == null) ? 0 : specials.hashCode());
-        return result;
+    public String getLogo() {
+        return logo;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        InvestOrg other = (InvestOrg) obj;
-        if (content == null) {
-            if (other.content != null)
-                return false;
-        } else if (!content.equals(other.content))
-            return false;
-        if (hardware == null) {
-            if (other.hardware != null)
-                return false;
-        } else if (!hardware.equals(other.hardware))
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (specials == null) {
-            if (other.specials != null)
-                return false;
-        } else if (!specials.equals(other.specials))
-            return false;
-        return true;
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 }
