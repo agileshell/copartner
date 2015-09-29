@@ -14,6 +14,9 @@
 	
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=HuEFhWtwXsXsKjXIgmIZFu4y"></script>
 	
+	<script type="text/javascript" src="${cdn}js/baidumap/SearchInfoWindow_min.js"></script>
+	<link rel="stylesheet" href="${cdn}js/baidumap/SearchInfoWindow_min.css" />
+	
 </head>
 <body>
 	<div class="mainbar">
@@ -68,15 +71,12 @@
 					                        	<div class="form-group">
 													<label class="col-lg-2 control-label" for="pca">省市区<span class="cofrequired">*</span>:</label>
 													<div class="col-lg-10">
-														
 														<div id="pca_distpicker" class="form-control"> 
-														    省份:<select class="prov" name="province"></select>  
-														    城市:<select class="city" name="city" disabled="disabled"></select> 
-														    区县:<select class="dist" name="area" disabled="disabled"></select> 
+														    省份:<select class="prov" name="province" id="province"></select>  
+														    城市:<select class="city" name="city" disabled="disabled" id="city"></select> 
+														    区县:<select class="dist" name="area" disabled="disabled" id="area"></select> 
 														</div>
-														
 													</div>
-													
 												</div>
 												
 												<div class="form-group">
@@ -84,16 +84,19 @@
 													<div class="col-lg-8">
 														<input name="addressDetail" id="addressDetail" type="text" class="form-control" placeholder="详细地址"></input>
 													</div>
-													<div class="col-lg-8">
+													<div class="col-lg-2">
 														<button id="search_map" type="button" class="btn btn-default">查询</button>
 													</div>
 												</div>
 												
 												<div class="form-group">
 													<div class="col-lg-12">
-														<div class="padd" id="map_canvas"></div>
+														<div class="widget-content">
+															<div class="padd" id="map_canvas" style="height:300px;img{max-width:none;}"></div>
+														</div>
 													</div>
 												</div>
+												
 					                        </div>
 					                      </div>
 					                    </div>
@@ -159,17 +162,112 @@
 			});
 			
 			var map = new BMap.Map("map_canvas");
+			map.addControl(new BMap.MapTypeControl()); //添加地图类型控件
+			map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+			map.enableScrollWheelZoom();   //启用滚轮放大缩小，默认禁用
+			map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
 			map.centerAndZoom(new BMap.Point(34.8059290000, 113.6671710000), 12);
 			var myGeo = new BMap.Geocoder();
+			map.setDefaultCursor("url('bird.cur')");   //设置地图默认的鼠标指针样式
+			
 			myGeo.getPoint("河南省郑州市金水区", function(point) {
 				if (point) {// {"lng":116.30799,"lat":40.058692}
-					alert("地理位置点 : " + JSON.stringify(point));
 					map.centerAndZoom(point, 16);
-					map.addOverlay(new BMap.Marker(point));
 				}else{
 					alert("您选择地址没有解析到结果!");
 				}
 			}, "河南省");
+			
+			var geolocation = new BMap.Geolocation();
+			geolocation.getCurrentPosition(function(r){
+				if(this.getStatus() == BMAP_STATUS_SUCCESS){
+					map.centerAndZoom(r.point, 16);
+				}
+			},{enableHighAccuracy: true})
+			
+			$("#province").change(function() {
+				var province = $(this).val();
+				map.centerAndZoom(province, 11);// 用城市名设置地图中心点
+			});
+			
+			$("#city").change(function() {
+				var province = $("#province").val();
+				var city = $(this).val();
+				map.centerAndZoom(province + city, 11);// 用城市名设置地图中心点
+			});
+			
+			$("#area").change(function() {
+				var province = $("#province").val();
+				var city = $("#city").val();
+				var area = $(this).val();
+				map.centerAndZoom(province + city + area, 11);// 用城市名设置地图中心点
+			});
+			
+			map.addEventListener("click", function(e) {
+				map.centerAndZoom(e.point, 16);
+			});
+			
+			// 添加带有定位的导航控件
+			var navigationControl = new BMap.NavigationControl({
+			  // 靠左上角位置
+			  anchor: BMAP_ANCHOR_TOP_LEFT,
+			  // LARGE类型
+			  type: BMAP_NAVIGATION_CONTROL_LARGE,
+			  // 启用显示定位
+			  enableGeolocation: true
+			});
+			map.addControl(navigationControl);
+			// 添加定位控件
+			var geolocationControl = new BMap.GeolocationControl();
+			geolocationControl.addEventListener("locationSuccess", function(e) {
+			  // 定位成功事件
+			  var address = '';
+			  address += e.addressComponent.province;
+			  address += e.addressComponent.city;
+			  address += e.addressComponent.district;
+			  address += e.addressComponent.street;
+			  address += e.addressComponent.streetNumber;
+			  map.centerAndZoom(address, 11);// 用城市名设置地图中心点
+			});
+			geolocationControl.addEventListener("locationError",function(e) {
+				
+			});
+			map.addControl(geolocationControl);
+			
+			$("#search_map").click(function() {
+				var province = $("#province").val();
+				var city = $("#city").val();
+				var area = $("#area").val();
+				var addressDetail = $("#addressDetail").val();
+				if (province == null || city == null || province == "" || city == "") {
+					alert("请选择省市区!!!");
+					return;
+				}
+				if (addressDetail == null || addressDetail == "") {
+					alert("请输入详细地址!!!");
+					return;
+				}
+				area = area || "";
+				var address = province + city + area + addressDetail;
+				myGeo.getPoint(address, function(point) {
+					if (point) {// {"lng":116.30799,"lat":40.058692}
+						var marker = new BMap.Marker(point);  // 创建标注
+						map.addOverlay(marker);              // 将标注添加到地图中
+						map.centerAndZoom(point, 16);
+						marker.enableDragging(); //marker可拖拽
+						
+						var label = new BMap.Label(address,{offset:new BMap.Size(20,-10)});
+						marker.setLabel(label);
+						
+						$("#longitude").val(point.lng);
+						$("#latitude").val(point.lat);
+						
+					}else{
+						alert("未找到您选择的地址!!!");
+					}
+				}, province + city);
+				
+			});
 			
 			$('#name').focus();
 	        $('#add_pioneerpark_form').validate({

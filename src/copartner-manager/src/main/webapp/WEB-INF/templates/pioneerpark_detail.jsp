@@ -40,7 +40,6 @@
 											<label class="col-lg-2 control-label" >地址:</label>
 											<div class="col-lg-10">${pioneerPark.address}</div>
 										</div>
-										</div>
 										<div class="form-group">
 											<label class="col-lg-2 control-label">简介:</label>
 											<div class="col-lg-10">${pioneerPark.content}</div>
@@ -53,6 +52,7 @@
 											</div>
 										</div>
 									</c:if>
+								</div>
 								</div>
 							</div>
 							<div class="widget-foot"></div>
