@@ -32,48 +32,48 @@
 									</c:if>
 									<c:if test="${success}">
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >姓名:</label>
-											<div class="col-lg-7">${user.name}</div>
+											<label class="col-lg-2 control-label" >姓名:</label>
+											<div class="col-lg-10">${user.name}</div>
 										</div>
 										
 										<div class="form-group">
-											<label class="col-lg-5 control-label">头像:</label>
-											<div class="col-lg-7">
+											<label class="col-lg-2 control-label">头像:</label>
+											<div class="col-lg-10">
 											<img alt="${user.name}" src="${cdnDomain}${user.avatar}"></img>
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >邮箱:</label>
-											<div class="col-lg-7">${user.email}</div>
+											<label class="col-lg-2 control-label" >邮箱:</label>
+											<div class="col-lg-10">${user.email}</div>
 										</div>
 										
 										<div class="form-group">
-											<label class="col-lg-5 control-label">手机号:</label>
-											<div class="col-lg-7">${user.mobile}</div>
+											<label class="col-lg-2 control-label">手机号:</label>
+											<div class="col-lg-10">${user.mobile}</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label">领域:</label>
-											<div class="col-lg-7">${domains}</div>
+											<label class="col-lg-2 control-label">领域:</label>
+											<div class="col-lg-10">${domains}</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label">创业角色:</label>
-											<div class="col-lg-7">${startupRole}</div>
+											<label class="col-lg-2 control-label">创业角色:</label>
+											<div class="col-lg-10">${startupRole}</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label">创业状态:</label>
-											<div class="col-lg-7">${startupStatus}</div>
+											<label class="col-lg-2 control-label">创业状态:</label>
+											<div class="col-lg-10">${startupStatus}</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label">地址:</label>
-											<div class="col-lg-7">${user.fullLocation}</div>
+											<label class="col-lg-2 control-label">地址:</label>
+											<div class="col-lg-10">${user.fullLocation}</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label">简介:</label>
-											<div class="col-lg-7">${user.introduction}</div>
+											<label class="col-lg-2 control-label">简介:</label>
+											<div class="col-lg-10">${user.introduction}</div>
 										</div>
 										<hr />
 										<div class="form-group">
-											<div class="col-lg-offset-1 col-lg-9">
+											<div class="col-lg-offset-1 col-lg-12">
 												<a class="btn btn-default btn-sm" href="/user/list">列表</a>
 												<!--<a class="btn btn-default btn-sm" href="/user/chat/${user.id}" target="_self">即时聊天</a>-->
 											</div>

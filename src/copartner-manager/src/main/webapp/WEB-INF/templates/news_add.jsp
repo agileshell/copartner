@@ -27,55 +27,66 @@
 							<div class="widget-content">
 								<div class="padd">
 									<form id="add_news_form" class="form-horizontal" role="form" action="/news/save" method="post" enctype="multipart/form-data">
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="title">标题<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<input name="title" id="title" type="text" class="form-control" placeholder="标题"></input>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="type">类型<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<jsp:include page="control/news-type.jsp">
-													<jsp:param value="1" name="type"/>
-													<jsp:param value="false" name="has_all"/>
-												</jsp:include>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<jsp:include page="control/commons-status.jsp">
-													<jsp:param value="active" name="status"/>
-													<jsp:param value="false" name="has_all"/>
-													<jsp:param value="false" name="update"/>
-												</jsp:include>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="synopsis">摘要<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<textarea name="synopsis" id="synopsis" class="form-control" rows="3" placeholder="摘要"></textarea>
-												<!-- <input name="synopsis" id="synopsis" type="text" class="form-control" placeholder="摘要"></input> -->
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="coverImg">封皮<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="article">内容<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<textarea name="article" id="article" class="form-control" rows="3" placeholder="内容"></textarea>
-											</div>
-										</div>
 										
-										<hr />
+										<div class="tabbable" style="margin-bottom: 18px;">
+					                      <ul class="nav nav-tabs">
+					                        <li class="active"><a href="#tab1" data-toggle="tab">基本信息</a></li>
+					                        <li><a href="#tab2" data-toggle="tab">图文信息</a></li>
+					                      </ul>
+					                      <div class="tab-content" style="padding-bottom: 9px; border-bottom: 1px solid #ddd;">
+					                        <div class="tab-pane active" id="tab1">
+					                        	<div class="form-group">
+													<label class="col-lg-2 control-label" for="title">标题<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<input name="title" id="title" type="text" class="form-control" placeholder="标题"></input>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="type">类型<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<jsp:include page="control/news-type.jsp">
+															<jsp:param value="1" name="type"/>
+															<jsp:param value="false" name="has_all"/>
+														</jsp:include>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<jsp:include page="control/commons-status.jsp">
+															<jsp:param value="active" name="status"/>
+															<jsp:param value="false" name="has_all"/>
+															<jsp:param value="false" name="update"/>
+														</jsp:include>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="synopsis">摘要<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<textarea name="synopsis" id="synopsis" class="form-control" rows="3" placeholder="摘要"></textarea>
+														<!-- <input name="synopsis" id="synopsis" type="text" class="form-control" placeholder="摘要"></input> -->
+													</div>
+												</div>
+					                        </div>
+					                        <div class="tab-pane" id="tab2">
+					                        	<div class="form-group">
+													<label class="col-lg-2 control-label" for="coverImg">封皮<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="article">内容<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<textarea name="article" id="article" class="form-control" rows="3" placeholder="内容"></textarea>
+													</div>
+												</div>
+					                        </div>
+					                      </div>
+					                    </div>
 										
 										<div class="form-group">
-											<div class="col-lg-offset-1 col-lg-9">
+											<div class="col-lg-offset-1 col-lg-12">
 												<button type="submit" class="btn btn-default">提交</button>
 											</div>
 										</div>
@@ -111,6 +122,8 @@
 	                     'anchor', 'link', 'unlink'
 	            ],
 	            minHeight : 300,
+	            width: "100%",
+	            minWidth: 300,
 	            autoHeightMode : true,
 	            afterCreate : function() {
 	                this.loadPlugin('autoheight');

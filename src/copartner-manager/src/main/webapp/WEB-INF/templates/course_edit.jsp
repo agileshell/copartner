@@ -28,88 +28,98 @@
 							<div class="widget-content">
 								<div class="padd">
 									<form id="edit_course_form" class="form-horizontal" role="form" action="/course/update/${course.id}" method="post" enctype="multipart/form-data">
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="name">课程名称<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<input name="name" id="name" value="${course.name}" type="text" class="form-control" placeholder="课程名称"></input>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="speaker">主讲人<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<input name="speaker" id="speaker" value="${course.speaker}" type="text" class="form-control" placeholder="主讲人"></input>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="synopsis">摘要<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<textarea name="synopsis" id="synopsis" class="form-control" rows="3" placeholder="摘要">${course.synopsis}</textarea>
-												<!-- <input name="synopsis" id="synopsis" value="${course.synopsis}" type="text" class="form-control" placeholder="摘要"></input> -->
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="time">时长(分钟)<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<input name="time" id="time" value="${course.time}" type="text" class="form-control" placeholder="时长(分钟)"></input>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<jsp:include page="control/commons-status.jsp">
-													<jsp:param value="${course.status}" name="status"/>
-													<jsp:param value="false" name="has_all"/>
-													<jsp:param value="false" name="update"/>
-												</jsp:include>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="free">是否免费<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<select id="free" class="form-control" name="free">
-													<option value="1" <c:if test="${course.isFree}"> selected="selected" </c:if> >免费</option>
-													<option value="0" <c:if test="${!course.isFree}"> selected="selected" </c:if> >非免费</option>
-												</select>
-											</div>
-										</div>
+										
+										<div class="tabbable" style="margin-bottom: 18px;">
+					                      <ul class="nav nav-tabs">
+					                        <li class="active"><a href="#tab1" data-toggle="tab">基本信息</a></li>
+					                        <li><a href="#tab2" data-toggle="tab">音频信息</a></li>
+					                      </ul>
+					                      <div class="tab-content" style="padding-bottom: 9px; border-bottom: 1px solid #ddd;">
+					                        <div class="tab-pane active" id="tab1">
+					                        	<div class="form-group">
+													<label class="col-lg-2 control-label" for="name">课程名称<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<input name="name" id="name" value="${course.name}" type="text" class="form-control" placeholder="课程名称"></input>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="speaker">主讲人<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<input name="speaker" id="speaker" value="${course.speaker}" type="text" class="form-control" placeholder="主讲人"></input>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="synopsis">摘要<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<textarea name="synopsis" id="synopsis" class="form-control" rows="3" placeholder="摘要">${course.synopsis}</textarea>
+														<!-- <input name="synopsis" id="synopsis" value="${course.synopsis}" type="text" class="form-control" placeholder="摘要"></input> -->
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="time">时长(分钟)<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<input name="time" id="time" value="${course.time}" type="text" class="form-control" placeholder="时长(分钟)"></input>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<jsp:include page="control/commons-status.jsp">
+															<jsp:param value="${course.status}" name="status"/>
+															<jsp:param value="false" name="has_all"/>
+															<jsp:param value="false" name="update"/>
+														</jsp:include>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="free">是否免费<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<select id="free" class="form-control" name="free">
+															<option value="1" <c:if test="${course.isFree}"> selected="selected" </c:if> >免费</option>
+															<option value="0" <c:if test="${!course.isFree}"> selected="selected" </c:if> >非免费</option>
+														</select>
+													</div>
+												</div>
+					                        </div>
+					                        <div class="tab-pane" id="tab2">
+					                        	<div class="form-group">
+													<label class="col-lg-2 control-label">封皮:</label>
+													<div class="col-lg-10">
+													<img alt="${course.name}" src="${cdnDomain}${course.coverImg}" width="500">
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="coverImg">封皮:</label>
+													<div class="col-lg-10">
+														<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
+													</div>
+												</div>
+												
+												<div class="form-group">
+													<label class="col-lg-2 control-label">视频:</label>
+													<div class="col-lg-10">
+													  <video id="cop.video.media" class="video-js vjs-default-skin" controls preload="none" width="500" height="300"
+													      poster="${cdnDomain}${course.url}?vframe/jpg/offset/0/w/600/h/600"
+													      data-setup="{}">
+													    <source src="${cdnDomain}${course.url}" type='video/mp4' />
+													    <source src="${cdnDomain}${course.url}" type='video/webm' />
+													    <source src="${cdnDomain}${course.url}" type='video/ogg' />
+													  </video>
+													</div>
+												</div>
+												
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="media">视频:</label>
+													<div class="col-lg-10">
+														<input name="media" id="media" type="file" class="form-control" placeholder="视频"></input>
+													</div>
+												</div>
+					                        </div>
+					                      </div>
+					                    </div>
 										
 										<div class="form-group">
-											<label class="col-lg-5 control-label">封皮:</label>
-											<div class="col-lg-7">
-											<img alt="${course.name}" src="${cdnDomain}${course.coverImg}" width="500">
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="coverImg">封皮:</label>
-											<div class="col-lg-7">
-												<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
-											</div>
-										</div>
-										
-										<div class="form-group">
-											<label class="col-lg-5 control-label">视频:</label>
-											<div class="col-lg-7">
-											  <video id="cop.video.media" class="video-js vjs-default-skin" controls preload="none" width="500" height="300"
-											      poster="${cdnDomain}${course.url}?vframe/jpg/offset/0/w/600/h/600"
-											      data-setup="{}">
-											    <source src="${cdnDomain}${course.url}" type='video/mp4' />
-											    <source src="${cdnDomain}${course.url}" type='video/webm' />
-											    <source src="${cdnDomain}${course.url}" type='video/ogg' />
-											  </video>
-											</div>
-										</div>
-										
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="media">视频:</label>
-											<div class="col-lg-7">
-												<input name="media" id="media" type="file" class="form-control" placeholder="视频"></input>
-											</div>
-										</div>
-										
-										<hr />
-										
-										<div class="form-group">
-											<div class="col-lg-offset-1 col-lg-9">
+											<div class="col-lg-offset-1 col-lg-12">
 												<button type="submit" class="btn btn-default">提交</button>
 											</div>
 										</div>

@@ -32,13 +32,13 @@
 									</c:if>
 									<c:if test="${success}">
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >名称:</label>
-											<div class="col-lg-7">${investOrg.name}</div>
+											<label class="col-lg-2 control-label" >名称:</label>
+											<div class="col-lg-10">${investOrg.name}</div>
 										</div>
 										
 										<div class="form-group">
-											<label class="col-lg-5 control-label">LOGO:</label>
-											<div class="col-lg-7">
+											<label class="col-lg-2 control-label">LOGO:</label>
+											<div class="col-lg-10">
 												<div class="gallery">
 							                      	<a href="${cdnDomain}${investOrg.logo}" class="prettyPhoto[pp_gal]">
 							                      		<img src="${cdnDomain}${investOrg.logo}" alt="${investOrg.name}" width="80">
@@ -47,21 +47,21 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >特色:</label>
-											<div class="col-lg-7">${investOrg.specials}</div>
+											<label class="col-lg-2 control-label" >特色:</label>
+											<div class="col-lg-10">${investOrg.specials}</div>
 										</div>
 										
 										<div class="form-group">
-											<label class="col-lg-5 control-label">硬件:</label>
-											<div class="col-lg-7">${investOrg.hardware}</div>
+											<label class="col-lg-2 control-label">硬件:</label>
+											<div class="col-lg-10">${investOrg.hardware}</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label">简介:</label>
-											<div class="col-lg-7">${investOrg.content}</div>
+											<label class="col-lg-2 control-label">简介:</label>
+											<div class="col-lg-10">${investOrg.content}</div>
 										</div>
 										<hr />
 										<div class="form-group">
-											<div class="col-lg-offset-1 col-lg-9">
+											<div class="col-lg-offset-1 col-lg-12">
 												<a class="btn btn-default btn-sm" href="/investorg/list">列表</a>
 												<a class="btn btn-default btn-sm" href="/investorg/edit/${investOrg.id}">编辑</a>
 											</div>

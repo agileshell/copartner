@@ -4,6 +4,16 @@
 <head>
 	<title>新建创业园</title>
 	<link href="${cdn}js/kindeditor/themes/default/default.css" rel="stylesheet" />
+	
+	<style type="text/css">
+		#map_canvas img,
+		.google-maps img {
+		  max-width: none;
+		}
+	</style>
+	
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=HuEFhWtwXsXsKjXIgmIZFu4y"></script>
+	
 </head>
 <body>
 	<div class="mainbar">
@@ -28,6 +38,9 @@
 								<div class="padd">
 									<form id="add_pioneerpark_form" class="form-horizontal" role="form" action="/pioneerpark/save" method="post" enctype="multipart/form-data">
 										
+										<input type="hidden" name="longitude" id="longitude"></input>
+										<input type="hidden" name="latitude" id="latitude"></input>
+										
 										<div class="tabbable" style="margin-bottom: 18px;">
 					                      <ul class="nav nav-tabs">
 					                        <li class="active"><a href="#base_info" data-toggle="tab">基本信息</a></li>
@@ -37,15 +50,15 @@
 					                        <div class="tab-pane active" id="base_info">
 					                        	
 												<div class="form-group">
-													<label class="col-lg-5 control-label" for="name">名称<span class="cofrequired">*</span>:</label>
-													<div class="col-lg-7">
+													<label class="col-lg-2 control-label" for="name">名称<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
 														<input name="name" id="name" type="text" class="form-control" placeholder="名称"></input>
 													</div>
 												</div>
 												
 												<div class="form-group">
-													<label class="col-lg-5 control-label" for="content">简介:</label>
-													<div class="col-lg-7">
+													<label class="col-lg-2 control-label" for="content">简介:</label>
+													<div class="col-lg-10">
 														<textarea name="content" id="content" class="form-control" rows="3" placeholder="简介"></textarea>
 													</div>
 												</div>
@@ -53,13 +66,13 @@
 					                        </div>
 					                        <div class="tab-pane" id="address">
 					                        	<div class="form-group">
-													<label class="col-lg-5 control-label" for="pca">省市区<span class="cofrequired">*</span>:</label>
-													<div class="col-lg-7">
+													<label class="col-lg-2 control-label" for="pca">省市区<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
 														
-														<div id="pca_distpicker" data-toggle="distpicker" class="form-control">
-														  <select data-province="---- 选择省 ----"></select>
-														  <select data-city="---- 选择市 ----"></select>
-														  <select data-district="---- 选择区 ----"></select>
+														<div id="pca_distpicker" class="form-control"> 
+														    省份:<select class="prov" name="province"></select>  
+														    城市:<select class="city" name="city" disabled="disabled"></select> 
+														    区县:<select class="dist" name="area" disabled="disabled"></select> 
 														</div>
 														
 													</div>
@@ -67,19 +80,26 @@
 												</div>
 												
 												<div class="form-group">
-													<label class="col-lg-5 control-label" for="addressDetail">详细地址<span class="cofrequired">*</span>:</label>
-													<div class="col-lg-7">
+													<label class="col-lg-2 control-label" for="addressDetail">详细地址<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-8">
 														<input name="addressDetail" id="addressDetail" type="text" class="form-control" placeholder="详细地址"></input>
+													</div>
+													<div class="col-lg-8">
+														<button id="search_map" type="button" class="btn btn-default">查询</button>
+													</div>
+												</div>
+												
+												<div class="form-group">
+													<div class="col-lg-12">
+														<div class="padd" id="map_canvas"></div>
 													</div>
 												</div>
 					                        </div>
 					                      </div>
 					                    </div>
 										
-										<hr />
-										
 										<div class="form-group">
-											<div class="col-lg-offset-1 col-lg-9">
+											<div class="col-lg-offset-1 col-lg-12">
 												<button type="submit" class="btn btn-default">提交</button>
 											</div>
 										</div>
@@ -99,13 +119,10 @@
 	<script charset="utf-8" src="${cdn}js/kindeditor/lang/zh_CN.js"></script>
 	<script charset="utf-8" src="${cdn}js/kindeditor/plugins/autoheight/autoheight.js"></script>
 	
-	<script charset="utf-8" src="${cdn}js/distpicker/distpicker.data.min.js"></script>
-	<script charset="utf-8" src="${cdn}js/distpicker/distpicker.min.js"></script>
+	<script charset="utf-8" src="${cdn}js/cityselect/jquery.cityselect.js"></script>
 	
 	<script>
 	
-		$.fn.distpicker.noConflict();
-		
 	    KindEditor.ready(function(K) {
 	        window.editor = K.create('#content', {
 	            langType : 'zh_CN',
@@ -121,6 +138,8 @@
 	                     'anchor', 'link', 'unlink'
 	            ],
 	            minHeight : 300,
+	            width: "100%",
+	            minWidth: 300,
 	            autoHeightMode : true,
 	            afterCreate : function() {
 	                this.loadPlugin('autoheight');
@@ -130,10 +149,27 @@
 	    });
 		
 		$(document).ready(function() {
-			  
-			$("#pca_distpicker").distpicker({
-			  placeholder: false
+			
+			$("#pca_distpicker").citySelect({  
+			    url:"/assets/js/cityselect/city.min.js",
+			    prov : "河南省", //省份
+			    city : "郑州市", //城市
+			    dist : "金水区"//, //区县
+			    //nodata : "none" //当子集无数据时，隐藏select
 			});
+			
+			var map = new BMap.Map("map_canvas");
+			map.centerAndZoom(new BMap.Point(34.8059290000, 113.6671710000), 12);
+			var myGeo = new BMap.Geocoder();
+			myGeo.getPoint("河南省郑州市金水区", function(point) {
+				if (point) {// {"lng":116.30799,"lat":40.058692}
+					alert("地理位置点 : " + JSON.stringify(point));
+					map.centerAndZoom(point, 16);
+					map.addOverlay(new BMap.Marker(point));
+				}else{
+					alert("您选择地址没有解析到结果!");
+				}
+			}, "河南省");
 			
 			$('#name').focus();
 	        $('#add_pioneerpark_form').validate({

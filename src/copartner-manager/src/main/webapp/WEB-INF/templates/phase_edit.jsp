@@ -27,14 +27,14 @@
 								<div class="padd">
 									<form id="edit_phase_form" class="form-horizontal" role="form" action="/phase/update/${phase.id}" method="post">
 										<div class="form-group">
-											<label class="col-lg-5 control-label" for="name">项目阶段名称<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
+											<label class="col-lg-2 control-label" for="name">项目阶段名称<span class="cofrequired">*</span>:</label>
+											<div class="col-lg-10">
 												<input name="name" id="name" value="${phase.name}" type="text" class="form-control" placeholder="项目阶段名称"></input>
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label" for="type">显示<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
+											<label class="col-lg-2 control-label" for="type">显示<span class="cofrequired">*</span>:</label>
+											<div class="col-lg-10">
 												<jsp:include page="control/commons-listed.jsp">
 													<jsp:param value="${phase.isListed}" name="listed"/>
 													<jsp:param value="false" name="has_all"/>
@@ -43,7 +43,7 @@
 										</div>
 										<hr />
 										<div class="form-group">
-											<div class="col-lg-offset-1 col-lg-9">
+											<div class="col-lg-offset-1 col-lg-12">
 												<button type="submit" class="btn btn-default">提交</button>
 											</div>
 										</div>

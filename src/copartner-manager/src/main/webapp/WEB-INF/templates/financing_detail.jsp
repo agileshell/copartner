@@ -32,45 +32,45 @@
 									</c:if>
 									<c:if test="${success}">
 <div class="form-group">
-	<label class="col-lg-5 control-label" >融资名称:</label>
-	<div class="col-lg-7">${finance.name}</div>
+	<label class="col-lg-2 control-label" >融资名称:</label>
+	<div class="col-lg-10">${finance.name}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label" >融资发布者:</label>
-	<div class="col-lg-7"><a href="/user/detail/${finance.userId}">${finance.userName}</a></div>
+	<label class="col-lg-2 control-label" >融资发布者:</label>
+	<div class="col-lg-10"><a href="/user/detail/${finance.userId}">${finance.userName}</a></div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">联系人:</label>
-	<div class="col-lg-7">${finance.contactPerson} - ${finance.contact}</div>
+	<label class="col-lg-2 control-label">联系人:</label>
+	<div class="col-lg-10">${finance.contactPerson} - ${finance.contact}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">融资要求:</label>
-	<div class="col-lg-7">${finance.content}</div>
+	<label class="col-lg-2 control-label">融资要求:</label>
+	<div class="col-lg-10">${finance.content}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">优势:</label>
-	<div class="col-lg-7">${finance.advantage}</div>
+	<label class="col-lg-2 control-label">优势:</label>
+	<div class="col-lg-10">${finance.advantage}</div>
 </div>
 
 <div class="form-group">
-	<label class="col-lg-5 control-label">团队规模:</label>
-	<div class="col-lg-7">${finance.teamSizeName}</div>
+	<label class="col-lg-2 control-label">团队规模:</label>
+	<div class="col-lg-10">${finance.teamSizeName}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">行业:</label>
-	<div class="col-lg-7">${finance.industryDomainName}</div>
+	<label class="col-lg-2 control-label">行业:</label>
+	<div class="col-lg-10">${finance.industryDomainName}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">融资阶段:</label>
-	<div class="col-lg-7">${finance.financingPhaseName}</div>
+	<label class="col-lg-2 control-label">融资阶段:</label>
+	<div class="col-lg-10">${finance.financingPhaseName}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">地区:</label>
-	<div class="col-lg-7">${finance.fullLocation}</div>
+	<label class="col-lg-2 control-label">地区:</label>
+	<div class="col-lg-10">${finance.fullLocation}</div>
 </div>
 <hr />
 <div class="form-group">
-	<div class="col-lg-offset-1 col-lg-9">
+	<div class="col-lg-offset-1 col-lg-12">
 		<a class="btn btn-default btn-sm" href="/finance/list">列表</a>
 	</div>
 </div>

@@ -49,8 +49,8 @@
 											<th>ID</th>
 											<th>名称</th>
 											<th>省份</th>
-											<th>市</th>
-											<th>区</th>
+											<th>城市</th>
+											<th>区县</th>
 											<th>地址</th>
 											<th>创建时间</th>
 											<th>操作</th>

@@ -32,22 +32,22 @@
 									</c:if>
 									<c:if test="${success}">
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >名称:</label>
-											<div class="col-lg-7">${pioneerPark.name}</div>
+											<label class="col-lg-2 control-label" >名称:</label>
+											<div class="col-lg-10">${pioneerPark.name}</div>
 										</div>
 										
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >地址:</label>
-											<div class="col-lg-7">${pioneerPark.address}</div>
+											<label class="col-lg-2 control-label" >地址:</label>
+											<div class="col-lg-10">${pioneerPark.address}</div>
 										</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label">简介:</label>
-											<div class="col-lg-7">${pioneerPark.content}</div>
+											<label class="col-lg-2 control-label">简介:</label>
+											<div class="col-lg-10">${pioneerPark.content}</div>
 										</div>
 										<hr />
 										<div class="form-group">
-											<div class="col-lg-offset-1 col-lg-9">
+											<div class="col-lg-offset-1 col-lg-12">
 												<a class="btn btn-default btn-sm" href="/pioneerpark/list">列表</a>
 												<a class="btn btn-default btn-sm" href="/pioneerpark/edit/${pioneerPark.id}">编辑</a>
 											</div>

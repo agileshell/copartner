@@ -32,59 +32,59 @@
 									</c:if>
 									<c:if test="${success}">
 <div class="form-group">
-	<label class="col-lg-5 control-label" >项目名称:</label>
-	<div class="col-lg-7">${project.name}</div>
+	<label class="col-lg-2 control-label" >项目名称:</label>
+	<div class="col-lg-10">${project.name}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label" >项目发布者:</label>
-	<div class="col-lg-7"><a href="/user/detail/${project.userId}">${project.userName}</a></div>
+	<label class="col-lg-2 control-label" >项目发布者:</label>
+	<div class="col-lg-10"><a href="/user/detail/${project.userId}">${project.userName}</a></div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">联系人:</label>
-	<div class="col-lg-7">${project.contactPerson} - ${project.contact}</div>
+	<label class="col-lg-2 control-label">联系人:</label>
+	<div class="col-lg-10">${project.contactPerson} - ${project.contact}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">项目LOGO:</label>
-	<div class="col-lg-7">
+	<label class="col-lg-2 control-label">项目LOGO:</label>
+	<div class="col-lg-10">
 	<img alt="${project.name}" src="${cdnDomain}${project.logo}"  width="500"></img>
 	</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">实施条件:</label>
-	<div class="col-lg-7">${project.content}</div>
+	<label class="col-lg-2 control-label">实施条件:</label>
+	<div class="col-lg-10">${project.content}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">优势:</label>
-	<div class="col-lg-7">${project.advantage}</div>
+	<label class="col-lg-2 control-label">优势:</label>
+	<div class="col-lg-10">${project.advantage}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label" >阶段:</label>
-	<div class="col-lg-7">${project.projectPhaseName}</div>
+	<label class="col-lg-2 control-label" >阶段:</label>
+	<div class="col-lg-10">${project.projectPhaseName}</div>
 </div>
 
 <div class="form-group">
-	<label class="col-lg-5 control-label">团队规模:</label>
-	<div class="col-lg-7">${project.teamSizeName}</div>
+	<label class="col-lg-2 control-label">团队规模:</label>
+	<div class="col-lg-10">${project.teamSizeName}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">行业:</label>
-	<div class="col-lg-7">${project.industryDomainName}</div>
+	<label class="col-lg-2 control-label">行业:</label>
+	<div class="col-lg-10">${project.industryDomainName}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">地区:</label>
-	<div class="col-lg-7">${project.fullLocation}</div>
+	<label class="col-lg-2 control-label">地区:</label>
+	<div class="col-lg-10">${project.fullLocation}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">收藏次数:</label>
-	<div class="col-lg-7">${project.likeCount}</div>
+	<label class="col-lg-2 control-label">收藏次数:</label>
+	<div class="col-lg-10">${project.likeCount}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">评论次数:</label>
-	<div class="col-lg-7">${project.commentCount}</div>
+	<label class="col-lg-2 control-label">评论次数:</label>
+	<div class="col-lg-10">${project.commentCount}</div>
 </div>
 <hr />
 <div class="form-group">
-	<div class="col-lg-offset-1 col-lg-9">
+	<div class="col-lg-offset-1 col-lg-12">
 		<a class="btn btn-default btn-sm" href="/project/list">列表</a>
 	</div>
 </div>

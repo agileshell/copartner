@@ -15,12 +15,6 @@
 		<li>
 			<a <c:if test="${viewname == 'content_list'}"> class="open" </c:if> href="/content/list"><i class="icon-book"></i>政策解读</a>
 		</li>
-        <li>
-			<a <c:if test="${viewname == 'news_list'}"> class="open" </c:if> href="/news/list"><i class="icon-camera"></i>新闻动态</a>
-		</li>
-        <li>
-			<a <c:if test="${viewname == 'course_list'}"> class="open" </c:if> href="/course/list"><i class="icon-inbox"></i>充电站</a>
-        </li>
 		
 		<li class="has_sub">
 			<a href="#" <c:if test="${viewname == 'pioneerpark_list' || viewname == 'investorg_list'}"> class="subdrop" </c:if>>
@@ -34,6 +28,13 @@
 					<a <c:if test="${viewname == 'investorg_list'}"> class="open" </c:if> href="/investorg/list"><i class="icon-map-marker"></i>投资机构</a>
 				</li>
 			</ul>
+        </li>
+        
+        <li>
+			<a <c:if test="${viewname == 'news_list'}"> class="open" </c:if> href="/news/list"><i class="icon-camera"></i>新闻动态</a>
+		</li>
+        <li>
+			<a <c:if test="${viewname == 'course_list'}"> class="open" </c:if> href="/course/list"><i class="icon-inbox"></i>充电站</a>
         </li>
 		
 		<li class="has_sub">

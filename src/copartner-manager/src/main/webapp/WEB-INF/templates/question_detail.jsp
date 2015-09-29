@@ -38,28 +38,28 @@
 									</c:if>
 									<c:if test="${success}">
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >标题:</label>
-											<div class="col-lg-7">${question.title}</div>
+											<label class="col-lg-2 control-label" >标题:</label>
+											<div class="col-lg-10">${question.title}</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >内容:</label>
-											<div class="col-lg-7">${question.content}</div>
-										</div>
-										
-										<div class="form-group">
-											<label class="col-lg-5 control-label">问题类别:</label>
-											<div class="col-lg-7">${question.categoryName}</div>
+											<label class="col-lg-2 control-label" >内容:</label>
+											<div class="col-lg-10">${question.content}</div>
 										</div>
 										
 										<div class="form-group">
-											<label class="col-lg-5 control-label">提问者:</label>
-											<div class="col-lg-7">
+											<label class="col-lg-2 control-label">问题类别:</label>
+											<div class="col-lg-10">${question.categoryName}</div>
+										</div>
+										
+										<div class="form-group">
+											<label class="col-lg-2 control-label">提问者:</label>
+											<div class="col-lg-10">
 												<a href="/user/detail/${question.questioner.userId}">${question.questioner.name}</a>
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label">导师:</label>
-											<div class="col-lg-7">
+											<label class="col-lg-2 control-label">导师:</label>
+											<div class="col-lg-10">
 												<a href="/user/detail/${tutor.questioner.userId}">${tutor.questioner.name}</a>
 											</div>
 										</div>

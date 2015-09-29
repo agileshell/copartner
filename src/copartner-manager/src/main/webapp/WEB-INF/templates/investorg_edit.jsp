@@ -27,46 +27,58 @@
 							<div class="widget-content">
 								<div class="padd">
 									<form class="form-horizontal" id="edit_investorg_form" role="form" action="/investorg/update/${investOrg.id}" method="post" enctype="multipart/form-data">
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="name">标题<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<input name="name" id="title" value="${investOrg.name}" type="text" class="form-control" placeholder="名称"></input>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="logo">LOGO:</label>
-											<div class="col-lg-7">
-												<img alt="${investOrg.name}" src="${cdnDomain}${investOrg.logo}" width="80">
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="logo">LOGO:</label>
-											<div class="col-lg-7">
-												<input name="logo" id="logo" type="file" class="form-control" placeholder="LOGO"></input>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="specials">特色:</label>
-											<div class="col-lg-7">
-												<textarea name="specials" id="specials" class="form-control" rows="3" placeholder="特色">${investOrg.specials}</textarea>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="hardware">硬件:</label>
-											<div class="col-lg-7">
-												<textarea name="hardware" id="hardware" class="form-control" rows="3" placeholder="硬件">${investOrg.hardware}</textarea>
-											</div>
-										</div>
+										
+										<div class="tabbable" style="margin-bottom: 18px;">
+					                      <ul class="nav nav-tabs">
+					                        <li class="active"><a href="#tab1" data-toggle="tab">基本信息</a></li>
+					                        <li><a href="#tab2" data-toggle="tab">简介</a></li>
+					                      </ul>
+					                      <div class="tab-content" style="padding-bottom: 9px; border-bottom: 1px solid #ddd;">
+					                        <div class="tab-pane active" id="tab1">
+					                        	<div class="form-group">
+													<label class="col-lg-2 control-label" for="name">标题<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<input name="name" id="title" value="${investOrg.name}" type="text" class="form-control" placeholder="名称"></input>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="logo">LOGO:</label>
+													<div class="col-lg-10">
+														<img alt="${investOrg.name}" src="${cdnDomain}${investOrg.logo}" width="80">
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="logo">LOGO:</label>
+													<div class="col-lg-10">
+														<input name="logo" id="logo" type="file" class="form-control" placeholder="LOGO"></input>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="specials">特色:</label>
+													<div class="col-lg-10">
+														<textarea name="specials" id="specials" class="form-control" rows="3" placeholder="特色">${investOrg.specials}</textarea>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="hardware">硬件:</label>
+													<div class="col-lg-10">
+														<textarea name="hardware" id="hardware" class="form-control" rows="3" placeholder="硬件">${investOrg.hardware}</textarea>
+													</div>
+												</div>
+					                        </div>
+					                        <div class="tab-pane" id="tab2">
+					                        	<div class="form-group">
+													<label class="col-lg-2 control-label" for="article">内容:</label>
+													<div class="col-lg-10">
+														<textarea name="article" id="article" class="form-control" rows="3" placeholder="内容">${investOrg.content}</textarea>
+													</div>
+												</div>
+					                        </div>
+					                      </div>
+					                    </div>
 										
 										<div class="form-group">
-											<label class="col-lg-5 control-label" for="article">内容:</label>
-											<div class="col-lg-7">
-												<textarea name="article" id="article" class="form-control" rows="3" placeholder="内容">${investOrg.content}</textarea>
-											</div>
-										</div>
-										<hr />
-										<div class="form-group">
-											<div class="col-lg-offset-1 col-lg-9">
+											<div class="col-lg-offset-1 col-lg-12">
 												<button type="submit" class="btn btn-default">提交</button>
 											</div>
 										</div>
@@ -102,6 +114,8 @@
                      'anchor', 'link', 'unlink'
             ],
             minHeight : 300,
+            width: "100%",
+            minWidth: 300,
             autoHeightMode : true,
             afterCreate : function() {
                 this.loadPlugin('autoheight');

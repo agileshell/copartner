@@ -27,46 +27,57 @@
 							<div class="widget-content">
 								<div class="padd">
 									<form id="add_content_form" class="form-horizontal" role="form" action="/content/save" method="post" enctype="multipart/form-data">
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="title">标题<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<input name="title" id="title" type="text" class="form-control" placeholder="标题"></input>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<jsp:include page="control/commons-status.jsp">
-													<jsp:param value="active" name="status"/>
-													<jsp:param value="false" name="has_all"/>
-													<jsp:param value="false" name="update"/>
-												</jsp:include>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="synopsis">摘要<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<textarea name="synopsis" id="synopsis" class="form-control" rows="3" placeholder="摘要"></textarea>
-												<!-- <input name="synopsis" id="synopsis" type="text" class="form-control" placeholder="摘要"></input> -->
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="coverImg">封皮<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-lg-5 control-label" for="article">内容:</label>
-											<div class="col-lg-7">
-												<textarea name="article" id="article" class="form-control" rows="3" placeholder="内容"></textarea>
-											</div>
-										</div>
 										
-										<hr />
+										<div class="tabbable" style="margin-bottom: 18px;">
+					                      <ul class="nav nav-tabs">
+					                        <li class="active"><a href="#bash_info" data-toggle="tab">基本信息</a></li>
+					                        <li><a href="#extend_info" data-toggle="tab">图文信息</a></li>
+					                      </ul>
+					                      <div class="tab-content" style="padding-bottom: 9px; border-bottom: 1px solid #ddd;">
+					                        <div class="tab-pane active" id="bash_info">
+					                        	<div class="form-group">
+													<label class="col-lg-2 control-label" for="title">标题<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<input name="title" id="title" type="text" class="form-control" placeholder="标题"></input>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<jsp:include page="control/commons-status.jsp">
+															<jsp:param value="active" name="status"/>
+															<jsp:param value="false" name="has_all"/>
+															<jsp:param value="false" name="update"/>
+														</jsp:include>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="synopsis">摘要<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<textarea name="synopsis" id="synopsis" class="form-control" rows="3" placeholder="摘要"></textarea>
+														<!-- <input name="synopsis" id="synopsis" type="text" class="form-control" placeholder="摘要"></input> -->
+													</div>
+												</div>
+					                        </div>
+					                        <div class="tab-pane" id="extend_info">
+					                        	<div class="form-group">
+													<label class="col-lg-2 control-label" for="coverImg">封皮<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-2 control-label" for="article">内容:</label>
+													<div class="col-lg-10">
+														<textarea name="article" id="article" class="form-control" rows="3" placeholder="内容"></textarea>
+													</div>
+												</div>
+					                        </div>
+					                      </div>
+					                    </div>
 										
 										<div class="form-group">
-											<div class="col-lg-offset-1 col-lg-9">
+											<div class="col-lg-offset-1 col-lg-12">
 												<button type="submit" class="btn btn-default">提交</button>
 											</div>
 										</div>
@@ -87,29 +98,32 @@
 	<script charset="utf-8" src="${cdn}js/kindeditor/plugins/autoheight/autoheight.js"></script>
 	
 	<script>
-	    KindEditor.ready(function(K) {
-	        window.editor = K.create('#article', {
-	            langType : 'zh_CN',
-	            uploadJson : '/editor/file_upload',
-	            items : [
-	                     'source', '|', 'undo', 'redo', '|', 'preview', 'template', 'code', 'cut', 'copy', 'paste',
-	                     'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-	                     'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-	                     'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
-	                     'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-	                     'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
-	                     'flash', 'media', 'insertfile', 'table', 'hr', 'baidumap', 'pagebreak',
-	                     'anchor', 'link', 'unlink'
-	            ],
-	            minHeight : 300,
-	            autoHeightMode : true,
-	            afterCreate : function() {
-	                this.loadPlugin('autoheight');
-	            },
-	            afterBlur: function(){this.sync();}
-	        });
-	    });
 		$(document).ready(function() {
+		    KindEditor.ready(function(K) {
+		        window.editor = K.create('#article', {
+		            langType : 'zh_CN',
+		            uploadJson : '/editor/file_upload',
+		            items : [
+		                     'source', '|', 'undo', 'redo', '|', 'preview', 'template', 'code', 'cut', 'copy', 'paste',
+		                     'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+		                     'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+		                     'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+		                     'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+		                     'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
+		                     'flash', 'media', 'insertfile', 'table', 'hr', 'baidumap', 'pagebreak',
+		                     'anchor', 'link', 'unlink'
+		            ],
+		            minHeight : 300,
+		            width: "100%",
+		            minWidth: 300,
+		            autoHeightMode : true,
+		            afterCreate : function() {
+		                this.loadPlugin('autoheight');
+		            },
+		            afterBlur: function(){this.sync();}
+		        });
+		    });
+		    
 			$('#title').focus();
 	        $('#add_content_form').validate({
 	        	onsubmit:true,

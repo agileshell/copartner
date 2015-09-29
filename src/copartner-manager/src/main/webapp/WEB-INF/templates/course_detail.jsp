@@ -34,43 +34,43 @@
 									</c:if>
 									<c:if test="${success}">
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >课程名称:</label>
-											<div class="col-lg-7">${course.name}</div>
+											<label class="col-lg-2 control-label" >课程名称:</label>
+											<div class="col-lg-10">${course.name}</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >主讲人:</label>
-											<div class="col-lg-7">${course.speaker}</div>
+											<label class="col-lg-2 control-label" >主讲人:</label>
+											<div class="col-lg-10">${course.speaker}</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >摘要:</label>
-											<div class="col-lg-7">${course.synopsis}</div>
+											<label class="col-lg-2 control-label" >摘要:</label>
+											<div class="col-lg-10">${course.synopsis}</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >时长(分钟):</label>
-											<div class="col-lg-7">${course.time}</div>
+											<label class="col-lg-2 control-label" >时长(分钟):</label>
+											<div class="col-lg-10">${course.time}</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >浏览次数:</label>
-											<div class="col-lg-7">${course.clicks}次</div>
+											<label class="col-lg-2 control-label" >浏览次数:</label>
+											<div class="col-lg-10">${course.clicks}次</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >是否免费:</label>
-											<div class="col-lg-7">
+											<label class="col-lg-2 control-label" >是否免费:</label>
+											<div class="col-lg-10">
 												<c:if test="${course.isFree}"> 免费 </c:if>
 												<c:if test="${!course.isFree}"> 非免费 </c:if>
 											</div>
 										</div>
 										
 										<div class="form-group">
-											<label class="col-lg-5 control-label">封皮:</label>
-											<div class="col-lg-7">
+											<label class="col-lg-2 control-label">封皮:</label>
+											<div class="col-lg-10">
 											<img alt="${course.name}" src="${cdnDomain}${course.coverImg}" width="500"></img>
 											</div>
 										</div>
 										
 										<div class="form-group">
-											<label class="col-lg-5 control-label">视频:</label>
-											<div class="col-lg-7">
+											<label class="col-lg-2 control-label">视频:</label>
+											<div class="col-lg-10">
 											  <video id="cop.video.media" class="video-js vjs-default-skin" controls preload="none" width="500" height="300"
 											      poster="${cdnDomain}${course.url}?vframe/jpg/offset/0/w/600/h/600"
 											      data-setup="{}">
@@ -83,7 +83,7 @@
 										
 										<hr />
 										<div class="form-group">
-											<div class="col-lg-offset-1 col-lg-9">
+											<div class="col-lg-offset-1 col-lg-12">
 												<a class="btn btn-default btn-sm" href="/course/list">列表</a>
 												<a class="btn btn-default btn-sm" href="/course/edit/${course.id}">编辑</a>
 											</div>

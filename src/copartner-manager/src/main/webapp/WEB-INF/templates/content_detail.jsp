@@ -32,28 +32,28 @@
 									</c:if>
 									<c:if test="${success}">
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >标题:</label>
-											<div class="col-lg-7">${content.title}</div>
+											<label class="col-lg-2 control-label" >标题:</label>
+											<div class="col-lg-10">${content.title}</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label" >摘要:</label>
-											<div class="col-lg-7">${content.synopsis}</div>
+											<label class="col-lg-2 control-label" >摘要:</label>
+											<div class="col-lg-10">${content.synopsis}</div>
 										</div>
 										
 										<div class="form-group">
-											<label class="col-lg-5 control-label">封皮:</label>
-											<div class="col-lg-7">
+											<label class="col-lg-2 control-label">封皮:</label>
+											<div class="col-lg-10">
 											<img alt="${content.title}" src="${cdnDomain}${content.coverImg}" width="500"></img>
 											</div>
 										</div>
 										
 										<div class="form-group">
-											<label class="col-lg-5 control-label">内容:</label>
-											<div class="col-lg-7">${content.article}</div>
+											<label class="col-lg-2 control-label">内容:</label>
+											<div class="col-lg-10">${content.article}</div>
 										</div>
 										<hr />
 										<div class="form-group">
-											<div class="col-lg-offset-1 col-lg-9">
+											<div class="col-lg-offset-1 col-lg-12">
 												<a class="btn btn-default btn-sm" href="/content/list">列表</a>
 												<a class="btn btn-default btn-sm" href="/content/edit/${content.id}">编辑</a>
 											</div>

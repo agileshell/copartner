@@ -32,49 +32,49 @@
 									</c:if>
 									<c:if test="${success}">
 <div class="form-group">
-	<label class="col-lg-5 control-label" >融智名称:</label>
-	<div class="col-lg-7">${demand.name}</div>
+	<label class="col-lg-2 control-label" >融智名称:</label>
+	<div class="col-lg-10">${demand.name}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label" >融智发布者:</label>
-	<div class="col-lg-7"><a href="/user/detail/${demand.userId}">${demand.userName}</a></div>
+	<label class="col-lg-2 control-label" >融智发布者:</label>
+	<div class="col-lg-10"><a href="/user/detail/${demand.userId}">${demand.userName}</a></div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">联系人:</label>
-	<div class="col-lg-7">${demand.contactPerson} - ${demand.contact}</div>
+	<label class="col-lg-2 control-label">联系人:</label>
+	<div class="col-lg-10">${demand.contactPerson} - ${demand.contact}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">融智要求:</label>
-	<div class="col-lg-7">${demand.content}</div>
+	<label class="col-lg-2 control-label">融智要求:</label>
+	<div class="col-lg-10">${demand.content}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">优势:</label>
-	<div class="col-lg-7">${demand.advantage}</div>
+	<label class="col-lg-2 control-label">优势:</label>
+	<div class="col-lg-10">${demand.advantage}</div>
 </div>
 
 <div class="form-group">
-	<label class="col-lg-5 control-label">团队规模:</label>
-	<div class="col-lg-7">${demand.teamSizeName}</div>
+	<label class="col-lg-2 control-label">团队规模:</label>
+	<div class="col-lg-10">${demand.teamSizeName}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">行业:</label>
-	<div class="col-lg-7">${demand.industryDomainName}</div>
+	<label class="col-lg-2 control-label">行业:</label>
+	<div class="col-lg-10">${demand.industryDomainName}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">地区:</label>
-	<div class="col-lg-7">${demand.fullLocation}</div>
+	<label class="col-lg-2 control-label">地区:</label>
+	<div class="col-lg-10">${demand.fullLocation}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">收藏次数:</label>
-	<div class="col-lg-7">${demand.likeCount}</div>
+	<label class="col-lg-2 control-label">收藏次数:</label>
+	<div class="col-lg-10">${demand.likeCount}</div>
 </div>
 <div class="form-group">
-	<label class="col-lg-5 control-label">评论次数:</label>
-	<div class="col-lg-7">${demand.commentCount}</div>
+	<label class="col-lg-2 control-label">评论次数:</label>
+	<div class="col-lg-10">${demand.commentCount}</div>
 </div>
 <hr />
 <div class="form-group">
-	<div class="col-lg-offset-1 col-lg-9">
+	<div class="col-lg-offset-1 col-lg-12">
 		<a class="btn btn-default btn-sm" href="/demand/list">列表</a>
 	</div>
 </div>
