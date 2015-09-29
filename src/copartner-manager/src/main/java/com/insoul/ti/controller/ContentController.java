@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -52,7 +51,6 @@ public class ContentController extends WebBase {
 		ContentCriteria criteria = new ContentCriteria();
 		criteria.setLimit(query.getPage_size());
 		criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
-		criteria.setType(request.getType());
 		String[] status = null;
 		if (StringUtils.isNotBlank(request.getStatus())) {
 			status = new String[] { request.getStatus() };
@@ -136,7 +134,6 @@ public class ContentController extends WebBase {
 		content.setStatus(request.getStatus());
 		content.setSynopsis(request.getSynopsis());
 		content.setTitle(request.getTitle());
-		content.setType(request.getType());
 		contentDAO.update(content);
 		return new ModelAndView("redirect:/content/detail/" + contentId);
 	}
@@ -168,7 +165,6 @@ public class ContentController extends WebBase {
 		content.setStatus(request.getStatus());
 		content.setSynopsis(request.getSynopsis());
 		content.setTitle(request.getTitle());
-		content.setType(request.getType());
 		contentDAO.save(content);
 		return new ModelAndView("redirect:/content/detail/" + content.getId());
 	}

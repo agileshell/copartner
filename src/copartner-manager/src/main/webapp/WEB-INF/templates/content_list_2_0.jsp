@@ -42,13 +42,6 @@
 													<jsp:param value="false" name="update"/>
 												</jsp:include>
 											</div>
-											<label class="col-lg-1 control-label" for="type">类型:</label>
-											<div class="col-lg-4">
-												<jsp:include page="control/content-type.jsp">
-													<jsp:param value="${req.type}" name="type"/>
-													<jsp:param value="true" name="has_all"/>
-												</jsp:include>
-											</div>
 											<div class="col-lg-1">
 												<button type="submit" class="btn btn-default">查询</button>
 											</div>
@@ -71,8 +64,6 @@
 												<div class="widget">
 													<div class="widget-head">
 														<div class="pull-left">
-															<c:if test="${c.type == 1}">政策解读&nbsp;:&nbsp;</c:if>
-															<c:if test="${c.type == 2}">公共资源&nbsp;:&nbsp;</c:if>
 															<a href="/content/detail/${c.id}"><t:short content="${c.title}" length="5"></t:short></a>
 														</div>
 														<div class="widget-icons pull-right">

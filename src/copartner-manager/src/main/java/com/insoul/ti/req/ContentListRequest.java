@@ -14,22 +14,13 @@ public class ContentListRequest extends PageRequest {
 	
 	private String title;
 
-	private Integer type;// 1 政策解读, 2 公共资源
-
 	private String status;
 
 	@Override
 	protected ContentListRequest Q() {
 		StringBuilder sb = new StringBuilder();
 		boolean appended = false;
-		if (type != null && type > 0L) {
-			sb.append("type").append("=").append(type);
-			appended = true;
-		}
 		if (StringUtils.isNotBlank(status)) {
-			if (appended) {
-				sb.append("&");
-			}
 			sb.append("status").append("=").append(status);
 			appended = true;
 		}
@@ -65,14 +56,6 @@ public class ContentListRequest extends PageRequest {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public Integer getType() {
-		return type;
-	}
-
-	public void setType(Integer type) {
-		this.type = type;
 	}
 
 	public String getStatus() {

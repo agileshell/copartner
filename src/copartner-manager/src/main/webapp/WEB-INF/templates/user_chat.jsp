@@ -111,7 +111,7 @@
 			}
 			case 5 : {// Acknowledge
 				if (message.status == 1) {
-				 	plus.nativeUI.toast("发送成功");
+				 	// plus.nativeUI.toast("发送成功");
 				}
 				break;
 			}

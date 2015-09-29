@@ -42,13 +42,6 @@
 													<jsp:param value="false" name="update"/>
 												</jsp:include>
 											</div>
-											<label class="col-lg-1 control-label" for="type">类型:</label>
-											<div class="col-lg-4">
-												<jsp:include page="control/content-type.jsp">
-													<jsp:param value="${req.type}" name="type"/>
-													<jsp:param value="true" name="has_all"/>
-												</jsp:include>
-											</div>
 											<div class="col-lg-1">
 												<button type="submit" class="btn btn-default">查询</button>
 											</div>
@@ -68,7 +61,6 @@
 									<thead>
 										<tr>
 											<th>ID</th>
-											<th>类型</th>
 											<th>标题</th>
 											<th>摘要</th>
 											<th>状态</th>
@@ -79,17 +71,13 @@
 									</thead>
 									<tbody>
 										<c:if test="${!success}">
-											<tr><td colspan="8" style="text-align: center;">空空如也!!!</td></tr>
-											<tr><td colspan="8" style="text-align: center;"><a class="btn btn-default btn-sm" href="/content/add">新建政策解读</a></td></tr>
+											<tr><td colspan="7" style="text-align: center;">空空如也!!!</td></tr>
+											<tr><td colspan="7" style="text-align: center;"><a class="btn btn-default btn-sm" href="/content/add">新建政策解读</a></td></tr>
 										</c:if>
 										<c:if test="${success}">
 											<c:forEach var="c" items="${contentList}" varStatus="status">
 												<tr>
 													<td>${c.id}</td>
-													<td>
-														<c:if test="${c.type == 1}"> 政策解读 </c:if>
-														<c:if test="${c.type == 2}"> 公共资源 </c:if>
-													</td>
 													<td><t:short content="${c.title}" length="10"></t:short></td>
 													<td><t:short content="${c.synopsis}" length="10"></t:short></td>
 													<td>

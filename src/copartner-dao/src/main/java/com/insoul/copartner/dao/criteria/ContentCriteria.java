@@ -9,8 +9,6 @@ public class ContentCriteria extends PaginationCriteria {
 
     private String title;
 
-    private Integer type;
-
     private String[] status;
 
     private Date from;
@@ -23,14 +21,6 @@ public class ContentCriteria extends PaginationCriteria {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     public Long getId() {
@@ -71,7 +61,7 @@ public class ContentCriteria extends PaginationCriteria {
 
     @Override
     public String toString() {
-        return "ContentCriteria [id=" + id + ", title=" + title + ", type=" + type + ", status="
+        return "ContentCriteria [id=" + id + ", title=" + title + ", status="
                 + Arrays.toString(status) + ", from=" + from + ", to=" + to + "]";
     }
 

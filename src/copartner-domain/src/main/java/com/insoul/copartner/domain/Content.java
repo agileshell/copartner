@@ -14,9 +14,6 @@ public class Content extends BaseEntity {
 
     private static final long serialVersionUID = -24101514121358706L;
 
-    @Column(name = "type", nullable = false)
-    private Integer type;// 1 政策解读, 2 公共资源
-
     @Column(name = "title", nullable = false)
     private String title;// 标题
 
@@ -38,14 +35,6 @@ public class Content extends BaseEntity {
 
     @Column(name = "admin_user_id", nullable = false)
     private Long adminUserId;// 创建人，后台admin用户的ID
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
 
     public String getTitle() {
         return title;
@@ -114,7 +103,6 @@ public class Content extends BaseEntity {
         result = prime * result + ((status == null) ? 0 : status.hashCode());
         result = prime * result + ((synopsis == null) ? 0 : synopsis.hashCode());
         result = prime * result + ((title == null) ? 0 : title.hashCode());
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
     }
 
@@ -161,11 +149,6 @@ public class Content extends BaseEntity {
             if (other.title != null)
                 return false;
         } else if (!title.equals(other.title))
-            return false;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
             return false;
         return true;
     }

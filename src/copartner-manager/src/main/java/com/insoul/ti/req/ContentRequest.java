@@ -11,9 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
  * @since 2015年7月4日 下午7:02:30
  */
 public class ContentRequest {
-	
-	@NotNull
-	private Integer type;// 1 政策解读, 2 公共资源
 
 	@NotNull
 	private String title;// 标题
@@ -26,14 +23,6 @@ public class ContentRequest {
 	private String article;// 内容
 
 	private String status;// 状态 active,inactive,deleted
-
-	public Integer getType() {
-		return type;
-	}
-
-	public void setType(Integer type) {
-		this.type = type;
-	}
 
 	public String getTitle() {
 		return title;

@@ -42,10 +42,6 @@ public class ContentDaoImpl extends BaseDaoImpl<Content, Long> implements IConte
         System.out.println(criteria.toString());
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
-        if (null != criteria.getType() && criteria.getType() > 0) {
-            conditionStr.append(" AND type = :type");
-            params.put("type", criteria.getType());
-        }
         if (null != criteria.getStatus()) {
             conditionStr.append(" AND status IN :status");
             params.put("status", new HashSet(Arrays.asList(criteria.getStatus())));

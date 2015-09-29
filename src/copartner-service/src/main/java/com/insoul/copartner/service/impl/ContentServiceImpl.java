@@ -32,7 +32,6 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
         List<ContentVO> contentVOs = new ArrayList<ContentVO>();
 
         ContentCriteria contentCriteria = new ContentCriteria();
-        contentCriteria.setType(requestData.getType());
         contentCriteria.setOffset(requestData.getOffset());
         contentCriteria.setLimit(requestData.getLimit());
         contentCriteria.setStatus(new String[] { "active" });
@@ -48,7 +47,6 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
             ContentVO contentVO = new ContentVO();
             contentVO.setContentId(content.getId());
             contentVO.setTitle(content.getTitle());
-            contentVO.setType(content.getType());
             contentVO.setSynopsis(content.getSynopsis());
             contentVO.setCoverImg(CDNUtil.getFullPath(content.getCoverImg()));
             contentVO.setClicks(content.getClicks());
@@ -70,7 +68,6 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
         ContentDetailVO contentVO = new ContentDetailVO();
         contentVO.setContentId(content.getId());
         contentVO.setTitle(content.getTitle());
-        contentVO.setType(content.getType());
         contentVO.setSynopsis(content.getSynopsis());
         contentVO.setCoverImg(CDNUtil.getFullPath(content.getCoverImg()));
         contentVO.setArticle(content.getArticle());

@@ -34,15 +34,6 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label" for="type">类型<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<jsp:include page="control/content-type.jsp">
-													<jsp:param value="1" name="type"/>
-													<jsp:param value="false" name="has_all"/>
-												</jsp:include>
-											</div>
-										</div>
-										<div class="form-group">
 											<label class="col-lg-5 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
 											<div class="col-lg-7">
 												<jsp:include page="control/commons-status.jsp">

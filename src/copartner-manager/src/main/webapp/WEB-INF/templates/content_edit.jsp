@@ -34,15 +34,6 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-5 control-label" for="type">类型<span class="cofrequired">*</span>:</label>
-											<div class="col-lg-7">
-												<jsp:include page="control/content-type.jsp">
-													<jsp:param value="${content.type}" name="type"/>
-													<jsp:param value="false" name="has_all"/>
-												</jsp:include>
-											</div>
-										</div>
-										<div class="form-group">
 											<label class="col-lg-5 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
 											<div class="col-lg-7">
 												<jsp:include page="control/commons-status.jsp">
@@ -78,9 +69,7 @@
 												<textarea name="article" id="article" class="form-control" rows="3" placeholder="内容">${content.article}</textarea>
 											</div>
 										</div>
-										
 										<hr />
-										
 										<div class="form-group">
 											<div class="col-lg-offset-1 col-lg-9">
 												<button type="submit" class="btn btn-default">提交</button>

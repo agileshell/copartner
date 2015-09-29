@@ -12,8 +12,6 @@ public class ContentDetailVO implements Serializable {
 
     private Long contentId;
 
-    private Integer type;// 1 政策解读, 2 公共资源
-
     private String title;// 标题
 
     private String synopsis;// 摘要,显示列表使用
@@ -33,14 +31,6 @@ public class ContentDetailVO implements Serializable {
 
     public void setContentId(Long contentId) {
         this.contentId = contentId;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     public String getTitle() {
