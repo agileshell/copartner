@@ -36,6 +36,29 @@
 											<label class="col-lg-2 control-label" >姓名:</label>
 											<div class="col-lg-10">${user.name}</div>
 										</div>
+										<div class="form-group">
+											<label class="col-lg-2 control-label" >身份证:</label>
+											<div class="col-lg-10">${user.idNumber}</div>
+										</div>
+										<div class="form-group">
+											<label class="col-lg-2 control-label" >身份认证:</label>
+											<div class="col-lg-10">
+												<c:if test="${user.authenticated}">
+													<i style="color: #39bd94;">已认证</i>
+												</c:if>
+												<c:if test="${!user.authenticated}">
+													<a href="/user/authentication/${user.id}"><i style="color: #ff6600;">未认证</i></a>
+												</c:if>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-lg-2 control-label" >VIP等级:</label>
+											<div class="col-lg-10">${user.level}</div>
+										</div>
+										<div class="form-group">
+											<label class="col-lg-2 control-label" >积分:</label>
+											<div class="col-lg-10">${user.points}</div>
+										</div>
 										
 										<div class="form-group">
 											<label class="col-lg-2 control-label">头像:</label>
@@ -49,12 +72,28 @@
 										</div>
 										<div class="form-group">
 											<label class="col-lg-2 control-label" >邮箱:</label>
-											<div class="col-lg-10">${user.email}</div>
+											<div class="col-lg-10">
+												${user.email}&nbsp;&nbsp;|&nbsp;&nbsp;
+												<c:if test="${user.isEmailVerified}">
+													<i style="color: #39bd94;">已认证</i>
+												</c:if>
+												<c:if test="${!user.isEmailVerified}">
+													<i style="color: #ff6600;">未认证</i>
+												</c:if>
+											</div>
 										</div>
 										
 										<div class="form-group">
 											<label class="col-lg-2 control-label">手机号:</label>
-											<div class="col-lg-10">${user.mobile}</div>
+											<div class="col-lg-10">
+												${user.mobile}&nbsp;&nbsp;|&nbsp;&nbsp;
+												<c:if test="${user.isMobileVerified}">
+													<i style="color: #39bd94;">已认证</i>
+												</c:if>
+												<c:if test="${!user.isMobileVerified}">
+													<i style="color: #ff6600;">未认证</i>
+												</c:if>
+											</div>
 										</div>
 										<div class="form-group">
 											<label class="col-lg-2 control-label">领域:</label>

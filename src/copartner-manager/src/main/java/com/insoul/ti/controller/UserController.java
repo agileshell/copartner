@@ -35,94 +35,121 @@ import com.insoul.ti.shiro.Permission;
 @Permission("authc")
 public class UserController extends WebBase {
 
-	private static final String USER_CHAT = "user_chat";
-	private static final String USER_DETAIL = "user_detail";
-	private static final String USER_LIST = "user_list_2_0";
-	
-	@RequestMapping("/list")
-	public ModelAndView list(@Valid UserListRequest request, BindingResult result) {
-		ModelAndView mv = createModelView(USER_LIST, request);
-		PageQuery query = request.init().getQuery();
-		UserCriteria criteria = new UserCriteria();
-		criteria.setLimit(query.getPage_size());
-		criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
-		criteria.setId(request.getId());
-		criteria.setEmail(request.getEmail());
-		criteria.setMobile(request.getMobile());
-		criteria.setName(request.getName());
-		List<User> list = userDAO.query(criteria);
+    private static final String USER_AUTH = "user_auth";
+    private static final String USER_CHAT = "user_chat";
+    private static final String USER_DETAIL = "user_detail";
+    private static final String USER_LIST = "user_list_2_0";
+
+    @RequestMapping("/list")
+    public ModelAndView list(@Valid UserListRequest request, BindingResult result) {
+        ModelAndView mv = createModelView(USER_LIST, request);
+        PageQuery query = request.init().getQuery();
+        UserCriteria criteria = new UserCriteria();
+        criteria.setLimit(query.getPage_size());
+        criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
+        criteria.setId(request.getId());
+        criteria.setEmail(request.getEmail());
+        criteria.setMobile(request.getMobile());
+        criteria.setName(request.getName());
+        List<User> list = userDAO.query(criteria);
         Long count = userDAO.count(criteria);
         query.setCount((count == null || count <= 0L) ? 0 : count.intValue());
-		mv.addObject("query", query);
-		mv.addObject("userList", list);
-		mv.addObject("success", CollectionUtils.isNotEmpty(list));
-		mv.addObject("req", request);
+        mv.addObject("query", query);
+        mv.addObject("userList", list);
+        mv.addObject("success", CollectionUtils.isNotEmpty(list));
+        mv.addObject("req", request);
         mv.addObject("startupRoles", getStartupRoleMap());
-		return mv;
-	}
-	
-	@RequestMapping("/update_status/{userId}")
-	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-	public ModelAndView updateStatus(@PathVariable Long userId, @RequestParam(value = "status", required = true) String status) {
-		try {
-			User user = userDAO.get(userId);
-			user.setStatus(status);
-			userDAO.update(user);
-			returnJson(true, "200", "修改成功!!");
-		} catch (Exception e) {
-			returnJson(true, "500", "修改失败!!");
-		}
-		return null;
-	}
-	
-	@RequestMapping("/chat/{userId}")
-	public ModelAndView chat(@PathVariable Long userId, ViewRequest req) {
-		ModelAndView mv = createModelView(USER_CHAT, req);
-		mv.addObject("viewname", USER_LIST);
-		try {
-			User user = userDAO.get(userId);
-			mv.addObject("user", user);
-			mv.addObject("success", user != null);
-		} catch (Exception e) {
-			mv.addObject("success", false);
-		}
-		return mv;
-	}
+        return mv;
+    }
 
-	@RequestMapping("/detail/{userId}")
-	public ModelAndView detail(@PathVariable Long userId, ViewRequest req) {
-		ModelAndView mv = createModelView(USER_DETAIL, req);
-		mv.addObject("viewname", USER_LIST);
-		try {
-			User user = userDAO.get(userId);
-			mv.addObject("user", user);
-			mv.addObject("success", user != null);
-			Long startupStatusId = user.getStartupStatusId();
-			if (startupStatusId != null && startupStatusId > 0L) {
-				mv.addObject("startupStatus", startupStatusDAO.get(startupStatusId).getName());
-			}
-			Long startupRoleId = user.getStartupRoleId();
-			if (startupRoleId != null && startupRoleId > 0L) {
-				mv.addObject("startupRole", startupRoleDAO.get(startupRoleId).getName());
-			}
-			StringBuilder sb = new StringBuilder();
-			String[] domainIds = StringUtils.split(user.getDomains(), ",");
-			if (domainIds != null && domainIds.length > 0) {
-				for (String string : domainIds) {
-					Long id = NumberUtils.toLong(string, 0L);
-					if (id <= 0L) {
-						continue;
-					}
-					IndustryDomain dom = industryDomainDAO.get(id);
-					if (dom != null) {
-						sb.append(dom.getName()).append(",");
-					}
-				}
-			}
-			mv.addObject("domains", sb.toString());
-		} catch (Exception e) {
-			mv.addObject("success", false);
-		}
-		return mv;
-	}
+    @RequestMapping("/update_status/{userId}")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public ModelAndView updateStatus(@PathVariable Long userId, @RequestParam(value = "status", required = true) String status) {
+        try {
+            User user = userDAO.get(userId);
+            user.setStatus(status);
+            userDAO.update(user);
+            returnJson(true, "200", "修改成功!!");
+        } catch (Exception e) {
+            returnJson(true, "500", "修改失败!!");
+        }
+        return null;
+    }
+
+    @RequestMapping("/authentication/{userId}")
+    public ModelAndView authentication(@PathVariable Long userId, ViewRequest req) {
+        ModelAndView mv = createModelView(USER_AUTH, req);
+        mv.addObject("viewname", USER_LIST);
+        try {
+            User user = userDAO.get(userId);
+            mv.addObject("user", user);
+            mv.addObject("success", user != null);
+        } catch (Exception e) {
+            mv.addObject("success", false);
+        }
+        return mv;
+    }
+    
+    @RequestMapping("/auth/{userId}")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public ModelAndView authentication_action(
+            @PathVariable Long userId, 
+            @RequestParam(defaultValue = "false", required = true, value = "authenticated") Boolean authenticated, 
+            ViewRequest req) {
+        User user = userDAO.get(userId);
+        user.setAuthenticated(authenticated);
+        userDAO.update(user);
+        return new ModelAndView("redirect:/user/detail/" + userId);
+    }
+
+    @RequestMapping("/chat/{userId}")
+    public ModelAndView chat(@PathVariable Long userId, ViewRequest req) {
+        ModelAndView mv = createModelView(USER_CHAT, req);
+        mv.addObject("viewname", USER_LIST);
+        try {
+            User user = userDAO.get(userId);
+            mv.addObject("user", user);
+            mv.addObject("success", user != null);
+        } catch (Exception e) {
+            mv.addObject("success", false);
+        }
+        return mv;
+    }
+
+    @RequestMapping("/detail/{userId}")
+    public ModelAndView detail(@PathVariable Long userId, ViewRequest req) {
+        ModelAndView mv = createModelView(USER_DETAIL, req);
+        mv.addObject("viewname", USER_LIST);
+        try {
+            User user = userDAO.get(userId);
+            mv.addObject("user", user);
+            mv.addObject("success", user != null);
+            Long startupStatusId = user.getStartupStatusId();
+            if (startupStatusId != null && startupStatusId > 0L) {
+                mv.addObject("startupStatus", startupStatusDAO.get(startupStatusId).getName());
+            }
+            Long startupRoleId = user.getStartupRoleId();
+            if (startupRoleId != null && startupRoleId > 0L) {
+                mv.addObject("startupRole", startupRoleDAO.get(startupRoleId).getName());
+            }
+            StringBuilder sb = new StringBuilder();
+            String[] domainIds = StringUtils.split(user.getDomains(), ",");
+            if (domainIds != null && domainIds.length > 0) {
+                for (String string : domainIds) {
+                    Long id = NumberUtils.toLong(string, 0L);
+                    if (id <= 0L) {
+                        continue;
+                    }
+                    IndustryDomain dom = industryDomainDAO.get(id);
+                    if (dom != null) {
+                        sb.append(dom.getName()).append(",");
+                    }
+                }
+            }
+            mv.addObject("domains", sb.toString());
+        } catch (Exception e) {
+            mv.addObject("success", false);
+        }
+        return mv;
+    }
 }

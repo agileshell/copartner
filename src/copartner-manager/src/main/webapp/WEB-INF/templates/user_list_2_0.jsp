@@ -69,10 +69,8 @@
 															<a href="/user/detail/${c.id}"><t:short content="${c.name}" length="6"></t:short></a>
 														</div>
 														<div class="widget-icons pull-right">
-															<a href="/user/chat/${c.id}">
-																<c:if test="${c.gender == 'F'}"> <i class="icon-female"></i> </c:if>
-																<c:if test="${c.gender == 'M'}"> <i class="icon-male"></i> </c:if>
-															</a>
+															<c:if test="${c.gender == 'F'}"> <i class="icon-female"></i> </c:if>
+															<c:if test="${c.gender == 'M'}"> <i class="icon-male"></i> </c:if>
 														</div>
 														<div class="clearfix"></div>
 													</div>
