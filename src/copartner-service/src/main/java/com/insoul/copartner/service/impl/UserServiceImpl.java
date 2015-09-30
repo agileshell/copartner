@@ -100,8 +100,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
             }
 
             String code = userAddRequest.getCode();
-            UserAccountConfirmation userAccountConfirmation = userAccountConfirmationDao.getUserAccountConfirmation(
-                    CommonConstant.MOBILE, account, code);
+            UserAccountConfirmation userAccountConfirmation = userAccountConfirmationDao
+                    .getUserAccountConfirmation(CommonConstant.MOBILE, account, code);
             if (null != userAccountConfirmation) {
                 userAccountConfirmation.setIsConfirmed(true);
                 userAccountConfirmation.setConfirmed(new Date());
@@ -457,6 +457,11 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
         userDetailVO.setLocationId(user.getLocationId());
         userDetailVO.setFullLocation(user.getFullLocation());
+
+        userDetailVO.setAuthenticated(user.getAuthenticated());
+        userDetailVO.setIdNumber(user.getIdNumber());
+        userDetailVO.setIdPicture(CDNUtil.getFullPath(user.getIdPicture()));
+        userDetailVO.setAuthenticationInfo(user.getAuthenticationInfo());
 
         if (null != user.getStartupStatusId()) {
             StartupStatus startupStatus = startupStatusDao.get(user.getStartupStatusId());

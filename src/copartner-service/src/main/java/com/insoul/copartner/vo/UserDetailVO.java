@@ -53,6 +53,14 @@ public class UserDetailVO implements Serializable {
 
     private String roleName;
 
+    private String idNumber;// 身份证号
+
+    private String idPicture;// 身份图片
+
+    private Boolean authenticated;// 是否已认证
+
+    private String authenticationInfo;// 认证说明
+
     public Long getUserId() {
         return userId;
     }
@@ -235,6 +243,38 @@ public class UserDetailVO implements Serializable {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public String getIdPicture() {
+        return idPicture;
+    }
+
+    public void setIdPicture(String idPicture) {
+        this.idPicture = idPicture;
+    }
+
+    public Boolean getAuthenticated() {
+        return authenticated;
+    }
+
+    public void setAuthenticated(Boolean authenticated) {
+        this.authenticated = authenticated;
+    }
+
+    public String getAuthenticationInfo() {
+        return authenticationInfo;
+    }
+
+    public void setAuthenticationInfo(String authenticationInfo) {
+        this.authenticationInfo = authenticationInfo;
     }
 
 }

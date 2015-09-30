@@ -99,6 +99,15 @@ public class User extends BaseEntity {
     @Column(name = "id_number")
     private String idNumber;// 身份证号
 
+    @Column(name = "id_picture")
+    private String idPicture;// 身份图片
+
+    @Column(name = "authenticated")
+    private Boolean authenticated = false;// 是否已认证
+
+    @Column(name = "authentication_info")
+    private String authenticationInfo;// 认证说明
+
     public Long getRoleId() {
         return roleId;
     }
@@ -291,12 +300,46 @@ public class User extends BaseEntity {
         this.idNumber = idNumber;
     }
 
+    public Long getPoints() {
+        return points;
+    }
+
+    public void setPoints(Long points) {
+        this.points = points;
+    }
+
+    public String getIdPicture() {
+        return idPicture;
+    }
+
+    public void setIdPicture(String idPicture) {
+        this.idPicture = idPicture;
+    }
+
+    public Boolean getAuthenticated() {
+        return authenticated;
+    }
+
+    public void setAuthenticated(Boolean authenticated) {
+        this.authenticated = authenticated;
+    }
+
+    public String getAuthenticationInfo() {
+        return authenticationInfo;
+    }
+
+    public void setAuthenticationInfo(String authenticationInfo) {
+        this.authenticationInfo = authenticationInfo;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((StartupStatusId == null) ? 0 : StartupStatusId.hashCode());
         result = prime * result + ((age == null) ? 0 : age.hashCode());
+        result = prime * result + ((authenticated == null) ? 0 : authenticated.hashCode());
+        result = prime * result + ((authenticationInfo == null) ? 0 : authenticationInfo.hashCode());
         result = prime * result + ((avatar == null) ? 0 : avatar.hashCode());
         result = prime * result + ((clientIp == null) ? 0 : clientIp.hashCode());
         result = prime * result + ((domains == null) ? 0 : domains.hashCode());
@@ -304,6 +347,7 @@ public class User extends BaseEntity {
         result = prime * result + ((fullLocation == null) ? 0 : fullLocation.hashCode());
         result = prime * result + ((gender == null) ? 0 : gender.hashCode());
         result = prime * result + ((idNumber == null) ? 0 : idNumber.hashCode());
+        result = prime * result + ((idPicture == null) ? 0 : idPicture.hashCode());
         result = prime * result + ((imId == null) ? 0 : imId.hashCode());
         result = prime * result + ((introduction == null) ? 0 : introduction.hashCode());
         result = prime * result + ((isEmailVerified == null) ? 0 : isEmailVerified.hashCode());
@@ -315,6 +359,7 @@ public class User extends BaseEntity {
         result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((password == null) ? 0 : password.hashCode());
+        result = prime * result + ((points == null) ? 0 : points.hashCode());
         result = prime * result + ((roleId == null) ? 0 : roleId.hashCode());
         result = prime * result + ((salt == null) ? 0 : salt.hashCode());
         result = prime * result + ((startupRoleId == null) ? 0 : startupRoleId.hashCode());
@@ -340,6 +385,16 @@ public class User extends BaseEntity {
             if (other.age != null)
                 return false;
         } else if (!age.equals(other.age))
+            return false;
+        if (authenticated == null) {
+            if (other.authenticated != null)
+                return false;
+        } else if (!authenticated.equals(other.authenticated))
+            return false;
+        if (authenticationInfo == null) {
+            if (other.authenticationInfo != null)
+                return false;
+        } else if (!authenticationInfo.equals(other.authenticationInfo))
             return false;
         if (avatar == null) {
             if (other.avatar != null)
@@ -375,6 +430,11 @@ public class User extends BaseEntity {
             if (other.idNumber != null)
                 return false;
         } else if (!idNumber.equals(other.idNumber))
+            return false;
+        if (idPicture == null) {
+            if (other.idPicture != null)
+                return false;
+        } else if (!idPicture.equals(other.idPicture))
             return false;
         if (imId == null) {
             if (other.imId != null)
@@ -430,6 +490,11 @@ public class User extends BaseEntity {
             if (other.password != null)
                 return false;
         } else if (!password.equals(other.password))
+            return false;
+        if (points == null) {
+            if (other.points != null)
+                return false;
+        } else if (!points.equals(other.points))
             return false;
         if (roleId == null) {
             if (other.roleId != null)
