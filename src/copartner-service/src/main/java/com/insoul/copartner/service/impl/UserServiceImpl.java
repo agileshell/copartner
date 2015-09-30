@@ -27,6 +27,7 @@ import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IStartupStatusDao;
 import com.insoul.copartner.dao.IUserAccountConfirmationDao;
 import com.insoul.copartner.dao.IUserDao;
+import com.insoul.copartner.dao.IUserFriendsDao;
 import com.insoul.copartner.dao.IUserPasswordResetDao;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Location;
@@ -37,6 +38,8 @@ import com.insoul.copartner.domain.StartupStatus;
 import com.insoul.copartner.domain.User;
 import com.insoul.copartner.domain.UserAccountConfirmation;
 import com.insoul.copartner.domain.UserAccountConfirmationId;
+import com.insoul.copartner.domain.UserFriends;
+import com.insoul.copartner.domain.UserFriendsId;
 import com.insoul.copartner.domain.UserPasswordReset;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
@@ -44,7 +47,6 @@ import com.insoul.copartner.im.IMUtils;
 import com.insoul.copartner.service.IUserService;
 import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.CodeUtil;
-import com.insoul.copartner.util.MD5Encrypt;
 import com.insoul.copartner.util.PasswordUtil;
 import com.insoul.copartner.util.ValidationUtil;
 import com.insoul.copartner.util.mail.MailUtil;
@@ -88,6 +90,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
     @Resource
     private IResumeDao resumeDao;
+    
+    @Resource
+    private IUserFriendsDao userFriendsDAO;
 
     @Override
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
@@ -166,7 +171,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
             userAccountConfirmation.setUserId(userId);
             userAccountConfirmation.setCreated(now);
             userAccountConfirmationDao.save(userAccountConfirmation);
-            MD5Encrypt.MD5Encode(code);
+            // MD5Encrypt.MD5Encode(code);
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("userName", account);
@@ -189,6 +194,13 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         userDetailVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
         userDetailVO.setImId(imId);
 
+        UserFriends userFriends = new UserFriends();
+        UserFriendsId id = new UserFriendsId(userId, GlobalProperties.IM_ROBOT_ID);
+        userFriends.setId(id);
+        userFriends.setCreated(new Date());
+        userFriends.setIsPassed(true);
+        userFriendsDAO.save(userFriends);
+        
         return userDetailVO;
     }
 

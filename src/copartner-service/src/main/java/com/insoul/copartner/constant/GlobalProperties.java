@@ -50,6 +50,8 @@ public final class GlobalProperties {
     public static String IM_SERVER;// = "123.57.55.59";
 
     public static Integer IM_PORT;// = 9100;
+    
+    public static Long IM_ROBOT_ID;
 
     static {
         Properties globalProperties = PropertiesUtil.getProperties(PROPERTIES_PATH);
@@ -59,6 +61,9 @@ public final class GlobalProperties {
         }
         if (PropertiesUtil.get(globalProperties, "im.server.port") != null) {
             IM_PORT = NumberUtils.toInt(PropertiesUtil.get(globalProperties, "im.server.port"), 9100);
+        }
+        if (PropertiesUtil.get(globalProperties, "im.robot.id") != null) {
+            IM_ROBOT_ID = NumberUtils.toLong(PropertiesUtil.get(globalProperties, "im.robot.id"), 10L);
         }
         
         if (PropertiesUtil.get(globalProperties, "cdn_provider") != null) {
