@@ -17,8 +17,6 @@
         <intercept-url pattern="/user/*/demands" access="isAuthenticated() or isAnonymous()" />
         <intercept-url pattern="/user/*/projects" access="isAuthenticated() or isAnonymous()" />
         <intercept-url pattern="/user/**" access="isAuthenticated()" />
-        <intercept-url pattern="/image" method="POST" access="isAuthenticated()" />
-        <intercept-url pattern="/vedio" method="POST" access="isAuthenticated()" />
         <intercept-url pattern="/financing/**" method="DELETE" access="isAuthenticated()" />
         <intercept-url pattern="/financing/**" method="POST" access="isAuthenticated()" />
         <intercept-url pattern="/demand/**" method="DELETE" access="isAuthenticated()" />

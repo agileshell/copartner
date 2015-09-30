@@ -54,7 +54,7 @@ public class MediaController extends BaseController {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
         Map<String, String> result = mediaService.uploadImage(imageAddRequest.getImage(), needThumbnail);
-
+        log.error("image upload result : " + result);
         return ResponseUtil.jsonSucceed(result, HttpStatus.OK);
     }
 
