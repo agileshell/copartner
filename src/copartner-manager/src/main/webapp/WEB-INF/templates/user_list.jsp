@@ -60,6 +60,7 @@
 										<tr>
 											<th>ID</th>
 											<th>姓名</th>
+											<th>认证</th>
 											<th>角色</th>
 											<th>邮箱</th>
 											<th>手机号</th>
@@ -73,13 +74,21 @@
 									</thead>
 									<tbody>
 										<c:if test="${!success}">
-											<tr><td colspan="11" style="text-align: center;">空空如也!!!</td></tr>
+											<tr><td colspan="12" style="text-align: center;">空空如也!!!</td></tr>
 										</c:if>
 										<c:if test="${success}">
 											<c:forEach var="c" items="${userList}" varStatus="status">
 												<tr>
 													<td>${c.id}</td>
 													<td>${c.name}</td>
+													<td>
+														<c:if test="${user.authenticated}">
+															<i style="color: #39bd94;">已认证</i>
+														</c:if>
+														<c:if test="${!user.authenticated}">
+															<a href="/user/authentication/${user.id}"><i style="color: #ff6600;">未认证</i></a>
+														</c:if>
+													</td>
 													<td>
 														<%-- ${startupRoles.get(c.startupRoleId)} --%>
 														<c:if test="${c.roleId == 1}"> 创业者 </c:if>
@@ -109,6 +118,11 @@
 															<a class="btn btn-xs btn-default" href="/user/detail/${c.id}">
 																详情
 															</a>
+															<c:if test="${!c.authenticated}">
+																<a class="btn btn-xs btn-default" href="/user/authentication/${c.id}" target="_self">
+																	认证审核
+																</a>
+															</c:if>
 															<!--
 															<a class="btn btn-xs btn-default" href="/user/chat/${c.id}" target="_self">
 																即时聊天
