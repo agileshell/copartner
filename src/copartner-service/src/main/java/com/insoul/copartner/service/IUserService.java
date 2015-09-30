@@ -8,9 +8,13 @@ import com.insoul.copartner.vo.ResumeVO;
 import com.insoul.copartner.vo.UserDetailVO;
 import com.insoul.copartner.vo.request.ResumeRequest;
 import com.insoul.copartner.vo.request.UserAddRequest;
+import com.insoul.copartner.vo.request.UserAuthenticateRequest;
 import com.insoul.copartner.vo.request.UserProfileUpdateRequest;
 
 public interface IUserService {
+
+    void userAuthenticate(UserAuthenticateRequest request) throws CException;
+    
     UserDetailVO register(UserAddRequest userAddRequest) throws CException;
 
     void retrievePassword(String account) throws CException;

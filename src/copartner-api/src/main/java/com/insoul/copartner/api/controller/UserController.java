@@ -24,6 +24,7 @@ import com.insoul.copartner.service.IUserFriendsService;
 import com.insoul.copartner.service.IUserService;
 import com.insoul.copartner.util.ResponseUtil;
 import com.insoul.copartner.vo.request.ResumeRequest;
+import com.insoul.copartner.vo.request.UserAuthenticateRequest;
 import com.insoul.copartner.vo.request.UserProfileUpdateRequest;
 
 @Controller
@@ -41,6 +42,19 @@ public class UserController extends BaseController {
     public ResponseEntity<Map<String, Object>> getProfileDetail() {
 
         return ResponseUtil.jsonSucceed(userService.getUserProfileDetail(), HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> authentication(@Valid UserAuthenticateRequest request,
+            BindingResult result) throws CException {
+        if (result.hasErrors()) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+
+        userService.userAuthenticate(request);
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.POST)

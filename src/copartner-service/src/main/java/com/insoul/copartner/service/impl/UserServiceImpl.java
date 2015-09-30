@@ -56,6 +56,7 @@ import com.insoul.copartner.vo.StartupStatusVO;
 import com.insoul.copartner.vo.UserDetailVO;
 import com.insoul.copartner.vo.request.ResumeRequest;
 import com.insoul.copartner.vo.request.UserAddRequest;
+import com.insoul.copartner.vo.request.UserAuthenticateRequest;
 import com.insoul.copartner.vo.request.UserProfileUpdateRequest;
 
 @Service
@@ -87,6 +88,24 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
     @Resource
     private IResumeDao resumeDao;
+
+    @Override
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public void userAuthenticate(UserAuthenticateRequest request) throws CException {
+        long userId = getUserId();
+        User user = userDao.get(userId);
+        if (StringUtils.isNotBlank(request.getAuthenticationInfo())) {
+            user.setAuthenticationInfo(request.getAuthenticationInfo());
+        }
+        if (StringUtils.isNotBlank(request.getIdNumber())) {
+            user.setIdNumber(request.getIdNumber());
+        }
+        if (StringUtils.isNotBlank(request.getIdPicture())) {
+            user.setIdPicture(request.getIdPicture());
+        }
+        user.setUpdated(new Date());
+        userDao.update(user);
+    }
 
     @Override
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
