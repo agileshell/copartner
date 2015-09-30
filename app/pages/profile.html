@@ -42,6 +42,23 @@
 				font-size: 12px;
 				line-height: 20px;
 			}
+			.authenticate {
+				clear: both;
+				color: #fff;
+				margin: 0 auto;
+				text-align: center;
+				padding-top: 8px;
+				padding-bottom: 8px;
+			}
+			.authenticate-btn {
+				line-height: 30px;
+				font-size: 15px;
+				padding: 5px 20px 5px 20px;
+				border: 1px solid #D7D7D7;
+				-moz-border-radius: 5px; 
+				-webkit-border-radius: 5px;
+				border-radius: 5px; 
+			}
 			.mui-bar~.mui-content .mui-fullscreen {
 				top: 200px;
 				height: auto;
@@ -86,9 +103,12 @@
 					<div class="user-info">
 						<span class="user-name"><span id="user-name"></span></span>
 						<span class="user-item"><span id="user-lean" ></span></span>
-						<span class="user-item">角色：<span id="user-role"></span></span>
 						<span class="user-item">所属行业：<span id="user-domains"></span></span>
+						<span class="user-item">角色：<span id="user-role"></span></span>
 					</div>
+				</div>
+				<div class="authenticate">
+					<span class="authenticate-btn">身份认证</span>
 				</div>
 			</div>
 		</div>
@@ -210,19 +230,18 @@
 			mui.init({
 				keyEventBind: {
 					backbutton: false
-				},
-				preloadPages: [{
-					id: 'update_profile',
-					url: 'update_profile.html',
-					styles: {
-						popGesture: 'hide'
-					}
-				}]
+				}
 			});
 			mui('.mui-scroll-wrapper').scroll({
 				indicators: true //是否显示滚动条
 			});
 			mui.plusReady(function() {
+				setTimeout(function() {
+					mui.preload({
+						url: "update_profile.html",
+						id: "update_profile"
+					});
+				}, 200);
 				document.addEventListener('mui.view.beforeshow', function(event) {
 					var needReflush = event.detail.needReflush;
 					var successCallback = function(data) {
@@ -264,6 +283,7 @@
 					if (!profileDetailWebview) {
 						profileDetailWebview = plus.webview.getWebviewById('update_profile');
 					}
+					console.log(JSON.stringify(profileDetailWebview));
 					mui.fire(profileDetailWebview, 'mui.view.beforeshow', {});
 				});
 			});

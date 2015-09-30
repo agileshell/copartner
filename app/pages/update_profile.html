@@ -249,6 +249,10 @@
 						locationNameEl.value = profile.fullLocation;
 						genderEl.value = profile.gender;
 						genderNameEl.value = ('F' == profile.gender ? '男' : '女');
+
+						ageEl.value = profile.age;
+						ageNameEl.value =  profile.age;
+
 						var profileDomain = profile.domains;
 						if (profileDomain) {
 							industryDomainIdEl.value = profileDomain[0].id;
