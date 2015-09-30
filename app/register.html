@@ -50,11 +50,6 @@
 				<div class="mui-input-row">
 					<input id='name' type="text" class="mui-input-clear mui-input" placeholder="姓名">
 				</div>
-				<select class="mui-btn" id='roleId'>
-					<option value="1">创业者</option>
-					<option value="2">投资人</option>
-					<option value="3">导师</option>
-				</select>
 			</form>
 			<div class="mui-content-padded">
 				<button id='register' class="mui-btn mui-btn-block mui-btn-primary">立即注册</button>
@@ -79,7 +74,6 @@
 						passwordBox = doc.getElementById('password'),
 						codeBox = doc.getElementById('code'),
 						nameBox = doc.getElementById('name'),
-						roleBox = doc.getElementById('roleId'),
 						secondBox = doc.getElementById('second'),
 						registerButton = doc.getElementById('register');
 					sendcodeButton.addEventListener('tap', function() {
@@ -115,8 +109,7 @@
 							account: accountBox.value,
 							password: passwordBox.value,
 							code: codeBox.value,
-							name: nameBox.value,
-							roleId: roleBox.value
+							name: nameBox.value
 						};
 						var w = plus.nativeUI.showWaiting("　　 请等待...　　");
 						app.registry(registInfo, function(err) {

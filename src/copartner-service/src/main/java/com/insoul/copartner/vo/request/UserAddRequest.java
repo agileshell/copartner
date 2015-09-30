@@ -22,8 +22,6 @@ public class UserAddRequest implements Serializable {
 
     private String code;
 
-    private Long roleId = 1L;
-
     public String getName() {
         return name;
     }
@@ -54,14 +52,6 @@ public class UserAddRequest implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
     }
 
 }

@@ -122,7 +122,6 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
         Date now = new Date();
         user.setName(StringUtils.isNotBlank(userAddRequest.getName()) ? userAddRequest.getName() : account);
-        user.setRoleId(userAddRequest.getRoleId());
         user.setClientIp(getIp());
         user.setCreated(now);
         String salt = PasswordUtil.genSalt();
