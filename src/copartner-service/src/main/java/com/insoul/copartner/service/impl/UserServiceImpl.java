@@ -479,6 +479,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         userDetailVO.setImId(user.getImId());
 
         long roleId = user.getRoleId();
+        userDetailVO.setRoleId(roleId);
         if (roleId == 1) {
             userDetailVO.setRoleName("创业者");
         } else if (roleId == 2) {
