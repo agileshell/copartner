@@ -2,7 +2,7 @@
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <head>
-	<title>新建创业园</title>
+	<title>编辑创业园</title>
 	<link href="${cdn}js/kindeditor/themes/default/default.css" rel="stylesheet" />
 	
 	<style type="text/css">
@@ -34,19 +34,23 @@
 					<div class="col-md-12">
 						<div class="widget wgreen">
 							<div class="widget-head">
-								<div class="pull-left">新建创业园</div>
+								<div class="pull-left">编辑创业园</div>
 								<div class="clearfix"></div>
 							</div>
 							<div class="widget-content">
 								<div class="padd">
-									<form id="add_pioneerpark_form" class="form-horizontal" role="form" action="/pioneerpark/save" method="post" enctype="multipart/form-data">
+									<form id="edit_pioneerpark_form" class="form-horizontal" role="form" action="/pioneerpark/update/${pioneerPark.id}" method="post" enctype="multipart/form-data">
 										
-										<input type="hidden" name="longitude" id="longitude"></input>
-										<input type="hidden" name="latitude" id="latitude"></input>
+										<input type="hidden" name="longitude" id="longitude" value="${pioneerPark.longitude}"></input>
+										<input type="hidden" name="latitude" id="latitude" value="${pioneerPark.latitude}"></input>
 										
-										<input type="hidden" id="provinceV" name="provinceV"></input>
-										<input type="hidden" id="cityV" name="cityV"></input>
-										<input type="hidden" id="areaV" name="areaV"></input>
+										<input type="hidden" id="provinceVal" value="${pioneerPark.province}"></input>
+										<input type="hidden" id="cityVal" value="${pioneerPark.city}"></input>
+										<input type="hidden" id="areaVal" value="${pioneerPark.area}"></input>
+										
+										<input type="hidden" id="provinceV" name="provinceV" value="${pioneerPark.province}"></input>
+										<input type="hidden" id="cityV" name="cityV" value="${pioneerPark.city}"></input>
+										<input type="hidden" id="areaV" name="areaV" value="${pioneerPark.area}"></input>
 										
 										<div class="tabbable" style="margin-bottom: 18px;">
 					                      <ul class="nav nav-tabs">
@@ -59,14 +63,14 @@
 												<div class="form-group">
 													<label class="col-lg-2 control-label" for="name">名称<span class="cofrequired">*</span>:</label>
 													<div class="col-lg-10">
-														<input name="name" id="name" type="text" class="form-control" placeholder="名称"></input>
+														<input value="${pioneerPark.name}" name="name" id="name" type="text" class="form-control" placeholder="名称"></input>
 													</div>
 												</div>
 												
 												<div class="form-group">
 													<label class="col-lg-2 control-label" for="content">简介:</label>
 													<div class="col-lg-10">
-														<textarea name="content" id="content" class="form-control" rows="3" placeholder="简介"></textarea>
+														<textarea name="content" id="content" class="form-control" rows="3" placeholder="简介">${pioneerPark.content}</textarea>
 													</div>
 												</div>
 												
@@ -86,7 +90,7 @@
 												<div class="form-group">
 													<label class="col-lg-2 control-label" for="addressDetail">详细地址<span class="cofrequired">*</span>:</label>
 													<div class="col-lg-8">
-														<input name="addressDetail" id="addressDetail" type="text" class="form-control" placeholder="详细地址"></input>
+														<input value="${pioneerPark.addressDetail}" name="addressDetail" id="addressDetail" type="text" class="form-control" placeholder="详细地址"></input>
 													</div>
 													<div class="col-lg-2">
 														<button id="search_map" type="button" class="btn btn-default">查询</button>
@@ -157,44 +161,56 @@
 		
 		$(document).ready(function() {
 			
-			$("#pca_distpicker").citySelect({  
-			    url:"/assets/js/cityselect/city.min.js",
-			    prov : "河南省", //省份
-			    city : "郑州市", //城市
-			    dist : "金水区"//, //区县
-			    //nodata : "none" //当子集无数据时，隐藏select
-			});
+			var province = $("#provinceVal").val();
+			var city = $("#cityVal").val();
+			var area = $("#areaVal").val();
 			
+			$("#pca_distpicker").citySelect({  
+			    url : "/assets/js/cityselect/city.min.js",
+			    prov : province, //省份
+			    city : city, //城市
+			    dist : area // //区县
+			    //, nodata : "none" //当子集无数据时，隐藏select
+			    , required : false
+			});
+
+			var longitude = $("#longitude").val();
+			var latitude = $("#latitude").val();
+			
+			area = area || "";
+			var addressDetail = $("#addressDetail").val();
+			
+			var address = province + city + area + addressDetail;
 			var map = new BMap.Map("map_canvas");
 			map.addControl(new BMap.MapTypeControl()); //添加地图类型控件
 			map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
 			map.enableScrollWheelZoom();   //启用滚轮放大缩小，默认禁用
 			map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
-			map.centerAndZoom(new BMap.Point(34.8059290000, 113.6671710000), 11);
+			map.centerAndZoom(province, 11);
 			var myGeo = new BMap.Geocoder();
 			map.setDefaultCursor("url('bird.cur')");   //设置地图默认的鼠标指针样式
+			// 覆盖区域图层测试
+			//map.addTileLayer(new BMap.PanoramaCoverageLayer());
 			map.enableDragging();   // 开启拖拽
 			map.enableInertialDragging();   // 开启惯性拖拽
-			/**
-			var stCtrl = new BMap.PanoramaControl(); //构造全景控件
-			stCtrl.setOffset(new BMap.Size(20, 20));
-			map.addControl(stCtrl);//添加全景控件
-			**/
 			
-			myGeo.getPoint("河南省郑州市金水区", function(point) {
-				if (point) {// {"lng":116.30799,"lat":40.058692}
+			myGeo.getPoint(address, function(point) {
+				if (point) {
+					var marker = new BMap.Marker(point);  // 创建标注
+					map.addOverlay(marker);              // 将标注添加到地图中
 					map.centerAndZoom(point, 11);
+					marker.enableDragging(); // marker可拖拽
+					marker.addEventListener("click", function attribute() {
+						var p = marker.getPosition(); // 获取marker的位置
+						$("#longitude").val(p.lng);
+						$("#latitude").val(p.lat);
+					});
+					var label = new BMap.Label(address, {offset: new BMap.Size(20,-10)});
+					marker.setLabel(label);
 				}else{
 					alert("您选择地址没有解析到结果!");
 				}
-			}, "河南省");
-			
-			var geolocation = new BMap.Geolocation();
-			geolocation.getCurrentPosition(function(r){
-				if(this.getStatus() == BMAP_STATUS_SUCCESS){
-					map.centerAndZoom(r.point, 11);
-				}
-			},{enableHighAccuracy: true})
+			}, province);
 			
 			$("#province").change(function() {
 				var province = $(this).val();
@@ -274,7 +290,6 @@
 							$("#longitude").val(p.lng);
 							$("#latitude").val(p.lat);
 						});
-						
 						var geoc = new BMap.Geocoder();
 						geoc.getLocation(point, function(rs){
 							var addComp = rs.addressComponents;
@@ -296,7 +311,6 @@
 							$("#addressDetail").val(addComp.street + addComp.streetNumber);
 							
 							marker.setLabel(new BMap.Label(address, {offset: new BMap.Size(20, -10)}));
-							
 							var box_obj=$("#pca_distpicker");
 							var prov_obj=box_obj.find(".prov");
 							var city_obj=box_obj.find(".city");
@@ -314,8 +328,8 @@
 								}, 1);
 							}
 							
+							
 						});
-						
 					}else{
 						alert("未找到您选择的地址!!!");
 					}

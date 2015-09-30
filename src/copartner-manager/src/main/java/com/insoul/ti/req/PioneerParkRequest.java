@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
  * 
@@ -16,12 +18,12 @@ public class PioneerParkRequest {
 	private String name;// 名称
 
     @NotNull
-    private String province;// 省
+    private String provinceV;// 省
 
     @NotNull
-    private String city;// 市
+    private String cityV;// 市
 
-    private String area;// 区
+    private String areaV;// 区
 
     @NotNull
     private String addressDetail;// 详细地址
@@ -38,9 +40,9 @@ public class PioneerParkRequest {
     private String content;
     
     public String buildAddress() {
-        return new StringBuffer(province).append(" ")
-                .append(city).append(" ")
-                .append(area).append(" ")
+        return new StringBuffer(provinceV).append(" ")
+                .append(cityV).append(" ")
+                .append(getAreaV()).append(" ")
                 .append(addressDetail).toString();
     }
 
@@ -68,28 +70,28 @@ public class PioneerParkRequest {
         this.name = name;
     }
 
-    public String getProvince() {
-        return province;
+    public String getProvinceV() {
+        return provinceV;
     }
 
-    public void setProvince(String province) {
-        this.province = province;
+    public void setProvinceV(String provinceV) {
+        this.provinceV = provinceV;
     }
 
-    public String getCity() {
-        return city;
+    public String getCityV() {
+        return cityV;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCityV(String cityV) {
+        this.cityV = cityV;
     }
 
-    public String getArea() {
-        return area;
+    public String getAreaV() {
+        return StringUtils.defaultString(areaV);
     }
 
-    public void setArea(String area) {
-        this.area = area;
+    public void setAreaV(String areaV) {
+        this.areaV = areaV;
     }
 
     public String getAddressDetail() {
