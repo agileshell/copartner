@@ -48,10 +48,6 @@
 										<input type="hidden" id="cityVal" value="${pioneerPark.city}"></input>
 										<input type="hidden" id="areaVal" value="${pioneerPark.area}"></input>
 										
-										<input type="hidden" id="provinceV" name="provinceV" value="${pioneerPark.province}"></input>
-										<input type="hidden" id="cityV" name="cityV" value="${pioneerPark.city}"></input>
-										<input type="hidden" id="areaV" name="areaV" value="${pioneerPark.area}"></input>
-										
 										<div class="tabbable" style="margin-bottom: 18px;">
 					                      <ul class="nav nav-tabs">
 					                        <li class="active"><a href="#base_info" data-toggle="tab">基本信息</a></li>
@@ -80,9 +76,9 @@
 													<label class="col-lg-2 control-label" for="pca">省市区<span class="cofrequired">*</span>:</label>
 													<div class="col-lg-10">
 														<div id="pca_distpicker" class="form-control"> 
-														    省份:<select class="prov" name="province" id="province"></select>  
-														    城市:<select class="city" name="city" disabled="disabled" id="city"></select> 
-														    区县:<select class="dist" name="area" disabled="disabled" id="area"></select> 
+														    省份&nbsp;:&nbsp;<select class="prov" name="province" id="province"></select>  
+														    城市&nbsp;:&nbsp;<select class="city" name="city" disabled="disabled" id="city"></select> 
+														    区县&nbsp;:&nbsp;<select class="dist" name="area" disabled="disabled" id="area"></select> 
 														</div>
 													</div>
 												</div>
@@ -261,7 +257,7 @@
 			});
 			map.addControl(geolocationControl);
 			
-			$("#search_map").click(function() {
+			function search_map() {
 				var province = $("#province").val();
 				var city = $("#city").val();
 				var area = $("#area").val();
@@ -293,9 +289,10 @@
 						var geoc = new BMap.Geocoder();
 						geoc.getLocation(point, function(rs){
 							var addComp = rs.addressComponents;
-							
 							address = addComp.province + " " + addComp.city + " " + addComp.district + " " + addComp.street + " " + addComp.streetNumber;
+							marker.setLabel(new BMap.Label(address, {offset: new BMap.Size(20, -10)}));
 							
+							/**
 							if (addComp.province.contains("上海")
 									|| addComp.province.contains("北京")
 									|| addComp.province.contains("天津")
@@ -307,10 +304,7 @@
 								$("#cityV").val(city);
 								$("#areaV").val(addComp.district);
 							}
-							
 							$("#addressDetail").val(addComp.street + addComp.streetNumber);
-							
-							marker.setLabel(new BMap.Label(address, {offset: new BMap.Size(20, -10)}));
 							var box_obj=$("#pca_distpicker");
 							var prov_obj=box_obj.find(".prov");
 							var city_obj=box_obj.find(".city");
@@ -327,7 +321,7 @@
 									dist_obj.val(addComp.district);
 								}, 1);
 							}
-							
+							**/
 							
 						});
 					}else{
@@ -335,10 +329,12 @@
 					}
 				}, province + city);
 				
-			});
+			}
+			
+			$("#search_map").click(search_map);
 			
 			$('#name').focus();
-	        $('#add_pioneerpark_form').validate({
+	        $('#edit_pioneerpark_form').validate({
 	        	onsubmit:true,
         	  	onfocusout:false,
         	  	onkeyup:false,
@@ -377,11 +373,16 @@
 	                }
 	            },
 	            submitHandler: function(form) {
-	    			var province = $("#provinceV").val();
-					var city = $("#cityV").val();
+	            	var name = $("#name").val();
+	            	var content = $("#content").val();
+	            	if (name == null || name == "" || content == null || content == "") {
+	            		alert("请输入创业园名称和简介!!!");
+						return;
+	            	}
 	    			var longitude = $("#longitude").val();
 					var latitude = $("#latitude").val();
-					if (province == null || city == null || province == "" || city == "" || longitude == null || longitude == "" || latitude == null || latitude == "") {
+					if (longitude == null || longitude == "" || latitude == null || latitude == "") {
+						search_map();
 						alert("请输入省市区和详细地址并查询确认具体位置后提交!!!");
 						return;
 					}

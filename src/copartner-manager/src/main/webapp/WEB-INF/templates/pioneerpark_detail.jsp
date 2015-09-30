@@ -50,9 +50,9 @@
 										<input type="hidden" name="longitude" id="longitude" value="${pioneerPark.longitude}"></input>
 										<input type="hidden" name="latitude" id="latitude" value="${pioneerPark.latitude}"></input>
 										
-										<input type="hidden" id="provinceVal" value="${pioneerPark.province}"></input>
-										<input type="hidden" id="cityVal" value="${pioneerPark.city}"></input>
-										<input type="hidden" id="areaVal" value="${pioneerPark.area}"></input>
+										<input type="hidden" id="province" value="${pioneerPark.province}"></input>
+										<input type="hidden" id="city" value="${pioneerPark.city}"></input>
+										<input type="hidden" id="area" value="${pioneerPark.area}"></input>
 										
 										<div class="form-group">
 											<label class="col-lg-2 control-label">名称:</label>
@@ -96,9 +96,9 @@
 	<script type="text/javascript">
 	$(document).ready(function() {
 		
-		var province = $("#provinceVal").val();
-		var city = $("#cityVal").val();
-		var area = $("#areaVal").val();
+		var province = $("#province").val();
+		var city = $("#city").val();
+		var area = $("#area").val();
 
 		var longitude = $("#longitude").val();
 		var latitude = $("#latitude").val();

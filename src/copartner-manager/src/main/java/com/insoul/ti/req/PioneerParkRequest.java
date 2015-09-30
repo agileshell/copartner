@@ -18,12 +18,12 @@ public class PioneerParkRequest {
 	private String name;// 名称
 
     @NotNull
-    private String provinceV;// 省
+    private String province;// 省
 
     @NotNull
-    private String cityV;// 市
+    private String city;// 市
 
-    private String areaV;// 区
+    private String area;// 区
 
     @NotNull
     private String addressDetail;// 详细地址
@@ -40,9 +40,9 @@ public class PioneerParkRequest {
     private String content;
     
     public String buildAddress() {
-        return new StringBuffer(provinceV).append(" ")
-                .append(cityV).append(" ")
-                .append(getAreaV()).append(" ")
+        return new StringBuffer(province).append(" ")
+                .append(city).append(" ")
+                .append(getArea()).append(" ")
                 .append(addressDetail).toString();
     }
 
@@ -70,28 +70,28 @@ public class PioneerParkRequest {
         this.name = name;
     }
 
-    public String getProvinceV() {
-        return provinceV;
+    public String getProvince() {
+        return province;
     }
 
-    public void setProvinceV(String provinceV) {
-        this.provinceV = provinceV;
+    public void setProvince(String province) {
+        this.province = province;
     }
 
-    public String getCityV() {
-        return cityV;
+    public String getCity() {
+        return city;
     }
 
-    public void setCityV(String cityV) {
-        this.cityV = cityV;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getAreaV() {
-        return StringUtils.defaultString(areaV);
+    public String getArea() {
+        return StringUtils.defaultString(area);
     }
 
-    public void setAreaV(String areaV) {
-        this.areaV = areaV;
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getAddressDetail() {

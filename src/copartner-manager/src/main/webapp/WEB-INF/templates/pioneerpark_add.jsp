@@ -44,10 +44,6 @@
 										<input type="hidden" name="longitude" id="longitude"></input>
 										<input type="hidden" name="latitude" id="latitude"></input>
 										
-										<input type="hidden" id="provinceV" name="provinceV"></input>
-										<input type="hidden" id="cityV" name="cityV"></input>
-										<input type="hidden" id="areaV" name="areaV"></input>
-										
 										<div class="tabbable" style="margin-bottom: 18px;">
 					                      <ul class="nav nav-tabs">
 					                        <li class="active"><a href="#base_info" data-toggle="tab">基本信息</a></li>
@@ -175,6 +171,7 @@
 			map.setDefaultCursor("url('bird.cur')");   //设置地图默认的鼠标指针样式
 			map.enableDragging();   // 开启拖拽
 			map.enableInertialDragging();   // 开启惯性拖拽
+			
 			/**
 			var stCtrl = new BMap.PanoramaControl(); //构造全景控件
 			stCtrl.setOffset(new BMap.Size(20, 20));
@@ -245,7 +242,7 @@
 			});
 			map.addControl(geolocationControl);
 			
-			$("#search_map").click(function() {
+			function search_map() {
 				var province = $("#province").val();
 				var city = $("#city").val();
 				var area = $("#area").val();
@@ -278,9 +275,10 @@
 						var geoc = new BMap.Geocoder();
 						geoc.getLocation(point, function(rs){
 							var addComp = rs.addressComponents;
-							
 							address = addComp.province + " " + addComp.city + " " + addComp.district + " " + addComp.street + " " + addComp.streetNumber;
+							marker.setLabel(new BMap.Label(address, {offset: new BMap.Size(20, -10)}));
 							
+							/**
 							if (addComp.province.contains("上海")
 									|| addComp.province.contains("北京")
 									|| addComp.province.contains("天津")
@@ -292,11 +290,7 @@
 								$("#cityV").val(city);
 								$("#areaV").val(addComp.district);
 							}
-							
 							$("#addressDetail").val(addComp.street + addComp.streetNumber);
-							
-							marker.setLabel(new BMap.Label(address, {offset: new BMap.Size(20, -10)}));
-							
 							var box_obj=$("#pca_distpicker");
 							var prov_obj=box_obj.find(".prov");
 							var city_obj=box_obj.find(".city");
@@ -313,7 +307,7 @@
 									dist_obj.val(addComp.district);
 								}, 1);
 							}
-							
+							**/
 						});
 						
 					}else{
@@ -321,7 +315,9 @@
 					}
 				}, province + city);
 				
-			});
+			}
+			
+			$("#search_map").click(search_map);
 			
 			$('#name').focus();
 	        $('#add_pioneerpark_form').validate({
@@ -363,11 +359,16 @@
 	                }
 	            },
 	            submitHandler: function(form) {
-	    			var province = $("#provinceV").val();
-					var city = $("#cityV").val();
+	            	var name = $("#name").val();
+	            	var content = $("#content").val();
+	            	if (name == null || name == "" || content == null || content == "") {
+	            		alert("请输入创业园名称和简介!!!");
+						return;
+	            	}
 	    			var longitude = $("#longitude").val();
 					var latitude = $("#latitude").val();
-					if (province == null || city == null || province == "" || city == "" || longitude == null || longitude == "" || latitude == null || latitude == "") {
+					if (longitude == null || longitude == "" || latitude == null || latitude == "") {
+						search_map();
 						alert("请输入省市区和详细地址并查询确认具体位置后提交!!!");
 						return;
 					}
