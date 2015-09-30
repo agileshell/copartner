@@ -8,77 +8,87 @@ import com.insoul.copartner.util.CustomDateSerializer;
 
 public class CourseVO implements Serializable {
 
-    private static final long serialVersionUID = 1126164979827527766L;
+	private static final long serialVersionUID = 1126164979827527766L;
 
-    private Long courseId;
+	private Long courseId;
 
-    private String name;// 课程名称
+	private String name;// 课程名称
 
-    private String speaker;// 主讲人
+	private String speaker;// 主讲人
 
-    private String synopsis;// 摘要,显示列表使用
+	private String synopsis;// 摘要,显示列表使用
 
-    private Integer time;// 时长, 单位:分钟
+	private Integer time;// 时长, 单位:分钟
 
-    private Long clicks = 0L;// 浏览次数
+	private String url;// 链接
 
-    @JsonSerialize(using = CustomDateSerializer.class)
-    private Date created;
+	private Long clicks = 0L;// 浏览次数
 
-    public Long getCourseId() {
-        return courseId;
-    }
+	@JsonSerialize(using = CustomDateSerializer.class)
+	private Date created;
 
-    public void setCourseId(Long courseId) {
-        this.courseId = courseId;
-    }
+	public Long getCourseId() {
+		return courseId;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setCourseId(Long courseId) {
+		this.courseId = courseId;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getSpeaker() {
-        return speaker;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setSpeaker(String speaker) {
-        this.speaker = speaker;
-    }
+	public String getSpeaker() {
+		return speaker;
+	}
 
-    public String getSynopsis() {
-        return synopsis;
-    }
+	public void setSpeaker(String speaker) {
+		this.speaker = speaker;
+	}
 
-    public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
-    }
+	public String getSynopsis() {
+		return synopsis;
+	}
 
-    public Integer getTime() {
-        return time;
-    }
+	public void setSynopsis(String synopsis) {
+		this.synopsis = synopsis;
+	}
 
-    public void setTime(Integer time) {
-        this.time = time;
-    }
+	public Integer getTime() {
+		return time;
+	}
 
-    public Long getClicks() {
-        return clicks;
-    }
+	public void setTime(Integer time) {
+		this.time = time;
+	}
 
-    public void setClicks(Long clicks) {
-        this.clicks = clicks;
-    }
+	public Long getClicks() {
+		return clicks;
+	}
 
-    public Date getCreated() {
-        return created;
-    }
+	public void setClicks(Long clicks) {
+		this.clicks = clicks;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
 }

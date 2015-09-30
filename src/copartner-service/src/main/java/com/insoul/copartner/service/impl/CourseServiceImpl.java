@@ -52,6 +52,7 @@ public class CourseServiceImpl extends BaseServiceImpl implements ICourseService
             courseVO.setName(course.getName());
             courseVO.setSynopsis(course.getSynopsis());
             courseVO.setSpeaker(course.getSpeaker());
+            courseVO.setUrl(CDNUtil.getFullPath(course.getUrl()));
             courseVO.setTime(course.getTime());
             courseVO.setClicks(course.getClicks());
             courseVO.setCreated(course.getCreated());
