@@ -94,6 +94,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
     public void userAuthenticate(UserAuthenticateRequest request) throws CException {
         long userId = getUserId();
         User user = userDao.get(userId);
+        user.setRoleId(request.getRoleId());
         if (StringUtils.isNotBlank(request.getAuthenticationInfo())) {
             user.setAuthenticationInfo(request.getAuthenticationInfo());
         }

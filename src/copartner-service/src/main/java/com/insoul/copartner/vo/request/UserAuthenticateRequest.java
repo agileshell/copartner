@@ -12,11 +12,21 @@ public class UserAuthenticateRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
+    private Long roleId;
+    
     private String idNumber;// 身份证号
     
     private String idPicture;// 身份图片
     
     private String authenticationInfo;// 认证说明
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
 
     public String getIdNumber() {
         return idNumber;
