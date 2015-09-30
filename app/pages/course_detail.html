@@ -96,7 +96,7 @@
 							nameEl.innerText = course.name;
 							infoEl.innerText = '主讲人：' + course.speaker + '，时长：' + course.time + '分钟';
 							synopsisEl.innerHTML = course.synopsis;
-							videoEl.innerHTML = "<video id='video' controls poster='" + course.coverImg + "' width='" + clentW + "'><source src='" + course.url + "' type='video/mp4' /></video>";
+							videoEl.innerHTML = "<video id='video' controls poster='" + course.url + "?vframe/jpg/offset/0/w/" + clentW + "' width='" + clentW + "'><source src='" + course.url + "' type='video/mp4' /></video>";
 							window.scrollTo(0, 0);
 							//显示当前页面
 							mui.currentWebview.show();

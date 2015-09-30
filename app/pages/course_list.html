@@ -19,9 +19,6 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 id="title" class="mui-title c-title">充电站</h1>
-			<a id="create-operation" class="mui-action-menu mui-icon mui-icon-plusempty mui-pull-right">
-				<span class="c-operation">上传课程</span>
-			</a>
 		</header>
 		<div class="mui-content">
 		</div>
@@ -61,28 +58,6 @@
 			} else {
 				newsWebview.evalJS('mui.scrollTo(0, 100)');
 			}
-		});
-		var loginPage = null;
-		mui.plusReady(function() {
-			document.getElementById('create-operation').addEventListener('tap', function() {
-				if (app.getUserId() == 0) {
-					if (!loginPage) {
-						loginPage = plus.webview.getWebviewById('login');
-					}
-					loginPage.show();
-				} else {
-					mui.openWindow({
-						url: 'upload_course.html',
-						id: 'upload_course',
-						show: {
-							aniShow: 'pop-in'
-						},
-						waiting: {
-							autoShow: false
-						}
-					});
-				}
-			});
 		});
 	</script>
 
