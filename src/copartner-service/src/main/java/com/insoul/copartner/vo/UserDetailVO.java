@@ -55,6 +55,8 @@ public class UserDetailVO implements Serializable {
 
     private String idNumber;// 身份证号
 
+    private String originIdPicture;
+    
     private String idPicture;// 身份图片
 
     private Boolean authenticated;// 是否已认证
@@ -251,6 +253,14 @@ public class UserDetailVO implements Serializable {
 
     public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
+    }
+
+    public String getOriginIdPicture() {
+        return originIdPicture;
+    }
+
+    public void setOriginIdPicture(String originIdPicture) {
+        this.originIdPicture = originIdPicture;
     }
 
     public String getIdPicture() {

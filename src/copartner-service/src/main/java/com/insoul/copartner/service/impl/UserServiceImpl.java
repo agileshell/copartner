@@ -492,6 +492,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
         userDetailVO.setAuthenticated(user.getAuthenticated());
         userDetailVO.setIdNumber(user.getIdNumber());
+        userDetailVO.setOriginIdPicture(user.getIdPicture());
         userDetailVO.setIdPicture(CDNUtil.getFullPath(user.getIdPicture()));
         userDetailVO.setAuthenticationInfo(user.getAuthenticationInfo());
 
