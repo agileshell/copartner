@@ -48,6 +48,15 @@ public class DefaultInvestOrgDAO extends BaseDaoImpl<InvestOrg, Long> implements
             conditionStr.append(" AND hardware LIKE :hardware ");
             params.put("hardware", "%" + criteria.getHardware() + "%");
         }
+        
+        if (null != criteria.getFrom()) {
+            conditionStr.append(" AND created > :from");
+            params.put("from", criteria.getFrom());
+        }
+        if (null != criteria.getTo()) {
+            conditionStr.append(" AND created < :to");
+            params.put("to", criteria.getTo());
+        }
 
         Query query = null;
         StringBuilder hql = new StringBuilder();

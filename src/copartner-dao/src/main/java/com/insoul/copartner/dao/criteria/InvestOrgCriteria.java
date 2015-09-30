@@ -1,5 +1,7 @@
 package com.insoul.copartner.dao.criteria;
 
+import java.util.Date;
+
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
  *
@@ -8,11 +10,31 @@ package com.insoul.copartner.dao.criteria;
  */
 public class InvestOrgCriteria extends PaginationCriteria {
     
+    private Date from;
+
+    private Date to;
+    
     private String name;// 名称
 
     private String specials;// 特色
 
     private String hardware;// 硬件
+
+    public Date getFrom() {
+        return from;
+    }
+
+    public void setFrom(Date from) {
+        this.from = from;
+    }
+
+    public Date getTo() {
+        return to;
+    }
+
+    public void setTo(Date to) {
+        this.to = to;
+    }
 
     public String getName() {
         return name;

@@ -1,6 +1,7 @@
 package com.insoul.copartner.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -38,6 +39,10 @@ public class DefaultPioneerParkService extends BaseServiceImpl implements IPione
         criteria.setName(requestData.getKeyword());
         criteria.setLimit(requestData.getLimit());
         criteria.setOffset(requestData.getOffset());
+        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData
+                .getFrom()) : null);
+        criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
+                : null);
         Long count = pioneerParkDAO.countPioneerPark(criteria);
         List<PioneerPark> list = pioneerParkDAO.queryPioneerPark(criteria);
         List<PioneerParkVO> pioneerParkVOs = new ArrayList<PioneerParkVO>();

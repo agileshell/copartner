@@ -1,6 +1,7 @@
 package com.insoul.copartner.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -39,6 +40,11 @@ public class DefaultInvestOrgService extends BaseServiceImpl implements IInvestO
         criteria.setName(requestData.getKeyword());
         criteria.setLimit(requestData.getLimit());
         criteria.setOffset(requestData.getOffset());
+        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData
+                .getFrom()) : null);
+        criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
+                : null);
+        
         Long count = investOrgDAO.countInvestOrg(criteria);
         List<InvestOrg> list = investOrgDAO.queryInvestOrg(criteria);
         List<InvestOrgVO> investOrgVOs = new ArrayList<InvestOrgVO>();
