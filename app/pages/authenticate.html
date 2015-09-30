@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创始人</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<link href="../css/mui.listpicker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<style>
+			.mui-page-content {
+				margin-top: 44px;
+			}
+			.mui-input-row label {
+				width: 30%;
+				padding: 10px 0 10px 10px;
+			}
+			.mui-input-row span {
+				width: 70%;
+			}
+			.c-input {
+				margin-left: -20px;
+				text-align: right;
+			}
+			.mui-input-row textarea {
+				margin-bottom: 5px;
+			}
+			.mui-content-padded {
+				margin-top: 10px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+			#head {
+				height: 40px;
+				line-height: 40px;
+			}
+			#head-img {
+				position: absolute;
+				right: 40px;
+				width: 40px;
+				height: 40px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">认证</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-page-content">
+				<form id='create-profile-form' class="mui-input-group">
+						<div class="mui-input-row">
+						<label>角色</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='roleId' name="startupRoleId" type="hidden">
+							<input id='roleName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>身份证号码</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='idNumber' name='idNumber' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 50%;">拍摄并上传身份证</label>
+						<span id="head" class="mui-pull-right mui-navigate-right" style="width: 50%;">
+							<input id='idPicture' name='idPicture' type="hidden" value="" >
+							<img class="head-img mui-action-preview" id="head-img" src="../images/blank.jpg"/>
+						</span>
+					</div>
+				</form>
+				<div class="mui-input-row" style="margin: 10px 5px 0 5px;">
+					<textarea id="authenticationInfo" rows="3" placeholder="认证说明（1－100个字符）"></textarea>
+				</div>
+				<div class="mui-content-padded">
+					<button id='submit-authentication' class="mui-btn mui-btn-block mui-btn-primary">提交认证</button>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.view.js "></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/mui.listpicker.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script src="../js/meta.data.js"></script>
+		<script>
+		var roleIdEl = document.getElementById('roleId'),
+			roleNameEl = document.getElementById('roleName'),
+			idNumberEl = document.getElementById('idNumber'),
+			idPictureEl = document.getElementById("idPicture"),
+			idPreviewEl = document.getElementById("head-img"),
+			authenticationInfoEl = document.getElementById('authenticationInfo');
+		(function($, doc) {
+			$.init({
+				beforeback: function() {
+					setTimeout(function() {
+						roleIdEl.value = 0;
+						roleNameEl.value = '';
+						idPictureEl.value = '';
+						authenticationInfoEl.value = '';
+					}, 200);
+				}
+			});
+			//role
+			var rolePicker = new $.PopPicker();
+			rolePicker.setData(roleData);
+			roleNameEl.addEventListener('tap', function(event) {
+				rolePicker.show(function(items) {
+					roleIdEl.value = items[0].value;
+					roleNameEl.value = items[0].text;
+				});
+			}, false);
+			//show data
+			doc.addEventListener('mui.view.beforeshow', function(event) {
+				var success = function(response) {
+						profile = response.body;
+						roleIdEl.value = profile.roleId;
+						roleNameEl.value = profile.roleName;
+						idNumberEl.value = profile.idNumber;
+						idPictureEl.value = profile.originIdPicture;
+						idPreviewEl.src = profile.idPicture;
+						authenticationInfoEl.value = profile.authenticationInfo;
+
+						window.scrollTo(0, 0);
+						//显示当前页面
+						mui.currentWebview.show();
+					},
+					error = function(errorType) {
+						mui.toast(app.ajaxErrorHandler(errorType));
+					};
+				app.getProfile(success, error);
+			});
+			$.plusReady(function() {
+					var toProfilePage = function() {
+					var profilePage = plus.webview.getWebviewById('profile');
+					$.fire(profilePage, 'mui.view.beforeshow', {
+						needReflush: true
+					});
+					profilePage.show();
+				};
+				doc.getElementById('submit-authentication').addEventListener('tap', function() {
+					submitAuthenticate();
+				});
+				function submitAuthenticate() {
+					var authenticateInfo = {
+						roleId: roleIdEl.value,
+						idNumber: idNumberEl.value,
+						idPicture: idPictureEl.value,
+						authenticationInfo: authenticationInfoEl.value
+					};
+					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
+					app.submitAuthenticate(authenticateInfo, function(err) {
+						setTimeout(function() {
+							wait.close();
+							if (err) {
+								plus.nativeUI.toast(err);
+								return;
+							} else {
+								plus.nativeUI.toast('认证已提交');
+								toProfilePage();
+							}
+						}, 200);
+					});
+				};
+				//更换头像
+				$(".mui-input-row").on("tap", "#head", function(e) {
+					var a = [{
+						title: "拍照"
+					}, {
+						title: "从手机相册选择"
+					}];
+					plus.nativeUI.actionSheet({
+						title: "修改头像",
+						cancel: "取消",
+						buttons: a
+					}, function(b) {
+						switch (b.index) {
+							case 0:
+								break;
+							case 1:
+								getImage();
+								break;
+							case 2:
+								galleryImg();
+								break;
+							default:
+								break
+						}
+					})
+				});
+				function getImage() {
+					var c = plus.camera.getCamera();
+					c.captureImage(function(e) {
+						plus.io.resolveLocalFileSystemURL(e, function(entry) {
+							var s = entry.toLocalURL() + "?version=" + new Date().getTime();
+							doc.getElementById("head-img").src = s;
+							upload(entry);
+						}, function(e) {
+							console.log("读取拍照文件错误：" + e.message);
+						});
+					}, function(s) {
+						console.log("error" + s);
+					}, {
+						filename: "_doc/head.jpg"
+					})
+				}
+				function galleryImg() {
+					plus.gallery.pick(function(a) {
+						plus.io.resolveLocalFileSystemURL(a, function(entry) {
+							plus.io.resolveLocalFileSystemURL("_doc/", function(root) {
+								root.getFile("head.jpg", {}, function(file) {
+									//文件已存在
+									file.remove(function() {
+										entry.copyTo(root, 'head.jpg', function(e) {
+												var path = e.fullPath + "?version=" + new Date().getTime();
+												doc.getElementById("head-img").src = path;
+												upload(e);
+											},
+											function(e) {
+												console.log('copy image fail:' + e.message);
+											});
+									}, function() {
+										console.log("delete image fail:" + e.message);
+									});
+								}, function() {
+									//文件不存在
+									entry.copyTo(root, 'head.jpg', function(e) {
+											var path = e.fullPath + "?version=" + new Date().getTime();
+											doc.getElementById("head-img").src = path;
+											upload(e);
+										},
+										function(e) {
+											console.log('copy image fail:' + e.message);
+										});
+								});
+							}, function(e) {
+								console.log("get _www folder fail");
+							})
+						}, function(e) {
+							console.log("读取拍照文件错误：" + e.message);
+						});
+					}, function(a) {}, {
+						filter: "image"
+					})
+				};
+
+				function upload(f) {
+					var wt = plus.nativeUI.showWaiting();
+					var task = plus.uploader.createUpload('http://123.57.55.59:8080/image', {
+							method: "POST"
+						},
+						function(t, status) { //上传完成
+							if (status == 200) {
+								wt.close();
+								var data = JSON.parse(t.responseText);
+								if (data.status == 'SUCCEED') {
+									plus.nativeUI.toast("上传成功");
+									doc.getElementById("idPicture").value = data.body.image_path;
+								} else {
+									plus.nativeUI.toast("上传失败, " + app.ajaxFailedHandler(data.body.error.code));
+								}
+							} else {
+								wt.close();
+								plus.nativeUI.toast("上传失败");
+							}
+						}
+					);
+					task.addFile(f.fullPath, {
+						key: 'image'
+					});
+					task.addData("needThumbnail", "true");
+					task.start();
+				}
+			});
+		})(mui, document);
+		</script>
+	</body>
+</html>

@@ -335,6 +335,52 @@
 		})
 	};
 
+owner.submitAuthenticate = function(info, callback) {
+		callback = callback || $.noop;
+		info = info || {};
+		info.roleId = info.roleId || 0;
+		info.idNumber = info.idNumber || '';
+		info.idPicture = info.idPicture || '';
+		info.authenticationInfo = info.authenticationInfo || '';
+		if (info.roleId == 0) {
+			return callback('角色不能为空');
+		} 
+		if (info.idNumber.length <= 0) {
+			return callback('身份证号码不能为空');
+		}
+		if (info.idPicture.length <= 0) {
+			return callback('请上传您的身份证');
+		}
+		if (info.authenticationInfo.length <= 0) {
+			return callback('认证说明不能为空');
+		} else if (info.authenticationInfo.length > 100) {
+			return callback('认证说明不能大于100个字符');
+		}
+
+		mui.ajax(owner.apiURL + 'user/authenticate', {
+			data: info,
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					app.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
+	};
+
 	owner.createRongzi = function(rzInfo, callback) {
 		callback = callback || $.noop;
 		rzInfo = rzInfo || {};

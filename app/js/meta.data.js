@@ -84,6 +84,17 @@ var startupRoleData = [{
 	"text": "其它"
 }];
 
+var roleData = [{
+	"value": 1,
+	"text": "创业者"
+}, {
+	"value": 2,
+	"text": "投资人"
+}, {
+	"value": 3,
+	"text": "导师"
+}];
+
 var startupStatusData = [{
 	"value": 1,
 	"text": "有创业意愿"
