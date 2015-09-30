@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <head>
 	<title>用户详情</title>
+	<link rel="stylesheet" href="${cdn}css/prettyPhoto.css"></link>
 </head>
 <body>
 	<div class="mainbar">
@@ -39,7 +40,11 @@
 										<div class="form-group">
 											<label class="col-lg-2 control-label">头像:</label>
 											<div class="col-lg-10">
-											<img alt="${user.name}" src="${cdnDomain}${user.avatar}"></img>
+												<div class="gallery">
+							                      	<a href="${cdnDomain}${user.avatar}" class="prettyPhoto[pp_gal]">
+							                      		<img src="${cdnDomain}${user.avatar}" alt="${user.name}" width="100">
+							                      	</a>
+							                      </div>
 											</div>
 										</div>
 										<div class="form-group">
@@ -89,5 +94,7 @@
 			</div>
 		</div>
 	</div>
+	
+	<script src="${cdn}js/jquery.prettyPhoto.js"></script>
 
 </body>

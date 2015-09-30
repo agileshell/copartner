@@ -115,19 +115,6 @@ public class CourseController extends WebBase {
 	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
 	public ModelAndView update(@PathVariable Long courseId, @Valid CourseRequest request, BindingResult result) {
 	    Course course = courseDAO.get(courseId);
-		MultipartFile image = request.getCoverImg();
-		if (image != null) {
-			String fileType = FileUtil.getFileType(image.getOriginalFilename());
-			if (StringUtils.isNoneBlank(fileType)) {
-			    String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
-	            try {
-	                String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-	                if (StringUtils.isNoneBlank(path)) course.setCoverImg(path);
-	            } catch (Exception e) {
-	                log.error("UploadFile Error.", e);
-	            }
-			}
-		}
         course.setIsFree(request.getFree() > 0);
         course.setName(request.getName());
         course.setSpeaker(request.getSpeaker());
@@ -157,22 +144,8 @@ public class CourseController extends WebBase {
 	@RequestMapping("/save")
 	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
 	public ModelAndView save(@Valid CourseRequest request, BindingResult result) {
-		MultipartFile image = request.getCoverImg();
-		String path = StringUtils.EMPTY;
-		if (image != null) {
-			String fileType = FileUtil.getFileType(image.getOriginalFilename());
-			if (StringUtils.isNoneBlank(fileType)) {
-			    String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
-	            try {
-	                path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-	            } catch (Exception e) {
-	                log.error("UploadFile CoverImg Error.", e);
-	            }
-			}
-		}
         Date date = new Date();
 		Course course = new Course();
-		if (StringUtils.isNoneBlank(path)) course.setCoverImg(path);
 		course.setClicks(0L);
         course.setCreated(date);
 		course.setIsFree(request.getFree() > 0);

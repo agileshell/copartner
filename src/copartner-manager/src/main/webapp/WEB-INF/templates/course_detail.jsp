@@ -62,13 +62,6 @@
 										</div>
 										
 										<div class="form-group">
-											<label class="col-lg-2 control-label">封皮:</label>
-											<div class="col-lg-10">
-											<img alt="${course.name}" src="${cdnDomain}${course.coverImg}" width="500"></img>
-											</div>
-										</div>
-										
-										<div class="form-group">
 											<label class="col-lg-2 control-label">视频:</label>
 											<div class="col-lg-10">
 											  <video id="cop.video.media" class="video-js vjs-default-skin" controls preload="none" width="500" height="300"

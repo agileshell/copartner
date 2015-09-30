@@ -25,9 +25,6 @@ public class CourseAddRequest implements Serializable {
     private String synopsis;// 摘要,显示列表使用
 
     @NotBlank
-    private String coverImg;// 封皮
-
-    @NotBlank
     private String url;// 链接
 
     @NotNull
@@ -55,14 +52,6 @@ public class CourseAddRequest implements Serializable {
 
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
-    }
-
-    public String getCoverImg() {
-        return coverImg;
-    }
-
-    public void setCoverImg(String coverImg) {
-        this.coverImg = coverImg;
     }
 
     public String getUrl() {

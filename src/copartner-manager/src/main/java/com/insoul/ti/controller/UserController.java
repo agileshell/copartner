@@ -39,11 +39,6 @@ public class UserController extends WebBase {
 	private static final String USER_DETAIL = "user_detail";
 	private static final String USER_LIST = "user_list_2_0";
 	
-	@RequestMapping("/map")
-    public ModelAndView map() {
-	    return createModelView("map");
-	}
-
 	@RequestMapping("/list")
 	public ModelAndView list(@Valid UserListRequest request, BindingResult result) {
 		ModelAndView mv = createModelView(USER_LIST, request);

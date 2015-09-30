@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <head>
 	<title>政策解读详情</title>
+	<link rel="stylesheet" href="${cdn}css/prettyPhoto.css"></link>
 </head>
 <body>
 	<div class="mainbar">
@@ -43,7 +44,11 @@
 										<div class="form-group">
 											<label class="col-lg-2 control-label">封皮:</label>
 											<div class="col-lg-10">
-											<img alt="${content.title}" src="${cdnDomain}${content.coverImg}" width="500"></img>
+												<div class="gallery">
+							                      	<a href="${cdnDomain}${investOrg.coverImg}" class="prettyPhoto[pp_gal]">
+							                      		<img src="${cdnDomain}${investOrg.coverImg}" alt="${investOrg.title}" width="500">
+							                      	</a>
+							                      </div>
 											</div>
 										</div>
 										
@@ -69,5 +74,7 @@
 			</div>
 		</div>
 	</div>
+	
+	<script src="${cdn}js/jquery.prettyPhoto.js"></script>
 
 </body>

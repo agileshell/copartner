@@ -18,8 +18,6 @@ public class CourseVO implements Serializable {
 
     private String synopsis;// 摘要,显示列表使用
 
-    private String coverImg;// 封皮
-
     private Integer time;// 时长, 单位:分钟
 
     private Long clicks = 0L;// 浏览次数
@@ -57,14 +55,6 @@ public class CourseVO implements Serializable {
 
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
-    }
-
-    public String getCoverImg() {
-        return coverImg;
-    }
-
-    public void setCoverImg(String coverImg) {
-        this.coverImg = coverImg;
     }
 
     public Integer getTime() {

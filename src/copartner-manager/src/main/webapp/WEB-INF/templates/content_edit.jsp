@@ -4,6 +4,7 @@
 <head>
 	<title>政策解读编辑</title>
 	<link href="${cdn}js/kindeditor/themes/default/default.css" rel="stylesheet" />
+	<link rel="stylesheet" href="${cdn}css/prettyPhoto.css"></link>
 </head>
 <body>
 	<div class="mainbar">
@@ -63,7 +64,11 @@
 					                        	<div class="form-group">
 													<label class="col-lg-2 control-label">封皮:</label>
 													<div class="col-lg-10">
-													<img alt="${content.title}" src="${cdnDomain}${content.coverImg}" width="500">
+													<div class="gallery">
+								                      	<a href="${cdnDomain}${investOrg.coverImg}" class="prettyPhoto[pp_gal]">
+								                      		<img src="${cdnDomain}${investOrg.coverImg}" alt="${investOrg.title}" width="500">
+								                      	</a>
+								                      </div>
 													</div>
 												</div>
 												<div class="form-group">
@@ -102,6 +107,8 @@
 	<script charset="utf-8" src="${cdn}js/kindeditor/kindeditor-all-min.js"></script>
 	<script charset="utf-8" src="${cdn}js/kindeditor/lang/zh_CN.js"></script>
 	<script charset="utf-8" src="${cdn}js/kindeditor/plugins/autoheight/autoheight.js"></script>
+	
+	<script src="${cdn}js/jquery.prettyPhoto.js"></script>
 	
 	<script>
 	    KindEditor.ready(function(K) {

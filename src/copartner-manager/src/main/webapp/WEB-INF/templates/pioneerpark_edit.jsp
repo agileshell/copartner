@@ -344,41 +344,47 @@
         	  	onkeyup:false,
         	  	onkeyup:false,
         	  	onclick:false,
-	            rules: {
+        	  	rules: {
 	            	name: {
 	            		required: true,
 	                    minlength: 2,
 	                    maxlength: 64
 	                },
-	                specials: {
+	                content: {
 	                	required: true,
-	                    minlength: 2,
-	                    maxlength: 256
+	                    minlength: 2
 	                },
-	                hardware: {
+	                addressDetail: {
 	                	required: true,
 	                    minlength: 2,
-	                    maxlength: 256
+	                    maxlength: 254
 	                }
 	            },
 	            messages: {
-	            	title: {
-	                    required: '名称不能为空',
-	                    minlength: "名称长度不能小于2个字符",
-	                    maxlength: "名称长度不能大于64个字符"
+	            	name: {
+	                    required: '创业园名称不能为空',
+	                    minlength: "创业园名称长度不能小于2个字符",
+	                    maxlength: "创业园名称长度不能大于64个字符"
 	                },
-	                synopsis: {
-	                    required: '特色信息不能为空',
-	                    minlength: "特色信息长度不能小于2个字符",
-	                    maxlength: "特色信息长度不能大于256个字符"
+	                content: {
+	                    required: '简介信息不能为空',
+	                    minlength: "简介信息长度不能小于2个字符"
 	                },
-	                hardware: {
-	                    required: '硬件信息不能为空',
-	                    minlength: "硬件信息长度不能小于2个字符",
-	                    maxlength: "硬件信息长度不能大于256个字符"
+	                addressDetail: {
+	                    required: '详细地址不能为空',
+	                    minlength: "详细地址长度不能小于2个字符",
+	                    maxlength: "详细地址长度不能大于254个字符"
 	                }
 	            },
 	            submitHandler: function(form) {
+	    			var province = $("#provinceV").val();
+					var city = $("#cityV").val();
+	    			var longitude = $("#longitude").val();
+					var latitude = $("#latitude").val();
+					if (province == null || city == null || province == "" || city == "" || longitude == null || longitude == "" || latitude == null || latitude == "") {
+						alert("请输入省市区和详细地址并查询确认具体位置后提交!!!");
+						return;
+					}
 	                form.submit();
 	            }
 	        });

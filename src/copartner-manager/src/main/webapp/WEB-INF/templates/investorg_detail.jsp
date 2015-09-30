@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <head>
 	<title>投资机构详情</title>
+	<link rel="stylesheet" href="${cdn}css/prettyPhoto.css"></link>
 </head>
 <body>
 	<div class="mainbar">
@@ -77,5 +78,7 @@
 			</div>
 		</div>
 	</div>
+	
+	<script src="${cdn}js/jquery.prettyPhoto.js"></script>
 
 </body>

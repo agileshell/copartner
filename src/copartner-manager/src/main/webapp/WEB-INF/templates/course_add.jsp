@@ -80,12 +80,6 @@
 												</div>
 					                        </div>
 					                        <div class="tab-pane" id="tab2">
-					                        	<div class="form-group">
-													<label class="col-lg-2 control-label" for="coverImg">封皮<span class="cofrequired">*</span>:</label>
-													<div class="col-lg-10">
-														<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
-													</div>
-												</div>
 												<div class="form-group">
 													<label class="col-lg-2 control-label" for="media">视频<span class="cofrequired">*</span>:</label>
 													<div class="col-lg-10">
@@ -141,9 +135,6 @@
 	                	required: true,
 	                	digits: true
 	                },
-	                coverImg: {
-	                	required: true
-	                },
 	                media: {
 	                	required: true
 	                }
@@ -167,9 +158,6 @@
 	                time: {
 	                    required: '时长不能为空',
 	                    digits: "只能输入整数"
-	                },
-	                coverImg: {
-	                	required: "必须上传封面图片"
 	                },
 	                media: {
 	                	required: "必须上传视频"

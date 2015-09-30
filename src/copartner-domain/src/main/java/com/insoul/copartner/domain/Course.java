@@ -22,9 +22,6 @@ public class Course extends BaseEntity {
     @Column(name = "synopsis", nullable = false)
     private String synopsis;// 摘要,显示列表使用
 
-    @Column(name = "cover_img")
-    private String coverImg;// 封皮
-
     @Column(name = "url", nullable = false)
     private String url;// 链接
 
@@ -65,14 +62,6 @@ public class Course extends BaseEntity {
 
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
-    }
-
-    public String getCoverImg() {
-        return coverImg;
-    }
-
-    public void setCoverImg(String coverImg) {
-        this.coverImg = coverImg;
     }
 
     public String getUrl() {
@@ -128,7 +117,6 @@ public class Course extends BaseEntity {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((clicks == null) ? 0 : clicks.hashCode());
-        result = prime * result + ((coverImg == null) ? 0 : coverImg.hashCode());
         result = prime * result + ((isFree == null) ? 0 : isFree.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((speaker == null) ? 0 : speaker.hashCode());
@@ -153,11 +141,6 @@ public class Course extends BaseEntity {
             if (other.clicks != null)
                 return false;
         } else if (!clicks.equals(other.clicks))
-            return false;
-        if (coverImg == null) {
-            if (other.coverImg != null)
-                return false;
-        } else if (!coverImg.equals(other.coverImg))
             return false;
         if (isFree == null) {
             if (other.isFree != null)

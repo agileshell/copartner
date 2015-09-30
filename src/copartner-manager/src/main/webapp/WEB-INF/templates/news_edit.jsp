@@ -4,6 +4,7 @@
 <head>
 	<title>新闻动态编辑</title>
 	<link href="${cdn}js/kindeditor/themes/default/default.css" rel="stylesheet" />
+	<link rel="stylesheet" href="${cdn}css/prettyPhoto.css"></link>
 </head>
 <body>
 	<div class="mainbar">
@@ -72,7 +73,11 @@
 					                        	<div class="form-group">
 													<label class="col-lg-2 control-label">封皮:</label>
 													<div class="col-lg-10">
-													<img alt="${news.title}" src="${cdnDomain}${news.coverImg}"  width="500"></img>
+														<div class="gallery">
+								                      	<a href="${cdnDomain}${news.coverImg}" class="prettyPhoto[pp_gal]">
+								                      		<img src="${cdnDomain}${news.coverImg}" alt="${news.title}" width="80">
+								                      	</a>
+								                      </div>
 													</div>
 												</div>
 												<div class="form-group">
@@ -111,6 +116,8 @@
 	<script charset="utf-8" src="${cdn}js/kindeditor/kindeditor-all-min.js"></script>
 	<script charset="utf-8" src="${cdn}js/kindeditor/lang/zh_CN.js"></script>
 	<script charset="utf-8" src="${cdn}js/kindeditor/plugins/autoheight/autoheight.js"></script>
+	
+	<script src="${cdn}js/jquery.prettyPhoto.js"></script>
 	
 	<script>
 	    KindEditor.ready(function(K) {

@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <head>
 	<title>新闻动态详情</title>
+	<link rel="stylesheet" href="${cdn}css/prettyPhoto.css"></link>
 </head>
 <body>
 	<div class="mainbar">
@@ -43,7 +44,11 @@
 										<div class="form-group">
 											<label class="col-lg-2 control-label">封皮:</label>
 											<div class="col-lg-10">
-											<img alt="${news.title}" src="${cdnDomain}${news.coverImg}" width="500"></img>
+												<div class="gallery">
+							                      	<a href="${cdnDomain}${news.coverImg}" class="prettyPhoto[pp_gal]">
+							                      		<img src="${cdnDomain}${news.coverImg}" alt="${news.title}" width="80">
+							                      	</a>
+							                      </div>
 											</div>
 										</div>
 										
@@ -69,5 +74,7 @@
 			</div>
 		</div>
 	</div>
+	
+	<script src="${cdn}js/jquery.prettyPhoto.js"></script>
 
 </body>

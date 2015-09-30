@@ -21,8 +21,6 @@ public class CourseRequest {
     @NotNull
     private String synopsis;// 摘要,显示列表使用
 
-    private MultipartFile coverImg;// 封皮
-
     @NotNull
     private MultipartFile media;// 视频
 
@@ -57,14 +55,6 @@ public class CourseRequest {
 
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
-    }
-
-    public MultipartFile getCoverImg() {
-        return coverImg;
-    }
-
-    public void setCoverImg(MultipartFile coverImg) {
-        this.coverImg = coverImg;
     }
 
     public MultipartFile getMedia() {

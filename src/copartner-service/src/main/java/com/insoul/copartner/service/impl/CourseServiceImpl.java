@@ -52,7 +52,6 @@ public class CourseServiceImpl extends BaseServiceImpl implements ICourseService
             courseVO.setName(course.getName());
             courseVO.setSynopsis(course.getSynopsis());
             courseVO.setSpeaker(course.getSpeaker());
-            courseVO.setCoverImg(CDNUtil.getFullPath(course.getCoverImg()));
             courseVO.setTime(course.getTime());
             courseVO.setClicks(course.getClicks());
             courseVO.setCreated(course.getCreated());
@@ -75,7 +74,6 @@ public class CourseServiceImpl extends BaseServiceImpl implements ICourseService
         courseVO.setName(course.getName());
         courseVO.setSynopsis(course.getSynopsis());
         courseVO.setSpeaker(course.getSpeaker());
-        courseVO.setCoverImg(CDNUtil.getFullPath(course.getCoverImg()));
         courseVO.setUrl(CDNUtil.getFullPath(course.getUrl()));
         courseVO.setTime(course.getTime());
         courseVO.setClicks(course.getClicks());
@@ -92,7 +90,6 @@ public class CourseServiceImpl extends BaseServiceImpl implements ICourseService
         course.setName(requestData.getName());
         course.setSynopsis(requestData.getSynopsis());
         course.setSpeaker(requestData.getSpeaker());
-        course.setCoverImg(requestData.getCoverImg());
         course.setUrl(requestData.getUrl());
         course.setTime(requestData.getTime());
         course.setCreated(new Date());
