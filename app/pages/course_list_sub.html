@@ -56,7 +56,7 @@
 		<li id="course_{{id}}" class="mui-table-view-cell mui-media">
 			<a class='mui-navigate-right' href="#" data-guid="{{id}}">
 				<div style="overflow: hidden;">
-					<img src="{{coverImg}}?imageView2/1/w/40/h/40" class="course-avatar">
+					<img src="{{url}}?vframe/jpg/offset/0/w/40/h/40" class="course-avatar">
 					<span class="course-info">{{name}}</span>
 				</div>
 				<div class="mui-media-body" style="padding-left: 45px;">
@@ -210,7 +210,6 @@
 		 //下拉刷新具体业务实现
 		function pulldownRefresh() {
 			setTimeout(function() {
-				console.log('pulldown');
 				if (isFree) {
 					var success = function(response) {
 							var courses = response.body.list;
@@ -257,7 +256,6 @@
 		 //上拉加载具体业务实现
 		function pullupRefresh() {
 			setTimeout(function() {
-				console.log('pullup');
 				if (isFree) {
 					var success = function(response) {
 							var courses = response.body.list;

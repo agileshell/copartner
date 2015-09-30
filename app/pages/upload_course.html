@@ -61,13 +61,6 @@
 			<div class="mui-page-content">
 				<form id='upload-course-form' class="mui-input-group">
 					<div class="mui-input-row">
-						<label>封皮</label>
-						<span id="head" class="mui-pull-right mui-navigate-right">
-							<input id='coverImg' name='coverImg' type="hidden" value="" >
-							<img class="head-img mui-action-preview" id="head-img" src=""/>
-						</span>
-					</div>
-					<div class="mui-input-row">
 						<label>课程名称</label>
 						<span class="mui-pull-right mui-navigate-right">
 							<input id='name' name='name' type="text" value="" class="c-input">
@@ -106,9 +99,7 @@
 	<script src="../js/mui.view.js "></script>
 	<script src="../js/app.js"></script>
 	<script>
-		var coverImgEl = document.getElementById("coverImg"),
-			headEl = document.getElementById("head-img"),
-			nameEl = document.getElementById("name"),
+		var nameEl = document.getElementById("name"),
 			speakerEl = document.getElementById("speaker"),
 			timeEl = document.getElementById("time"),
 			synopsisEl = document.getElementById("synopsis"),
@@ -132,7 +123,6 @@
 
 				function uploadCourse() {
 					var courseInfo = {
-						coverImg: coverImgEl.value,
 						url: urlEl.value,
 						name: nameEl.value,
 						speaker: speakerEl.value,
@@ -150,61 +140,6 @@
 								toCoursePage();
 							}
 						}, 200);
-					});
-				};
-				//上传封皮
-				$(".mui-input-row").on("tap", "#head", function(e) {
-					var a = [{
-						title: "拍照"
-					}, {
-						title: "从手机相册选择"
-					}];
-					plus.nativeUI.actionSheet({
-						title: "修改头像",
-						cancel: "取消",
-						buttons: a
-					}, function(b) {
-						switch (b.index) {
-							case 0:
-								break;
-							case 1:
-								getImage();
-								break;
-							case 2:
-								galleryImg();
-								break;
-							default:
-								break
-						}
-					})
-				});
-
-				function getImage() {
-					var c = plus.camera.getCamera();
-					c.captureImage(function(e) {
-						plus.io.resolveLocalFileSystemURL(e, function(entry) {
-							var s = entry.toLocalURL() + "?version=" + new Date().getTime();
-							doc.getElementById("head-img").src = s;
-							upload(entry);
-						}, function(e) {
-							console.log("读取拍照文件错误：" + e.message);
-						});
-					}, function(s) {
-						console.log("error" + s);
-					}, {
-						filename: "_doc/head.jpg"
-					})
-				}
-
-				function galleryImg() {
-					plus.gallery.pick(function(p) {
-						var path = p + "?version=" + new Date().getTime();
-						doc.getElementById("head-img").src = path;
-						upload(p);
-					}, function(e) {
-						console.log("读取文件错误：" + e.message);
-					}, {
-						filter: "image"
 					});
 				};
 

@@ -965,11 +965,7 @@
 		courseInfo.speaker = course.speaker;
 		courseInfo.time = course.time;
 		courseInfo.clicks = course.clicks;
-		if (!course.coverImg) {
-			courseInfo.coverImg = 'images/blank.jpg';
-		} else {
-			courseInfo.coverImg = course.coverImg;
-		}
+		courseInfo.url = course.url;
 
 		return courseInfo;
 	};
@@ -977,7 +973,6 @@
 	owner.uploadCourse = function(courseInfo, callback) {
 		callback = callback || $.noop;
 		courseInfo = courseInfo || {};
-		courseInfo.coverImg = courseInfo.coverImg || '';
 		courseInfo.name = courseInfo.name || '';
 		courseInfo.speaker = courseInfo.speaker || '';
 		courseInfo.time = courseInfo.time || 0;
@@ -987,9 +982,6 @@
 			return callback('课程名称不能为空');
 		} else if (courseInfo.name.length > 30) {
 			return callback('课程名称不能大于30个字符');
-		}
-		if (courseInfo.coverImg.length <= 0) {
-			return callback('封皮不能为空');
 		}
 		if (courseInfo.url.length <= 0) {
 			return callback('视频不能为空');
