@@ -56,7 +56,7 @@
 											<div class="form-group">
 												<label class="col-lg-2 control-label" >审核状态:</label>
 												<div class="col-lg-10">
-													<select id="type" class="form-control" name="type">
+													<select id="type" class="form-control" name="authenticated">
 														<option value="false" selected="selected">认证不通过</option>
 														<option value="true" >认证通过</option>
 													</select>
