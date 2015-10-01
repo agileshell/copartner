@@ -11,7 +11,7 @@
 	<meta name="description" content="" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
-	<title>创始人--<sitemesh:write property="title"/></title>
+	<title>创始人-<sitemesh:write property="title"/></title>
 	<link rel="Shortcut Icon" href="${cdn}image/icon.png" />
 	
 	<link rel="stylesheet" href="${cdn}css/bootstrap.css"></link>
