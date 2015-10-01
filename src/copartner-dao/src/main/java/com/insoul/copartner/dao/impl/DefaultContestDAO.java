@@ -49,6 +49,10 @@ public class DefaultContestDAO extends BaseDaoImpl<Contest, Long> implements ICo
             conditionStr.append(" AND created < :to");
             params.put("to", criteria.getTo());
         }
+        if (StringUtils.isNotBlank(criteria.getStatus())) {
+            conditionStr.append(" AND status = :status");
+            params.put("status", criteria.getStatus());
+        }
 
         Query query = null;
         StringBuilder hql = new StringBuilder();
