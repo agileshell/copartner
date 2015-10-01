@@ -99,7 +99,7 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue() });
         }
         
-        criteria.setBeused(0);
+        criteria.setBeused((byte) 0);
 
         List<Demand> demands = demandDao.queryDemand(criteria);
         Long count = demandDao.countDemand(criteria);

@@ -27,7 +27,7 @@
 				<div class="col-md-12">
 					<div class="widget worange">
 						<div class="widget-head">
-							<i class="icon-lock"></i>&nbsp;&nbsp;创始人平台--登录
+							<i class="icon-lock"></i>&nbsp;&nbsp;创始人平台-登录
 						</div>
 						<div class="widget-content">
 							<div class="padd">

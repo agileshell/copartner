@@ -100,6 +100,9 @@
 															<a class="btn btn-xs btn-default" href="/finance/detail/${c.id}">
 																详情
 															</a>
+															<a class="btn btn-xs btn-default" href="/finance/edit/${c.id}">
+																编辑
+															</a>
 														</div>
 													</td>
 												</tr>

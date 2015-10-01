@@ -16,13 +16,13 @@ public class FinancingCriteria extends PaginationCriteria {
 
     private Date to;
     
-    private int beused;// 是否被使用 0:未使用 1:已使用
+    private byte beused;// 是否被使用 0:未使用 1:已使用
 
-    public int getBeused() {
+    public byte getBeused() {
         return beused;
     }
 
-    public void setBeused(int beused) {
+    public void setBeused(byte beused) {
         this.beused = beused;
     }
 

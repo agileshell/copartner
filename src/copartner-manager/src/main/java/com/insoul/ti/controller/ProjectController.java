@@ -167,6 +167,7 @@ public class ProjectController extends WebBase {
         vo.setStatus(p.getStatus());
         vo.setUpdated(p.getUpdated());
         vo.setUserId(p.getUserId());
+        vo.setBusinessPlan(p.getBusinessPlan());
         IndustryDomain i = industryDomainDAO.get(p.getIndustryDomainId());
         if (i != null)
             vo.setIndustryDomainName(i.getName());

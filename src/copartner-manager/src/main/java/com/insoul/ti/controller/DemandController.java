@@ -56,6 +56,7 @@ public class DemandController extends WebBase {
         criteria.setStatus(new String[] { request.getStatus() });
         criteria.setProjectName(request.getName());
         criteria.setUserId(request.getId());
+        criteria.setBeused((byte) 2);
         List<Demand> list = demandDAO.queryDemand(criteria);
         Long count = demandDAO.countDemand(criteria);
         query.setCount((count == null || count <= 0L) ? 0 : count.intValue());
@@ -114,12 +115,15 @@ public class DemandController extends WebBase {
     public ModelAndView update(@PathVariable Long demandId, @Valid DemandRequest request, BindingResult result) {
         Demand demand = demandDAO.get(demandId);
         MultipartFile image = request.getBusinessPlan();
+        log.error("getBusinessLicense : " + request.getBusinessLicense());
+        log.error("getBusinessPlan : " + request.getBusinessPlan());
         if (image != null) {
             String fileType = FileUtil.getFileType(image.getOriginalFilename());
             if (StringUtils.isNoneBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
                     String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
+                    log.error("CDNUtil.uploadFile : " + path);
                     if (StringUtils.isNoneBlank(path)) demand.setBusinessPlan(path);
                 } catch (Exception e) {
                     log.error("UploadFile Error.", e);
@@ -152,11 +156,14 @@ public class DemandController extends WebBase {
         vo.setFullLocation(demand.getFullLocation());
         vo.setId(demand.getId());
         vo.setLikeCount(demand.getLikeCount());
-        vo.setName(demand.getProjectName());
+        vo.setProjectName(demand.getProjectName());
         vo.setStatus(demand.getStatus());
         vo.setUpdated(demand.getUpdated());
         vo.setUserId(demand.getUserId());
         vo.setHasBusinessRegistered(demand.getHasBusinessRegistered());
+        vo.setProjectId(demand.getProjectId());
+        vo.setBusinessLicense(demand.getBusinessLicense());
+        vo.setBusinessPlan(demand.getBusinessPlan());
         IndustryDomain i = industryDomainDAO.get(demand.getIndustryDomainId());
         if (i != null)
             vo.setIndustryDomainName(i.getName());

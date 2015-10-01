@@ -69,7 +69,7 @@ public class FinancingServiceImpl extends BaseServiceImpl implements IFinancingS
         } else {
             criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue() });
         }
-        criteria.setBeused(0);
+        criteria.setBeused((byte) 0);
         List<Financing> financings = financingDao.queryFinancing(criteria);
         Long count = financingDao.countFinancing(criteria);
         return new Pagination<FinancingVO>(formatFinancings(financings), count);

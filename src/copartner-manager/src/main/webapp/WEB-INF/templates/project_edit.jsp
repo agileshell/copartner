@@ -80,7 +80,7 @@
 </div>
 
 <div class="form-group">
-	<label class="col-lg-2 control-label" for="businessPlan">商业计划书<span class="cofrequired">*</span>:</label>
+	<label class="col-lg-2 control-label" for="businessPlan">商业计划书:</label>
 	<div class="col-lg-6">
 		<input name="businessPlan" id="businessPlan" type="file" class="form-control" placeholder="商业计划书"></input>
 	</div>

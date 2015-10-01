@@ -59,7 +59,7 @@ public class Demand extends BaseEntity {
     private Long commentCount = 0L;
 
     @Column(name = "beused")
-    private Byte beused;// 是否被使用 0:未使用 1:已使用
+    private byte beused = 0;// 是否被使用 0:未使用 1:已使用
 
     @Column(name = "project_id")
     private Long projectId;// 关联的项目编号
@@ -70,11 +70,11 @@ public class Demand extends BaseEntity {
     @Column(name = "business_plan")
     private String businessPlan;// 商业计划书
 
-    public Byte getBeused() {
+    public byte getBeused() {
         return beused;
     }
 
-    public void setBeused(Byte beused) {
+    public void setBeused(byte beused) {
         this.beused = beused;
     }
 

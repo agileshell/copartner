@@ -33,7 +33,7 @@
 									<c:if test="${success}">
 <div class="form-group">
 	<label class="col-lg-2 control-label" >融智名称:</label>
-	<div class="col-lg-10">${demand.name}</div>
+	<div class="col-lg-10">${demand.projectName}</div>
 </div>
 <div class="form-group">
 	<label class="col-lg-2 control-label" >融智发布者:</label>
@@ -86,6 +86,7 @@
 <div class="form-group">
 	<div class="col-lg-offset-1 col-lg-12">
 		<a class="btn btn-default btn-sm" href="/demand/list">列表</a>
+		<a class="btn btn-default btn-sm" href="/demand/edit/${demand.id}">编辑</a>
 	</div>
 </div>
 										</c:if>

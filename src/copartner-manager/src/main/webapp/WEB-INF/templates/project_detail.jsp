@@ -34,8 +34,16 @@
 									<c:if test="${success}">
 <div class="form-group">
 	<label class="col-lg-2 control-label" >项目名称:</label>
-	<div class="col-lg-10">${project.name}</div>
+	<div class="col-lg-10">${project.name}
+	</div>
 </div>
+
+<div class="form-group">
+	<label class="col-lg-2 control-label" >商业计划书:</label>
+	<div class="col-lg-10">
+		<a href="${cdnDomain}${project.businessPlan}" target="_blank">查看商业计划书</a></div>
+</div>
+
 <div class="form-group">
 	<label class="col-lg-2 control-label" >项目发布者:</label>
 	<div class="col-lg-10"><a href="/user/detail/${project.userId}">${project.userName}</a></div>
@@ -91,6 +99,7 @@
 <div class="form-group">
 	<div class="col-lg-offset-1 col-lg-12">
 		<a class="btn btn-default btn-sm" href="/project/list">列表</a>
+		<a class="btn btn-default btn-sm" href="/project/edit/${project.id}">编辑</a>
 	</div>
 </div>
 										</c:if>

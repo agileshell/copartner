@@ -57,6 +57,7 @@ public class FinanceController extends WebBase {
         criteria.setStatus(new String[] { request.getStatus() });
         criteria.setProjectName(request.getName());
         criteria.setUserId(request.getId());
+        criteria.setBeused((byte) 2);
         List<Financing> list = financingDAO.queryFinancing(criteria);
         Long count = financingDAO.countFinancing(criteria);
         query.setCount((count == null || count <= 0L) ? 0 : count.intValue());
@@ -151,7 +152,7 @@ public class FinanceController extends WebBase {
         vo.setCreated(financing.getCreated());
         vo.setFullLocation(financing.getFullLocation());
         vo.setId(financing.getId());
-        vo.setName(financing.getProjectName());
+        vo.setProjectName(financing.getProjectName());
         vo.setStatus(financing.getStatus());
         vo.setUpdated(financing.getUpdated());
         vo.setUserId(financing.getUserId());

@@ -12,7 +12,7 @@ public class FinanceVO extends BaseVO {
 	
 	private String userName;// 创建者
 
-    private String name;// 项目名称
+    private String projectName;// 项目名称
 
     private String status = "active";// 状态 active 可用，inactive不可用
 
@@ -115,15 +115,15 @@ public class FinanceVO extends BaseVO {
 		this.userName = userName;
 	}
 
-	public String getName() {
-		return name;
-	}
+	public String getProjectName() {
+        return projectName;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
 
-	public String getStatus() {
+    public String getStatus() {
 		return status;
 	}
 
