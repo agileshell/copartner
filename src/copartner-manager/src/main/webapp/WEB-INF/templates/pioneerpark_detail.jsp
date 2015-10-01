@@ -123,6 +123,9 @@
 				var marker = new BMap.Marker(point);  // 创建标注
 				map.addOverlay(marker);              // 将标注添加到地图中
 				map.centerAndZoom(point, 11);
+				var pointArray = new Array();
+				pointArray[0] = point;
+				map.setViewport(pointArray);
 			}else{
 				alert("您选择地址没有解析到结果!");
 			}
