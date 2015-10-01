@@ -906,11 +906,9 @@ owner.submitAuthenticate = function(info, callback) {
 	/**
 	 * 获取contents列表
 	 **/
-	owner.listContents = function(contentType, keyword, offset, limit, from, to, successCallback, errorCallback) {
-		console.log(keyword + offset + '-' + offset + '-' + from + '-' + to);
+	owner.listContents = function(keyword, offset, limit, from, to, successCallback, errorCallback) {
 		mui.ajax(owner.apiURL + 'contents', {
 			data: {
-				type: contentType,
 				keyword: keyword,
 				offset: offset,
 				limit: limit,
@@ -958,6 +956,79 @@ owner.submitAuthenticate = function(info, callback) {
 			contentInfo.image = content.coverImg;
 		}
 		return contentInfo;
+	};
+
+	/**
+	 * 获取Investorg列表
+	 **/
+	owner.listInvestorgs = function(offset, limit, from, to, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'investorgs', {
+			data: {
+				offset: offset,
+				limit: limit,
+				from: from,
+				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+	/**
+	 *Investorg对象包装
+	 **/
+	owner.processInvestorg = function(invest) {
+		var investInfo = {};
+		investInfo.id = invest.id;
+		investInfo.name = invest.name;
+		investInfo.specials = invest.specials;
+		investInfo.hardware = invest.hardware;
+		if (!invest.logo) {
+			investInfo.image = 'images/blank.jpg';
+		} else {
+			investInfo.image = invest.logo;
+		}
+
+		return investInfo;
+	};
+
+	/**
+	 * 获取pioneerparks列表
+	 **/
+	owner.listPioneerparks = function(province, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'pioneerparks', {
+			data: {
+				province: province
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				console.log(JSON.stringify(data));
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+	/**
+	 *pioneerparks对象包装
+	 **/
+	owner.processPioneerparks = function(pioneerpark) {
+		var obj = {};
+		obj.id = pioneerpark.id;
+		obj.name = pioneerpark.name;
+		obj.longitude = pioneerpark.longitude;
+		obj.latitude = pioneerpark.latitude;
+
+		return obj;
 	};
 
 	/**

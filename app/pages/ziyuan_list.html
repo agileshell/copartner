@@ -14,44 +14,43 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 id="title" class="mui-title c-title">公共资源</h1>
+			<a id="search" class="mui-action-menu mui-icon mui-icon-search mui-pull-right"></a>
 		</header>
-		<div class="mui-content">
+		<div class="mui-content" style="padding-top: 45px">
+			<div class="mui-content" style="padding: 0px 5px;">
+				<div id="ziyuan-type" class="mui-segmented-control c-control">
+					<a id="cyy" class="mui-control-item mui-active">创业园</a>
+					<a id="tzjg" class="mui-control-item">投资机构</a>
+				</div>
+			</div>
 		</div>
 	</body>
 	<script src="../js/mui.min.js"></script>
 	<script type="text/javascript">
-		 //启用双击监听
+		var parent = null, ziyuan_cyy = null, ziyuan_tzjg = null;
 		mui.init({
-			swipeBack: true, //启用右滑关闭功能
-			gestureConfig: {
-				doubletap: true
-			},
-			subpages: [{
-				id: 'ziyuan_list_sub',
-				url: 'ziyuan_list_sub.html',
-				styles: {
-					top: '45px',
-					bottom: '0px',
-				}
-			}],
-			preloadPages: [{
-				id: 'ziyuan_detail',
-				url: 'ziyuan_detail.html',
-				styles: {
-					popGesture: 'hide'
-				}
-			}]
+			swipeBack: true
 		});
-		var contentWebview = null;
-		document.querySelector('header').addEventListener('doubletap', function() {
-			if (contentWebview == null) {
-				contentWebview = plus.webview.currentWebview().children()[0];
-			}
-			if (mui.os.ios) {
-				contentWebview.evalJS("mui('#pullrefresh').pullRefresh().scrollTo(0,0,100)");
-			} else {
-				contentWebview.evalJS('mui.scrollTo(0, 100)');
-			}
+		mui.plusReady(function() {
+			parent = plus.webview.currentWebview();
+
+			ziyuan_cyy = plus.webview.create('ziyuan_cyy.html', 'ziyuan_cyy',  {top: "80px", bottom: "0px", bounce: "vertical"});
+			parent.append(ziyuan_cyy);
+
+			mui('#ziyuan-type').on('tap', 'a', function() {
+				var id = this.getAttribute('id');
+				if (id == 'tzjg') {
+					ziyuan_cyy.hide();
+					if (!ziyuan_tzjg) {
+						ziyuan_tzjg = plus.webview.create('ziyuan_tzjg.html', 'ziyuan_tzjg',  {top: "80px", bottom: "0px", bounce: "vertical"});
+						parent.append(ziyuan_tzjg);
+					}
+					ziyuan_tzjg.show();
+				} else {
+					ziyuan_tzjg.hide();
+					ziyuan_cyy.show();
+				}
+			});
 		});
 	</script>
 

@@ -91,7 +91,7 @@
 					mui.toast(app.ajaxErrorHandler(errorType));
 					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 				};
-			app.listContents(1, keyword, 0, 10, 0, contentLatestLoadingRequestDate, success, error);
+			app.listContents(keyword, 0, 10, 0, contentLatestLoadingRequestDate, success, error);
 		});
 		 //打开详情
 		mui('#pullrefresh').on('tap', 'a', function() {
@@ -129,7 +129,7 @@
 						mui.toast(app.ajaxErrorHandler(errorType));
 						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
 					};
-				app.listContents(1, keyword, 0, 10, contentLatestRefreshRequestDate, 0, success, error);
+				app.listContents(keyword, 0, 10, contentLatestRefreshRequestDate, 0, success, error);
 			}, 1000);
 		};
 		 //上拉加载具体业务实现
@@ -156,7 +156,7 @@
 							mui.toast(app.ajaxErrorHandler(errorType));
 							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 						};
-					app.listContents(1, keyword, 0, 10, 0, contentLatestLoadingRequestDate, success, error);
+					app.listContents(keyword, 0, 10, 0, contentLatestLoadingRequestDate, success, error);
 				},
 				1000);
 		};

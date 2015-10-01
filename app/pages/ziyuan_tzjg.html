@@ -8,30 +8,52 @@
 
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			.item-name {
+				color: #C15151;
+				font-size: 15px;
+			}
+			.new-item {
+				display: block;
+				font-size: 12px;
+				line-height: 20px;
+			}
+			.item-avatar {
+				width: 50px;
+				float: left;
+				padding: 5px 5px 5px 0;
+			}
+		</style>
 	</head>
 
 	<body>
-		<div class="mui-input-row mui-search" style="height: 34px;">
-			<input id="search" type="search" name="keyword" class="mui-input-speech mui-input-clear" placeholder="请输入您要查询的关键字">
-		</div>
-		<div class="mui-content">
-			<div id="pullrefresh" class="mui-scroll-wrapper">
-				<ul id="content-list" class="mui-table-view">
+		<div  id="pullrefresh" class="mui-content">
+			<div>
+				<ul id="tzjg-list" class="mui-table-view">
 				</ul>
 			</div>
 		</div>
 	</body>
+
 	<script id="content-template" type="text/x-handlebars-template">
-		<li id="content_{{id}}" class="mui-table-view-cell mui-media">
-			<a href="ziyuan_detail.html?id={{id}}" data-guid="{{id}}">
-				<img class="mui-media-object mui-pull-left" src="{{image}}">
+		<li id="invest_{{id}}" class="mui-table-view-cell mui-media">
+			<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+				<img src="{{image}}" class="item-avatar">
 				<div class="mui-media-body">
-					<span class="mui-ellipsis-2">{{title}}</span>
-					<p class="mui-ellipsis-2">{{synopsis}}</p>
+					<span class="item-name">{{name}}</span>
+					<div class="new-item">
+						<span class="mui-badge mui-badge-primary">特色</span>
+						<span>{{specials}}</span>
+					</div>
+					<div class="new-item">
+						<span class="mui-badge mui-badge-warning">硬件</span>
+						<span>{{hardware}}</span>
+					</div>
 				</div>
 			</a>
 		</li>
 	</script>
+
 	<script type="text/javascript" charset="UTF-8" src="../js/handlebars-v2.0.0.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
@@ -42,16 +64,10 @@
 		var divEl = document.createElement("div"),
 			contentSource = document.getElementById("content-template").innerText,
 			contentTemplate = Handlebars.compile(contentSource),
-			contentEl = document.getElementById("content-list"),
-			searchEl = document.getElementById("search"),
-			keyword = '';
+			contentEl = document.getElementById("tzjg-list");
 		mui.init({
 			pullRefresh: {
 				container: '#pullrefresh',
-				down: {
-					contentrefresh: '正在刷新...',
-					callback: pulldownRefresh
-				},
 				up: {
 					contentrefresh: '正在加载...',
 					callback: pullupRefresh
@@ -62,55 +78,12 @@
 			if (plus.networkinfo.getCurrentType() === plus.networkinfo.CONNECTION_NONE) {
 				plus.nativeUI.alert('无网络连接!');
 			} else {
-				setTimeout(function() {
-					mui('#pullrefresh').pullRefresh().pullupLoading();
-				}, 200);
+				pullupRefresh();
 			}
 		});
-		 //search
-		searchEl.addEventListener('search', function() {
-			keyword = searchEl.value;
-			contentLatestRefreshRequestDate = 0;
-			contentLatestLoadingRequestDate = 0;
-			contentEl.innerHTML = '';
-			var success = function(response) {
-					var contents = response.body.list;
-					if (contents.length > 0) {
-						contentLatestRefreshRequestDate = Date.parse(contents[0].created);
-						contentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
-						for (var i = 0, len = contents.length; i < len; i++) {
-							divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
-							contentEl.appendChild(divEl.firstElementChild);
-						}
-						mui('#pullrefresh').pullRefresh().endPullupToRefresh();
-					} else {
-						mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
-					}
-				},
-				error = function(errorType) {
-					mui.toast(app.ajaxErrorHandler(errorType));
-					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
-				};
-			app.listContents(2, keyword, 0, 10, 0, contentLatestLoadingRequestDate, success, error);
-		});
-		 //打开详情
-		mui('#pullrefresh').on('tap', 'a', function() {
-			open_content_detail(this.getAttribute('data-guid'));
-		});
-		var contentDetailWebview = null; //详情页面子webview
-		function open_content_detail(id) {
-			if (!contentDetailWebview) {
-				contentDetailWebview = plus.webview.getWebviewById('ziyuan_detail');
-			}
-			//触发子窗口变更详情
-			mui.fire(contentDetailWebview, 'mui.view.beforeshow', {
-				guid: id
-			});
-		};
-		 //下拉刷新具体业务实现
+		//下拉刷新具体业务实现
 		function pulldownRefresh() {
 			setTimeout(function() {
-				console.log('pulldown');
 				var success = function(response) {
 						var contents = response.body.list;
 						if (contents.length > 0) {
@@ -119,7 +92,7 @@
 							}
 							contentLatestRefreshRequestDate = Date.parse(contents[0].created);
 							for (var i = contents.length - 1; i >= 0; i--) {
-								divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
+								divEl.innerHTML = contentTemplate(app.processInvestorg(contents[i]));
 								contentEl.insertBefore(divEl.firstElementChild, contentEl.firstElementChild);
 							}
 						}
@@ -129,13 +102,12 @@
 						mui.toast(app.ajaxErrorHandler(errorType));
 						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
 					};
-				app.listContents(2, keyword, 0, 10, contentLatestRefreshRequestDate, 0, success, error);
+				app.listInvestorgs(0, 10, contentLatestRefreshRequestDate, 0, success, error);
 			}, 1000);
 		};
 		 //上拉加载具体业务实现
 		function pullupRefresh() {
 			setTimeout(function() {
-					console.log('pullup');
 					var success = function(response) {
 							var contents = response.body.list;
 							if (contents.length > 0) {
@@ -144,7 +116,7 @@
 								}
 								contentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
 								for (var i = 0, len = contents.length; i < len; i++) {
-									divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
+									divEl.innerHTML = contentTemplate(app.processInvestorg(contents[i]));
 									contentEl.appendChild(divEl.firstElementChild);
 								}
 								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
@@ -156,10 +128,9 @@
 							mui.toast(app.ajaxErrorHandler(errorType));
 							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 						};
-					app.listContents(2, keyword, 0, 10, 0, contentLatestLoadingRequestDate, success, error);
+					app.listInvestorgs(0, 10, 0, contentLatestLoadingRequestDate, success, error);
 				},
 				1000);
 		};
 	</script>
-
 </html>

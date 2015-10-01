@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创始人</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			#map {
+				width: 100%;
+				text-align: center;
+			}
+		</style>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=HuEFhWtwXsXsKjXIgmIZFu4y"></script>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div id="map"></div>
+		</div>
+	</body>
+	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+	<script type="text/javascript">
+	(function(doc) {
+		mui.plusReady(function() {
+			var clientH = plus.screen.resolutionHeight - 80;
+			doc.getElementById('map').style.height = clientH + 'px';
+		});
+		// 百度地图API功能
+		var map = new BMap.Map("map");
+		map.centerAndZoom("郑州", 11); 
+		// 添加带有定位的导航控件
+		var navigationControl = new BMap.NavigationControl({
+			anchor: BMAP_ANCHOR_TOP_LEFT,
+			type: BMAP_NAVIGATION_CONTROL_LARGE,
+			enableGeolocation: true
+		});
+		map.addControl(navigationControl);
+		// 添加定位控件
+		var geolocationControl = new BMap.GeolocationControl();
+		geolocationControl.addEventListener("locationSuccess", function(e){
+		});
+		geolocationControl.addEventListener("locationError",function(e){
+		});
+		map.addControl(geolocationControl);
+
+		var success = function(response) {
+				var parks = response.body.list;
+				var pointArray = new Array();
+				if (parks.length > 0) {
+					for (var i = 0, len = parks.length; i < len; i++) {
+						var park = parks[i];
+						pointArray[i] = new BMap.Point(park.longitude, park.latitude);
+						var marker = new BMap.Marker(pointArray[i]);
+						marker.park_id =  park.id;
+						marker.addEventListener("click", function(e){
+							//e.target.park_id
+						});
+						map.addOverlay(marker);
+
+						var label = new BMap.Label(park.name, {offset:new BMap.Size(20, -10)});
+						marker.setLabel(label);
+					}
+					//让所有点在视野范围内
+					map.setViewport(pointArray);
+				}
+			},
+			error = function(errorType) {
+				mui.toast(app.ajaxErrorHandler(errorType));
+			};
+		app.listPioneerparks('河南', success, error);
+	}(document));
+	</script>
+</html>
