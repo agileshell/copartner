@@ -33,7 +33,9 @@
 									<c:if test="${success}">
 <div class="form-group">
 	<label class="col-lg-2 control-label" >融资名称:</label>
-	<div class="col-lg-10">${finance.name}</div>
+	<div class="col-lg-10">${finance.name} &nbsp;
+		<a href="/project//detail/${finance.projectId}" target="_blank">查看项目</a>
+	</div>
 </div>
 <div class="form-group">
 	<label class="col-lg-2 control-label" >融资发布者:</label>
@@ -42,6 +44,10 @@
 <div class="form-group">
 	<label class="col-lg-2 control-label">联系人:</label>
 	<div class="col-lg-10">${finance.contactPerson} - ${finance.contact}</div>
+</div>
+<div class="form-group">
+	<label class="col-lg-2 control-label">意向资金:</label>
+	<div class="col-lg-10">${finance.funding}</div>
 </div>
 <div class="form-group">
 	<label class="col-lg-2 control-label">融资要求:</label>
@@ -67,6 +73,16 @@
 <div class="form-group">
 	<label class="col-lg-2 control-label">地区:</label>
 	<div class="col-lg-10">${finance.fullLocation}</div>
+</div>
+<div class="form-group">
+	<label class="col-lg-2 control-label">营业执照号:</label>
+	<div class="col-lg-10">${finance.businessLicense}</div>
+</div>
+<div class="form-group">
+	<label class="col-lg-2 control-label">商业计划书:</label>
+	<div class="col-lg-10">
+		<a href="${cdnDomain}${finance.businessPlan}" target="_blank">查看</a>
+	</div>
 </div>
 <hr />
 <div class="form-group">

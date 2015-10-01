@@ -45,6 +45,16 @@ public class ProjectAddRequest implements Serializable {
 
     @StringLength(max = 30)
     private String contact;// 联系方式
+    
+    private String businessPlan;// 商业计划书
+
+    public String getBusinessPlan() {
+        return businessPlan;
+    }
+
+    public void setBusinessPlan(String businessPlan) {
+        this.businessPlan = businessPlan;
+    }
 
     public String getName() {
         return name;

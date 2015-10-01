@@ -29,6 +29,7 @@ import com.insoul.copartner.domain.TeamSize;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.service.IFinancingService;
+import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.ContentUtil;
 import com.insoul.copartner.vo.FinancingVO;
 import com.insoul.copartner.vo.Pagination;
@@ -68,7 +69,7 @@ public class FinancingServiceImpl extends BaseServiceImpl implements IFinancingS
         } else {
             criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue() });
         }
-
+        criteria.setBeused(0);
         List<Financing> financings = financingDao.queryFinancing(criteria);
         Long count = financingDao.countFinancing(criteria);
         return new Pagination<FinancingVO>(formatFinancings(financings), count);
@@ -121,6 +122,10 @@ public class FinancingServiceImpl extends BaseServiceImpl implements IFinancingS
         financing.setContactPerson(requestData.getContactPerson());
         financing.setContact(requestData.getContact());
         financing.setCreated(new Date());
+        
+        financing.setProjectId(requestData.getProjectId());
+        financing.setBusinessLicense(requestData.getBusinessLicense());
+        financing.setBusinessPlan(requestData.getBusinessPlan());
 
         financingDao.save(financing);
     }
@@ -162,6 +167,10 @@ public class FinancingServiceImpl extends BaseServiceImpl implements IFinancingS
             financingVO.setTeamSize(teamSizeIdMapName.get(financing.getTeamSizeId()));
             financingVO.setContent(ContentUtil.splitAndFilterString(financing.getContent(), 80));
             financingVO.setCreated(financing.getCreated());
+            
+            financingVO.setProjectId(financing.getProjectId());
+            financingVO.setBusinessLicense(financing.getBusinessLicense());
+            financingVO.setBusinessPlan(CDNUtil.getFullPath(financing.getBusinessPlan()));
 
             financingVOs.add(financingVO);
         }

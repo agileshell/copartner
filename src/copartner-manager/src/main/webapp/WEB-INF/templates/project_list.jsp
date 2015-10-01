@@ -104,6 +104,9 @@
 															<a class="btn btn-xs btn-default" href="/project/detail/${c.id}">
 																详情
 															</a>
+															<a class="btn btn-xs btn-default" href="/project/edit/${c.id}">
+																编辑
+															</a>
 														</div>
 													</td>
 												</tr>

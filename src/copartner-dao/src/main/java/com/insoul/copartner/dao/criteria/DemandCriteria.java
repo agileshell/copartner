@@ -13,6 +13,16 @@ public class DemandCriteria extends PaginationCriteria {
     private Date from;
 
     private Date to;
+    
+    private int beused;// 是否被使用 0:未使用 1:已使用
+
+    public int getBeused() {
+        return beused;
+    }
+
+    public void setBeused(int beused) {
+        this.beused = beused;
+    }
 
     public String getProjectName() {
         return projectName;

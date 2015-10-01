@@ -38,6 +38,36 @@ public class DemandVO implements Serializable {
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
 
+    private Long projectId;// 关联的项目编号
+
+    private String businessLicense;// 营业执照号
+
+    private String businessPlan;// 商业计划书
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getBusinessLicense() {
+        return businessLicense;
+    }
+
+    public void setBusinessLicense(String businessLicense) {
+        this.businessLicense = businessLicense;
+    }
+
+    public String getBusinessPlan() {
+        return businessPlan;
+    }
+
+    public void setBusinessPlan(String businessPlan) {
+        this.businessPlan = businessPlan;
+    }
+
     public String getProjectName() {
         return projectName;
     }

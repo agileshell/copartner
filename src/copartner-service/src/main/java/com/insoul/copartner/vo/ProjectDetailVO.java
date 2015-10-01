@@ -26,6 +26,16 @@ public class ProjectDetailVO implements Serializable {
     private Long commentCount;
 
     private Set<UserLeanVO> likers;
+    
+    private String businessPlan;// 商业计划书
+
+    public String getBusinessPlan() {
+        return businessPlan;
+    }
+
+    public void setBusinessPlan(String businessPlan) {
+        this.businessPlan = businessPlan;
+    }
 
     public String getName() {
         return name;

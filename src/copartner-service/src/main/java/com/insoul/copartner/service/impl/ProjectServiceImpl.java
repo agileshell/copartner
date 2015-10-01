@@ -147,6 +147,8 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         project.setContact(requestData.getContact());
         project.setCreated(new Date());
 
+        project.setBusinessPlan(requestData.getBusinessPlan());
+        
         projectDao.save(project);
     }
 
@@ -266,6 +268,8 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
                 }
             }
             projectVO.setLikers(likers);
+            
+            projectVO.setBusinessPlan(CDNUtil.getFullPath(project.getBusinessPlan()));
 
             projectVOs.add(projectVO);
         }

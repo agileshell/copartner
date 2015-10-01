@@ -1,16 +1,19 @@
 package com.insoul.ti.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.insoul.copartner.dao.criteria.DemandCriteria;
@@ -18,7 +21,10 @@ import com.insoul.copartner.domain.Demand;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.TeamSize;
 import com.insoul.copartner.domain.User;
+import com.insoul.copartner.util.CDNUtil;
+import com.insoul.copartner.util.FileUtil;
 import com.insoul.ti.WebBase;
+import com.insoul.ti.req.DemandRequest;
 import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.ProjectListRequest;
 import com.insoul.ti.req.ViewRequest;
@@ -37,6 +43,7 @@ import com.insoul.ti.vo.DemandVO;
 public class DemandController extends WebBase {
 
     private static final String DEMAND_DETAIL = "demand_detail";
+    private static final String DEMAND_EDIT = "demand_edit";
 	private static final String DEMAND_LIST = "demand_list";
 
     @RequestMapping("/list")
@@ -86,6 +93,48 @@ public class DemandController extends WebBase {
             mv.addObject("success", false);
         }
         return mv;
+    }
+    
+    @RequestMapping("/edit/{demandId}")
+    public ModelAndView edit(@PathVariable Long demandId, ViewRequest req) {
+        ModelAndView mv = createModelView(DEMAND_EDIT, req);
+        mv.addObject("viewname", DEMAND_LIST);
+        try {
+            DemandVO demand = getDemand(demandId);
+            mv.addObject("demand", demand);
+            mv.addObject("success", demand != null);
+        } catch (Exception e) {
+            mv.addObject("success", false);
+        }
+        return mv;
+    }
+    
+    @RequestMapping("/update/{demandId}")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public ModelAndView update(@PathVariable Long demandId, @Valid DemandRequest request, BindingResult result) {
+        Demand demand = demandDAO.get(demandId);
+        MultipartFile image = request.getBusinessPlan();
+        if (image != null) {
+            String fileType = FileUtil.getFileType(image.getOriginalFilename());
+            if (StringUtils.isNoneBlank(fileType)) {
+                String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
+                try {
+                    String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
+                    if (StringUtils.isNoneBlank(path)) demand.setBusinessPlan(path);
+                } catch (Exception e) {
+                    log.error("UploadFile Error.", e);
+                }
+            }
+        }
+        demand.setProjectName(request.getProjectName());
+        demand.setStatus(request.getStatus());
+        demand.setAdvantage(request.getAdvantage());
+        demand.setContent(request.getContent());
+        demand.setContactPerson(request.getContactPerson());
+        demand.setContact(request.getContact());
+        demand.setBusinessLicense(request.getBusinessLicense());
+        demandDAO.update(demand);
+        return new ModelAndView("redirect:/demand/detail/" + demandId);
     }
 
     private DemandVO getDemand(Long demandId) {

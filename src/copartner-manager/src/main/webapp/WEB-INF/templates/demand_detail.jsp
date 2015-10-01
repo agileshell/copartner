@@ -72,6 +72,16 @@
 	<label class="col-lg-2 control-label">评论次数:</label>
 	<div class="col-lg-10">${demand.commentCount}</div>
 </div>
+<div class="form-group">
+	<label class="col-lg-2 control-label">营业执照号:</label>
+	<div class="col-lg-10">${demand.businessLicense}</div>
+</div>
+<div class="form-group">
+	<label class="col-lg-2 control-label">商业计划书:</label>
+	<div class="col-lg-10">
+		<a href="${cdnDomain}${demand.businessPlan}" target="_blank">查看</a>
+	</div>
+</div>
 <hr />
 <div class="form-group">
 	<div class="col-lg-offset-1 col-lg-12">

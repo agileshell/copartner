@@ -1,16 +1,19 @@
 package com.insoul.ti.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.insoul.copartner.dao.criteria.ProjectCriteria;
@@ -19,9 +22,12 @@ import com.insoul.copartner.domain.Project;
 import com.insoul.copartner.domain.ProjectPhase;
 import com.insoul.copartner.domain.TeamSize;
 import com.insoul.copartner.domain.User;
+import com.insoul.copartner.util.CDNUtil;
+import com.insoul.copartner.util.FileUtil;
 import com.insoul.ti.WebBase;
 import com.insoul.ti.req.PageQuery;
 import com.insoul.ti.req.ProjectListRequest;
+import com.insoul.ti.req.ProjectRequest;
 import com.insoul.ti.req.ViewRequest;
 import com.insoul.ti.shiro.Permission;
 import com.insoul.ti.vo.ProjectVO;
@@ -38,6 +44,8 @@ import com.insoul.ti.vo.ProjectVO;
 public class ProjectController extends WebBase {
 
     private static final String PROJECT_LIST = "project_list";
+
+    private static final String PROJECT_EDIT = "project_edit";
 
     @RequestMapping("/list")
     public ModelAndView list(@Valid ProjectListRequest request, BindingResult result) {
@@ -86,6 +94,60 @@ public class ProjectController extends WebBase {
             mv.addObject("success", false);
         }
         return mv;
+    }
+    
+    @RequestMapping("/edit/{projectId}")
+    public ModelAndView edit(@PathVariable Long projectId, ViewRequest req) {
+        ModelAndView mv = createModelView(PROJECT_EDIT, req);
+        mv.addObject("viewname", PROJECT_LIST);
+        try {
+            ProjectVO project = getProject(projectId);
+            mv.addObject("project", project);
+            mv.addObject("success", project != null);
+        } catch (Exception e) {
+            mv.addObject("success", false);
+        }
+        return mv;
+    }
+    
+    @RequestMapping("/update/{projectId}")
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public ModelAndView update(@PathVariable Long projectId, @Valid ProjectRequest request, BindingResult result) {
+        Project project = projectDAO.get(projectId);
+        MultipartFile image = request.getBusinessPlan();
+        if (image != null) {
+            String fileType = FileUtil.getFileType(image.getOriginalFilename());
+            if (StringUtils.isNoneBlank(fileType)) {
+                String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
+                try {
+                    String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
+                    if (StringUtils.isNoneBlank(path)) project.setBusinessPlan(path);
+                } catch (Exception e) {
+                    log.error("UploadFile Error.", e);
+                }
+            }
+        }
+        MultipartFile logo = request.getLogo();
+        if (logo != null) {
+            String fileType = FileUtil.getFileType(logo.getOriginalFilename());
+            if (StringUtils.isNoneBlank(fileType)) {
+                String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
+                try {
+                    String path = CDNUtil.uploadFile(logo.getInputStream(), fileName);
+                    if (StringUtils.isNoneBlank(path)) project.setLogo(path);
+                } catch (Exception e) {
+                    log.error("UploadFile Error.", e);
+                }
+            }
+        }
+        project.setName(request.getName());
+        project.setStatus(request.getStatus());
+        project.setAdvantage(request.getAdvantage());
+        project.setContent(request.getContent());
+        project.setContactPerson(request.getContactPerson());
+        project.setContact(request.getContact());
+        projectDAO.update(project);
+        return new ModelAndView("redirect:/project/detail/" + projectId);
     }
 
     private ProjectVO getProject(Long projectId) {

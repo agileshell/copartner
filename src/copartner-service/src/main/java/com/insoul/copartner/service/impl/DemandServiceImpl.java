@@ -98,6 +98,8 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         } else {
             criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue() });
         }
+        
+        criteria.setBeused(0);
 
         List<Demand> demands = demandDao.queryDemand(criteria);
         Long count = demandDao.countDemand(criteria);
@@ -134,6 +136,10 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         demandVO.setLikeCount(demand.getLikeCount());
         demandVO.setContactPerson(demand.getContactPerson());
         demandVO.setContact(demand.getContact());
+        
+        demandVO.setProjectId(demand.getProjectId());
+        demandVO.setBusinessLicense(demand.getBusinessLicense());
+        demandVO.setBusinessPlan(CDNUtil.getFullPath(demand.getBusinessPlan()));
 
         User owner = userDao.get(demand.getUserId());
         UserBriefVO ownerVO = new UserBriefVO();
@@ -208,6 +214,10 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         demand.setContactPerson(requestData.getContactPerson());
         demand.setContact(requestData.getContact());
         demand.setCreated(new Date());
+        
+        demand.setProjectId(requestData.getProjectId());
+        demand.setBusinessLicense(requestData.getBusinessLicense());
+        demand.setBusinessPlan(requestData.getBusinessPlan());
 
         demandDao.save(demand);
     }
@@ -379,6 +389,10 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             demandVO.setCommentCount(demand.getCommentCount());
             demandVO.setLikeCount(demand.getLikeCount());
             demandVO.setCreated(demand.getCreated());
+            
+            demandVO.setProjectId(demand.getProjectId());
+            demandVO.setBusinessLicense(demand.getBusinessLicense());
+            demandVO.setBusinessPlan(CDNUtil.getFullPath(demand.getBusinessPlan()));
 
             Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
             Set<Long> ids = demandIdMapLikerIds.get(demand.getId());

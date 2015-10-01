@@ -29,13 +29,53 @@ public class FinanceVO extends BaseVO {
     private String contactPerson;// 联系人
 
     private String contact;// 联系方式
+
+    private Float funding;// 意向资金
     
     private String financingPhaseName;// 融资阶段
     
     private Boolean hasBusinessRegistered = false;// 是否工商注册
     private String reward;// 回报
 
-	public String getFinancingPhaseName() {
+    private Long projectId;// 关联的项目编号
+    
+    private String businessLicense;// 营业执照号
+
+    private String businessPlan;// 商业计划书
+
+	public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getBusinessLicense() {
+        return businessLicense;
+    }
+
+    public void setBusinessLicense(String businessLicense) {
+        this.businessLicense = businessLicense;
+    }
+
+    public String getBusinessPlan() {
+        return businessPlan;
+    }
+
+    public void setBusinessPlan(String businessPlan) {
+        this.businessPlan = businessPlan;
+    }
+
+    public Float getFunding() {
+        return funding;
+    }
+
+    public void setFunding(Float funding) {
+        this.funding = funding;
+    }
+
+    public String getFinancingPhaseName() {
 		return financingPhaseName;
 	}
 

@@ -53,6 +53,10 @@ public class DemandDaoImpl extends BaseDaoImpl<Demand, Long> implements IDemandD
             conditionStr.append(" AND created < :to");
             params.put("to", criteria.getTo());
         }
+        if (criteria.getBeused() <= 1) {
+            conditionStr.append(" AND beused = :beused");
+            params.put("beused", criteria.getBeused());
+        }
 
         Query query = null;
         StringBuilder hql = new StringBuilder();
