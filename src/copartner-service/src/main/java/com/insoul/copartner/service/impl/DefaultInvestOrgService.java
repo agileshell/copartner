@@ -51,6 +51,7 @@ public class DefaultInvestOrgService extends BaseServiceImpl implements IInvestO
         if (CollectionUtils.isNotEmpty(list)) {
             for (InvestOrg p : list) {
                 InvestOrgVO vo = new InvestOrgVO();
+                vo.setId(p.getId());
                 vo.setCreated(p.getCreated());
                 vo.setHardware(p.getHardware());
                 vo.setId(p.getId());
@@ -70,6 +71,7 @@ public class DefaultInvestOrgService extends BaseServiceImpl implements IInvestO
             throw CExceptionFactory.getException(CException.class, ResponseCode.INVEST_ORG_NOT_EXIST);
         }
         InvestOrgDetailVO detail = new InvestOrgDetailVO();
+        detail.setId(io.getId());
         detail.setContent(io.getContent());
         detail.setCreated(io.getCreated());
         detail.setHardware(io.getHardware());

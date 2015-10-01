@@ -29,6 +29,20 @@
 				</li>
 			</ul>
         </li>
+		
+		<li class="has_sub">
+			<a href="#" <c:if test="${viewname == 'contest_list' || viewname == 'contestentry_list'}"> class="subdrop" </c:if>>
+				<i class="icon-star"></i>创业大赛<span class="pull-right"><i class="icon-chevron-right"></i></span>
+			</a>
+			<ul <c:if test="${viewname == 'contest_list' || viewname == 'contestentry_list'}"> style="display: block;" </c:if>>
+			  	<li>
+					<a <c:if test="${viewname == 'contest_list'}"> class="open" </c:if> href="/contest/list"><i class="icon-heart"></i>大赛管理</a>
+				</li>
+		        <li>
+					<a <c:if test="${viewname == 'contestentry_list'}"> class="open" </c:if> href="/contestentry/list"><i class="icon-star"></i>参与者</a>
+				</li>
+			</ul>
+        </li>
         
         <li>
 			<a <c:if test="${viewname == 'news_list'}"> class="open" </c:if> href="/news/list"><i class="icon-camera"></i>新闻动态</a>

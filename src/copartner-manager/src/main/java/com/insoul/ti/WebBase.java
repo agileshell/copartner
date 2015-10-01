@@ -26,6 +26,8 @@ import com.insoul.copartner.constant.GlobalProperties;
 import com.insoul.copartner.dao.AdminDAO;
 import com.insoul.copartner.dao.IAnswerDao;
 import com.insoul.copartner.dao.IContentDao;
+import com.insoul.copartner.dao.IContestDAO;
+import com.insoul.copartner.dao.IContestEntryDAO;
 import com.insoul.copartner.dao.ICourseDao;
 import com.insoul.copartner.dao.IDemandCommentsDao;
 import com.insoul.copartner.dao.IDemandDao;
@@ -141,6 +143,12 @@ public class WebBase implements ServletContextAware {
 
     @Resource
     protected IInvestOrgDAO investOrgDAO;
+
+    @Resource
+    protected IContestDAO contestDAO;
+
+    @Resource
+    protected IContestEntryDAO contestEntryDAO;
     
     protected static final String COMMONS_RESOURCES_MANAGER_VIEW_NAME = "resources_manager";
     

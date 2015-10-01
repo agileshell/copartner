@@ -43,12 +43,14 @@ public class DefaultPioneerParkService extends BaseServiceImpl implements IPione
                 .getFrom()) : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
                 : null);
+        criteria.setProvince(requestData.getProvince());
         Long count = pioneerParkDAO.countPioneerPark(criteria);
         List<PioneerPark> list = pioneerParkDAO.queryPioneerPark(criteria);
         List<PioneerParkVO> pioneerParkVOs = new ArrayList<PioneerParkVO>();
         if (CollectionUtils.isNotEmpty(list)) {
             for (PioneerPark p : list) {
                 PioneerParkVO vo = new PioneerParkVO();
+                vo.setId(p.getId());
                 vo.setAddress(p.getAddress());
                 vo.setAddressDetail(p.getAddressDetail());
                 vo.setArea(p.getArea());
@@ -72,6 +74,7 @@ public class DefaultPioneerParkService extends BaseServiceImpl implements IPione
             throw CExceptionFactory.getException(CException.class, ResponseCode.PIONEER_PARK_NOT_EXIST);
         }
         PioneerParkDetailVO detail = new PioneerParkDetailVO();
+        detail.setId(pioneerPark.getId());
         detail.setAddress(pioneerPark.getAddress());
         detail.setAddressDetail(pioneerPark.getAddressDetail());
         detail.setArea(pioneerPark.getArea());

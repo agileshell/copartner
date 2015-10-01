@@ -90,6 +90,10 @@ public enum ResponseCode {
 
     INVEST_ORG_NOT_EXIST(30600),
 
+    CONTEST_NOT_EXIST(30700),
+
+    CONTEST_ENTRY_NOT_EXIST(30800),
+
     ;
 
     private int value;

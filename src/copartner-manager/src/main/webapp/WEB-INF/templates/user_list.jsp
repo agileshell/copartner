@@ -83,10 +83,10 @@
 													<td>${c.name}</td>
 													<td>
 														<c:if test="${c.authenticated}">
-															<i style="color: #39bd94;">已认证</i>
+															<span style="color: #39bd94;">已认证</span>
 														</c:if>
 														<c:if test="${!c.authenticated}">
-															<a href="/user/authentication/${c.id}"><i style="color: #ff6600;">未认证</i></a>
+															<a href="/user/authentication/${c.id}"><span style="color: #ff6600;">未认证</span></a>
 														</c:if>
 													</td>
 													<td>
@@ -120,7 +120,7 @@
 															</a>
 															<c:if test="${!c.authenticated}">
 																<a class="btn btn-xs btn-default" href="/user/authentication/${c.id}" target="_self">
-																	认证审核
+																	审核
 																</a>
 															</c:if>
 															<!--

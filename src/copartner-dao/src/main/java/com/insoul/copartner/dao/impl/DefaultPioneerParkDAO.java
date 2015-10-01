@@ -36,19 +36,19 @@ public class DefaultPioneerParkDAO extends BaseDaoImpl<PioneerPark, Long> implem
     private Query generateQuery(PioneerParkCriteria criteria, boolean count) {
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
-        if (StringUtils.isNoneBlank(criteria.getName())) {
+        if (StringUtils.isNotBlank(criteria.getName())) {
             conditionStr.append(" AND name LIKE :name ");
             params.put("name", "%" + criteria.getName() + "%");
         }
-        if (StringUtils.isNoneBlank(criteria.getProvince())) {
+        if (StringUtils.isNotBlank(criteria.getProvince())) {
             conditionStr.append(" AND province LIKE :province ");
             params.put("province", "%" + criteria.getProvince() + "%");
         }
-        if (StringUtils.isNoneBlank(criteria.getCity())) {
+        if (StringUtils.isNotBlank(criteria.getCity())) {
             conditionStr.append(" AND city LIKE :city ");
             params.put("city", "%" + criteria.getCity() + "%");
         }
-        if (StringUtils.isNoneBlank(criteria.getArea())) {
+        if (StringUtils.isNotBlank(criteria.getArea())) {
             conditionStr.append(" AND area LIKE :area ");
             params.put("area", "%" + criteria.getArea() + "%");
         }

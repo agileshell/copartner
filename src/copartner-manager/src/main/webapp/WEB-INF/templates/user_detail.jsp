@@ -44,10 +44,10 @@
 											<label class="col-lg-2 control-label" >身份认证:</label>
 											<div class="col-lg-10">
 												<c:if test="${user.authenticated}">
-													<i style="color: #39bd94;">已认证</i>
+													<span style="color: #39bd94;">已认证</span>
 												</c:if>
 												<c:if test="${!user.authenticated}">
-													<a href="/user/authentication/${user.id}"><i style="color: #ff6600;">未认证</i></a>
+													<a href="/user/authentication/${user.id}"><span style="color: #ff6600;">未认证</span></a>
 												</c:if>
 											</div>
 										</div>
@@ -75,10 +75,10 @@
 											<div class="col-lg-10">
 												${user.email}&nbsp;&nbsp;|&nbsp;&nbsp;
 												<c:if test="${user.isEmailVerified}">
-													<i style="color: #39bd94;">已认证</i>
+													<span style="color: #39bd94;">已认证</span>
 												</c:if>
 												<c:if test="${!user.isEmailVerified}">
-													<i style="color: #ff6600;">未认证</i>
+													<span style="color: #ff6600;">未认证</span>
 												</c:if>
 											</div>
 										</div>
@@ -88,10 +88,10 @@
 											<div class="col-lg-10">
 												${user.mobile}&nbsp;&nbsp;|&nbsp;&nbsp;
 												<c:if test="${user.isMobileVerified}">
-													<i style="color: #39bd94;">已认证</i>
+													<span style="color: #39bd94;">已认证</span>
 												</c:if>
 												<c:if test="${!user.isMobileVerified}">
-													<i style="color: #ff6600;">未认证</i>
+													<span style="color: #ff6600;">未认证</span>
 												</c:if>
 											</div>
 										</div>

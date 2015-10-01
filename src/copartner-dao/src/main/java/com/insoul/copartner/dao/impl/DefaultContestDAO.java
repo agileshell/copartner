@@ -9,9 +9,9 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
-import com.insoul.copartner.dao.IInvestOrgDAO;
-import com.insoul.copartner.dao.criteria.InvestOrgCriteria;
-import com.insoul.copartner.domain.InvestOrg;
+import com.insoul.copartner.dao.IContestDAO;
+import com.insoul.copartner.dao.criteria.ContestCriteria;
+import com.insoul.copartner.domain.Contest;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -20,33 +20,25 @@ import com.insoul.copartner.domain.InvestOrg;
  * @since 2015年9月29日 上午11:32:11
  */
 @Repository
-public class DefaultInvestOrgDAO extends BaseDaoImpl<InvestOrg, Long> implements IInvestOrgDAO {
+public class DefaultContestDAO extends BaseDaoImpl<Contest, Long> implements IContestDAO {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<InvestOrg> queryInvestOrg(InvestOrgCriteria criteria) {
+    public List<Contest> queryContest(ContestCriteria criteria) {
         return generateQuery(criteria, false).getResultList();
     }
 
     @Override
-    public Long countInvestOrg(InvestOrgCriteria criteria) {
+    public Long countContest(ContestCriteria criteria) {
         return (Long) generateQuery(criteria, true).getSingleResult();
     }
     
-    private Query generateQuery(InvestOrgCriteria criteria, boolean count) {
+    private Query generateQuery(ContestCriteria criteria, boolean count) {
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
-        if (StringUtils.isNotBlank(criteria.getName())) {
-            conditionStr.append(" AND name LIKE :name ");
-            params.put("name", "%" + criteria.getName() + "%");
-        }
-        if (StringUtils.isNotBlank(criteria.getSpecials())) {
-            conditionStr.append(" AND specials LIKE :specials ");
-            params.put("specials", "%" + criteria.getSpecials() + "%");
-        }
-        if (StringUtils.isNotBlank(criteria.getHardware())) {
-            conditionStr.append(" AND hardware LIKE :hardware ");
-            params.put("hardware", "%" + criteria.getHardware() + "%");
+        if (StringUtils.isNotBlank(criteria.getTitle())) {
+            conditionStr.append(" AND title LIKE :title ");
+            params.put("title", "%" + criteria.getTitle() + "%");
         }
         
         if (null != criteria.getFrom()) {
@@ -61,10 +53,10 @@ public class DefaultInvestOrgDAO extends BaseDaoImpl<InvestOrg, Long> implements
         Query query = null;
         StringBuilder hql = new StringBuilder();
         if (count) {
-            hql.append("SELECT COUNT(*) FROM InvestOrg WHERE 1 = 1 ").append(conditionStr);
+            hql.append("SELECT COUNT(*) FROM Contest WHERE 1 = 1 ").append(conditionStr);
             query = createQuery(hql.toString(), params);
         } else {
-            hql.append("FROM InvestOrg WHERE 1=1").append(conditionStr).append(" ORDER BY created DESC");
+            hql.append("FROM Contest WHERE 1=1").append(conditionStr).append(" ORDER BY created DESC");
             query = createQuery(hql.toString(), params);
             if ((criteria.getLimit() != null) && (criteria.getLimit() != 0)) {
                 query.setMaxResults(criteria.getLimit());

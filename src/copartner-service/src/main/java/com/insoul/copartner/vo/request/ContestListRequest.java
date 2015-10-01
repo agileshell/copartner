@@ -1,32 +1,14 @@
 package com.insoul.copartner.vo.request;
 
-public class PoineerParkListRequest extends PaginationRequest {
+public class ContestListRequest extends PaginationRequest {
 
     private static final long serialVersionUID = 2851169942975916364L;
-    
+
     private Long from;
 
     private Long to;
 
     private String keyword;
-    
-    private String province;// 省
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
 
     public Long getFrom() {
         return from;
@@ -43,4 +25,13 @@ public class PoineerParkListRequest extends PaginationRequest {
     public void setTo(Long to) {
         this.to = to;
     }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
 }
