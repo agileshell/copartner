@@ -345,13 +345,14 @@
 					})
 				});
 
+				// 拍照添加文件
 				function getImage() {
 					var c = plus.camera.getCamera();
 					c.captureImage(function(e) {
 						plus.io.resolveLocalFileSystemURL(e, function(entry) {
 							var s = entry.toLocalURL() + "?version=" + new Date().getTime();
 							doc.getElementById("head-img").src = s;
-							upload(entry);
+							upload(entry.fullPath);
 						}, function(e) {
 							console.log("读取拍照文件错误：" + e.message);
 						});
@@ -361,48 +362,16 @@
 						filename: "_doc/head.jpg"
 					})
 				}
+				// 从相册添加文件
+				function galleryImg(){
+					plus.gallery.pick(function(p){
+						var s = p + "?version=" + new Date().getTime();
+						doc.getElementById("head-img").src = s;
+						upload(p);
+					});
+				}
 
-				function galleryImg() {
-					plus.gallery.pick(function(a) {
-						plus.io.resolveLocalFileSystemURL(a, function(entry) {
-							plus.io.resolveLocalFileSystemURL("_doc/", function(root) {
-								root.getFile("head.jpg", {}, function(file) {
-									//文件已存在
-									file.remove(function() {
-										entry.copyTo(root, 'head.jpg', function(e) {
-												var path = e.fullPath + "?version=" + new Date().getTime();
-												doc.getElementById("head-img").src = path;
-												upload(e);
-											},
-											function(e) {
-												console.log('copy image fail:' + e.message);
-											});
-									}, function() {
-										console.log("delete image fail:" + e.message);
-									});
-								}, function() {
-									//文件不存在
-									entry.copyTo(root, 'head.jpg', function(e) {
-											var path = e.fullPath + "?version=" + new Date().getTime();
-											doc.getElementById("head-img").src = path;
-											upload(e);
-										},
-										function(e) {
-											console.log('copy image fail:' + e.message);
-										});
-								});
-							}, function(e) {
-								console.log("get _www folder fail");
-							})
-						}, function(e) {
-							console.log("读取拍照文件错误：" + e.message);
-						});
-					}, function(a) {}, {
-						filter: "image"
-					})
-				};
-
-				function upload(f) {
+				function upload(p) {
 					var wt = plus.nativeUI.showWaiting();
 					var task = plus.uploader.createUpload('http://123.57.55.59:8080/image', {
 							method: "POST"
@@ -423,7 +392,7 @@
 							}
 						}
 					);
-					task.addFile(f.fullPath, {
+					task.addFile(p, {
 						key: 'image'
 					});
 					task.addData("needThumbnail", "true");
