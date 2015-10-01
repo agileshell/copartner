@@ -125,11 +125,11 @@ public class CourseController extends WebBase {
         String url = StringUtils.EMPTY;
         if (media != null) {
             String fileType = FileUtil.getFileType(media.getOriginalFilename());
-            if (StringUtils.isNoneBlank(fileType)) {
+            if (StringUtils.isNotBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
                     url = CDNUtil.uploadFile(media.getInputStream(), fileName);
-                    if (StringUtils.isNoneBlank(url)) course.setUrl(url);
+                    if (StringUtils.isNotBlank(url)) course.setUrl(url);
                 } catch (Exception e) {
                     log.error("UploadFile Media Error.", e);
                 }
@@ -159,11 +159,11 @@ public class CourseController extends WebBase {
 		String url = StringUtils.EMPTY;
 		if (media != null) {
             String fileType = FileUtil.getFileType(media.getOriginalFilename());
-            if (StringUtils.isNoneBlank(fileType)) {
+            if (StringUtils.isNotBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
                     url = CDNUtil.uploadFile(media.getInputStream(), fileName);
-                    if (StringUtils.isNoneBlank(url)) course.setUrl(url);
+                    if (StringUtils.isNotBlank(url)) course.setUrl(url);
                 } catch (Exception e) {
                     log.error("UploadFile Media Error.", e);
                 }

@@ -517,7 +517,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
                 userDetailVO.setStartupRole(startupRoleVO);
             }
         }
-        if (StringUtils.isNoneBlank(user.getDomains())) {
+        if (StringUtils.isNotBlank(user.getDomains())) {
             Set<IndustryDomainVO> domains = new HashSet<IndustryDomainVO>();
 
             StringBuilder fullDomains = new StringBuilder();

@@ -114,11 +114,11 @@ public class ContestController extends WebBase {
 		MultipartFile image = request.getCoverImg();
 		if (image != null) {
 			String fileType = FileUtil.getFileType(image.getOriginalFilename());
-			if (StringUtils.isNoneBlank(fileType)) {
+			if (StringUtils.isNotBlank(fileType)) {
 			    String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
 	            try {
 	                String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-	                if (StringUtils.isNoneBlank(path)) contest.setCoverImg(path);
+	                if (StringUtils.isNotBlank(path)) contest.setCoverImg(path);
 	            } catch (Exception e) {
 	                log.error("UploadFile Error.", e);
 	            }
@@ -141,7 +141,7 @@ public class ContestController extends WebBase {
 		String path = StringUtils.EMPTY;
 		if (image != null) {
 			String fileType = FileUtil.getFileType(image.getOriginalFilename());
-			if (StringUtils.isNoneBlank(fileType)) {
+			if (StringUtils.isNotBlank(fileType)) {
 			    String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
 	            try {
 	                path = CDNUtil.uploadFile(image.getInputStream(), fileName);
@@ -151,7 +151,7 @@ public class ContestController extends WebBase {
 			}
 		}
 		Contest contest = new Contest();
-		if (StringUtils.isNoneBlank(path)) contest.setCoverImg(path);
+		if (StringUtils.isNotBlank(path)) contest.setCoverImg(path);
 		Date time = new Date();
 		contest.setUpdated(time);
 		contest.setCreated(time);

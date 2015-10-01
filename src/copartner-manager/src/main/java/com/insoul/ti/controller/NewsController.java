@@ -120,11 +120,11 @@ public class NewsController extends WebBase {
         MultipartFile image = request.getCoverImg();
         if (image != null) {
             String fileType = FileUtil.getFileType(image.getOriginalFilename());
-            if (StringUtils.isNoneBlank(fileType)) {
+            if (StringUtils.isNotBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
                     String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-                    if (StringUtils.isNoneBlank(path)) news.setCoverImg(path);
+                    if (StringUtils.isNotBlank(path)) news.setCoverImg(path);
                 } catch (Exception e) {
                     log.error("UploadFile Error.", e);
                 }
@@ -147,7 +147,7 @@ public class NewsController extends WebBase {
         String path = StringUtils.EMPTY;
         if (image != null) {
             String fileType = FileUtil.getFileType(image.getOriginalFilename());
-            if (StringUtils.isNoneBlank(fileType)) {
+            if (StringUtils.isNotBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
                     path = CDNUtil.uploadFile(image.getInputStream(), fileName);
@@ -157,7 +157,7 @@ public class NewsController extends WebBase {
             }
         }
         News news = new News();
-        if (StringUtils.isNoneBlank(path)) news.setCoverImg(path);
+        if (StringUtils.isNotBlank(path)) news.setCoverImg(path);
         news.setAdminUserId(getAdminId());
         news.setArticle(request.getArticle());
         news.setClicks(0L);

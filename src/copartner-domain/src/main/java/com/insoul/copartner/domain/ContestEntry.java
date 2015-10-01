@@ -8,7 +8,7 @@ import javax.persistence.Table;
  * 参赛项目
  */
 @Entity
-@Table(name = "contest", catalog = "copartner")
+@Table(name = "Contest_entry", catalog = "copartner")
 public class ContestEntry extends BaseEntity {
 
     private static final long serialVersionUID = -24101514121358706L;
@@ -29,7 +29,7 @@ public class ContestEntry extends BaseEntity {
     private String coverImg;// 封皮
     
     @Column(name = "praise")
-    private Long praise;// 赞的次数
+    private Long praise = 0L;// 赞的次数
     
     @Column(name = "introduction", nullable = false)
     private String introduction;// 项目简介
@@ -78,6 +78,7 @@ public class ContestEntry extends BaseEntity {
     }
 
     public Long getPraise() {
+        if (praise == null) return 0L;
         return praise;
     }
 

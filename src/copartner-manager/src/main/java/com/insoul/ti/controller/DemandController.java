@@ -117,11 +117,11 @@ public class DemandController extends WebBase {
         MultipartFile image = request.getBusinessPlan();
         if (image != null) {
             String fileType = FileUtil.getFileType(image.getOriginalFilename());
-            if (StringUtils.isNoneBlank(fileType)) {
+            if (StringUtils.isNotBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
                     String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-                    if (StringUtils.isNoneBlank(path)) demand.setBusinessPlan(path);
+                    if (StringUtils.isNotBlank(path)) demand.setBusinessPlan(path);
                 } catch (Exception e) {
                     log.error("UploadFile Error.", e);
                 }

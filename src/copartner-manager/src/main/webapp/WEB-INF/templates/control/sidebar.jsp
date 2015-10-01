@@ -39,7 +39,7 @@
 					<a <c:if test="${viewname == 'contest_list'}"> class="open" </c:if> href="/contest/list"><i class="icon-heart"></i>大赛管理</a>
 				</li>
 		        <li>
-					<a <c:if test="${viewname == 'contestentry_list'}"> class="open" </c:if> href="/contestentry/list"><i class="icon-star"></i>参与者</a>
+					<a <c:if test="${viewname == 'contestentry_list'}"> class="open" </c:if> href="/contestentry/list"><i class="icon-star"></i>参赛项目</a>
 				</li>
 			</ul>
         </li>

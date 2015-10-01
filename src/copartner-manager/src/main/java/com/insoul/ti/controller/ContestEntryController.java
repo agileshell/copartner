@@ -114,11 +114,11 @@ public class ContestEntryController extends WebBase {
 		MultipartFile image = request.getCoverImg();
 		if (image != null) {
 			String fileType = FileUtil.getFileType(image.getOriginalFilename());
-			if (StringUtils.isNoneBlank(fileType)) {
+			if (StringUtils.isNotBlank(fileType)) {
 			    String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
 	            try {
 	                String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-	                if (StringUtils.isNoneBlank(path)) contestEntry.setCoverImg(path);
+	                if (StringUtils.isNotBlank(path)) contestEntry.setCoverImg(path);
 	            } catch (Exception e) {
 	                log.error("UploadFile Error.", e);
 	            }
@@ -143,7 +143,7 @@ public class ContestEntryController extends WebBase {
 		String path = StringUtils.EMPTY;
 		if (image != null) {
 			String fileType = FileUtil.getFileType(image.getOriginalFilename());
-			if (StringUtils.isNoneBlank(fileType)) {
+			if (StringUtils.isNotBlank(fileType)) {
 			    String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
 	            try {
 	                path = CDNUtil.uploadFile(image.getInputStream(), fileName);
@@ -153,14 +153,11 @@ public class ContestEntryController extends WebBase {
 			}
 		}
 		ContestEntry contestEntry = new ContestEntry();
-		if (StringUtils.isNoneBlank(path)) contestEntry.setCoverImg(path);
+		if (StringUtils.isNotBlank(path)) contestEntry.setCoverImg(path);
 		Date time = new Date();
 		contestEntry.setUpdated(time);
 		contestEntry.setCreated(time);
-		contestEntry.setStatus(request.getStatus());
-        contestEntry.setIntroduction(request.getIntroduction());
         contestEntry.setStatus(request.getStatus());
-        contestEntry.setIntroduction(request.getIntroduction());
         contestEntry.setContact(request.getContact());
         contestEntry.setContestId(request.getContestId());
         contestEntry.setIntroduction(request.getIntroduction());

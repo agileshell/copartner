@@ -98,11 +98,11 @@ public class InvestOrgController extends WebBase {
 	    MultipartFile image = request.getLogo();
         if (image != null) {
             String fileType = FileUtil.getFileType(image.getOriginalFilename());
-            if (StringUtils.isNoneBlank(fileType)) {
+            if (StringUtils.isNotBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
                     String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-                    if (StringUtils.isNoneBlank(path)) investOrg.setLogo(path);
+                    if (StringUtils.isNotBlank(path)) investOrg.setLogo(path);
                 } catch (Exception e) {
                     log.error("UploadFile Error.", e);
                 }
@@ -124,11 +124,11 @@ public class InvestOrgController extends WebBase {
         MultipartFile image = request.getLogo();
         if (image != null) {
             String fileType = FileUtil.getFileType(image.getOriginalFilename());
-            if (StringUtils.isNoneBlank(fileType)) {
+            if (StringUtils.isNotBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
                     String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-                    if (StringUtils.isNoneBlank(path)) investOrg.setLogo(path);
+                    if (StringUtils.isNotBlank(path)) investOrg.setLogo(path);
                 } catch (Exception e) {
                     log.error("UploadFile Error.", e);
                 }

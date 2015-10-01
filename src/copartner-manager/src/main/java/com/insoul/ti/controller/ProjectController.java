@@ -117,11 +117,11 @@ public class ProjectController extends WebBase {
         MultipartFile image = request.getBusinessPlan();
         if (image != null) {
             String fileType = FileUtil.getFileType(image.getOriginalFilename());
-            if (StringUtils.isNoneBlank(fileType)) {
+            if (StringUtils.isNotBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
                     String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-                    if (StringUtils.isNoneBlank(path)) project.setBusinessPlan(path);
+                    if (StringUtils.isNotBlank(path)) project.setBusinessPlan(path);
                 } catch (Exception e) {
                     log.error("UploadFile Error.", e);
                 }
@@ -130,11 +130,11 @@ public class ProjectController extends WebBase {
         MultipartFile logo = request.getLogo();
         if (logo != null) {
             String fileType = FileUtil.getFileType(logo.getOriginalFilename());
-            if (StringUtils.isNoneBlank(fileType)) {
+            if (StringUtils.isNotBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
                     String path = CDNUtil.uploadFile(logo.getInputStream(), fileName);
-                    if (StringUtils.isNoneBlank(path)) project.setLogo(path);
+                    if (StringUtils.isNotBlank(path)) project.setLogo(path);
                 } catch (Exception e) {
                     log.error("UploadFile Error.", e);
                 }

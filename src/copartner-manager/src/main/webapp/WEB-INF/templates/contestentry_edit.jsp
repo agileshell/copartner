@@ -2,15 +2,16 @@
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <head>
-	<title>新建创业大赛</title>
+	<title>编辑参赛项目</title>
 	<link href="${cdn}js/kindeditor/themes/default/default.css" rel="stylesheet" />
+	<link rel="stylesheet" href="${cdn}css/prettyPhoto.css"></link>
 </head>
 <body>
 	<div class="mainbar">
 		<div class="page-head">
-			<h2 class="pull-left">创业大赛管理</h2>
+			<h2 class="pull-left">参赛项目管理</h2>
 			<div class="bread-crumb pull-right">
-				<a class="btn btn-default btn-sm" href="/contest/add">新建创业大赛</a>
+				<a class="btn btn-default btn-sm" href="/contestentry/add">新建参赛项目</a>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -21,45 +22,66 @@
 					<div class="col-md-12">
 						<div class="widget wgreen">
 							<div class="widget-head">
-								<div class="pull-left">新建创业大赛</div>
+								<div class="pull-left">编辑参赛项目</div>
 								<div class="clearfix"></div>
 							</div>
 							<div class="widget-content">
 								<div class="padd">
-									<form id="add_contest_form" class="form-horizontal" role="form" action="/contest/save" method="post" enctype="multipart/form-data">
+									<form id="add_contestentry_form" class="form-horizontal" role="form" action="/contestentry/update/${contestEntry.id}" method="post" enctype="multipart/form-data">
 										
 										<div class="tabbable" style="margin-bottom: 18px;">
 					                      <ul class="nav nav-tabs">
 					                        <li class="active"><a href="#bash_info" data-toggle="tab">基本信息</a></li>
 					                        <li><a href="#extend_info" data-toggle="tab">图文信息</a></li>
-					                        <li><a href="#registration_info" data-toggle="tab">报名信息</a></li>
 					                      </ul>
 					                      <div class="tab-content" style="padding-bottom: 9px; border-bottom: 1px solid #ddd;">
 					                        <div class="tab-pane active" id="bash_info">
 					                        	<div class="form-group">
-													<label class="col-lg-2 control-label" for="title">大赛标题<span class="cofrequired">*</span>:</label>
+													<label class="col-lg-2 control-label" for="name">参赛项目名称<span class="cofrequired">*</span>:</label>
 													<div class="col-lg-10">
-														<input name="title" id="title" type="text" class="form-control" placeholder="大赛标题"></input>
+														<input value="${contestEntry.name}" name="name" id="name" type="text" class="form-control" placeholder="参赛项目名称"></input>
+													</div>
+												</div>
+					                        	<div class="form-group">
+													<label class="col-lg-2 control-label" for="contestId">大赛ID<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<input value="${contestEntry.contestId}" name="contestId" id="contestId" type="text" class="form-control" placeholder="大赛ID"></input>
+													</div>
+												</div>
+					                        	<div class="form-group">
+													<label class="col-lg-2 control-label" for="userName">参赛者姓名<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<input value="${contestEntry.userName}" name="userName" id="userName" type="text" class="form-control" placeholder="参赛者姓名"></input>
+													</div>
+												</div>
+					                        	<div class="form-group">
+													<label class="col-lg-2 control-label" for="contact">参赛者联系方式:</label>
+													<div class="col-lg-10">
+														<input value="${contestEntry.contact}" name="contact" id="contact" type="text" class="form-control" placeholder="参赛者联系方式"></input>
 													</div>
 												</div>
 												<div class="form-group">
 													<label class="col-lg-2 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
 													<div class="col-lg-10">
 														<jsp:include page="control/commons-status.jsp">
-															<jsp:param value="active" name="status"/>
+															<jsp:param value="${contestEntry.status}" name="status"/>
 															<jsp:param value="false" name="has_all"/>
 															<jsp:param value="false" name="update"/>
 														</jsp:include>
 													</div>
 												</div>
-												<div class="form-group">
-													<label class="col-lg-2 control-label" for="introduction">大赛简介<span class="cofrequired">*</span>:</label>
-													<div class="col-lg-10">
-														<textarea name="introduction" id="introduction" class="form-control" rows="3" placeholder="大赛简介"></textarea>
-													</div>
-												</div>
 					                        </div>
 					                        <div class="tab-pane" id="extend_info">
+					                        	<div class="form-group">
+													<label class="col-lg-2 control-label">封皮:</label>
+													<div class="col-lg-10">
+													<div class="gallery">
+								                      	<a href="${cdnDomain}${contestEntry.coverImg}" class="prettyPhoto[pp_gal]">
+								                      		<img src="${cdnDomain}${contestEntry.coverImg}" alt="${contestEntry.title}" width="500">
+								                      	</a>
+								                      </div>
+													</div>
+												</div>
 					                        	<div class="form-group">
 													<label class="col-lg-2 control-label" for="coverImg">封皮<span class="cofrequired">*</span>:</label>
 													<div class="col-lg-10">
@@ -67,17 +89,9 @@
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="col-lg-2 control-label" for="rules">大赛规则:</label>
+													<label class="col-lg-2 control-label" for="introduction">项目简介:</label>
 													<div class="col-lg-10">
-														<textarea name="rules" id="rules" class="form-control" rows="3" placeholder="大赛规则"></textarea>
-													</div>
-												</div>
-					                        </div>
-					                        <div class="tab-pane" id="registration_info">
-					                        	<div class="form-group">
-													<label class="col-lg-2 control-label" for="registration">报名信息:</label>
-													<div class="col-lg-10">
-														<textarea name="registration" id="registration" class="form-control" rows="3" placeholder="报名信息"></textarea>
+														<textarea name="introduction" id="introduction" class="form-control" rows="3" placeholder="项目简介">${contestEntry.introduction}</textarea>
 													</div>
 												</div>
 					                        </div>
@@ -104,11 +118,12 @@
 	<script charset="utf-8" src="${cdn}js/kindeditor/kindeditor-all-min.js"></script>
 	<script charset="utf-8" src="${cdn}js/kindeditor/lang/zh_CN.js"></script>
 	<script charset="utf-8" src="${cdn}js/kindeditor/plugins/autoheight/autoheight.js"></script>
+	<script src="${cdn}js/jquery.prettyPhoto.js"></script>
 	
 	<script>
 		$(document).ready(function() {
 		    KindEditor.ready(function(K) {
-		        window.editor = K.create('#rules', {
+		        window.editor = K.create('#introduction', {
 		            langType : 'zh_CN',
 		            uploadJson : '/editor/file_upload',
 		            items : [
@@ -132,48 +147,26 @@
 		        });
 		    });
 		    
-		    KindEditor.ready(function(K) {
-		        window.editor = K.create('#registration', {
-		            langType : 'zh_CN',
-		            uploadJson : '/editor/file_upload',
-		            items : [
-		                     'source', '|', 'undo', 'redo', '|', 'preview', 'template', 'code', 'cut', 'copy', 'paste',
-		                     'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-		                     'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-		                     'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
-		                     'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-		                     'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
-		                     'flash', 'media', 'insertfile', 'table', 'hr', 'baidumap', 'pagebreak',
-		                     'anchor', 'link', 'unlink'
-		            ],
-		            minHeight : 300,
-		            width: "100%",
-		            minWidth: 300,
-		            autoHeightMode : true,
-		            afterCreate : function() {
-		                this.loadPlugin('autoheight');
-		            },
-		            afterBlur: function(){this.sync();}
-		        });
-		    });
-		    
-			$('#title').focus();
-	        $('#add_contest_form').validate({
+			$('#name').focus();
+	        $('#add_contestentry_form').validate({
 	        	onsubmit:true,
         	  	onfocusout:false,
         	  	onkeyup:false,
         	  	onkeyup:false,
         	  	onclick:false,
 	            rules: {
-	            	title: {
+	            	name: {
 	                    required: true,
 	                    minlength: 2,
 	                    maxlength: 64
 	                },
-	                introduction: {
-	                	required: true,
+	                contestId: {
+	                	required: true
+	                },
+	                userName: {
+	                    required: true,
 	                    minlength: 2,
-	                    maxlength: 256
+	                    maxlength: 64
 	                },
 	                coverImg: {
 	                	required: true
@@ -181,15 +174,18 @@
 	            },
 	            messages: {
 	            	title: {
-	                    required: '大赛标题不能为空',
-	                    minlength: "大赛标题长度不能小于2个字符",
-	                    maxlength: "大赛标题长度不能大于64个字符"
+	                    required: '参赛项目名称不能为空',
+	                    minlength: "参赛项目名称长度不能小于2个字符",
+	                    maxlength: "参赛项目名称长度不能大于64个字符"
 	                },
-	                introduction: {
-	                    required: '大赛简介不能为空',
-	                    minlength: "大赛简介长度不能小于2个字符",
-	                    maxlength: "大赛简介长度不能大于256个字符"
+	                contestId: {
+	                    required: '大赛ID不能为空'
 	                },
+	                userName: {
+	                	required: '参赛者姓名不能为空',
+	                    minlength: "参赛者姓名长度不能小于2个字符",
+	                    maxlength: "参赛者姓名长度不能大于64个字符"
+	                }
 	                coverImg: {
 	                	required: "必须上传封面图片"
 	                }
