@@ -99,9 +99,9 @@ public class ContestEntryController extends WebBase {
 	}
 
 	@RequestMapping("/edit/{contestEntryId}")
-	public ModelAndView edit(@PathVariable Long contestId, ViewRequest req) {
+	public ModelAndView edit(@PathVariable Long contestEntryId, ViewRequest req) {
 		ModelAndView mv = createModelView(CONTEST_ENTRY_EDIT, req);
-		ContestEntry contestEntry = contestEntryDAO.get(contestId);
+		ContestEntry contestEntry = contestEntryDAO.get(contestEntryId);
 		mv.addObject("contestEntry", contestEntry);
 		mv.addObject("viewname", CONTEST_ENTRY_LIST);
 		return mv;

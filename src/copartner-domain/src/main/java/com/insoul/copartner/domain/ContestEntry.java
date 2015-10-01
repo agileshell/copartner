@@ -8,7 +8,7 @@ import javax.persistence.Table;
  * 参赛项目
  */
 @Entity
-@Table(name = "Contest_entry", catalog = "copartner")
+@Table(name = "contest_entry", catalog = "copartner")
 public class ContestEntry extends BaseEntity {
 
     private static final long serialVersionUID = -24101514121358706L;

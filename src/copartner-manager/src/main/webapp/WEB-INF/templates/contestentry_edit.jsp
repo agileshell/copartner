@@ -77,7 +77,7 @@
 													<div class="col-lg-10">
 													<div class="gallery">
 								                      	<a href="${cdnDomain}${contestEntry.coverImg}" class="prettyPhoto[pp_gal]">
-								                      		<img src="${cdnDomain}${contestEntry.coverImg}" alt="${contestEntry.title}" width="500">
+								                      		<img src="${cdnDomain}${contestEntry.coverImg}" alt="${contestEntry.name}" width="500">
 								                      	</a>
 								                      </div>
 													</div>

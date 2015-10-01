@@ -26,7 +26,7 @@
 								<div class="clearfix"></div>
 							</div>
 							<div class="widget-content">
-								<div class="padd">
+								<div class="padd form-horizontal">
 									<div class="form-group">
 										<label class="col-lg-2 control-label" for="name">参赛项目名称:</label>
 										<div class="col-lg-10">${contestEntry.name}</div>
@@ -52,7 +52,7 @@
 										<div class="col-lg-10">
 										<div class="gallery">
 					                      	<a href="${cdnDomain}${contestEntry.coverImg}" class="prettyPhoto[pp_gal]">
-					                      		<img src="${cdnDomain}${contestEntry.coverImg}" alt="${contestEntry.title}" width="500">
+					                      		<img src="${cdnDomain}${contestEntry.coverImg}" alt="${contestEntry.name}" width="500">
 					                      	</a>
 					                      </div>
 										</div>

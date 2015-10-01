@@ -26,7 +26,7 @@
 								<div class="clearfix"></div>
 							</div>
 							<div class="widget-content">
-								<div class="padd">
+								<div class="padd form-horizontal">
 									
 									<div class="form-group">
 										<label class="col-lg-2 control-label" for="title">大赛标题:</label>
