@@ -135,7 +135,7 @@
 	                }
 	            },
 	            messages: {
-	            	name: {
+	            	projectName: {
 	                    required: '融资名称不能为空',
 	                    minlength: "融资名称长度不能小于2个字符",
 	                    maxlength: "融资名称长度不能大于64个字符"
