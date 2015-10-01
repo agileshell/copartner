@@ -115,15 +115,12 @@ public class DemandController extends WebBase {
     public ModelAndView update(@PathVariable Long demandId, @Valid DemandRequest request, BindingResult result) {
         Demand demand = demandDAO.get(demandId);
         MultipartFile image = request.getBusinessPlan();
-        log.error("getBusinessLicense : " + request.getBusinessLicense());
-        log.error("getBusinessPlan : " + request.getBusinessPlan());
         if (image != null) {
             String fileType = FileUtil.getFileType(image.getOriginalFilename());
             if (StringUtils.isNoneBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
                     String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-                    log.error("CDNUtil.uploadFile : " + path);
                     if (StringUtils.isNoneBlank(path)) demand.setBusinessPlan(path);
                 } catch (Exception e) {
                     log.error("UploadFile Error.", e);
