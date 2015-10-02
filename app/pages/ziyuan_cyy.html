@@ -51,8 +51,9 @@
 		 //打开详情
 		var detailWebview = null; 
 		function open_detail(id) {
+			console.log('11');
 			if (!detailWebview) {
-				detailWebview = plus.webview.getWebviewById('ziyuan_detail');
+				detailWebview = plus.webview.getWebviewById('ziyuan_cyy_detail');
 			}
 			mui.fire(detailWebview, 'mui.view.beforeshow', {
 				guid: id

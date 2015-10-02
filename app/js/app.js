@@ -999,7 +999,7 @@ owner.submitAuthenticate = function(info, callback) {
 	};
 
 	/**
-	 * 获取pioneerparks列表
+	 * 获取pioneerpark列表
 	 **/
 	owner.listPioneerparks = function(province, successCallback, errorCallback) {
 		mui.ajax(owner.apiURL + 'pioneerparks', {
@@ -1019,7 +1019,23 @@ owner.submitAuthenticate = function(info, callback) {
 		})
 	};
 	/**
-	 *pioneerparks对象包装
+	 * 获取pioneerpark详情
+	 **/
+	owner.getPioneerparkByGuid = function(guid, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'pioneerpark/' + guid, {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+	/**
+	 *pioneerpark对象包装
 	 **/
 	owner.processPioneerparks = function(pioneerpark) {
 		var obj = {};
