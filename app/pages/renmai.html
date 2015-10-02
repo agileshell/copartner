@@ -57,6 +57,7 @@
 				}
 			}]
 		});
+
 		var newsWebview = null;
 		document.querySelector('header').addEventListener('doubletap', function() {
 			if (newsWebview == null) {
@@ -68,13 +69,24 @@
 				newsWebview.evalJS('mui.scrollTo(0, 100)');
 			}
 		});
-		var searchFriendsWebview = null;
+		var searchFriendsWebview = null, renmaiSubPage = null;
 		mui.plusReady(function() {
 			document.getElementById('add-frient').addEventListener('tap', function() {
 				if (!searchFriendsWebview) {
 					searchFriendsWebview = plus.webview.getWebviewById('search_friends');
 				}
 				searchFriendsWebview.show();
+			});
+
+			document.addEventListener('mui.view.beforeshow', function(event) {
+				var state = app.getState();
+				//检查 "登录状态"
+				if (state.userId) {
+					if (!renmaiSubPage) {
+						renmaiSubPage = plus.webview.getWebviewById('renmai_sub');
+					}
+					mui.fire(renmaiSubPage, 'mui.view.beforeshow', {});
+				}
 			});
 		});
 	</script>
