@@ -3,13 +3,14 @@ package com.insoul.copartner.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,18 +55,17 @@ public class UserFriendsServiceImpl extends BaseServiceImpl implements IUserFrie
 
             userFriendsDao.save(userFriends);
         }
-
     }
-
+    
     @Override
-    public LinkedHashMap<String, LinkedList<FriendVO>> listFriends(Boolean isPassed) {
+    public TreeMap<String, LinkedList<FriendVO>> listFriends(Boolean isPassed) {
         Set<Long> friendIds = new HashSet<Long>();
         List<UserFriends> userFriends = userFriendsDao.findByUserIdAndStatus(getUserId(), isPassed);
         for (UserFriends userFriend : userFriends) {
             friendIds.add(userFriend.getId().getFriendId());
         }
         List<User> friends = userDao.getUserByIds(friendIds);
-        LinkedHashMap<String, LinkedList<FriendVO>> friendColl = new LinkedHashMap<String, LinkedList<FriendVO>>();
+        TreeMap<String, LinkedList<FriendVO>> friendColl = new TreeMap<String, LinkedList<FriendVO>>();
         for (User user : friends) {
             String abbr = Chinese2Spell.converterToFirstSpell(user.getName());
             String group = StringUtils.upperCase(StringUtils.substring(abbr, 0, 1));
@@ -76,6 +76,15 @@ public class UserFriendsServiceImpl extends BaseServiceImpl implements IUserFrie
             friendVO.setPinyin(Chinese2Spell.converterToSpell(user.getName()));
             friendVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
             friendVO.setImId(user.getImId());
+            if (CharUtils.isAsciiNumeric(group.charAt(0))) {
+                LinkedList<FriendVO> farr = friendColl.get("#");
+                if (farr == null) {
+                    farr = new LinkedList<FriendVO>();
+                }
+                farr.add(friendVO);
+                friendColl.put(group, farr);
+                continue;
+            }
             LinkedList<FriendVO> farr = friendColl.get(group);
             if (farr == null) {
                 farr = new LinkedList<FriendVO>();

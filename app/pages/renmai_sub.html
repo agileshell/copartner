@@ -78,7 +78,8 @@
 						<div class="mui-indexed-list-alert"></div>
 						<div class="mui-indexed-list-inner">
 							<div class="mui-indexed-list-empty-alert">没有数据</div>
-							<ul id="friend-list" class="mui-table-view">
+							<ul id="friendsList" class="mui-table-view">
+								<!--
 								<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">A</li>
 								<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item">阿克苏机场</li>
 								<li data-value="BPL" data-tags="ALaShanKou" class="mui-table-view-cell mui-indexed-list-item">阿拉山口机场</li>
@@ -92,6 +93,7 @@
 								<li data-value="BHY" data-tags="BeiHaiFuCheng" class="mui-table-view-cell mui-indexed-list-item">北海福成机场</li>
 								<li data-value="NAY" data-tags="BeiJingNanYuan" class="mui-table-view-cell mui-indexed-list-item">北京南苑机场</li>
 								<li data-value="PEK" data-tags="BeiJingShouDuGuoJi" class="mui-table-view-cell mui-indexed-list-item">北京首都国际机场</li>
+								-->
 							</ul>
 						</div>
 					</div>
@@ -120,17 +122,29 @@
 		mui.init();
 		mui.ready(function() {
 
-			var friendListEl = document.getElementById("friend-list");
+			var friendsListEl = document.getElementById("friendsList");
 			var success = function(response) {
-				var friends = response.body.list;
-				console.log("friends : " + JSON.stringify(friends));
-				var groupList = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+				var friends = response.body;
 				var friendsHtml = "";
-				for (var i = 0, len = groupList.length; i < len; i++) {
-					var groupElements = friends[groupList[i]];
-					console.log(groupList[i] + " : " + JSON.stringify(groupElements));
+				for(var group in friends) {
+					var groupFriends = friends[group];
+					if (groupFriends.length <= 0) {
+						continue;
+					}
+					friendsHtml += ("<li data-group=\"" + group + 
+									"\" class=\"mui-table-view-divider mui-indexed-list-group\">" + 
+									group + "</li>");
+					console.log(group + " : " + JSON.stringify(friends[group]));
+					for (var i = 0, len = groupFriends.length; i < len; i++) {
+						var fd = groupFriends[i];
+						friendsHtml += ("<li data-value=\"" + fd.abbr + "\" data-tags=\"" + fd.pinyin + 
+										"\" data-imid=\"" + fd.imId + "\" data-guid=\"" + fd.friendId + 
+										"\" class=\"mui-table-view-cell mui-indexed-list-item\">" + fd.name + 
+										"</li>");
+					}
 				}
-				//friendListEl.appendChild();
+				console.log("friendsHtml : " + friendsHtml);
+				friendsListEl.innerHTML = friendsHtml;
 			},
 			error = function(errorType) {
 				mui.toast(app.ajaxErrorHandler(errorType));
