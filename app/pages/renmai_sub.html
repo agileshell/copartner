@@ -31,7 +31,6 @@
 			}
 		</style>
 	</head>
-
 	<body>
         <div class="mui-content" style="padding: 0px 5px;">
 			<div class="mui-segmented-control c-control">
@@ -48,52 +47,16 @@
 							<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="搜索">
 						</div>
 						<div class="mui-indexed-list-bar">
-							<a>A</a>
-							<a>B</a>
-							<a>C</a>
-							<a>D</a>
-							<a>E</a>
-							<a>F</a>
-							<a>G</a>
-							<a>H</a>
-							<a>I</a>
-							<a>J</a>
-							<a>K</a>
-							<a>L</a>
-							<a>M</a>
-							<a>N</a>
-							<a>O</a>
-							<a>P</a>
-							<a>Q</a>
-							<a>R</a>
-							<a>S</a>
-							<a>T</a>
-							<a>U</a>
-							<a>V</a>
-							<a>W</a>
-							<a>X</a>
-							<a>Y</a>
-							<a>Z</a>
+							<a>#</a><a>A</a><a>B</a><a>C</a><a>D</a><a>E</a>
+							<a>F</a><a>G</a><a>H</a><a>I</a><a>J</a><a>K</a>
+							<a>L</a><a>M</a><a>N</a><a>O</a><a>P</a><a>Q</a>
+							<a>R</a><a>S</a><a>T</a><a>U</a><a>V</a><a>W</a>
+							<a>X</a><a>Y</a><a>Z</a>
 						</div>
 						<div class="mui-indexed-list-alert"></div>
 						<div class="mui-indexed-list-inner">
 							<div class="mui-indexed-list-empty-alert">没有数据</div>
 							<ul id="friendsList" class="mui-table-view">
-								<!--
-								<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">A</li>
-								<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item">阿克苏机场</li>
-								<li data-value="BPL" data-tags="ALaShanKou" class="mui-table-view-cell mui-indexed-list-item">阿拉山口机场</li>
-								<li data-value="AAT" data-tags="ALeTai" class="mui-table-view-cell mui-indexed-list-item">阿勒泰机场</li>
-								<li data-value="NGQ" data-tags="ALiKunSha" class="mui-table-view-cell mui-indexed-list-item">阿里昆莎机场</li>
-								<li data-value="AQG" data-tags="AnQingTianZhuShan" class="mui-table-view-cell mui-indexed-list-item">安庆天柱山机场</li>
-								<li data-value="MFM" data-tags="AoMenGuoJi" class="mui-table-view-cell mui-indexed-list-item">澳门国际机场</li>
-								<li data-group="B" class="mui-table-view-divider mui-indexed-list-group">B</li>
-								<li data-value="BSD" data-tags="BaoShan" class="mui-table-view-cell mui-indexed-list-item">保山机场</li>
-								<li data-value="BAV" data-tags="BaoTou" class="mui-table-view-cell mui-indexed-list-item">包头机场</li>
-								<li data-value="BHY" data-tags="BeiHaiFuCheng" class="mui-table-view-cell mui-indexed-list-item">北海福成机场</li>
-								<li data-value="NAY" data-tags="BeiJingNanYuan" class="mui-table-view-cell mui-indexed-list-item">北京南苑机场</li>
-								<li data-value="PEK" data-tags="BeiJingShouDuGuoJi" class="mui-table-view-cell mui-indexed-list-item">北京首都国际机场</li>
-								-->
 							</ul>
 						</div>
 					</div>
@@ -153,18 +116,15 @@
 			document.addEventListener('mui.view.beforeshow', function(event) {
 				app.listFriends(success, error);
 			});
-
 			var list = document.getElementById('list');
 			//calc hieght
 			list.style.height = (document.body.offsetHeight - 30) + 'px';
 			//create
 			window.indexedList = new mui.IndexedList(list);
 		});
-
 		mui('.mui-table-view').on('tap', 'li', function() {
 			open_chat(this.getAttribute('data-guid'));
 		});
-
 		var chatWebview = null;
 		function open_chat(id) {
 			if (!chatWebview) {

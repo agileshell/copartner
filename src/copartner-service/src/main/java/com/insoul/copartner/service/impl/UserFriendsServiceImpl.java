@@ -57,6 +57,10 @@ public class UserFriendsServiceImpl extends BaseServiceImpl implements IUserFrie
         }
     }
     
+    public static void main(String[] args) {
+        System.out.println(CharUtils.isAsciiNumeric('1'));
+    }
+    
     @Override
     public TreeMap<String, LinkedList<FriendVO>> listFriends(Boolean isPassed) {
         Set<Long> friendIds = new HashSet<Long>();
@@ -77,7 +81,8 @@ public class UserFriendsServiceImpl extends BaseServiceImpl implements IUserFrie
             friendVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
             friendVO.setImId(user.getImId());
             if (CharUtils.isAsciiNumeric(group.charAt(0))) {
-                LinkedList<FriendVO> farr = friendColl.get("#");
+                group = "#";
+                LinkedList<FriendVO> farr = friendColl.get(group);
                 if (farr == null) {
                     farr = new LinkedList<FriendVO>();
                 }
