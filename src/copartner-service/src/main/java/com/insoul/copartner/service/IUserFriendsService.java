@@ -1,5 +1,7 @@
 package com.insoul.copartner.service;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.insoul.copartner.exception.CException;
@@ -9,7 +11,7 @@ public interface IUserFriendsService {
 
     void addFriend(Long friendId) throws CException;
 
-    List<FriendVO> listFriends(Boolean isPassed);
+    LinkedHashMap<String, LinkedList<FriendVO>> listFriends(Boolean isPassed);
 
     FriendVO acceptFriend(Long friendId) throws CException;
 

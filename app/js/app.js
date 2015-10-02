@@ -1395,9 +1395,11 @@ owner.submitAuthenticate = function(info, callback) {
 			type: 'get',
 			timeout: 5000,
 			success: function(data) {
+				console.log("listFriends success : " + JSON.stringify(data));
 				successCallback(data);
 			},
 			error: function(xhr, type, errorThrown) {
+				console.log("listFriends error : " + JSON.stringify(type));
 				errorCallback(type);
 			}
 		})
