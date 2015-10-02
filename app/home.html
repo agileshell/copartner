@@ -192,7 +192,8 @@
 					});
 				};
 				var loginPage = null,
-					profilePage = null;
+					profilePage = null,
+					renmaiPage = null;
 				mui('#list').on('tap', 'a', function() {
 					if ('#' == this.getAttribute('href')) {
 						plus.nativeUI.toast('TODO');
@@ -203,12 +204,19 @@
 						var state = app.getState();
 						//检查 "登录状态"
 						if (state.userId) {
-							if (!profilePage) {
-								profilePage = plus.webview.getWebviewById('profile');
+							if ('profile' == id) {
+								if (!profilePage) {
+									profilePage = plus.webview.getWebviewById('profile');
+								}
+								mui.fire(profilePage, 'mui.view.beforeshow', {
+									needReflush: false
+								});
+							} else if ('renmai' == id) {
+								if (!renmaiPage) {
+									renmaiPage = plus.webview.getWebviewById('renmai');
+								}
+								mui.fire(renmaiPage, 'mui.view.beforeshow', {});
 							}
-							mui.fire(profilePage, 'mui.view.beforeshow', {
-								needReflush: false
-							});
 						} else {
 							if (!loginPage) {
 								loginPage = plus.webview.getWebviewById('login');

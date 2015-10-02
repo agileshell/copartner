@@ -119,30 +119,34 @@
 	<script>
 		mui.init();
 		mui.ready(function() {
+
+			var friendListEl = document.getElementById("friend-list");
+			var success = function(response) {
+				var friends = response.body.list;
+				console.log("friends : " + JSON.stringify(friends));
+				var groupList = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+				var friendsHtml = "";
+				for (var i = 0, len = groupList.length; i < len; i++) {
+					var groupElements = friends[groupList[i]];
+					console.log(groupList[i] + " : " + JSON.stringify(groupElements));
+				}
+				//friendListEl.appendChild();
+			},
+			error = function(errorType) {
+				mui.toast(app.ajaxErrorHandler(errorType));
+			};
+
+			document.addEventListener('mui.view.beforeshow', function(event) {
+				app.listFriends(success, error);
+			});
+
 			var list = document.getElementById('list');
 			//calc hieght
 			list.style.height = (document.body.offsetHeight - 30) + 'px';
 			//create
 			window.indexedList = new mui.IndexedList(list);
 		});
-		
-		var friendListEl = document.getElementById("friend-list");
-		var success = function(response) {
-			var friends = response.body.list;
-			console.log("friends : " + JSON.stringify(friends));
-			var groupList = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-			var friendsHtml = "";
-			for (var i = 0, len = groupList.length; i < len; i++) {
-				var groupElements = friends[groupList[i]];
-				console.log(groupList[i] + " : " + JSON.stringify(groupElements));
-			}
-			//friendListEl.appendChild();
-		},
-		error = function(errorType) {
-			mui.toast(app.ajaxErrorHandler(errorType));
-		};
-		app.listFriends(success, error);
-					
+
 		mui('.mui-table-view').on('tap', 'li', function() {
 			open_chat(this.getAttribute('data-guid'));
 		});
