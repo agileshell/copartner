@@ -29,7 +29,14 @@
 	<script type="text/javascript">
 		var parent = null, ziyuan_cyy = null, ziyuan_tzjg = null;
 		mui.init({
-			swipeBack: true
+			swipeBack: true,
+			preloadPages: [{
+				id: 'ziyuan_detail',
+				url: 'ziyuan_detail.html',
+				styles: {
+					popGesture: 'hide'
+				}
+			}]
 		});
 		mui.plusReady(function() {
 			parent = plus.webview.currentWebview();

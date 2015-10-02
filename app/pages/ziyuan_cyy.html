@@ -48,6 +48,17 @@
 		});
 		map.addControl(geolocationControl);
 
+		 //打开详情
+		var detailWebview = null; 
+		function open_detail(id) {
+			if (!detailWebview) {
+				detailWebview = plus.webview.getWebviewById('ziyuan_detail');
+			}
+			mui.fire(detailWebview, 'mui.view.beforeshow', {
+				guid: id
+			});
+		};
+
 		var success = function(response) {
 				var parks = response.body.list;
 				var pointArray = new Array();
@@ -58,7 +69,7 @@
 						var marker = new BMap.Marker(pointArray[i]);
 						marker.park_id =  park.id;
 						marker.addEventListener("click", function(e){
-							//e.target.park_id
+							open_detail(e.target.park_id);
 						});
 						map.addOverlay(marker);
 
