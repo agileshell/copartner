@@ -81,6 +81,22 @@
 				pullupRefresh();
 			}
 		});
+
+		 //打开详情
+		mui('#pullrefresh').on('tap', 'a', function() {
+			open_detail(this.getAttribute('data-guid'));
+		});
+		//打开详情
+		var detailWebview = null; 
+		function open_detail(id) {
+			if (!detailWebview) {
+				detailWebview = plus.webview.getWebviewById('ziyuan_tzjg_detail');
+			}
+			mui.fire(detailWebview, 'mui.view.beforeshow', {
+				guid: id
+			});
+		};
+
 		//下拉刷新具体业务实现
 		function pulldownRefresh() {
 			setTimeout(function() {

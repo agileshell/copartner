@@ -981,6 +981,22 @@ owner.submitAuthenticate = function(info, callback) {
 		})
 	};
 	/**
+	 * 获取Investorg详情
+	 **/
+	owner.getInvestorgByGuid = function(guid, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'investorg/' + guid, {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+	/**
 	 *Investorg对象包装
 	 **/
 	owner.processInvestorg = function(invest) {
