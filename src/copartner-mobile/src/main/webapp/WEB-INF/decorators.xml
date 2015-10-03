@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<decorators defaultdir="/WEB-INF/decorators">
+
+    <excludes>
+        <pattern>/resources*</pattern>
+        <pattern>/favicon.ico</pattern>
+    </excludes>
+
+    <decorator name="default" page="default.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+
+</decorators>

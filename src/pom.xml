@@ -14,6 +14,7 @@
         <module>copartner-service</module>
         <module>copartner-api</module>
         <module>copartner-manager</module>
+        <module>copartner-mobile</module>
     </modules>
 
     <properties>
