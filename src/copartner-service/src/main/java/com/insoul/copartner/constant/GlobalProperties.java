@@ -52,6 +52,8 @@ public final class GlobalProperties {
     public static Integer IM_PORT;// = 9100;
     
     public static Long IM_ROBOT_ID;
+    
+    public static String MOBILE_DOMAIN;
 
     static {
         Properties globalProperties = PropertiesUtil.getProperties(PROPERTIES_PATH);
@@ -64,6 +66,9 @@ public final class GlobalProperties {
         }
         if (PropertiesUtil.get(globalProperties, "im.robot.id") != null) {
             IM_ROBOT_ID = NumberUtils.toLong(PropertiesUtil.get(globalProperties, "im.robot.id"), 10L);
+        }
+        if (PropertiesUtil.get(globalProperties, "mobile.domain") != null) {
+            MOBILE_DOMAIN = StringUtils.defaultString(PropertiesUtil.get(globalProperties, "mobile.domain"), "http://123.57.55.59:8888/");
         }
         
         if (PropertiesUtil.get(globalProperties, "cdn_provider") != null) {

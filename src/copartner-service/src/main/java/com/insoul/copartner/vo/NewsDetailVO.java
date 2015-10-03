@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.insoul.copartner.constant.GlobalProperties;
 import com.insoul.copartner.util.CustomDateSerializer;
 
 public class NewsDetailVO implements Serializable {
@@ -26,12 +27,23 @@ public class NewsDetailVO implements Serializable {
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
+    
+    private String shareUrl;
+
+    public String getShareUrl() {
+        return shareUrl;
+    }
+
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
+    }
 
     public Long getNewsId() {
         return newsId;
     }
 
     public void setNewsId(Long newsId) {
+        this.shareUrl = GlobalProperties.MOBILE_DOMAIN + "news/" + newsId;
         this.newsId = newsId;
     }
 
