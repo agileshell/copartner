@@ -277,7 +277,12 @@
 						geoc.getLocation(point, function(rs){
 							var addComp = rs.addressComponents;
 							address = addComp.province + " " + addComp.city + " " + addComp.district + " " + addComp.street + " " + addComp.streetNumber;
-							marker.setLabel(new BMap.Label(address, {offset: new BMap.Size(20, -10)}));
+							var label = new BMap.Label(address, {offset: new BMap.Size(20, -10)});
+							/**
+							label.addEventListener("click", function() {
+							});
+							**/
+							marker.setLabel(label);
 							
 							/**
 							if (addComp.province.contains("上海")
