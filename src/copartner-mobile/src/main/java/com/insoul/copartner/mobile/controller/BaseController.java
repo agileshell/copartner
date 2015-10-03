@@ -20,6 +20,7 @@ import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.service.IContentService;
 import com.insoul.copartner.service.INewsService;
+import com.insoul.copartner.service.ISystemSettingService;
 
 public abstract class BaseController {
 
@@ -30,6 +31,9 @@ public abstract class BaseController {
 
     @Autowired
     protected IContentService contentService;
+
+    @Autowired
+    protected ISystemSettingService systemSettingService;
 
     @Autowired
     protected HttpSession session;

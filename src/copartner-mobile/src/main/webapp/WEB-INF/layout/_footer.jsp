@@ -6,7 +6,7 @@
         <li><a rel="nofollow" href="news?type=1">行业动态</a></li>
         <li><a rel="nofollow" href="news?type=2">地方动态</a></li>
         <li><a rel="nofollow" href="policy_list">政策解读</a></li>
-        <li><a rel="nofollow" href="app/download">客户端APP</a></li>
+        <li><a rel="nofollow" href="home">客户端APP</a></li>
     </ul>
     <div class="m-1px-line-up"></div>
     <div class="footer-copyright">Copyright © 2014-2015 希芳阁绿化 版权所有</div>

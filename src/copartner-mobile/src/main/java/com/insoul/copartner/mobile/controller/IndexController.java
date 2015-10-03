@@ -1,5 +1,7 @@
 package com.insoul.copartner.mobile.controller;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,11 +9,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.insoul.copartner.constant.SettingConstant;
+
 @Controller
 public class IndexController extends BaseController {
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String home(Model model) {
+        Map<String, String> result = systemSettingService.getSettings(SettingConstant.GROUP_TYPE_APP_INFO);
+        model.addAttribute("app", result);
+
         return "home";
     }
 
