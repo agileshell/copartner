@@ -121,6 +121,7 @@
 		myGeo.getPoint(address, function(point) {
 			if (point) {
 				var marker = new BMap.Marker(point);  // 创建标注
+				marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 				map.addOverlay(marker);              // 将标注添加到地图中
 				map.centerAndZoom(point, 11);
 				var pointArray = new Array();

@@ -199,6 +199,7 @@
 					pointArray[0] = point;
 					map.setViewport(pointArray);
 					marker.enableDragging(); // marker可拖拽
+					marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 					marker.addEventListener("click", function attribute() {
 						var p = marker.getPosition(); // 获取marker的位置
 						$("#longitude").val(p.lng);
@@ -284,6 +285,7 @@
 						map.addOverlay(marker);              // 将标注添加到地图中
 						map.centerAndZoom(point, 16);
 						marker.enableDragging(); //marker可拖拽
+						marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 						marker.addEventListener("click", function attribute() {
 							var p = marker.getPosition(); // 获取marker的位置
 							$("#longitude").val(p.lng);
