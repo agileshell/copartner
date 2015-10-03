@@ -26,7 +26,7 @@ public class User extends BaseEntity {
     @Column(name = "role_id", nullable = false)
     private Long roleId = 1L;// 1:创业者, 2:投资人, 3:导师
 
-    @Column(name = "role_id", nullable = false)
+    @Column(name = "profession_id", nullable = false)
     private Long professionId = 1L;// 1:学术型 2:实业型
 
     @Column(name = "level", nullable = false)

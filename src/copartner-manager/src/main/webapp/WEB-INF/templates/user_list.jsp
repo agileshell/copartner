@@ -35,7 +35,7 @@
 										<div class="form-group">
 											<label class="col-lg-1 control-label" for="type">角色:</label>
 											<div class="col-lg-4">
-												<select id="type" class="form-control" name="type">
+												<select id="type" class="form-control" name="roleId">
 													<option value="0" <c:if test="${req.roleId == 0}"> selected="selected" </c:if>>全部</option>
 													<option value="1" <c:if test="${req.roleId == 1}"> selected="selected" </c:if>>创业者</option>
 													<option value="2" <c:if test="${req.roleId == 2}"> selected="selected" </c:if>>投资人</option>
