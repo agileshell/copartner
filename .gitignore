@@ -5,4 +5,5 @@
 
 app/unpackage/release/*
 
+.DS_Store
 
