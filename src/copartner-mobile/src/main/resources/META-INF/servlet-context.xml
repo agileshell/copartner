@@ -11,10 +11,10 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
 
     <!-- 配置主页 -->
-    <mvc:view-controller path="/" view-name="redirect:/home" />
+    <mvc:view-controller path="/" view-name="redirect:/news" />
 
     <resources mapping="/resources/**" location="/resources/" />
-    <resources mapping="/favicon.ico" location="/favicon.ico" />
+    <resources mapping="/favicon.ico" location="/favicon.png" />
 
     <beans:bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <beans:property name="messageConverters">
