@@ -21,6 +21,8 @@ case ${option} in
 		echo "sync api success."
 		rsync -a8P --delete copartner-manager/target/copartner-manager/* root@copartner:/root/app/mgr/webapps/ROOT/
 		echo "sync mgr success."
+		rsync -a8P --delete copartner-mobile/target/copartner-mobile-1.0-SNAPSHOT/* root@copartner:/root/app/mobile/webapps/ROOT/
+                echo "sync mobile success."
       ;;
 esac
 
