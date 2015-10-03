@@ -33,9 +33,14 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-lg-1 control-label" for="type">邮箱:</label>
+											<label class="col-lg-1 control-label" for="type">角色:</label>
 											<div class="col-lg-4">
-												<input name="email" id="email" value="${req.email}" type="text" class="form-control" placeholder="用户邮箱">
+												<select id="type" class="form-control" name="type">
+													<option value="0" <c:if test="${req.roleId == 0}"> selected="selected" </c:if>>全部</option>
+													<option value="1" <c:if test="${req.roleId == 1}"> selected="selected" </c:if>>创业者</option>
+													<option value="2" <c:if test="${req.roleId == 2}"> selected="selected" </c:if>>投资人</option>
+													<option value="3" <c:if test="${req.roleId == 3}"> selected="selected" </c:if>>导师</option>
+												</select>
 											</div>
 											<label class="col-lg-1 control-label" for="type">手机号:</label>
 											<div class="col-lg-4">

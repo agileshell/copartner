@@ -51,6 +51,7 @@ public class UserController extends WebBase {
         criteria.setEmail(request.getEmail());
         criteria.setMobile(request.getMobile());
         criteria.setName(request.getName());
+        criteria.setRoleId(request.getRoleId());
         List<User> list = userDAO.query(criteria);
         Long count = userDAO.count(criteria);
         query.setCount((count == null || count <= 0L) ? 0 : count.intValue());

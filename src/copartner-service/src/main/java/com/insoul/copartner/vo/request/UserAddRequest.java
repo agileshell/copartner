@@ -21,6 +21,19 @@ public class UserAddRequest implements Serializable {
     private String password;
 
     private String code;
+    
+    private Long professionId = 1L;// 1:学术型 2:实业型
+
+    public Long getProfessionId() {
+        if (professionId == null || professionId <= 0L) {
+            return 1L;
+        }
+        return professionId;
+    }
+
+    public void setProfessionId(Long professionId) {
+        this.professionId = professionId;
+    }
 
     public String getName() {
         return name;

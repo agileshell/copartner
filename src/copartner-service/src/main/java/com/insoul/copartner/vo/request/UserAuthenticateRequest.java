@@ -19,6 +19,19 @@ public class UserAuthenticateRequest implements Serializable {
     private String idPicture;// 身份图片
     
     private String authenticationInfo;// 认证说明
+    
+    private Long professionId = 1L;// 1:学术型 2:实业型
+
+    public Long getProfessionId() {
+        if (professionId == null || professionId <= 0L) {
+            professionId = 1L;
+        }
+        return professionId;
+    }
+
+    public void setProfessionId(Long professionId) {
+        this.professionId = professionId;
+    }
 
     public Long getRoleId() {
         return roleId;

@@ -15,8 +15,18 @@ public class UserCriteria extends PaginationCriteria {
     private String email;
 
     private String mobile;
+    
+    private Long roleId = 1L;// 1:创业者, 2:投资人, 3:导师
 
-	public Long getId() {
+	public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
+    public Long getId() {
 		return id;
 	}
 

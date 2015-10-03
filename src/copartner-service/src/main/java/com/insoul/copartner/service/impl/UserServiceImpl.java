@@ -110,6 +110,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
             user.setIdPicture(request.getIdPicture());
         }
         user.setUpdated(new Date());
+        user.setProfessionId(request.getProfessionId());
         userDao.update(user);
     }
 
@@ -119,6 +120,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         String account = userAddRequest.getAccount();
         boolean isMobile = ValidationUtil.isMobilePhoneNumber(account);
         User user = new User();
+        user.setProfessionId(userAddRequest.getProfessionId());
         if (isMobile) {
             if (null != userDao.getUserByMobile(account)) {
                 throw CExceptionFactory.getException(CException.class, ResponseCode.MOBILE_REGISTERED);
@@ -477,7 +479,15 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         userDetailVO.setIsMobileVerified(user.getIsMobileVerified());
         userDetailVO.setIsEmailVerified(user.getIsEmailVerified());
         userDetailVO.setImId(user.getImId());
-
+        
+        Long professionId = user.getProfessionId();
+        userDetailVO.setProfessionId(professionId);
+        if (professionId == 1) {
+            userDetailVO.setProfessionName("学术型");
+        } else if (professionId == 2) {
+            userDetailVO.setProfessionName("实业型");
+        }
+        
         long roleId = user.getRoleId();
         userDetailVO.setRoleId(roleId);
         if (roleId == 1) {

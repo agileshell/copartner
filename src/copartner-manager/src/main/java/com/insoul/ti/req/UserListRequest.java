@@ -17,6 +17,8 @@ public class UserListRequest extends PageRequest {
 	private String email;
 
 	private String mobile;
+	
+	private Long roleId = 0L;// 1:创业者, 2:投资人, 3:导师
 
 	@Override
 	protected UserListRequest Q() {
@@ -33,6 +35,13 @@ public class UserListRequest extends PageRequest {
 			sb.append("email").append("=").append(email);
 			appended = true;
 		}
+        if (roleId != null && roleId > 0L) {
+            if (appended) {
+                sb.append("&");
+            }
+            sb.append("roleId").append("=").append(roleId);
+            appended = true;
+        }
 		if (id != null && id > 0L) {
 			if (appended) {
 				sb.append("&");
@@ -51,7 +60,18 @@ public class UserListRequest extends PageRequest {
 		return this;
 	}
 
-	public Long getId() {
+	public Long getRoleId() {
+	    if (roleId == null || roleId <= 0L) {
+	        roleId = 0L;
+	    }
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
+    public Long getId() {
 		return id;
 	}
 

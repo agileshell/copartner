@@ -26,6 +26,9 @@ public class User extends BaseEntity {
     @Column(name = "role_id", nullable = false)
     private Long roleId = 1L;// 1:创业者, 2:投资人, 3:导师
 
+    @Column(name = "role_id", nullable = false)
+    private Long professionId = 1L;// 1:学术型 2:实业型
+
     @Column(name = "level", nullable = false)
     private Integer level = 0;// VIP等级
 
@@ -107,6 +110,14 @@ public class User extends BaseEntity {
 
     @Column(name = "authentication_info")
     private String authenticationInfo;// 认证说明
+
+    public Long getProfessionId() {
+        return professionId;
+    }
+
+    public void setProfessionId(Long professionId) {
+        this.professionId = professionId;
+    }
 
     public Long getRoleId() {
         return roleId;

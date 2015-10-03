@@ -62,6 +62,26 @@ public class UserDetailVO implements Serializable {
     private Boolean authenticated;// 是否已认证
 
     private String authenticationInfo;// 认证说明
+    
+    private Long professionId = 1L;// 1:学术型 2:实业型
+    
+    private String professionName;
+
+    public Long getProfessionId() {
+        return professionId;
+    }
+
+    public void setProfessionId(Long professionId) {
+        this.professionId = professionId;
+    }
+
+    public String getProfessionName() {
+        return professionName;
+    }
+
+    public void setProfessionName(String professionName) {
+        this.professionName = professionName;
+    }
 
     public Long getUserId() {
         return userId;

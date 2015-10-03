@@ -41,6 +41,13 @@
 												<label class="col-lg-2 control-label" >身份证号:</label>
 												<div class="col-lg-10">${user.idNumber}</div>
 											</div>
+											<div class="form-group">
+												<label class="col-lg-2 control-label" >专业:</label>
+												<div class="col-lg-10">
+													<c:if test="${user.professionId == 1}"> 学术型 </c:if>
+													<c:if test="${user.professionId == 2}"> 实业型 </c:if>
+												</div>
+											</div>
 											
 											<div class="form-group">
 												<label class="col-lg-2 control-label">身份证图片:</label>

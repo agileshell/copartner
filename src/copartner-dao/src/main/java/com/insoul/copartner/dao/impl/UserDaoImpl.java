@@ -71,6 +71,10 @@ public class UserDaoImpl extends BaseDaoImpl<User, Long> implements IUserDao {
             conditionStr.append(" AND id = :id");
             params.put("id", criteria.getId());
         }
+        if (null != criteria.getRoleId() && criteria.getRoleId() > 0L) {
+            conditionStr.append(" AND roleId = :roleId");
+            params.put("roleId", criteria.getRoleId());
+        }
         if (StringUtils.isNotBlank(criteria.getName())) {
             conditionStr.append(" AND name like :name");
             params.put("name", "%" + criteria.getName() + "%");
