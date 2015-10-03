@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="config.jsp"%>
 <head>
-    <title>${news.title}</title>
+    <title>${policy.title}</title>
     <script type="text/javascript" src="resources/js/m.scale.js?v=${version}"></script>
     <style>
     .detail {
@@ -32,19 +32,19 @@
         <div id="layout_urlblack" data-url="" class="header-icon-back">
             <span>返回</span>
         </div>
-        <div class="header-title">动态详情</div>
+        <div class="header-title">政策详情</div>
     </div>
 </header>
 <!-- header end -->
 
 <!-- description start -->
 <div class="detail" id="wareInfo">
-    <h1 class="article-title">${news.title}</h1>
-    <h2><span class="time">${news.created}</span></h2>
+    <h1 class="article-title">${policy.title}</h1>
+    <h2><span class="time">${policy.created}</span></h2>
     <div id="scale-parent">
         <div class="scale-box" id="scale-cont">
             <!-- content start -->
-            ${news.article}
+            ${policy.article}
             <!-- content end -->
         </div>
     </div>

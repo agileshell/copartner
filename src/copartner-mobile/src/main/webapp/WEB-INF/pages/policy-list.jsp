@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ include file="config.jsp"%>
 <head>
-    <title>最新动态</title>
+    <title>政策解读</title>
     <link rel="stylesheet" type="text/css" href="resources/css/news-list.css?v=${version}" />
     <script type="text/javascript" src="resources/js/template.js?v=${version}"></script>
 </head>
@@ -13,27 +13,27 @@
 <!-- header start -->
 <header>
     <div class="header-bar">
-        <div class="header-title">${requestData.type == 1 ? '行业动态' : '地方动态'}</div>
+        <div class="header-title">政策解读</div>
     </div>
 </header>
 <!-- header end -->
 
 <!-- products start -->
-<input name="type" type="hidden" value="${requestData.type}">
+
 <div id="list">
     <input type="hidden" id="current_page" value="1"/>
     <ul class="list_body">
-      <c:forEach items="${newsList}" var="news">
+      <c:forEach items="${policyList}" var="policy">
         <li>
-            <a style="text-decoration: none;" href="news/${news.newsId}">
+            <a style="text-decoration: none;" href="policy/${policy.contentId}">
                 <div class="list-thumb">
-                    <img width="85" height="85" src="${news.coverImg}">
+                    <img width="85" height="85" src="${policy.coverImg}">
                 </div>
                 <div class="list-descriptions">
                     <div class="list-descriptions-wrapper">
-                        <div class="item-title">${news.title}</div>
+                        <div class="item-title">${policy.title}</div>
                         <div class="item-synopsis">
-                            ${news.synopsis}
+                            ${policy.synopsis}
                         </div>
                     </div>
                 </div>
@@ -42,12 +42,12 @@
       </c:forEach>
     </ul>
     <c:choose>
-        <c:when test="${fn:length(newsList) == 0}">
+        <c:when test="${fn:length(policyList) == 0}">
             <div class="not-found">
                 <div class="notice">抱歉，没有找到符合条件的新闻动态</div>
             </div>
         </c:when>
-        <c:when test="${fn:length(newsList) < 10}">
+        <c:when test="${fn:length(policyList) < 10}">
             <div class="load-more" style="text-align:center;">
                 <span style="font-size:12px;" id="fetchMoreMsg" >没有了</span>
             </div>
@@ -65,10 +65,10 @@
         </ul>
     </div>
 </div>
-<script id="news-template" type="text/html">
+<script id="policy-template" type="text/html">
     {{each list}}
         <li>
-            <a style="text-decoration: none;" href="news/{{$value.newsId}}">
+            <a style="text-decoration: none;" href="policy/{{$value.contentId}}">
                 <div class="list-thumb">
                     <img width="85" height="85" src="{{$value.coverImg}}">
                 </div>
@@ -90,13 +90,12 @@
     });
 
     var fetchMoreItem = function() {
-        var type = $("input[name='type']").val(),
-        limit = 10,
+        var limit = 10,
         current_page = $('#current_page').val(),
         offset = current_page * limit;
 
         $.ajax({
-            url : 'api/news',
+            url : 'api/policy',
             type : 'GET',
             data: {type: type, offset: offset, limit: limit},
             dataType : 'json',
@@ -108,7 +107,7 @@
                 if (bdata.status == "SUCCEED") {
                     var data = bdata.body;
                     if(null != data.list && data.list.length > 0) {
-                        var html = template('news-template', data);
+                        var html = template('policy-template', data);
                         $('.list_body').append(html);
                         $('#current_page').val(++current_page);
                         $('#fetchMoreMsg').html('加载更多');
