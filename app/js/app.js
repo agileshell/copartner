@@ -1436,4 +1436,18 @@ owner.submitAuthenticate = function(info, callback) {
 			}
 		})
 	};
+
+	owner.getlatestContest = function(successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'contest/latest', {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
 }(mui, window.app = {}));

@@ -137,7 +137,6 @@
 				document.body.classList.add('c-overlay');
 				var success = function(response) {
 						content = response.body;
-						console.log("content :" + JSON.stringify(content));
 						guid = content.contentId;
 						titleEl.innerText = content.title;
 						timeEl.innerText = content.created;

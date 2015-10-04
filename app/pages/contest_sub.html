@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创始人</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			.item-content {
+				font-size: 12px;
+				padding: 0 10px;
+				padding-top: 10px;
+			}
+			.item-content ol {
+				margin: 0 0 0 20px;
+				padding: 0;
+			}
+			.item-content p {
+				color: #000;
+				font-size: 12px;
+			}
+			.item-content img,
+			.item-content iframe {
+				max-width: 100%;
+				width: 100%;
+				height: auto;
+			}
+			embed,
+			object {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div class="mui-slider mui-fullscreen">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item mui-active" href="#introduction">大赛简介</a>
+					<a class="mui-control-item" href="#rules">大赛规则</a>
+					<a class="mui-control-item" href="#registration">大赛报名</a>
+					<a class="mui-control-item" href="#entries">参赛项目</a>
+				</div>
+				<div class="mui-slider-progress-bar mui-col-xs-3"></div>
+				<div id="content" class="mui-slider-group">
+					<div id="introduction" class="mui-slider-item mui-control-content mui-active">
+						<div class="c-content">
+							<div class="mui-scroll-wrapper">
+								<div class="mui-scroll">
+									<div id="introduction-content" class="item-content">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="rules" class="mui-slider-item mui-control-content">
+						<div class="c-content">
+							<div class="mui-scroll-wrapper">
+								<div class="mui-scroll">
+									<div id="rules-content" class="item-content">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="registration" class="mui-slider-item mui-control-content">
+						<div class="c-content">
+							<div class="mui-scroll-wrapper">
+								<div class="mui-scroll">
+									<div id="registration-content" class="item-content">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="entries" class="mui-slider-item mui-control-content">
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script type="text/javascript">
+			var introductionEl = document.getElementById('introduction-content'),
+				rulesEl = document.getElementById('rules-content'),
+				registrationEl = document.getElementById('registration-content');
+			mui.init({
+				swipeBack: true
+			});
+			mui('.mui-scroll-wrapper').scroll({
+				indicators: true //是否显示滚动条
+			});
+			mui('#content').on('tap', 'a', function() {
+				var url = this.href;
+				var protocol = /^([\w-]+:)\/\//.test(url) ? RegExp.$1 : '';
+				if (protocol === 'http:' || protocol === 'https:') { //外部链接
+					var browserMainWebview = plus.webview.getWebviewById('browser_main');
+					var browserWebview = plus.webview.getWebviewById('browser');
+					mui.fire(browserMainWebview, 'mui.view.beforeshow');
+					browserWebview.loadURL(url);
+					browserMainWebview.show('slide-in-bottom', 200);
+				}
+			});
+
+			var success = function(response) {
+				contestEntity = response.body;
+				if (contestEntity.id > 0) {
+					introductionEl.innerHTML = contestEntity.introduction;
+					rulesEl.innerHTML = contestEntity.rules;
+					registrationEl.innerHTML = contestEntity.registration;
+
+					window.scrollTo(0, 0);
+				} else {
+					mui.toast('暂无大赛活动');
+				}
+			},
+			error = function(errorType) {
+				mui.toast(app.ajaxErrorHandler(errorType));
+			};
+			mui.plusReady(function() {
+				app.getlatestContest(success, error);
+			});
+		</script>
+	</body>
+</html>

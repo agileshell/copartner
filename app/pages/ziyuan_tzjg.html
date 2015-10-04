@@ -23,23 +23,16 @@
 				float: left;
 				padding: 5px 5px 5px 0;
 			}
-			.c-overlay .c-loader {
-				display: block;
-			}
-			.c-overlay .mui-content {
-				display: none;
-			}
 		</style>
 	</head>
 
-	<body class="c-overlay">
+	<body>
 		<div  id="pullrefresh" class="mui-content">
 			<div>
 				<ul id="tzjg-list" class="mui-table-view">
 				</ul>
 			</div>
 		</div>
-		<div id="loader" class="c-loader">加载中...</div>
 	</body>
 
 	<script id="content-template" type="text/x-handlebars-template">
@@ -85,7 +78,9 @@
 			if (plus.networkinfo.getCurrentType() === plus.networkinfo.CONNECTION_NONE) {
 				plus.nativeUI.alert('无网络连接!');
 			} else {
-				pullupRefresh();
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				}, 200);
 			}
 		});
 
@@ -103,36 +98,12 @@
 				guid: id
 			});
 		};
-
-		//下拉刷新具体业务实现
-		function pulldownRefresh() {
-			setTimeout(function() {
-				var success = function(response) {
-						var contents = response.body.list;
-						if (contents.length > 0) {
-							if (contentLatestRefreshRequestDate == 0 && contentLatestLoadingRequestDate == 0) {
-								contentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
-							}
-							contentLatestRefreshRequestDate = Date.parse(contents[0].created);
-							for (var i = contents.length - 1; i >= 0; i--) {
-								divEl.innerHTML = contentTemplate(app.processInvestorg(contents[i]));
-								contentEl.insertBefore(divEl.firstElementChild, contentEl.firstElementChild);
-							}
-						}
-						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
-					},
-					error = function(errorType) {
-						mui.toast(app.ajaxErrorHandler(errorType));
-						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
-					};
-				app.listInvestorgs(0, 10, contentLatestRefreshRequestDate, 0, success, error);
-			}, 1000);
-		};
 		 //上拉加载具体业务实现
 		function pullupRefresh() {
 			setTimeout(function() {
 					var success = function(response) {
 							var contents = response.body.list;
+							console.log(JSON.stringify(contents));
 							if (contents.length > 0) {
 								if (contentLatestRefreshRequestDate == 0 && contentLatestLoadingRequestDate == 0) {
 									contentLatestRefreshRequestDate = Date.parse(contents[0].created);
@@ -142,17 +113,17 @@
 									divEl.innerHTML = contentTemplate(app.processInvestorg(contents[i]));
 									contentEl.appendChild(divEl.firstElementChild);
 								}
-							}
-							setTimeout(function() {
-								document.body.classList.remove('c-overlay');
-							}, 290);
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+							} else {
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+ 							}
 						},
 						error = function(errorType) {
 							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 						};
 					app.listInvestorgs(0, 10, 0, contentLatestLoadingRequestDate, success, error);
-				},
-				1000);
+				}, 500);
 		};
 	</script>
 </html>
