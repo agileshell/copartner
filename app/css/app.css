@@ -66,14 +66,15 @@ a {
 	color: white;
 }
 .c-logo {
-	width: 85px;
-	height: 25px;
+	width: 90px;
+	height: 30px;
 	margin: 0 auto;
 	background-image: url(../images/copartner.png);
-	background-repeat: no-repeat;
+	background-repeat:no-repeat; 
+	background-size:contain;
 	text-indent: 999em;
 	display: inline-block;
-	margin-top: 10px;
+	margin-top: 7px;
 }
 .c-news-icon {
 	width: 60px;
