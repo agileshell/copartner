@@ -107,6 +107,30 @@
 	
 	<script>
 		$(document).ready(function() {
+			KindEditor.ready(function(K) {
+		        window.editor = K.create('#introduction', {
+		            langType : 'zh_CN',
+		            uploadJson : '/editor/file_upload',
+		            items : [
+		                     'source', '|', 'undo', 'redo', '|', 'preview', 'template', 'code', 'cut', 'copy', 'paste',
+		                     'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+		                     'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+		                     'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+		                     'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+		                     'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
+		                     'flash', 'media', 'insertfile', 'table', 'hr', 'baidumap', 'pagebreak',
+		                     'anchor', 'link', 'unlink'
+		            ],
+		            minHeight : 300,
+		            width: "100%",
+		            minWidth: 300,
+		            autoHeightMode : true,
+		            afterCreate : function() {
+		                this.loadPlugin('autoheight');
+		            },
+		            afterBlur: function(){this.sync();}
+		        });
+		    });
 		    KindEditor.ready(function(K) {
 		        window.editor = K.create('#rules', {
 		            langType : 'zh_CN',
