@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创始人</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			html, boby {
+				background-color: #fff
+			}
+			.c-content {
+				margin-top: 45px;
+			}
+			.c-item {
+				font-size: 12px;
+				line-height: 15px;
+				background-color: #fff
+			}
+			.c-item .mui-icon {
+				font-size: 16px;
+			}
+			#coverImg {
+				width: 100%;
+				max-width: 320px;
+				text-align: center;
+			}
+			.item-content {
+				font-size: 12px;
+				padding: 0 15px;
+				padding-top: 10px;
+				color: #000;
+				background-color: #fff
+			}
+			.item-content ol {
+				margin: 0 0 0 20px;
+				padding: 0;
+			}
+			.item-content p {
+				color: #000;
+				font-size: 12px;
+			}
+			.item-content img,
+			.item-content iframe {
+				max-width: 100%;
+				width: 100%;
+				height: auto;
+			}
+			embed,
+			object {
+				display: none;
+			}
+			.c-overlay .c-loader {
+				display: block;
+			}
+			.c-overlay .mui-content {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body class="c-overlay">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">参赛作品</h1>
+		</header>
+		<div class="mui-content">
+			<div class="c-content">
+				<img id="coverImg"/>
+				<div class="c-item">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<span class="mui-icon mui-icon-flag"></span>
+							<span id="name"></span>
+						</li>
+						<li class="mui-table-view-cell">
+							<span class="mui-icon mui-icon-person"></span>
+							<span id="userName"></span>
+						</li>
+						<li class="mui-table-view-cell">
+							<span class="mui-icon mui-icon-star"></span>
+							<span id="praise"></span>
+						</li>
+					</ul>
+				</div>
+				<div id="content" class="item-content">
+				</div>
+			</div>
+		</div>
+		<div id="loader" class="c-loader">加载中...</div>
+	</body>
+	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+	<script type="text/javascript">
+		var guid = 0, coverImgEl = document.getElementById('coverImg'), nameEl = document.getElementById('name'), userNameEl = document.getElementById('userName'), praiseEl = document.getElementById('praise'), contentEl = document.getElementById('content');
+		mui.init({
+			swipeBack: true,
+			beforeback: function() {
+				setTimeout(function() {
+					coverImgEl.src = '';
+					nameEl.innerText = '';
+					userNameEl.innerText = '';
+					praiseEl.innerText = '';
+					contentEl.innerHTML = '';
+					document.body.classList.add('c-overlay');
+				}, 200);
+			}
+		});
+		mui('#content').on('tap', 'a', function() {
+			var url = this.href;
+			var protocol = /^([\w-]+:)\/\//.test(url) ? RegExp.$1 : '';
+			if (protocol === 'http:' || protocol === 'https:') { //外部链接
+				var browserMainWebview = plus.webview.getWebviewById('browser_main');
+				var browserWebview = plus.webview.getWebviewById('browser');
+				mui.fire(browserMainWebview, 'mui.view.beforeshow');
+				browserWebview.loadURL(url);
+				browserMainWebview.show('slide-in-bottom', 200);
+			}
+		});
+		(function($) {
+			var success = function(response) {
+				var entry = response.body;
+				coverImgEl.src = entry.coverImg;
+				nameEl.innerText = entry.name;
+				userNameEl.innerText = entry.userName;
+				praiseEl.innerText = entry.praise;
+				contentEl.innerHTML = entry.introduction;
+
+				window.scrollTo(0, 0);
+				setTimeout(function() {
+					document.body.classList.remove('c-overlay');
+				}, 290);
+				mui.currentWebview.show();
+			},
+			error = function(errorType) {
+				mui.toast(app.ajaxErrorHandler(errorType));
+			};
+
+			document.addEventListener('mui.view.beforeshow', function(event) {
+				if (event.detail.$$type === 'back') {
+					setTimeout(function() {
+						document.body.classList.remove('c-overlay');
+					}, 500);
+					return;
+				}
+
+				app.getContestEntry(event.detail.guid, success, error);
+			});
+		})(mui);
+	</script>
+
+</html>

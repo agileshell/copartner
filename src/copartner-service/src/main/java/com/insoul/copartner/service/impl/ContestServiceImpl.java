@@ -62,6 +62,7 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
                 vo.setId(p.getId());
                 vo.setCoverImg(CDNUtil.getFullPath(p.getCoverImg()));
                 vo.setTitle(p.getTitle());
+                vo.setCreated(p.getCreated());
 
                 VOs.add(vo);
             }
@@ -134,6 +135,7 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
                 vo.setPraise(p.getPraise());
                 vo.setContestId(p.getContestId());
                 vo.setUserName(p.getUserName());
+                vo.setCreated(p.getCreated());
                 VOs.add(vo);
             }
         }

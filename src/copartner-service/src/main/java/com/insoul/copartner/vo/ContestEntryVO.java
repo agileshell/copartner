@@ -1,6 +1,10 @@
 package com.insoul.copartner.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.insoul.copartner.util.CustomDateSerializer;
 
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
@@ -13,9 +17,9 @@ public class ContestEntryVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    
+
     private String name;// 参赛项目名称
-    
+
     private Long contestId;// 参与的大赛ID
 
     private String userName;// 参赛者姓名
@@ -25,6 +29,9 @@ public class ContestEntryVO implements Serializable {
     private String coverImg;// 封皮
 
     private Long praise;// 赞的次数
+
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date created;
 
     public Long getContestId() {
         return contestId;
@@ -81,4 +88,13 @@ public class ContestEntryVO implements Serializable {
     public void setPraise(Long praise) {
         this.praise = praise;
     }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
 }

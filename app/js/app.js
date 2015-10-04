@@ -1450,4 +1450,46 @@ owner.submitAuthenticate = function(info, callback) {
 			}
 		})
 	};
+
+	owner.listContestEntries = function(contestId, from, to, successCallback, errorCallback) {
+		console.log(contestId);
+		console.log(from);
+		console.log(to);
+		mui.ajax(owner.apiURL + 'contestEntries', {
+			data: {
+				contestId: contestId,
+				from: from,
+				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return successCallback(data);
+				} else {
+					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				return errorCallback(owner.ajaxErrorHandler(type));
+			}
+		})
+	};
+
+	owner.getContestEntry = function(id, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'contestEntry/' + id, {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+
 }(mui, window.app = {}));

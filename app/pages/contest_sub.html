@@ -32,6 +32,22 @@
 			object {
 				display: none;
 			}
+
+			#entries-content .mui-icon {
+				font-size: 16px;
+			}
+			.item-name {
+				font-size: 15px;
+			}
+			.new-item {
+				display: block;
+				font-size: 12px;
+				line-height: 20px;
+			}
+			.item-avatar {
+				float: left;
+				padding: 5px 5px 5px 0;
+			}
 		</style>
 	</head>
 
@@ -42,7 +58,7 @@
 					<a class="mui-control-item mui-active" href="#introduction">大赛简介</a>
 					<a class="mui-control-item" href="#rules">大赛规则</a>
 					<a class="mui-control-item" href="#registration">大赛报名</a>
-					<a class="mui-control-item" href="#entries">参赛项目</a>
+					<a id="tap-entries" class="mui-control-item" href="#entries">参赛作品</a>
 				</div>
 				<div class="mui-slider-progress-bar mui-col-xs-3"></div>
 				<div id="content" class="mui-slider-group">
@@ -77,16 +93,45 @@
 						</div>
 					</div>
 					<div id="entries" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul id="entries-content" class="mui-table-view mui-table-view-chevron">
+								</ul>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<script id="entry-template" type="text/x-handlebars-template">
+			<li id="contest_{{id}}" class="mui-table-view-cell mui-media">
+				<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+					<img src="{{coverImg}}" class="item-avatar" style="width:50px">
+					<div class="mui-media-body">
+						<span class="item-name">{{name}}</span>
+						<div class="new-item">
+							<span class="mui-icon mui-icon-person"></span>
+							<span>{{userName}}</span>
+						</div>
+						<div class="new-item">
+							<span class="mui-icon mui-icon-star"></span>
+							<span>{{praise}}</span>
+						</div>
+					</div>
+				</a>
+			</li>
+		</script>
+		<script src="../js/handlebars-v2.0.0.js"></script>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/app.js"></script>
 		<script type="text/javascript">
-			var introductionEl = document.getElementById('introduction-content'),
+			var contestId = 0, latestLoadingRequestDate = 0, introductionEl = document.getElementById('introduction-content'),
 				rulesEl = document.getElementById('rules-content'),
 				registrationEl = document.getElementById('registration-content');
+			var divEl = document.createElement("div"),
+				entrySource = document.getElementById("entry-template").innerText,
+				entryTemplate = Handlebars.compile(entrySource),
+				entriesEl = document.getElementById("entries-content");
 			mui.init({
 				swipeBack: true
 			});
@@ -111,6 +156,7 @@
 					introductionEl.innerHTML = contestEntity.introduction;
 					rulesEl.innerHTML = contestEntity.rules;
 					registrationEl.innerHTML = contestEntity.registration;
+					contestId = contestEntity.id;
 
 					window.scrollTo(0, 0);
 				} else {
@@ -120,9 +166,42 @@
 			error = function(errorType) {
 				mui.toast(app.ajaxErrorHandler(errorType));
 			};
+			var entryLoadSuccess = function(response) {
+				var items = response.body.list;
+				if (items.length > 0) {
+					latestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+					for (var i = 0, len = items.length; i < len; i++) {
+						divEl.innerHTML = entryTemplate(items[i]);
+						entriesEl.appendChild(divEl.firstElementChild);
+					}
+				}
+			},
+			entryLoadError = function(errorType) {
+				mui.toast(app.ajaxErrorHandler(errorType));
+			};
+
+			//打开详情
+			mui('#entries-content').on('tap', 'a', function() {
+				open_detail(this.getAttribute('data-guid'));
+			});
+			var detailWebview = null; 
+			function open_detail(id) {
+				if (!detailWebview) {
+					detailWebview = plus.webview.getWebviewById('contest_entry_detail');
+				}
+				mui.fire(detailWebview, 'mui.view.beforeshow', {
+					guid: id
+				});
+			};
+
 			mui.plusReady(function() {
 				app.getlatestContest(success, error);
+
+				document.getElementById('tap-entries').addEventListener('tap', function() {
+					app.listContestEntries(contestId, 0, latestLoadingRequestDate, entryLoadSuccess, entryLoadError);
+				});
 			});
+
 		</script>
 	</body>
 </html>
