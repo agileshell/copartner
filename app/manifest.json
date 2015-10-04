@@ -3,7 +3,7 @@
 	"id": "H53CA95E1",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "我是创始人",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.1.14",/*应用版本名称*/
+		"name": "1.1.15",/*应用版本名称*/
 		"code": "83"
 	},
 	"description": "创始人在路上，我们在身旁",/*应用描述信息*/
@@ -66,12 +66,12 @@
 			"plugins": {"push":{"igexin":{"appid":"BaHylrMlWsAaqhetaD3Hm5","appkey":"eqQp3JI7Ob75JQf1BvfEf6","appsecret":"DIWmrVxsif73dmLPKBTSlA"}},
 				"oauth": {
 					"qq": {
-						"appid": "qq_appid"
+						"appid": "MYsiwxaNhrZ2o91T"
 					},
 					"sina": {
-						"appkey": "weibo_appkey",
-						"appsecret": "weibo_sig",
-						"redirect_uri": "weibo_redirect_uri"
+						"appkey": "1297538736",
+						"appsecret": "9d691d6b4e9f90a8e098f1ac199825a7",
+						"redirect_uri": "http://123.57.55.59"
 					},
 					"weixin": {
 						"appid": "weixin_appid",
@@ -80,13 +80,13 @@
 				},
 				"share": {
 					"qq": {
-						"appid": "qq_appid",
+						"appid": "1104893366",
 						"description": "QQ分享"
 					},
 					"sina": {
-						"appkey": "weibo_appkey",
-						"appsecret": "weibo_sig",
-						"redirect_uri": "weibo_redirect_uri",
+						"appkey": "1297538736",
+						"appsecret": "9d691d6b4e9f90a8e098f1ac199825a7",
+						"redirect_uri": "http://123.57.55.59",
 						"description": "可选，新浪微博分享"
 					},
 					"weixin": {

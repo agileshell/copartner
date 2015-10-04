@@ -13,14 +13,21 @@
 				width: 100%;
 				text-align: center;
 			}
+			.c-overlay .c-loader {
+				display: block;
+			}
+			.c-overlay .mui-content {
+				display: none;
+			}
 		</style>
 		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=HuEFhWtwXsXsKjXIgmIZFu4y"></script>
 	</head>
 
-	<body>
+	<body class="c-overlay">
 		<div class="mui-content">
 			<div id="map"></div>
 		</div>
+		<div id="loader" class="c-loader">加载中...</div>
 	</body>
 	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
@@ -71,11 +78,21 @@
 						marker.addEventListener("click", function(e){
 							open_detail(e.target.park_id);
 						});
+
 						map.addOverlay(marker);
 
 						var label = new BMap.Label(park.name, {offset:new BMap.Size(20, -10)});
+						label.park_id =  park.id;
+						label.addEventListener("click", function(e) {
+							open_detail(e.target.park_id);
+						});
 						marker.setLabel(label);
 					}
+
+					setTimeout(function() {
+						doc.body.classList.remove('c-overlay');
+					}, 290);
+
 					//让所有点在视野范围内
 					map.setViewport(pointArray);
 				}

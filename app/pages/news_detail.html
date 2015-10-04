@@ -102,7 +102,8 @@
 		var titleEl = document.getElementById("c-article-title");
 		var timeEl = document.getElementById("c-article-time");
 		var articleEl = document.getElementById("c-article-article");
-		var guid = '';
+		var shares=null;
+		var guid = '',  shareUrl = '', shareTitle = '', shareContent = '', shareCoverImg = '';
 		mui.init({
 			swipeBack: true, //启用右滑关闭功能
 			beforeback: function() {
@@ -140,6 +141,12 @@
 						titleEl.innerText = news.title;
 						timeEl.innerText = news.created;
 						articleEl.innerHTML = news.article;
+
+						shareCoverImg = news.coverImg;
+						shareUrl = news.shareUrl;
+						shareTitle = news.title;
+						shareContent = news.synopsis;
+
 						window.scrollTo(0, 0);
 						setTimeout(function() {
 							document.body.classList.remove('c-overlay');
@@ -152,22 +159,12 @@
 					};
 				app.getNewsByGuid(event.detail.guid, success, error);
 			});
-			//分享
-			var Intent = null,
-				main = null;
-			// H5 plus事件处理
 			$.plusReady(function() {
-				Intent = plus.android.importClass("android.content.Intent");
-				main = plus.android.runtimeMainActivity();
+				updateSerivces();
 			});
+			//分享
 			document.getElementById("share").addEventListener('tap', function(event) {
-				event.stopPropagation();
-				var intent = new Intent(Intent.ACTION_SEND);
-				intent.setType("text/plain");
-				//TODO
-				intent.putExtra(Intent.EXTRA_TEXT, titleEl.innerText + '（' + guid + '）');
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				main.startActivity(Intent.createChooser(intent, "系统分享"));
+				shareShow();
 			});
 			//收藏
 			document.getElementById("like").addEventListener('tap', function(event) {
@@ -176,6 +173,75 @@
 				mui.toast('收藏成功');
 			});
 		})(mui);
+
+		/**
+		 * 更新分享服务
+		 */
+		function updateSerivces(){
+			plus.share.getServices( function(s){
+				shares={};
+				for(var i in s){
+					var t=s[i];
+					shares[t.id]=t;
+				}
+			}, function(e){
+				console.log( "获取分享服务列表失败："+e.message );
+			} );
+		}
+		// 打开分享
+		function shareShow(){
+			bhref=false;
+			var ids=[{id:"weixin",ex:"WXSceneSession"},{id:"weixin",ex:"WXSceneTimeline"},{id:"sinaweibo"},{id:"qq"}],
+			bts=[{title:"发送给微信好友"},{title:"分享到微信朋友圈"},{title:"分享到新浪微博"},{title:"分享到QQ"}];
+			plus.nativeUI.actionSheet({cancel:"取消",buttons:bts},
+				function(e){
+					var i=e.index;
+					if(i>0){
+						shareAction(ids[i-1].id,ids[i-1].ex);
+					}
+				}
+			);
+		}
+		/**
+		   * 分享操作
+		   */
+		function shareAction(id,ex) {
+			var s=null;
+			if(!id||!(s=shares[id])){
+				return;
+			}
+			if ( s.authenticated ) {
+				shareMessage(s,ex);
+			} else {
+				s.authorize( function(){
+						shareMessage(s,ex);
+					},function(e){
+					mui.toast('认证授权失败');
+					console.log( "认证授权失败："+e.code+" - "+e.message );
+				});
+			}
+		}
+		/**
+		   * 发送分享消息
+		   */
+		function shareMessage(s,ex){
+			var msg={extra:{scene:ex}};
+			msg.href=shareUrl;
+			msg.title=shareTitle;
+			msg.content=shareContent;
+			if (~s.id.indexOf('weibo')) {
+				msg.content = shareContent + " 链接：" + shareUrl;
+			}
+			//msg.pictures=[shareCoverImg];
+			msg.thumbs=[shareCoverImg];
+
+			s.send( msg, function(){
+				mui.toast('分享成功');
+			}, function(e){
+				mui.toast('分享失败');
+				console.log( "分享到\""+s.description+"\"失败: "+e.code+" - "+e.message );
+			} );
+		}
 	</script>
 
 </html>

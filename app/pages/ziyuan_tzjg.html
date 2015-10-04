@@ -23,16 +23,23 @@
 				float: left;
 				padding: 5px 5px 5px 0;
 			}
+			.c-overlay .c-loader {
+				display: block;
+			}
+			.c-overlay .mui-content {
+				display: none;
+			}
 		</style>
 	</head>
 
-	<body>
+	<body class="c-overlay">
 		<div  id="pullrefresh" class="mui-content">
 			<div>
 				<ul id="tzjg-list" class="mui-table-view">
 				</ul>
 			</div>
 		</div>
+		<div id="loader" class="c-loader">加载中...</div>
 	</body>
 
 	<script id="content-template" type="text/x-handlebars-template">
@@ -135,14 +142,13 @@
 									divEl.innerHTML = contentTemplate(app.processInvestorg(contents[i]));
 									contentEl.appendChild(divEl.firstElementChild);
 								}
-								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
-							} else {
-								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
 							}
+							setTimeout(function() {
+								document.body.classList.remove('c-overlay');
+							}, 290);
 						},
 						error = function(errorType) {
 							mui.toast(app.ajaxErrorHandler(errorType));
-							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 						};
 					app.listInvestorgs(0, 10, 0, contentLatestLoadingRequestDate, success, error);
 				},
