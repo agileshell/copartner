@@ -9,13 +9,10 @@ public class ContestCriteria extends PaginationCriteria {
     private Date from;
 
     private Date to;
-    
+
     private String status;// 状态 active,inactive,deleted
 
     public String getStatus() {
-        if (status == null) {
-            return "active";
-        }
         return status;
     }
 

@@ -13,10 +13,8 @@ public class ContestVO implements Serializable {
     private static final long serialVersionUID = -5522476659698148139L;
 
     private Long id;
-    
-    private String title;// 大赛标题
 
-    private String introduction;// 大赛简介
+    private String title;// 大赛标题
 
     private String coverImg;// 封皮
 
@@ -34,14 +32,6 @@ public class ContestVO implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
     }
 
     public String getCoverImg() {

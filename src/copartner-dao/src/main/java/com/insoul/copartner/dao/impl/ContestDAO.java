@@ -20,7 +20,7 @@ import com.insoul.copartner.domain.Contest;
  * @since 2015年9月29日 上午11:32:11
  */
 @Repository
-public class DefaultContestDAO extends BaseDaoImpl<Contest, Long> implements IContestDAO {
+public class ContestDAO extends BaseDaoImpl<Contest, Long>implements IContestDAO {
 
     @SuppressWarnings("unchecked")
     @Override
@@ -32,7 +32,7 @@ public class DefaultContestDAO extends BaseDaoImpl<Contest, Long> implements ICo
     public Long countContest(ContestCriteria criteria) {
         return (Long) generateQuery(criteria, true).getSingleResult();
     }
-    
+
     private Query generateQuery(ContestCriteria criteria, boolean count) {
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
@@ -40,7 +40,7 @@ public class DefaultContestDAO extends BaseDaoImpl<Contest, Long> implements ICo
             conditionStr.append(" AND title LIKE :title ");
             params.put("title", "%" + criteria.getTitle() + "%");
         }
-        
+
         if (null != criteria.getFrom()) {
             conditionStr.append(" AND created > :from");
             params.put("from", criteria.getFrom());

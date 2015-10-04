@@ -5,12 +5,14 @@ import java.util.Date;
 public class ContestEntryCriteria extends PaginationCriteria {
 
     private String name;// 参赛项目名称
-    
+
     private Long contestId;// 参与的大赛ID
 
     private Date from;
 
     private Date to;
+
+    private String status;// 状态 active,inactive,deleted
 
     public Long getContestId() {
         return contestId;
@@ -43,4 +45,13 @@ public class ContestEntryCriteria extends PaginationCriteria {
     public void setTo(Date to) {
         this.to = to;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }

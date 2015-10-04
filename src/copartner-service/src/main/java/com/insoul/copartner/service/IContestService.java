@@ -2,8 +2,11 @@ package com.insoul.copartner.service;
 
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.vo.ContestDetailVO;
+import com.insoul.copartner.vo.ContestEntryDetailVO;
+import com.insoul.copartner.vo.ContestEntryVO;
 import com.insoul.copartner.vo.ContestVO;
 import com.insoul.copartner.vo.Pagination;
+import com.insoul.copartner.vo.request.ContestEntryListRequest;
 import com.insoul.copartner.vo.request.ContestListRequest;
 
 public interface IContestService {
@@ -11,4 +14,10 @@ public interface IContestService {
     Pagination<ContestVO> listContests(ContestListRequest requestData);
 
     ContestDetailVO getContest(Long contestId) throws CException;
+
+    ContestDetailVO getLatestContest() throws CException;
+
+    Pagination<ContestEntryVO> listContestEntries(ContestEntryListRequest requestData);
+
+    ContestEntryDetailVO getContestEntry(Long contestEntryId) throws CException;
 }

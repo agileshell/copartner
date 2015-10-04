@@ -20,7 +20,7 @@ import com.insoul.copartner.domain.ContestEntry;
  * @since 2015年9月29日 上午11:32:11
  */
 @Repository
-public class DefaultContestEntryDAO extends BaseDaoImpl<ContestEntry, Long> implements IContestEntryDAO {
+public class ContestEntryDAO extends BaseDaoImpl<ContestEntry, Long> implements IContestEntryDAO {
 
     @SuppressWarnings("unchecked")
     @Override
@@ -52,6 +52,10 @@ public class DefaultContestEntryDAO extends BaseDaoImpl<ContestEntry, Long> impl
         if (criteria.getContestId() != null && criteria.getContestId() > 0L) {
             conditionStr.append(" AND contestId = :contestId");
             params.put("contestId", criteria.getContestId());
+        }
+        if (StringUtils.isNotBlank(criteria.getStatus())) {
+            conditionStr.append(" AND status = :status");
+            params.put("status", criteria.getStatus());
         }
 
         Query query = null;
