@@ -287,7 +287,7 @@
 		} else if (profileInfo.name.length > 32) {
 			return callback('姓名不能大于32个字符');
 		}
-		if (profileInfo.age.length <= 0) {
+		if (roleId ==1 && profileInfo.age.length <= 0) {
 			return callback('年龄不能为空');
 		}
 		if (profileInfo.gender.length <= 0) {
@@ -342,6 +342,10 @@ owner.submitAuthenticate = function(info, callback) {
 		info.idNumber = info.idNumber || '';
 		info.idPicture = info.idPicture || '';
 		info.authenticationInfo = info.authenticationInfo || '';
+		info.investmentOrg = info.investmentOrg || '';
+		info.investmentStyle = info.investmentStyle || '';
+		info.professionId = info.professionId || 0;
+
 		if (info.roleId == 0) {
 			return callback('角色不能为空');
 		} 
@@ -351,10 +355,31 @@ owner.submitAuthenticate = function(info, callback) {
 		if (info.idPicture.length <= 0) {
 			return callback('请上传您的身份证');
 		}
-		if (info.authenticationInfo.length <= 0) {
+		if (info.roleId == 2 && info.investmentOrg.length <= 0) {
+			return callback('投机机构不能为空');
+		}
+		if (info.roleId == 2 && info.investmentStyle.length <= 0) {
+			return callback('投机风格不能为空');
+		}
+		if (info.roleId == 3 && info.professionId == 0) {
+			return callback('导师类型不能为空');
+		}
+
+		if (info.authenticationInfo.length < 10) {
 			return callback('认证说明不能为空');
 		} else if (info.authenticationInfo.length > 100) {
 			return callback('认证说明不能大于100个字符');
+		}
+		
+		if (info.roleId == 1) {
+			info.investmentOrg = '';
+			info.investmentStyle = '';
+			info.professionId = 0;
+		} else if (info.roleId == 2) {
+			info.professionId = 0;
+		} else {
+			info.investmentOrg = '';
+			info.investmentStyle = '';
 		}
 
 		mui.ajax(owner.apiURL + 'user/authenticate', {
@@ -363,7 +388,6 @@ owner.submitAuthenticate = function(info, callback) {
 			type: 'post',
 			timeout: 5000,
 			success: function(data, textStatus) {
-				console.log(JSON.stringify(data));
 				if (data.status == 'SUCCEED') {
 					return callback();
 				} else {

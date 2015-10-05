@@ -95,6 +95,14 @@ var roleData = [{
 	"text": "导师"
 }];
 
+var professionData = [{
+	"value": 1,
+	"text": "学术型"
+},{
+	"value": 2,
+	"text": "实业型"
+}];
+
 var startupStatusData = [{
 	"value": 1,
 	"text": "有创业意愿"

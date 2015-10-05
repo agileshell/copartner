@@ -44,6 +44,9 @@
 				width: 40px;
 				height: 40px;
 			}
+			.undisplayed {
+				display: none;
+			}
 		</style>
 	</head>
 
@@ -88,7 +91,7 @@
 							<input id='genderName' type="text" value="" class="c-input">
 						</span>
 					</div>
-					<div class="mui-input-row">
+					<div class="mui-input-row" id="age-pad">
 						<label>年龄</label>
 						<span class="mui-pull-right mui-navigate-right">
 							<input id='age' name="age" type="hidden">
@@ -125,7 +128,8 @@
 					</div>
 				</form>
 				<div class="mui-input-row" style="margin: 10px 5px 0 5px;">
-					<textarea id="introduction" rows="3" placeholder="简介"></textarea>
+					<span style="font-size: 12px; color:  #bdbdbd;">简介</span>
+					<textarea id="introduction" rows="3"></textarea>
 				</div>
 				<div class="mui-content-padded">
 					<button id='update-profile-b' class="mui-btn mui-btn-block mui-btn-primary">确认</button>
@@ -157,7 +161,9 @@
 			startupRoleNameEl = document.getElementById('startupRoleName'),
 			startupStatusIdEl = document.getElementById('startupStatusId'),
 			startupStatusNameEl = document.getElementById('startupStatusName'),
-			introductionEl = document.getElementById("introduction");
+			introductionEl = document.getElementById("introduction"),
+			agePadEl = document.getElementById("age-pad");
+		var roleId = 0;
 		(function($, doc) {
 			$.init({
 				beforeback: function() {
@@ -253,6 +259,13 @@
 						ageEl.value = profile.age;
 						ageNameEl.value =  profile.age;
 
+						roleId = profile.roleId;
+						if(roleId == 1) {
+							agePadEl.classList.remove('undisplayed');
+						} else {
+							agePadEl.classList.add('undisplayed');
+						}
+
 						var profileDomain = profile.domains;
 						if (profileDomain) {
 							industryDomainIdEl.value = profileDomain[0].id;
@@ -295,6 +308,7 @@
 
 				function updateProfile() {
 					var profileInfo = {
+						roleId: roleId,
 						avatar: avatarEl.value,
 						name: nameEl.value,
 						gender: genderEl.value,

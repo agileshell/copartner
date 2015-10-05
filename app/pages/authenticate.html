@@ -44,6 +44,9 @@
 				width: 40px;
 				height: 40px;
 			}
+			.undisplayed {
+				display: none;
+			}
 		</style>
 	</head>
 
@@ -55,7 +58,7 @@
 		<div class="mui-content">
 			<div class="mui-page-content">
 				<form id='create-profile-form' class="mui-input-group">
-						<div class="mui-input-row">
+					<div class="mui-input-row">
 						<label>角色</label>
 						<span class="mui-pull-right mui-navigate-right">
 							<input id='roleId' name="startupRoleId" type="hidden">
@@ -75,9 +78,29 @@
 							<img class="head-img mui-action-preview" id="head-img" src="../images/blank.jpg"/>
 						</span>
 					</div>
+					<div class="mui-input-row"  id="investmentOrg-pad">
+						<label>投资机构</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='investmentOrg' name='investmentOrg' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row" id="investmentStyle-pad">
+						<label>投资风格</label>
+							<span class="mui-pull-right mui-navigate-right">
+							<input id='investmentStyle' name='investmentStyle' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row" id="profession-pad">
+						<label>导师类型</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='professionId' name="professionId" type="hidden">
+							<input id='professionName' type="text" value="" class="c-input">
+						</span>
+					</div>
 				</form>
 				<div class="mui-input-row" style="margin: 10px 5px 0 5px;">
-					<textarea id="authenticationInfo" rows="3" placeholder="认证说明（1－100个字符）"></textarea>
+					<span style="font-size: 12px; color:  #bdbdbd;">认证说明</span>
+					<textarea id="authenticationInfo" rows="3" placeholder="10－100个字符"></textarea>
 				</div>
 				<div class="mui-content-padded">
 					<button id='submit-authentication' class="mui-btn mui-btn-block mui-btn-primary">提交认证</button>
@@ -96,7 +119,14 @@
 			idNumberEl = document.getElementById('idNumber'),
 			idPictureEl = document.getElementById("idPicture"),
 			idPreviewEl = document.getElementById("head-img"),
-			authenticationInfoEl = document.getElementById('authenticationInfo');
+			authenticationInfoEl = document.getElementById('authenticationInfo'),
+			investmentOrgEl = document.getElementById('investmentOrg'),
+			investmentStyleEl = document.getElementById('investmentStyle'),
+			professionEl = document.getElementById('professionId'),
+			professionNameEl = document.getElementById('professionName'),
+			professionPadEl = document.getElementById("profession-pad"),
+			investmentOrgPadEl = document.getElementById("investmentOrg-pad"),
+			investmentStylePadEl = document.getElementById("investmentStyle-pad");
 		(function($, doc) {
 			$.init({
 				beforeback: function() {
@@ -115,6 +145,27 @@
 				rolePicker.show(function(items) {
 					roleIdEl.value = items[0].value;
 					roleNameEl.value = items[0].text;
+					if(roleIdEl.value == 3) {
+						professionPadEl.classList.remove('undisplayed');
+					} else {
+						professionPadEl.classList.add('undisplayed');
+					}
+					if(roleIdEl.value == 2) {
+						investmentOrgPadEl.classList.remove('undisplayed');
+						investmentStylePadEl.classList.remove('undisplayed');
+					} else {
+						investmentOrgPadEl.classList.add('undisplayed');
+						investmentStylePadEl.classList.add('undisplayed');
+					}
+				});
+			}, false);
+			//profession
+			var professionPicker = new $.PopPicker();
+			professionPicker.setData(professionData);
+			professionNameEl.addEventListener('tap', function(event) {
+				professionPicker.show(function(items) {
+					professionEl.value = items[0].value;
+					professionNameEl.value = items[0].text;
 				});
 			}, false);
 			//show data
@@ -128,6 +179,23 @@
 						idPreviewEl.src = profile.idPicture;
 						authenticationInfoEl.value = profile.authenticationInfo;
 
+						if( profile.roleId == 3) {
+							professionEl.value = profile.professionId;
+							professionNameEl.value = profile.professionName;
+							professionPadEl.classList.remove('undisplayed');
+						} else {
+							professionPadEl.classList.add('undisplayed');
+						}
+						if( profile.roleId == 2) {
+							investmentOrgEl.value = profile.investmentOrg;
+							investmentStyleEl.value = profile.investmentStyle;
+							investmentOrgPadEl.classList.remove('undisplayed');
+							investmentStylePadEl.classList.remove('undisplayed');
+						} else {
+							investmentOrgPadEl.classList.add('undisplayed');
+							investmentStylePadEl.classList.add('undisplayed');
+						}
+
 						window.scrollTo(0, 0);
 						//显示当前页面
 						mui.currentWebview.show();
@@ -138,7 +206,7 @@
 				app.getProfile(success, error);
 			});
 			$.plusReady(function() {
-					var toProfilePage = function() {
+				var toProfilePage = function() {
 					var profilePage = plus.webview.getWebviewById('profile');
 					$.fire(profilePage, 'mui.view.beforeshow', {
 						needReflush: true
@@ -153,7 +221,10 @@
 						roleId: roleIdEl.value,
 						idNumber: idNumberEl.value,
 						idPicture: idPictureEl.value,
-						authenticationInfo: authenticationInfoEl.value
+						authenticationInfo: authenticationInfoEl.value,
+						investmentOrg: investmentOrgEl.value,
+						investmentStyle: investmentStyleEl.value,
+						professionId: professionEl.value
 					};
 					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
 					app.submitAuthenticate(authenticateInfo, function(err) {

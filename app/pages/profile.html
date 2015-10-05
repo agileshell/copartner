@@ -253,7 +253,12 @@
 								gender = ('F' == userInfo.gender ? '男' : '女');
 							document.getElementById('user-avatar').src = userInfo.avatar;
 							document.getElementById('user-name').innerText = userInfo.name;
-							document.getElementById('user-lean').innerText = userInfo.fullLocation + '，' + userInfo.age + '，' + gender + (userInfo.startupRole ? '，' + userInfo.startupRole.name : '');
+							if(userInfo.roleId == 1) {
+								document.getElementById('user-lean').innerText = userInfo.fullLocation + '，' + userInfo.age + '，' + gender + (userInfo.startupRole ? '，' + userInfo.startupRole.name : '');
+							} else {
+								document.getElementById('user-lean').innerText = userInfo.fullLocation + '，' + gender + (userInfo.startupRole ? '，' + userInfo.startupRole.name : '');
+							}
+
 							document.getElementById('user-role').innerText = userInfo.roleName;
 							document.getElementById('user-domains').innerText = userInfo.fullDomains;
 						},

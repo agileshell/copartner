@@ -37,17 +37,17 @@
 
 	<script id="content-template" type="text/x-handlebars-template">
 		<li id="invest_{{id}}" class="mui-table-view-cell mui-media">
-			<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+			<a href="#" data-guid="{{id}}">
 				<img src="{{image}}" class="item-avatar">
 				<div class="mui-media-body">
 					<span class="item-name">{{name}}</span>
 					<div class="new-item">
 						<span class="mui-badge mui-badge-primary">特色</span>
-						<span>{{specials}}</span>
+						<p class="mui-ellipsis" >{{specials}}</p>
 					</div>
 					<div class="new-item">
 						<span class="mui-badge mui-badge-warning">硬件</span>
-						<span>{{hardware}}</span>
+						<p class="mui-ellipsis" >{{hardware}}</p>
 					</div>
 				</div>
 			</a>
