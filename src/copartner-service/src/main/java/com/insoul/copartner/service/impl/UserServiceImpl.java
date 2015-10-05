@@ -90,7 +90,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
     @Resource
     private IResumeDao resumeDao;
-    
+
     @Resource
     private IUserFriendsDao userFriendsDAO;
 
@@ -109,8 +109,17 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         if (StringUtils.isNotBlank(request.getIdPicture())) {
             user.setIdPicture(request.getIdPicture());
         }
+        if (null != request.getProfessionId()) {
+            user.setProfessionId(request.getProfessionId());
+        }
+        if (StringUtils.isNotBlank(request.getInvestmentOrg())) {
+            user.setInvestmentOrg(request.getInvestmentOrg());
+        }
+        if (StringUtils.isNotBlank(request.getInvestmentStyle())) {
+            user.setInvestmentStyle(request.getInvestmentStyle());
+        }
         user.setUpdated(new Date());
-        user.setProfessionId(request.getProfessionId());
+
         userDao.update(user);
     }
 
@@ -202,7 +211,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         userFriends.setCreated(new Date());
         userFriends.setIsPassed(true);
         userFriendsDAO.save(userFriends);
-        
+
         return userDetailVO;
     }
 
@@ -479,7 +488,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         userDetailVO.setIsMobileVerified(user.getIsMobileVerified());
         userDetailVO.setIsEmailVerified(user.getIsEmailVerified());
         userDetailVO.setImId(user.getImId());
-        
+
         Long professionId = user.getProfessionId();
         userDetailVO.setProfessionId(professionId);
         if (professionId == 1) {
@@ -487,7 +496,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         } else if (professionId == 2) {
             userDetailVO.setProfessionName("实业型");
         }
-        
+
         long roleId = user.getRoleId();
         userDetailVO.setRoleId(roleId);
         if (roleId == 1) {
@@ -555,6 +564,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
         List<Resume> workResumes = resumeDao.getByUserIdAndType(user.getId(), (byte) 2);
         userDetailVO.setWorkResumes(formatResumes(workResumes));
+
+        userDetailVO.setInvestmentOrg(user.getInvestmentOrg());
+        userDetailVO.setInvestmentStyle(user.getInvestmentStyle());
 
         return userDetailVO;
     }

@@ -56,16 +56,20 @@ public class UserDetailVO implements Serializable {
     private String idNumber;// 身份证号
 
     private String originIdPicture;
-    
+
     private String idPicture;// 身份图片
 
     private Boolean authenticated;// 是否已认证
 
     private String authenticationInfo;// 认证说明
-    
+
     private Long professionId = 1L;// 1:学术型 2:实业型
-    
+
     private String professionName;
+
+    private String investmentOrg;// 投资机构
+
+    private String investmentStyle;// 投资风格
 
     public Long getProfessionId() {
         return professionId;
@@ -305,6 +309,22 @@ public class UserDetailVO implements Serializable {
 
     public void setAuthenticationInfo(String authenticationInfo) {
         this.authenticationInfo = authenticationInfo;
+    }
+
+    public String getInvestmentOrg() {
+        return investmentOrg;
+    }
+
+    public void setInvestmentOrg(String investmentOrg) {
+        this.investmentOrg = investmentOrg;
+    }
+
+    public String getInvestmentStyle() {
+        return investmentStyle;
+    }
+
+    public void setInvestmentStyle(String investmentStyle) {
+        this.investmentStyle = investmentStyle;
     }
 
 }

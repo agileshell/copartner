@@ -26,9 +26,6 @@ public class User extends BaseEntity {
     @Column(name = "role_id", nullable = false)
     private Long roleId = 1L;// 1:创业者, 2:投资人, 3:导师
 
-    @Column(name = "profession_id", nullable = false)
-    private Long professionId = 1L;// 1:学术型 2:实业型
-
     @Column(name = "level", nullable = false)
     private Integer level = 0;// VIP等级
 
@@ -111,13 +108,14 @@ public class User extends BaseEntity {
     @Column(name = "authentication_info")
     private String authenticationInfo;// 认证说明
 
-    public Long getProfessionId() {
-        return professionId;
-    }
+    @Column(name = "profession_id")
+    private Long professionId = 0L;// 1:学术型 2:实业型
 
-    public void setProfessionId(Long professionId) {
-        this.professionId = professionId;
-    }
+    @Column(name = "investment_org")
+    private String investmentOrg;// 投资机构
+
+    @Column(name = "investment_style")
+    private String investmentStyle;// 投资风格
 
     public Long getRoleId() {
         return roleId;
@@ -133,6 +131,14 @@ public class User extends BaseEntity {
 
     public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    public Long getPoints() {
+        return points;
+    }
+
+    public void setPoints(Long points) {
+        this.points = points;
     }
 
     public String getName() {
@@ -311,14 +317,6 @@ public class User extends BaseEntity {
         this.idNumber = idNumber;
     }
 
-    public Long getPoints() {
-        return points;
-    }
-
-    public void setPoints(Long points) {
-        this.points = points;
-    }
-
     public String getIdPicture() {
         return idPicture;
     }
@@ -343,6 +341,30 @@ public class User extends BaseEntity {
         this.authenticationInfo = authenticationInfo;
     }
 
+    public Long getProfessionId() {
+        return professionId;
+    }
+
+    public void setProfessionId(Long professionId) {
+        this.professionId = professionId;
+    }
+
+    public String getInvestmentOrg() {
+        return investmentOrg;
+    }
+
+    public void setInvestmentOrg(String investmentOrg) {
+        this.investmentOrg = investmentOrg;
+    }
+
+    public String getInvestmentStyle() {
+        return investmentStyle;
+    }
+
+    public void setInvestmentStyle(String investmentStyle) {
+        this.investmentStyle = investmentStyle;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -361,6 +383,8 @@ public class User extends BaseEntity {
         result = prime * result + ((idPicture == null) ? 0 : idPicture.hashCode());
         result = prime * result + ((imId == null) ? 0 : imId.hashCode());
         result = prime * result + ((introduction == null) ? 0 : introduction.hashCode());
+        result = prime * result + ((investmentOrg == null) ? 0 : investmentOrg.hashCode());
+        result = prime * result + ((investmentStyle == null) ? 0 : investmentStyle.hashCode());
         result = prime * result + ((isEmailVerified == null) ? 0 : isEmailVerified.hashCode());
         result = prime * result + ((isMobileVerified == null) ? 0 : isMobileVerified.hashCode());
         result = prime * result + ((lastIp == null) ? 0 : lastIp.hashCode());
@@ -371,6 +395,7 @@ public class User extends BaseEntity {
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((password == null) ? 0 : password.hashCode());
         result = prime * result + ((points == null) ? 0 : points.hashCode());
+        result = prime * result + ((professionId == null) ? 0 : professionId.hashCode());
         result = prime * result + ((roleId == null) ? 0 : roleId.hashCode());
         result = prime * result + ((salt == null) ? 0 : salt.hashCode());
         result = prime * result + ((startupRoleId == null) ? 0 : startupRoleId.hashCode());
@@ -457,6 +482,16 @@ public class User extends BaseEntity {
                 return false;
         } else if (!introduction.equals(other.introduction))
             return false;
+        if (investmentOrg == null) {
+            if (other.investmentOrg != null)
+                return false;
+        } else if (!investmentOrg.equals(other.investmentOrg))
+            return false;
+        if (investmentStyle == null) {
+            if (other.investmentStyle != null)
+                return false;
+        } else if (!investmentStyle.equals(other.investmentStyle))
+            return false;
         if (isEmailVerified == null) {
             if (other.isEmailVerified != null)
                 return false;
@@ -506,6 +541,11 @@ public class User extends BaseEntity {
             if (other.points != null)
                 return false;
         } else if (!points.equals(other.points))
+            return false;
+        if (professionId == null) {
+            if (other.professionId != null)
+                return false;
+        } else if (!professionId.equals(other.professionId))
             return false;
         if (roleId == null) {
             if (other.roleId != null)

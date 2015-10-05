@@ -11,27 +11,20 @@ import java.io.Serializable;
 public class UserAuthenticateRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private Long roleId;
-    
+
     private String idNumber;// 身份证号
-    
+
     private String idPicture;// 身份图片
-    
+
     private String authenticationInfo;// 认证说明
-    
+
     private Long professionId = 1L;// 1:学术型 2:实业型
 
-    public Long getProfessionId() {
-        if (professionId == null || professionId <= 0L) {
-            professionId = 1L;
-        }
-        return professionId;
-    }
+    private String investmentOrg;// 投资机构
 
-    public void setProfessionId(Long professionId) {
-        this.professionId = professionId;
-    }
+    private String investmentStyle;// 投资风格
 
     public Long getRoleId() {
         return roleId;
@@ -64,4 +57,29 @@ public class UserAuthenticateRequest implements Serializable {
     public void setAuthenticationInfo(String authenticationInfo) {
         this.authenticationInfo = authenticationInfo;
     }
+
+    public Long getProfessionId() {
+        return professionId;
+    }
+
+    public void setProfessionId(Long professionId) {
+        this.professionId = professionId;
+    }
+
+    public String getInvestmentOrg() {
+        return investmentOrg;
+    }
+
+    public void setInvestmentOrg(String investmentOrg) {
+        this.investmentOrg = investmentOrg;
+    }
+
+    public String getInvestmentStyle() {
+        return investmentStyle;
+    }
+
+    public void setInvestmentStyle(String investmentStyle) {
+        this.investmentStyle = investmentStyle;
+    }
+
 }
