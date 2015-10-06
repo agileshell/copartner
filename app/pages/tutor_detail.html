@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创始人</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+		html, body {
+			background-color: #FFFFFF;
+		}
+		.head-img {
+			padding-top: 45px;
+			height: 160px;
+			width: 100%;
+			background: url(../images/profile_bg.png);
+			background-size: cover;
+			text-align: center;
+			color: #FFF;
+		}
+		.head-img .my-img {
+			width: 75px;
+			height: 75px;
+			border-radius: 75px;
+			box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.2);
+			margin-top: 5px;
+			margin-bottom: 5px;
+			display: inline-block;
+			overflow: hidden;
+			background-size: cover;
+		}
+		.head-img p {
+			font-size: 15px;
+			line-height: 15px;
+			color: #FFFFFF;
+		}
+		.c-item {
+			font-size: 12px;
+			line-height: 15px;
+			background-color: #FFFFFF;
+		}
+		.c-item .mui-icon {
+			font-size: 18px;
+		}
+		.c-icon {
+			font-size: 14px;
+			color: #000;
+		}
+		.item-content {
+			font-size: 12px;
+			padding: 0 15px;
+			padding-top: 10px;
+			color: #999999;
+			background-color: #fff
+		}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">导师详情</h1>
+		</header>
+		<div class="head-img">
+			<img id="user-avatar" class="my-img" src="../images/blank.jpg">
+			<p id="user-name"></p>
+		</div>
+		<div class="c-item">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<span class="mui-icon mui-icon-phone"></span>
+					<span id="user-mobile" style="padding-left: 10px; color: #999999;"></span>
+				</li>
+				<li class="mui-table-view-cell">
+					<span class="mui-icon mui-icon-email"></span>
+					<span id="user-email" style="padding-left: 10px; color: #999999;"></span>
+				</li>
+				<li class="mui-table-view-cell">
+					<span class="c-icon">领域：</span>
+					<span id="user-domain" style="color: #999999;"></span>
+				</li>
+				<li class="mui-table-view-cell">
+					<span class="c-icon">类型：</span>
+					<span id="user-profession" style="color: #999999;"></span>
+				</li>
+			</ul>
+			<div id="user-info" class="item-content">
+			</div>
+		</div>
+		<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+		<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+		<script type="text/javascript">
+			var nameEl = document.getElementById("user-name");
+			var avatarEl = document.getElementById("user-avatar");
+			var mobileEl = document.getElementById("user-mobile");
+			var emailEl = document.getElementById("user-email");
+			var domainEl = document.getElementById("user-domain");
+			var professionEl = document.getElementById("user-profession");
+			var infoEl = document.getElementById("user-info");
+			mui.init({
+				swipeBack: true
+			});
+			(function() {
+				document.addEventListener('mui.view.beforeshow', function(event) {
+					var success = function(response) {
+							user = response.body;
+							nameEl.innerText = user.name;
+							mobileEl.innerText = user.mobile;
+							emailEl.innerText = user.email ? user.email : '暂无';
+							domainEl.innerText = user.fullDomains;
+							professionEl.innerText = user.professionName;
+							infoEl.innerText = user.introduction;
+							avatarEl.src = user.avatar;
+							mui.currentWebview.show();
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+						};
+					app.getUserProfile(event.detail.guid, success, error);
+				});
+			})();
+		</script>
+	</body>
+</html>

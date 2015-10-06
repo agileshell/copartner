@@ -251,6 +251,19 @@
 		})
 	};
 
+	owner.getUserProfile = function(userId, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'user/' + userId + '/profile', {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(owner.ajaxErrorHandler(type));
+			}
+		})
+	};
 	owner.getProfile = function(successCallback, errorCallback) {
 		mui.ajax(owner.apiURL + 'user/profile', {
 			dataType: 'json',
@@ -274,6 +287,7 @@
 		callback = callback || $.noop;
 		profileInfo = profileInfo || {};
 		profileInfo.name = profileInfo.name || '';
+		profileInfo.email = profileInfo.email || '';
 		profileInfo.avatar = profileInfo.avatar || '';
 		profileInfo.age = profileInfo.age || '';
 		profileInfo.gender = profileInfo.gender || '';
@@ -286,6 +300,9 @@
 			return callback('姓名不能为空');
 		} else if (profileInfo.name.length > 32) {
 			return callback('姓名不能大于32个字符');
+		}
+		if (profileInfo.email.length > 0 && !checkEmail(profileInfo.email)) {
+			return callback('邮件格式格式不正确');
 		}
 		if (roleId ==1 && profileInfo.age.length <= 0) {
 			return callback('年龄不能为空');
@@ -1251,6 +1268,7 @@ owner.submitAuthenticate = function(info, callback) {
 		var tutorInfo = {};
 		tutorInfo.id = tutor.tutorId;
 		tutorInfo.name = tutor.name;
+		tutorInfo.professionName = tutor.professionName;
 		if (!tutor.avatar) {
 			tutorInfo.avatar = 'images/blank.jpg';
 		} else {
@@ -1261,7 +1279,7 @@ owner.submitAuthenticate = function(info, callback) {
 			tutorInfo.domainName = tutor.domain.name;
 		} else {
 			tutorInfo.domainId = 0;
-			tutorInfo.domainName = '';
+			tutorInfo.domainName = '暂无';
 		}
 
 		return tutorInfo;

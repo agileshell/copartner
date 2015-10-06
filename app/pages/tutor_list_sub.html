@@ -67,6 +67,10 @@
 							<span class="mui-badge mui-badge-success">领域</span>
 							<span>{{domainName}}</span>
 						</div>
+						<div class="tutor-item">
+							<span class="mui-badge mui-badge-warning">类型</span>
+							<span>{{professionName}}</span>
+						</div>
 					</div>
 				</a>
 			</li>
@@ -134,13 +138,22 @@
 			 //打开详情
 			mui('#pullrefresh').on('tap', 'a', function() {
 				if (type == 'tutor') {
-					//TODO
+					open_tutor_detail(this.getAttribute('data-guid'));
 				} else {
 					open_question_detail(this.getAttribute('data-guid'));
 				}
 			});
-			var questionDetailWebview = null;
 
+			var tutorDetailWebview = null;
+			function open_tutor_detail(id) {
+				if (!tutorDetailWebview) {
+					tutorDetailWebview = plus.webview.getWebviewById('tutor_detail');
+				}
+				mui.fire(tutorDetailWebview, 'mui.view.beforeshow', {
+					guid: id
+				});
+			};
+			var questionDetailWebview = null;
 			function open_question_detail(id) {
 				if (!questionDetailWebview) {
 					questionDetailWebview = plus.webview.getWebviewById('question_detail');
@@ -149,6 +162,7 @@
 					guid: id
 				});
 			};
+
 			mui('#type').on('tap', 'a', function() {
 				var id = this.getAttribute('id');
 				if (id == 'tutor') {
