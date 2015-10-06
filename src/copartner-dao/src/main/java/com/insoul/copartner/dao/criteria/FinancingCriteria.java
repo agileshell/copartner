@@ -15,10 +15,10 @@ public class FinancingCriteria extends PaginationCriteria {
     private Date from;
 
     private Date to;
-    
+
     private Long projectId;// 关联的项目编号
-    
-    private byte beused;// 是否被使用 0:未使用 1:已使用
+
+    private byte beused = 2;// 是否被使用 0:未使用 1:已使用
 
     public Long getProjectId() {
         return projectId;

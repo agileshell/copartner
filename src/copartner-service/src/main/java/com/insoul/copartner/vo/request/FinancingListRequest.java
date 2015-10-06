@@ -10,6 +10,8 @@ public class FinancingListRequest extends PaginationRequest {
 
     private Long to;
 
+    private Boolean beused;
+
     public Long getUserId() {
         return userId;
     }
@@ -32,6 +34,14 @@ public class FinancingListRequest extends PaginationRequest {
 
     public void setTo(Long to) {
         this.to = to;
+    }
+
+    public Boolean getBeused() {
+        return beused;
+    }
+
+    public void setBeused(Boolean beused) {
+        this.beused = beused;
     }
 
 }

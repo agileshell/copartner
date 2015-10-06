@@ -12,6 +12,8 @@ public class DemandListRequest extends PaginationRequest {
 
     private String keyword;
 
+    private Boolean beused;
+
     public Long getUserId() {
         return userId;
     }
@@ -42,6 +44,14 @@ public class DemandListRequest extends PaginationRequest {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public Boolean getBeused() {
+        return beused;
+    }
+
+    public void setBeused(Boolean beused) {
+        this.beused = beused;
     }
 
 }
