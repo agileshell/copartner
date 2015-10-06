@@ -45,16 +45,12 @@ public class ProjectAddRequest implements Serializable {
 
     @StringLength(max = 30)
     private String contact;// 联系方式
-    
+
     private String businessPlan;// 商业计划书
 
-    public String getBusinessPlan() {
-        return businessPlan;
-    }
+    private long demandId;
 
-    public void setBusinessPlan(String businessPlan) {
-        this.businessPlan = businessPlan;
-    }
+    private long financingId;
 
     public String getName() {
         return name;
@@ -142,6 +138,30 @@ public class ProjectAddRequest implements Serializable {
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public String getBusinessPlan() {
+        return businessPlan;
+    }
+
+    public void setBusinessPlan(String businessPlan) {
+        this.businessPlan = businessPlan;
+    }
+
+    public long getDemandId() {
+        return demandId;
+    }
+
+    public void setDemandId(long demandId) {
+        this.demandId = demandId;
+    }
+
+    public long getFinancingId() {
+        return financingId;
+    }
+
+    public void setFinancingId(long financingId) {
+        this.financingId = financingId;
     }
 
 }

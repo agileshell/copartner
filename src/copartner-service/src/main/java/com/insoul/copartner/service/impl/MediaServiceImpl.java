@@ -71,7 +71,8 @@ public class MediaServiceImpl extends BaseServiceImpl implements IMediaService {
                 int minWidth = Integer.valueOf(siteSettings.get(SettingConstant.IMAGE_DIMENSION_MIN_WIDTH));
                 int minHeight = Integer.valueOf(siteSettings.get(SettingConstant.IMAGE_DIMENSION_MIN_HEIGHT));
 
-                FileUtil.validateImage(imageFile, maxSize, minSize, imageTyps, maxWidth, minWidth, maxHeight, minHeight);
+                FileUtil.validateImage(imageFile, maxSize, minSize, imageTyps, maxWidth, minWidth, maxHeight,
+                        minHeight);
             }
 
             try {
@@ -119,6 +120,24 @@ public class MediaServiceImpl extends BaseServiceImpl implements IMediaService {
     @Override
     public boolean deleteMedia(String media) throws CException {
         return CDNUtil.deleteFile(media);
+    }
+
+    @Override
+    public Map<String, String> uploadDoc(MultipartFile doc) throws CException {
+        String fileType = FileUtil.getFileType(doc.getOriginalFilename());
+        String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
+        String path = null;
+        try {
+            path = CDNUtil.uploadFile(doc.getInputStream(), fileName);
+        } catch (IOException e) {
+            throw CExceptionFactory.getException(CException.class, ResponseCode.FILE_UPLOAD_ERROR);
+        }
+
+        Map<String, String> result = new HashMap<String, String>();
+        result.put(CommonConstant.PATH, path);
+        result.put(CommonConstant.ORIGINAL_URL, CDNUtil.getFullPath(path));
+
+        return result;
     }
 
 }

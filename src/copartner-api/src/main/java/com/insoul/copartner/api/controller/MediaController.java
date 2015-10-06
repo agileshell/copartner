@@ -49,7 +49,7 @@ public class MediaController extends BaseController {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> uploadImg(@Valid ImageAddRequest imageAddRequest,
             BindingResult validResult, @RequestParam(required = false, defaultValue = "false") boolean needThumbnail)
-            throws CException {
+                    throws CException {
         if (validResult.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
@@ -138,6 +138,17 @@ public class MediaController extends BaseController {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
         Map<String, String> result = mediaService.uploadVedio(vedio);
+
+        return ResponseUtil.jsonSucceed(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/doc", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> uploadDoc(MultipartFile doc) throws CException {
+        if (null == doc || doc.isEmpty()) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+        Map<String, String> result = mediaService.uploadDoc(doc);
 
         return ResponseUtil.jsonSucceed(result, HttpStatus.OK);
     }
