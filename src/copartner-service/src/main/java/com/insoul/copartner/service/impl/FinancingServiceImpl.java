@@ -165,6 +165,7 @@ public class FinancingServiceImpl extends BaseServiceImpl implements IFinancingS
 
         for (Financing financing : financings) {
             FinancingVO financingVO = new FinancingVO();
+            financingVO.setId(financing.getId());
             financingVO.setProjectName(financing.getProjectName());
             financingVO.setLocation(financing.getFullLocation());
 
@@ -185,6 +186,7 @@ public class FinancingServiceImpl extends BaseServiceImpl implements IFinancingS
         FinancingDetailVO detailVO = new FinancingDetailVO();
         Financing financing = financingDao.get(financingId);
         if (null != financing) {
+            detailVO.setId(financing.getId());
             detailVO.setProjectName(financing.getProjectName());
             detailVO.setFullLocation(financing.getFullLocation());
 

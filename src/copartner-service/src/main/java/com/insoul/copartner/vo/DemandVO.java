@@ -11,6 +11,8 @@ public class DemandVO implements Serializable {
 
     private static final long serialVersionUID = -3683219716155010336L;
 
+    private long id;
+
     private String projectName;
 
     private String location;
@@ -37,6 +39,14 @@ public class DemandVO implements Serializable {
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getProjectName() {
         return projectName;

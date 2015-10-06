@@ -7,6 +7,8 @@ public class DemandDetailVO implements Serializable {
 
     private static final long serialVersionUID = 5478975997050893844L;
 
+    private long id;
+
     private UserBriefVO user;
 
     private String status;
@@ -50,6 +52,14 @@ public class DemandDetailVO implements Serializable {
     private String businessLicenseUrl; // 营业执照
 
     private String businessPlan;// 商业计划书
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public UserBriefVO getUser() {
         return user;

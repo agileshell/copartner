@@ -116,6 +116,7 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         }
 
         DemandDetailVO demandVO = new DemandDetailVO();
+        demandVO.setId(demand.getId());
         demandVO.setProjectName(demand.getProjectName());
         demandVO.setStatus(demand.getStatus());
 
@@ -381,6 +382,7 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
 
         for (Demand demand : demands) {
             DemandVO demandVO = new DemandVO();
+            demandVO.setId(demand.getId());
             demandVO.setProjectName(demand.getProjectName());
             demandVO.setLocation(demand.getFullLocation());
             demandVO.setTeamSize(teamSizeIdMapName.get(demand.getTeamSizeId()));

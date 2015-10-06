@@ -10,6 +10,8 @@ public class FinancingVO implements Serializable {
 
     private static final long serialVersionUID = 7041357858174935955L;
 
+    private long id;
+
     private String projectName;
 
     private String location;
@@ -24,6 +26,14 @@ public class FinancingVO implements Serializable {
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getProjectName() {
         return projectName;

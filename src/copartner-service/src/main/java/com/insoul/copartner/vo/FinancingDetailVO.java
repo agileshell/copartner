@@ -7,6 +7,8 @@ import com.insoul.copartner.util.CustomDateSerializer;
 
 public class FinancingDetailVO {
 
+    private Long id;
+
     private Long userId;
 
     private String projectName;
@@ -47,6 +49,14 @@ public class FinancingDetailVO {
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getUserId() {
         return userId;
