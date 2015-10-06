@@ -352,8 +352,71 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
 
     @Override
     public ProjectDetailVO getProject(Long projectId) throws CException {
-        // TODO Auto-generated method stub
-        return null;
+        Project project = projectDao.get(projectId);
+        if (null == project) {
+            throw CExceptionFactory.getException(CException.class, ResponseCode.PROJECT_NOT_EXIST);
+        }
+        ProjectDetailVO detail = new ProjectDetailVO();
+        Set<Long> userIds = new HashSet<Long>();
+        Set<Long> projectIds = new HashSet<Long>();
+        userIds.add(project.getUserId());
+        projectIds.add(project.getId());
+        List<ProjectPhase> projectPhases = projectPhaseDao.findAll();
+        Map<Long, String> phaseIdMapName = new HashMap<Long, String>();
+        for (ProjectPhase projectPhase : projectPhases) {
+            phaseIdMapName.put(projectPhase.getId(), projectPhase.getName());
+        }
+        List<IndustryDomain> industryDomains = industryDomainDao.findAll();
+        Map<Long, String> domainIdMapName = new HashMap<Long, String>();
+        for (IndustryDomain industryDomain : industryDomains) {
+            domainIdMapName.put(industryDomain.getId(), industryDomain.getName());
+        }
+        PaginationCriteria pagination = new PaginationCriteria();
+        pagination.setOffset(0);
+        pagination.setLimit(10);
+        List<ProjectLikers> projectLikeres = projectLikersDao.findByProjectIdsAndPagination(projectIds, pagination);
+        Set<Long> likerIds = new HashSet<Long>();
+        Map<Long, Set<Long>> projectIdMapLikerIds = new HashMap<Long, Set<Long>>();
+        for (ProjectLikers projectLiker : projectLikeres) {
+            Long userId = projectLiker.getId().getUserId();
+            Long pid = projectLiker.getId().getProjectId();
+            Set<Long> ids = projectIdMapLikerIds.containsKey(pid) ? projectIdMapLikerIds.get(pid) : new HashSet<Long>();
+            ids.add(userId);
+            projectIdMapLikerIds.put(pid, ids);
+            likerIds.add(userId);
+        }
+        Map<Long, UserLeanVO> userIdMapUser = new HashMap<Long, UserLeanVO>();
+        List<User> likerUsers = userDao.getUserByIds(likerIds);
+        for (User user : likerUsers) {
+            UserLeanVO userVO = new UserLeanVO();
+            userVO.setUserId(user.getId());
+            userVO.setName(user.getName());
+            userVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+            userIdMapUser.put(user.getId(), userVO);
+        }
+
+        detail.setStatus(project.getStatus());
+        
+        detail.setName(project.getName());
+        detail.setLogo(CDNUtil.getFullPath(project.getLogo()));
+        detail.setContent(project.getContent());
+        detail.setCommentCount(project.getCommentCount());
+        detail.setLikeCount(project.getLikeCount());
+        detail.setLocation(project.getFullLocation());
+
+        detail.setProjectPhase(phaseIdMapName.get(project.getProjectPhaseId()));
+        detail.setIndustryDomain(domainIdMapName.get(project.getIndustryDomainId()));
+
+        Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
+        Set<Long> ids = projectIdMapLikerIds.get(project.getId());
+        if (null != ids) {
+            for (Long id : ids) {
+                likers.add(userIdMapUser.get(id));
+            }
+        }
+        detail.setLikers(likers);
+        detail.setBusinessPlan(CDNUtil.getFullPath(project.getBusinessPlan()));
+        return detail;
     }
 
     @Override
