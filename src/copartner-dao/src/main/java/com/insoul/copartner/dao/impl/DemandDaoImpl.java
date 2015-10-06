@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
@@ -37,7 +38,8 @@ public class DemandDaoImpl extends BaseDaoImpl<Demand, Long> implements IDemandD
         }
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("projectId", projectId);
-        return (Demand) createNamedQuery("Demand.projectDemand", args).getSingleResult();
+        List<Demand> demandlist = createNamedQuery("Demand.projectDemand", args).getResultList();
+        return CollectionUtils.isNotEmpty(demandlist) ? demandlist.get(0) : null;
     }
 
     private Query generateQuery(DemandCriteria criteria, boolean isCount) {

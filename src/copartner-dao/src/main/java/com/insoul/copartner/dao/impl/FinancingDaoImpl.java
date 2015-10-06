@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
@@ -38,7 +39,8 @@ public class FinancingDaoImpl extends BaseDaoImpl<Financing, Long> implements IF
         }
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("projectId", projectId);
-        return (Financing) createNamedQuery("Financing.projectFinancing", args).getSingleResult();
+        List<Financing> financingList = createNamedQuery("Financing.projectFinancing", args).getResultList();
+        return CollectionUtils.isNotEmpty(financingList) ? financingList.get(0) : null;
     }
 
     private Query generateQuery(FinancingCriteria criteria, boolean isCount) {

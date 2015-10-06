@@ -383,6 +383,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
             throw CExceptionFactory.getException(CException.class, ResponseCode.PROJECT_NOT_EXIST);
         }
         ProjectDetailVO detail = new ProjectDetailVO();
+
         Set<Long> projectIds = new HashSet<Long>();
         projectIds.add(project.getId());
         List<ProjectPhase> projectPhases = projectPhaseDao.findAll();
