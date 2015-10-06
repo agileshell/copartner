@@ -31,6 +31,7 @@ import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.service.IFinancingService;
 import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.ContentUtil;
+import com.insoul.copartner.vo.FinancingDetailVO;
 import com.insoul.copartner.vo.FinancingVO;
 import com.insoul.copartner.vo.Pagination;
 import com.insoul.copartner.vo.request.FinancingAddRequest;
@@ -60,8 +61,8 @@ public class FinancingServiceImpl extends BaseServiceImpl implements IFinancingS
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
         criteria.setUserId(requestData.getUserId());
-        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
-                : null);
+        criteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
 
         if (null != requestData.getUserId() && requestData.getUserId().equals(getUserId())) {
@@ -122,9 +123,10 @@ public class FinancingServiceImpl extends BaseServiceImpl implements IFinancingS
         financing.setContactPerson(requestData.getContactPerson());
         financing.setContact(requestData.getContact());
         financing.setCreated(new Date());
-        
+
         financing.setProjectId(requestData.getProjectId());
         financing.setBusinessLicense(requestData.getBusinessLicense());
+        financing.setBusinessLicenseUrl(requestData.getBusinessLicenseUrl());
         financing.setBusinessPlan(requestData.getBusinessPlan());
 
         financingDao.save(financing);
@@ -167,15 +169,46 @@ public class FinancingServiceImpl extends BaseServiceImpl implements IFinancingS
             financingVO.setTeamSize(teamSizeIdMapName.get(financing.getTeamSizeId()));
             financingVO.setContent(ContentUtil.splitAndFilterString(financing.getContent(), 80));
             financingVO.setCreated(financing.getCreated());
-            
-            financingVO.setProjectId(financing.getProjectId());
-            financingVO.setBusinessLicense(financing.getBusinessLicense());
-            financingVO.setBusinessPlan(CDNUtil.getFullPath(financing.getBusinessPlan()));
 
             financingVOs.add(financingVO);
         }
 
         return financingVOs;
+    }
+
+    @Override
+    public FinancingDetailVO getFinancingDetail(long financingId) {
+        FinancingDetailVO detailVO = new FinancingDetailVO();
+        Financing financing = financingDao.get(financingId);
+        if (null != financing) {
+            detailVO.setProjectName(financing.getProjectName());
+            detailVO.setFullLocation(financing.getFullLocation());
+
+            IndustryDomain industryDomain = industryDomainDao.get(financing.getFinancingPhaseId());
+            detailVO.setIndustryDomainName(industryDomain.getName());
+            TeamSize teamSize = teamSizeDao.get(financing.getIndustryDomainId());
+            detailVO.setTeamSizeName(teamSize.getName());
+            FinancingPhase financingPhase = financingPhaseDao.get(financing.getTeamSizeId());
+            detailVO.setFinancingPhaseName(financingPhase.getName());
+
+            detailVO.setFullLocation(financing.getFullLocation());
+            detailVO.setHasBusinessRegistered(financing.getHasBusinessRegistered());
+            detailVO.setBusinessLicense(financing.getBusinessLicense());
+            detailVO.setBusinessLicenseUrl(CDNUtil.getFileFullPath(financing.getBusinessLicenseUrl()));
+
+            detailVO.setAdvantage(financing.getAdvantage());
+            detailVO.setContent(financing.getContent());
+            detailVO.setFunding(financing.getFunding());
+            detailVO.setContactPerson(financing.getContactPerson());
+            detailVO.setContact(financing.getContact());
+            detailVO.setProjectId(financing.getProjectId());
+
+            detailVO.setBusinessPlan(CDNUtil.getFileFullPath(financing.getBusinessPlan()));
+
+            detailVO.setCreated(financing.getCreated());
+        }
+
+        return detailVO;
     }
 
 }

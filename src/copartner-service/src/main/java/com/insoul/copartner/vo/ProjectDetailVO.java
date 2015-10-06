@@ -1,7 +1,6 @@
 package com.insoul.copartner.vo;
 
 import java.io.Serializable;
-import java.util.Set;
 
 public class ProjectDetailVO implements Serializable {
 
@@ -25,17 +24,13 @@ public class ProjectDetailVO implements Serializable {
 
     private Long commentCount;
 
-    private Set<UserLeanVO> likers;
-    
-    private String businessPlan;// 商业计划书
+    // private Set<UserLeanVO> likers;
 
-    public String getBusinessPlan() {
-        return businessPlan;
-    }
+    private String businessPlan;
 
-    public void setBusinessPlan(String businessPlan) {
-        this.businessPlan = businessPlan;
-    }
+    private FinancingDetailVO financing;
+
+    private DemandDetailVO demand;
 
     public String getName() {
         return name;
@@ -109,12 +104,28 @@ public class ProjectDetailVO implements Serializable {
         this.commentCount = commentCount;
     }
 
-    public Set<UserLeanVO> getLikers() {
-        return likers;
+    public String getBusinessPlan() {
+        return businessPlan;
     }
 
-    public void setLikers(Set<UserLeanVO> likers) {
-        this.likers = likers;
+    public void setBusinessPlan(String businessPlan) {
+        this.businessPlan = businessPlan;
+    }
+
+    public FinancingDetailVO getFinancing() {
+        return financing;
+    }
+
+    public void setFinancing(FinancingDetailVO financing) {
+        this.financing = financing;
+    }
+
+    public DemandDetailVO getDemand() {
+        return demand;
+    }
+
+    public void setDemand(DemandDetailVO demand) {
+        this.demand = demand;
     }
 
 }

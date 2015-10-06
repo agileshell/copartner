@@ -56,4 +56,18 @@ public final class LocalCDN implements CDN {
         return url;
     }
 
+    @Override
+    public String getFileHttpPath(String filePath) {
+        String url = null;
+        if (ValidationUtil.isFullURL(filePath)) {
+            url = filePath;
+        } else if (StringUtils.isNotBlank(filePath)) {
+            url = GlobalProperties.CDN_DOMAIN.concat(
+                    GlobalProperties.CDN_DOMAIN.endsWith(CommonConstant.SEPARATOR) ? "" : CommonConstant.SEPARATOR)
+                    .concat(filePath);
+        }
+
+        return url;
+    }
+
 }

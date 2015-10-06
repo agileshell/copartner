@@ -88,8 +88,8 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
         criteria.setUserId(requestData.getUserId());
-        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
-                : null);
+        criteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
         criteria.setProjectName(requestData.getKeyword());
 
@@ -98,7 +98,7 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         } else {
             criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue() });
         }
-        
+
         criteria.setBeused((byte) 0);
 
         List<Demand> demands = demandDao.queryDemand(criteria);
@@ -136,10 +136,11 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         demandVO.setLikeCount(demand.getLikeCount());
         demandVO.setContactPerson(demand.getContactPerson());
         demandVO.setContact(demand.getContact());
-        
+
         demandVO.setProjectId(demand.getProjectId());
         demandVO.setBusinessLicense(demand.getBusinessLicense());
-        demandVO.setBusinessPlan(CDNUtil.getFullPath(demand.getBusinessPlan()));
+        demandVO.setBusinessLicenseUrl(CDNUtil.getFileFullPath(demand.getBusinessLicenseUrl()));
+        demandVO.setBusinessPlan(CDNUtil.getFileFullPath(demand.getBusinessPlan()));
 
         User owner = userDao.get(demand.getUserId());
         UserBriefVO ownerVO = new UserBriefVO();
@@ -214,9 +215,10 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
         demand.setContactPerson(requestData.getContactPerson());
         demand.setContact(requestData.getContact());
         demand.setCreated(new Date());
-        
+
         demand.setProjectId(requestData.getProjectId());
         demand.setBusinessLicense(requestData.getBusinessLicense());
+        demand.setBusinessLicenseUrl(requestData.getBusinessLicenseUrl());
         demand.setBusinessPlan(requestData.getBusinessPlan());
 
         demandDao.save(demand);
@@ -389,10 +391,6 @@ public class DemandServiceImpl extends BaseServiceImpl implements IDemandService
             demandVO.setCommentCount(demand.getCommentCount());
             demandVO.setLikeCount(demand.getLikeCount());
             demandVO.setCreated(demand.getCreated());
-            
-            demandVO.setProjectId(demand.getProjectId());
-            demandVO.setBusinessLicense(demand.getBusinessLicense());
-            demandVO.setBusinessPlan(CDNUtil.getFullPath(demand.getBusinessPlan()));
 
             Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
             Set<Long> ids = demandIdMapLikerIds.get(demand.getId());

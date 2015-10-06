@@ -76,4 +76,17 @@ public final class QiniuCDN implements CDN {
         return uptoken;
     }
 
+    @Override
+    public String getFileHttpPath(String filePath) {
+        String url = null;
+        if (ValidationUtil.isFullURL(filePath)) {
+            url = filePath;
+        } else if (StringUtils.isNotBlank(filePath)) {
+            url = GlobalProperties.CDN_DOMAIN.concat(
+                    GlobalProperties.CDN_DOMAIN.endsWith(CommonConstant.SEPARATOR) ? "" : CommonConstant.SEPARATOR)
+                    .concat(filePath);
+        }
+
+        return url;
+    }
 }

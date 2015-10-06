@@ -1,6 +1,7 @@
 package com.insoul.copartner.service;
 
 import com.insoul.copartner.exception.CException;
+import com.insoul.copartner.vo.FinancingDetailVO;
 import com.insoul.copartner.vo.FinancingVO;
 import com.insoul.copartner.vo.Pagination;
 import com.insoul.copartner.vo.request.FinancingAddRequest;
@@ -11,4 +12,6 @@ public interface IFinancingService {
     Pagination<FinancingVO> listFinancings(FinancingListRequest requestData);
 
     void createFinancing(FinancingAddRequest requestData) throws CException;
+
+    FinancingDetailVO getFinancingDetail(long FinancingId);
 }

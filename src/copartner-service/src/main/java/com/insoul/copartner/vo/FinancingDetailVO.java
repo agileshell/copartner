@@ -1,70 +1,59 @@
 package com.insoul.copartner.vo;
 
-import java.io.Serializable;
-import java.util.Set;
+import java.util.Date;
 
-public class DemandDetailVO implements Serializable {
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.insoul.copartner.util.CustomDateSerializer;
 
-    private static final long serialVersionUID = 5478975997050893844L;
+public class FinancingDetailVO {
 
-    private UserBriefVO user;
-
-    private String status;
+    private Long userId;
 
     private String projectName;
 
-    private Long locationId;
+    private Long industryDomainId;// 行业
 
-    private String location;
+    private String industryDomainName;
 
-    private Long industryDomainId;
+    private Long teamSizeId;// 团队规模
 
-    private String industryDomain;
+    private String teamSizeName;
 
-    private Long teamSizeId;
+    private String fullLocation;// 地区缓存
 
-    private String teamSize;
+    private Boolean hasBusinessRegistered = false;// 是否工商注册
 
-    private Boolean hasBusinessRegistered;
+    private Long financingPhaseId;// 融资阶段
 
-    private String advantage;
+    private String financingPhaseName;
 
-    private String content;
+    private String advantage;// 优势
 
-    private String reward;
+    private String content;// 融资要求
 
-    private String contactPerson;
+    private Float funding;// 意向资金
 
-    private String contact;
+    private String contactPerson;// 联系人
 
-    private Long likeCount;
-
-    private Long commentCount;
-
-    private Set<UserLeanVO> likers;
+    private String contact;// 联系方式
 
     private Long projectId;// 关联的项目编号
 
     private String businessLicense;// 营业执照号
 
-    private String businessLicenseUrl; // 营业执照
+    private String businessLicenseUrl;// 营业执照
 
     private String businessPlan;// 商业计划书
 
-    public UserBriefVO getUser() {
-        return user;
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date created;
+
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(UserBriefVO user) {
-        this.user = user;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getProjectName() {
@@ -75,22 +64,6 @@ public class DemandDetailVO implements Serializable {
         this.projectName = projectName;
     }
 
-    public Long getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public Long getIndustryDomainId() {
         return industryDomainId;
     }
@@ -99,12 +72,12 @@ public class DemandDetailVO implements Serializable {
         this.industryDomainId = industryDomainId;
     }
 
-    public String getIndustryDomain() {
-        return industryDomain;
+    public String getIndustryDomainName() {
+        return industryDomainName;
     }
 
-    public void setIndustryDomain(String industryDomain) {
-        this.industryDomain = industryDomain;
+    public void setIndustryDomainName(String industryDomainName) {
+        this.industryDomainName = industryDomainName;
     }
 
     public Long getTeamSizeId() {
@@ -115,12 +88,20 @@ public class DemandDetailVO implements Serializable {
         this.teamSizeId = teamSizeId;
     }
 
-    public String getTeamSize() {
-        return teamSize;
+    public String getTeamSizeName() {
+        return teamSizeName;
     }
 
-    public void setTeamSize(String teamSize) {
-        this.teamSize = teamSize;
+    public void setTeamSizeName(String teamSizeName) {
+        this.teamSizeName = teamSizeName;
+    }
+
+    public String getFullLocation() {
+        return fullLocation;
+    }
+
+    public void setFullLocation(String fullLocation) {
+        this.fullLocation = fullLocation;
     }
 
     public Boolean getHasBusinessRegistered() {
@@ -129,6 +110,22 @@ public class DemandDetailVO implements Serializable {
 
     public void setHasBusinessRegistered(Boolean hasBusinessRegistered) {
         this.hasBusinessRegistered = hasBusinessRegistered;
+    }
+
+    public Long getFinancingPhaseId() {
+        return financingPhaseId;
+    }
+
+    public void setFinancingPhaseId(Long financingPhaseId) {
+        this.financingPhaseId = financingPhaseId;
+    }
+
+    public String getFinancingPhaseName() {
+        return financingPhaseName;
+    }
+
+    public void setFinancingPhaseName(String financingPhaseName) {
+        this.financingPhaseName = financingPhaseName;
     }
 
     public String getAdvantage() {
@@ -147,12 +144,12 @@ public class DemandDetailVO implements Serializable {
         this.content = content;
     }
 
-    public String getReward() {
-        return reward;
+    public Float getFunding() {
+        return funding;
     }
 
-    public void setReward(String reward) {
-        this.reward = reward;
+    public void setFunding(Float funding) {
+        this.funding = funding;
     }
 
     public String getContactPerson() {
@@ -169,30 +166,6 @@ public class DemandDetailVO implements Serializable {
 
     public void setContact(String contact) {
         this.contact = contact;
-    }
-
-    public Long getLikeCount() {
-        return likeCount;
-    }
-
-    public void setLikeCount(Long likeCount) {
-        this.likeCount = likeCount;
-    }
-
-    public Long getCommentCount() {
-        return commentCount;
-    }
-
-    public void setCommentCount(Long commentCount) {
-        this.commentCount = commentCount;
-    }
-
-    public Set<UserLeanVO> getLikers() {
-        return likers;
-    }
-
-    public void setLikers(Set<UserLeanVO> likers) {
-        this.likers = likers;
     }
 
     public Long getProjectId() {
@@ -225,6 +198,14 @@ public class DemandDetailVO implements Serializable {
 
     public void setBusinessPlan(String businessPlan) {
         this.businessPlan = businessPlan;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
 }

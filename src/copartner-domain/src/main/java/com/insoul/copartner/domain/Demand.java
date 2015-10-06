@@ -67,40 +67,11 @@ public class Demand extends BaseEntity {
     @Column(name = "business_license")
     private String businessLicense;// 营业执照号
 
+    @Column(name = "business_license_url")
+    private String businessLicenseUrl;// 营业执照
+
     @Column(name = "business_plan")
     private String businessPlan;// 商业计划书
-
-    public byte getBeused() {
-        return beused;
-    }
-
-    public void setBeused(byte beused) {
-        this.beused = beused;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
-    public String getBusinessLicense() {
-        return businessLicense;
-    }
-
-    public void setBusinessLicense(String businessLicense) {
-        this.businessLicense = businessLicense;
-    }
-
-    public String getBusinessPlan() {
-        return businessPlan;
-    }
-
-    public void setBusinessPlan(String businessPlan) {
-        this.businessPlan = businessPlan;
-    }
 
     public Long getUserId() {
         return userId;
@@ -222,12 +193,54 @@ public class Demand extends BaseEntity {
         this.commentCount = commentCount;
     }
 
+    public byte getBeused() {
+        return beused;
+    }
+
+    public void setBeused(byte beused) {
+        this.beused = beused;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getBusinessLicense() {
+        return businessLicense;
+    }
+
+    public void setBusinessLicense(String businessLicense) {
+        this.businessLicense = businessLicense;
+    }
+
+    public String getBusinessLicenseUrl() {
+        return businessLicenseUrl;
+    }
+
+    public void setBusinessLicenseUrl(String businessLicenseUrl) {
+        this.businessLicenseUrl = businessLicenseUrl;
+    }
+
+    public String getBusinessPlan() {
+        return businessPlan;
+    }
+
+    public void setBusinessPlan(String businessPlan) {
+        this.businessPlan = businessPlan;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((advantage == null) ? 0 : advantage.hashCode());
+        result = prime * result + beused;
         result = prime * result + ((businessLicense == null) ? 0 : businessLicense.hashCode());
+        result = prime * result + ((businessLicenseUrl == null) ? 0 : businessLicenseUrl.hashCode());
         result = prime * result + ((businessPlan == null) ? 0 : businessPlan.hashCode());
         result = prime * result + ((commentCount == null) ? 0 : commentCount.hashCode());
         result = prime * result + ((contact == null) ? 0 : contact.hashCode());
@@ -261,10 +274,17 @@ public class Demand extends BaseEntity {
                 return false;
         } else if (!advantage.equals(other.advantage))
             return false;
+        if (beused != other.beused)
+            return false;
         if (businessLicense == null) {
             if (other.businessLicense != null)
                 return false;
         } else if (!businessLicense.equals(other.businessLicense))
+            return false;
+        if (businessLicenseUrl == null) {
+            if (other.businessLicenseUrl != null)
+                return false;
+        } else if (!businessLicenseUrl.equals(other.businessLicenseUrl))
             return false;
         if (businessPlan == null) {
             if (other.businessPlan != null)
@@ -348,4 +368,5 @@ public class Demand extends BaseEntity {
             return false;
         return true;
     }
+
 }

@@ -38,36 +38,6 @@ public class DemandVO implements Serializable {
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
 
-    private Long projectId;// 关联的项目编号
-
-    private String businessLicense;// 营业执照号
-
-    private String businessPlan;// 商业计划书
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
-    public String getBusinessLicense() {
-        return businessLicense;
-    }
-
-    public void setBusinessLicense(String businessLicense) {
-        this.businessLicense = businessLicense;
-    }
-
-    public String getBusinessPlan() {
-        return businessPlan;
-    }
-
-    public void setBusinessPlan(String businessPlan) {
-        this.businessPlan = businessPlan;
-    }
-
     public String getProjectName() {
         return projectName;
     }
@@ -170,91 +140,6 @@ public class DemandVO implements Serializable {
 
     public void setCreated(Date created) {
         this.created = created;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((commentCount == null) ? 0 : commentCount.hashCode());
-        result = prime * result + ((content == null) ? 0 : content.hashCode());
-        result = prime * result + ((created == null) ? 0 : created.hashCode());
-        result = prime * result + ((likeCount == null) ? 0 : likeCount.hashCode());
-        result = prime * result + ((likers == null) ? 0 : likers.hashCode());
-        result = prime * result + ((location == null) ? 0 : location.hashCode());
-        result = prime * result + ((projectName == null) ? 0 : projectName.hashCode());
-        result = prime * result + ((reward == null) ? 0 : reward.hashCode());
-        result = prime * result + ((status == null) ? 0 : status.hashCode());
-        result = prime * result + ((teamSize == null) ? 0 : teamSize.hashCode());
-        result = prime * result + ((user == null) ? 0 : user.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        DemandVO other = (DemandVO) obj;
-        if (commentCount == null) {
-            if (other.commentCount != null)
-                return false;
-        } else if (!commentCount.equals(other.commentCount))
-            return false;
-        if (content == null) {
-            if (other.content != null)
-                return false;
-        } else if (!content.equals(other.content))
-            return false;
-        if (created == null) {
-            if (other.created != null)
-                return false;
-        } else if (!created.equals(other.created))
-            return false;
-        if (likeCount == null) {
-            if (other.likeCount != null)
-                return false;
-        } else if (!likeCount.equals(other.likeCount))
-            return false;
-        if (likers == null) {
-            if (other.likers != null)
-                return false;
-        } else if (!likers.equals(other.likers))
-            return false;
-        if (location == null) {
-            if (other.location != null)
-                return false;
-        } else if (!location.equals(other.location))
-            return false;
-        if (projectName == null) {
-            if (other.projectName != null)
-                return false;
-        } else if (!projectName.equals(other.projectName))
-            return false;
-        if (reward == null) {
-            if (other.reward != null)
-                return false;
-        } else if (!reward.equals(other.reward))
-            return false;
-        if (status == null) {
-            if (other.status != null)
-                return false;
-        } else if (!status.equals(other.status))
-            return false;
-        if (teamSize == null) {
-            if (other.teamSize != null)
-                return false;
-        } else if (!teamSize.equals(other.teamSize))
-            return false;
-        if (user == null) {
-            if (other.user != null)
-                return false;
-        } else if (!user.equals(other.user))
-            return false;
-        return true;
     }
 
 }

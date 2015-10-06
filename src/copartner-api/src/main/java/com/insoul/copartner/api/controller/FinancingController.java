@@ -61,4 +61,10 @@ public class FinancingController extends BaseController {
 
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/financing/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getNews(@PathVariable Long id) throws CException {
+        return ResponseUtil.jsonSucceed(financingService.getFinancingDetail(id), HttpStatus.OK);
+    }
 }

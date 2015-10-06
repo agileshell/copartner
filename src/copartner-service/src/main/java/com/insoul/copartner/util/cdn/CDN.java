@@ -11,4 +11,6 @@ public interface CDN {
     boolean deleteFile(String path);
 
     String getHttpPath(String path);
+
+    String getFileHttpPath(String filePath);
 }

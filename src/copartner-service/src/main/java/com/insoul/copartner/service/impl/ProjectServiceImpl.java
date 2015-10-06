@@ -84,8 +84,8 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
         criteria.setUserId(requestData.getUserId());
-        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
-                : null);
+        criteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
         criteria.setName(requestData.getKeyword());
 
@@ -148,7 +148,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         project.setCreated(new Date());
 
         project.setBusinessPlan(requestData.getBusinessPlan());
-        
+
         projectDao.save(project);
     }
 
@@ -268,7 +268,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
                 }
             }
             projectVO.setLikers(likers);
-            
+
             projectVO.setBusinessPlan(CDNUtil.getFullPath(project.getBusinessPlan()));
 
             projectVOs.add(projectVO);

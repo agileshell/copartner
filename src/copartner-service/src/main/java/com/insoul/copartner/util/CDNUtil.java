@@ -49,4 +49,8 @@ public final class CDNUtil {
             return null;
         }
     }
+
+    public static String getFileFullPath(final String path) {
+        return cdn.getFileHttpPath(path);
+    }
 }
