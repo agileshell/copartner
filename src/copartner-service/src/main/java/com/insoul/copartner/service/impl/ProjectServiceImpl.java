@@ -15,17 +15,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.insoul.copartner.constant.ProjectStatus;
 import com.insoul.copartner.constant.ResponseCode;
+import com.insoul.copartner.dao.IDemandDao;
+import com.insoul.copartner.dao.IDemandLikersDao;
+import com.insoul.copartner.dao.IFinancingDao;
+import com.insoul.copartner.dao.IFinancingPhaseDao;
 import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.ILocationDao;
 import com.insoul.copartner.dao.IProjectCommentsDao;
 import com.insoul.copartner.dao.IProjectDao;
 import com.insoul.copartner.dao.IProjectLikersDao;
 import com.insoul.copartner.dao.IProjectPhaseDao;
+import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.dao.criteria.PaginationCriteria;
 import com.insoul.copartner.dao.criteria.ProjectCommentCriteria;
 import com.insoul.copartner.dao.criteria.ProjectCriteria;
+import com.insoul.copartner.domain.Demand;
+import com.insoul.copartner.domain.DemandLikers;
+import com.insoul.copartner.domain.Financing;
+import com.insoul.copartner.domain.FinancingPhase;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Location;
 import com.insoul.copartner.domain.Project;
@@ -33,6 +42,7 @@ import com.insoul.copartner.domain.ProjectComments;
 import com.insoul.copartner.domain.ProjectLikers;
 import com.insoul.copartner.domain.ProjectLikersId;
 import com.insoul.copartner.domain.ProjectPhase;
+import com.insoul.copartner.domain.StartupRole;
 import com.insoul.copartner.domain.TeamSize;
 import com.insoul.copartner.domain.User;
 import com.insoul.copartner.exception.CException;
@@ -41,9 +51,12 @@ import com.insoul.copartner.service.IProjectService;
 import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.ContentUtil;
 import com.insoul.copartner.vo.CommentVO;
+import com.insoul.copartner.vo.DemandDetailVO;
+import com.insoul.copartner.vo.FinancingDetailVO;
 import com.insoul.copartner.vo.Pagination;
 import com.insoul.copartner.vo.ProjectDetailVO;
 import com.insoul.copartner.vo.ProjectVO;
+import com.insoul.copartner.vo.UserBriefVO;
 import com.insoul.copartner.vo.UserLeanVO;
 import com.insoul.copartner.vo.request.PaginationRequest;
 import com.insoul.copartner.vo.request.ProjectAddRequest;
@@ -78,21 +91,35 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
     @Resource
     private ITeamSizeDao teamSizeDao;
 
+    @Resource
+    private IFinancingDao financingDAO;
+
+    @Resource
+    private IDemandDao demandDAO;
+
+    @Resource
+    private IFinancingPhaseDao financingPhaseDao;
+
+    @Resource
+    private IStartupRoleDao startupRoleDao;
+
+    @Resource
+    private IDemandLikersDao demandLikersDao;
+
     @Override
     public Pagination<ProjectVO> listProjects(ProjectListRequest requestData) {
         ProjectCriteria criteria = new ProjectCriteria();
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
         criteria.setUserId(requestData.getUserId());
-        criteria.setFrom(
-                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
+        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
         criteria.setName(requestData.getKeyword());
 
         if (null != requestData.getUserId() && requestData.getUserId().equals(getUserId())) {
-            criteria.setStatus(new String[] { ProjectStatus.ACTIVE.getValue(), ProjectStatus.INACTIVE.getValue() });
+            criteria.setStatus(new String[] {ProjectStatus.ACTIVE.getValue(), ProjectStatus.INACTIVE.getValue()});
         } else {
-            criteria.setStatus(new String[] { ProjectStatus.ACTIVE.getValue() });
+            criteria.setStatus(new String[] {ProjectStatus.ACTIVE.getValue()});
         }
 
         List<Project> projects = projectDao.queryProject(criteria);
@@ -228,8 +255,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         for (ProjectLikers projectLiker : projectLikeres) {
             Long userId = projectLiker.getId().getUserId();
             Long projectId = projectLiker.getId().getProjectId();
-            Set<Long> ids = projectIdMapLikerIds.containsKey(projectId) ? projectIdMapLikerIds.get(projectId)
-                    : new HashSet<Long>();
+            Set<Long> ids = projectIdMapLikerIds.containsKey(projectId) ? projectIdMapLikerIds.get(projectId) : new HashSet<Long>();
             ids.add(userId);
             projectIdMapLikerIds.put(projectId, ids);
 
@@ -357,9 +383,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
             throw CExceptionFactory.getException(CException.class, ResponseCode.PROJECT_NOT_EXIST);
         }
         ProjectDetailVO detail = new ProjectDetailVO();
-        Set<Long> userIds = new HashSet<Long>();
         Set<Long> projectIds = new HashSet<Long>();
-        userIds.add(project.getUserId());
         projectIds.add(project.getId());
         List<ProjectPhase> projectPhases = projectPhaseDao.findAll();
         Map<Long, String> phaseIdMapName = new HashMap<Long, String>();
@@ -385,18 +409,101 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
             projectIdMapLikerIds.put(pid, ids);
             likerIds.add(userId);
         }
-        Map<Long, UserLeanVO> userIdMapUser = new HashMap<Long, UserLeanVO>();
-        List<User> likerUsers = userDao.getUserByIds(likerIds);
-        for (User user : likerUsers) {
-            UserLeanVO userVO = new UserLeanVO();
-            userVO.setUserId(user.getId());
-            userVO.setName(user.getName());
-            userVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
-            userIdMapUser.put(user.getId(), userVO);
+
+        Demand demand = demandDAO.getDemandByProjectId(projectId);
+        if (null != demand) {
+            DemandDetailVO demandVO = new DemandDetailVO();
+            demandVO.setProjectName(demand.getProjectName());
+            demandVO.setStatus(demand.getStatus());
+
+            IndustryDomain industryDomain = industryDomainDao.get(demand.getIndustryDomainId());
+            demandVO.setIndustryDomain(industryDomain.getName());
+            demandVO.setIndustryDomainId(demand.getIndustryDomainId());
+
+            TeamSize teamSize = teamSizeDao.get(demand.getTeamSizeId());
+            demandVO.setTeamSizeId(demand.getTeamSizeId());
+            demandVO.setTeamSize(teamSize.getName());
+
+            demandVO.setLocationId(demand.getLocationId());
+            demandVO.setLocation(demand.getFullLocation());
+
+            demandVO.setHasBusinessRegistered(demand.getHasBusinessRegistered());
+            demandVO.setAdvantage(demand.getAdvantage());
+            demandVO.setContent(demand.getContent());
+            demandVO.setReward(demand.getReward());
+            demandVO.setCommentCount(demand.getCommentCount());
+            demandVO.setLikeCount(demand.getLikeCount());
+            demandVO.setContactPerson(demand.getContactPerson());
+            demandVO.setContact(demand.getContact());
+
+            demandVO.setProjectId(demand.getProjectId());
+            demandVO.setBusinessLicense(demand.getBusinessLicense());
+            demandVO.setBusinessLicenseUrl(CDNUtil.getFileFullPath(demand.getBusinessLicenseUrl()));
+            demandVO.setBusinessPlan(CDNUtil.getFileFullPath(demand.getBusinessPlan()));
+
+            User owner = userDao.get(demand.getUserId());
+            UserBriefVO ownerVO = new UserBriefVO();
+            ownerVO.setUserId(owner.getId());
+            ownerVO.setName(owner.getName());
+            ownerVO.setAvatar(CDNUtil.getFullPath(owner.getAvatar()));
+            ownerVO.setLocation(owner.getFullLocation());
+            if (null != owner.getStartupRoleId()) {
+                StartupRole startupRole = startupRoleDao.get(owner.getStartupRoleId());
+                ownerVO.setRole(startupRole.getName());
+            }
+            demandVO.setUser(ownerVO);
+
+            List<DemandLikers> demandLikers = demandLikersDao.findByDemandId(demand.getId());
+            Set<Long> demandLikerIds = new HashSet<Long>();
+            for (DemandLikers demandLiker : demandLikers) {
+                demandLikerIds.add(demandLiker.getId().getUserId());
+            }
+            Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
+            List<User> users = userDao.getUserByIds(demandLikerIds);
+            for (User user : users) {
+                UserLeanVO userVO = new UserLeanVO();
+                userVO.setUserId(user.getId());
+                userVO.setName(user.getName());
+                userVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+
+                likers.add(userVO);
+            }
+            demandVO.setLikers(likers);
+            detail.setDemand(demandVO);
         }
 
+        Financing financing = financingDAO.getFinancingByProjectId(projectId);
+        if (null != financing) {
+            FinancingDetailVO financingDetail = new FinancingDetailVO();
+            financingDetail.setProjectName(financing.getProjectName());
+            financingDetail.setFullLocation(financing.getFullLocation());
+
+            IndustryDomain industryDomain = industryDomainDao.get(financing.getFinancingPhaseId());
+            financingDetail.setIndustryDomainName(industryDomain.getName());
+            TeamSize teamSize = teamSizeDao.get(financing.getIndustryDomainId());
+            financingDetail.setTeamSizeName(teamSize.getName());
+            FinancingPhase financingPhase = financingPhaseDao.get(financing.getTeamSizeId());
+            financingDetail.setFinancingPhaseName(financingPhase.getName());
+
+            financingDetail.setFullLocation(financing.getFullLocation());
+            financingDetail.setHasBusinessRegistered(financing.getHasBusinessRegistered());
+            financingDetail.setBusinessLicense(financing.getBusinessLicense());
+            financingDetail.setBusinessLicenseUrl(CDNUtil.getFileFullPath(financing.getBusinessLicenseUrl()));
+
+            financingDetail.setAdvantage(financing.getAdvantage());
+            financingDetail.setContent(financing.getContent());
+            financingDetail.setFunding(financing.getFunding());
+            financingDetail.setContactPerson(financing.getContactPerson());
+            financingDetail.setContact(financing.getContact());
+            financingDetail.setProjectId(financing.getProjectId());
+
+            financingDetail.setBusinessPlan(CDNUtil.getFileFullPath(financing.getBusinessPlan()));
+
+            financingDetail.setCreated(financing.getCreated());
+            detail.setFinancing(financingDetail);
+        }
         detail.setStatus(project.getStatus());
-        
+
         detail.setName(project.getName());
         detail.setLogo(CDNUtil.getFullPath(project.getLogo()));
         detail.setContent(project.getContent());
@@ -406,22 +513,13 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
 
         detail.setProjectPhase(phaseIdMapName.get(project.getProjectPhaseId()));
         detail.setIndustryDomain(domainIdMapName.get(project.getIndustryDomainId()));
-
-        Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
-        Set<Long> ids = projectIdMapLikerIds.get(project.getId());
-        if (null != ids) {
-            for (Long id : ids) {
-                likers.add(userIdMapUser.get(id));
-            }
-        }
-        detail.setLikers(likers);
         detail.setBusinessPlan(CDNUtil.getFullPath(project.getBusinessPlan()));
+
         return detail;
     }
 
     @Override
     public void updateProject(ProjectUpdateRequest requestData) throws CException {
-        // TODO Auto-generated method stub
 
     }
 }

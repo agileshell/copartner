@@ -2,6 +2,8 @@ package com.insoul.copartner.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -9,6 +11,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "demand", catalog = "copartner")
+@NamedQueries({
+    @NamedQuery(name = "Demand.projectDemand", query = "FROM Demand WHERE projectId = :projectId") 
+    })
 public class Demand extends BaseEntity {
 
     private static final long serialVersionUID = -7917543729540044208L;

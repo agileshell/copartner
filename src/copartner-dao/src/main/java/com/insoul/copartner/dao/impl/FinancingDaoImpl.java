@@ -31,6 +31,16 @@ public class FinancingDaoImpl extends BaseDaoImpl<Financing, Long> implements IF
         return count;
     }
 
+    @Override
+    public Financing getFinancingByProjectId(Long projectId) {
+        if (projectId == null || projectId <= 0L) {
+            return null;
+        }
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("projectId", projectId);
+        return (Financing) createNamedQuery("Financing.projectFinancing", args).getSingleResult();
+    }
+
     private Query generateQuery(FinancingCriteria criteria, boolean isCount) {
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
@@ -41,6 +51,10 @@ public class FinancingDaoImpl extends BaseDaoImpl<Financing, Long> implements IF
         if (null != criteria.getFinancingPhaseId() && 0 != criteria.getFinancingPhaseId()) {
             conditionStr.append(" AND financingPhaseId = :financingPhaseId");
             params.put("financingPhaseId", criteria.getFinancingPhaseId());
+        }
+        if (null != criteria.getProjectId() && criteria.getProjectId() > 0L) {
+            conditionStr.append(" AND projectId = :projectId");
+            params.put("projectId", criteria.getProjectId());
         }
         if (null != criteria.getStatus() && criteria.getStatus().length > 0) {
             conditionStr.append(" AND status IN(:status)");

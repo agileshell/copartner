@@ -10,5 +10,7 @@ public interface IFinancingDao extends IBaseDao<Financing, Long> {
     List<Financing> queryFinancing(FinancingCriteria criteria);
 
     Long countFinancing(FinancingCriteria criteria);
+    
+    Financing getFinancingByProjectId(Long projectId);
 
 }

@@ -30,6 +30,16 @@ public class DemandDaoImpl extends BaseDaoImpl<Demand, Long> implements IDemandD
         return count;
     }
 
+    @Override
+    public Demand getDemandByProjectId(Long projectId) {
+        if (projectId == null || projectId <= 0L) {
+            return null;
+        }
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("projectId", projectId);
+        return (Demand) createNamedQuery("Demand.projectDemand", args).getSingleResult();
+    }
+
     private Query generateQuery(DemandCriteria criteria, boolean isCount) {
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
