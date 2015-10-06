@@ -294,6 +294,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
 
         for (Project project : projects) {
             ProjectVO projectVO = new ProjectVO();
+            projectVO.setId(project.getId());
             projectVO.setName(project.getName());
             projectVO.setLogo(CDNUtil.getFullPath(project.getLogo()));
             projectVO.setContent(ContentUtil.splitAndFilterString(project.getContent(), 80));
@@ -525,6 +526,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         }
         detail.setStatus(project.getStatus());
 
+        detail.setId(project.getId());
         detail.setName(project.getName());
         detail.setLogo(CDNUtil.getFullPath(project.getLogo()));
         detail.setContent(project.getContent());

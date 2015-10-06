@@ -6,6 +6,8 @@ public class ProjectDetailVO implements Serializable {
 
     private static final long serialVersionUID = -9070163501160902318L;
 
+    private long id;
+
     private String name;
 
     private String logo;
@@ -31,6 +33,14 @@ public class ProjectDetailVO implements Serializable {
     private FinancingDetailVO financing;
 
     private DemandDetailVO demand;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

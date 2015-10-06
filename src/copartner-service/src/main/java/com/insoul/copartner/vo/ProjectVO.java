@@ -11,6 +11,8 @@ public class ProjectVO implements Serializable {
 
     private static final long serialVersionUID = -4435427359292836901L;
 
+    private long id;
+
     private String name;
 
     private String logo;
@@ -33,8 +35,16 @@ public class ProjectVO implements Serializable {
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
-    
+
     private String businessPlan;// 商业计划书
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getBusinessPlan() {
         return businessPlan;
