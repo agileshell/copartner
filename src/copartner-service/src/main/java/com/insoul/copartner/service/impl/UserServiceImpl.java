@@ -388,6 +388,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         long userId = getUserId();
         User user = userDao.get(userId);
 
+        if (StringUtils.isNotBlank(profileUpdateRequest.getEmail())) {
+            user.setEmail(profileUpdateRequest.getEmail());
+        }
         if (StringUtils.isNotBlank(profileUpdateRequest.getName())) {
             user.setName(profileUpdateRequest.getName());
         }

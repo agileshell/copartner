@@ -52,6 +52,13 @@ public class TutorServiceImpl extends BaseServiceImpl implements ITutorService {
             tutorVO.setTutorId(user.getId());
             tutorVO.setName(user.getName());
             tutorVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+            Long professionId = user.getProfessionId();
+            tutorVO.setProfessionId(professionId);
+            if (professionId == 1) {
+                tutorVO.setProfessionName("学术型");
+            } else if (professionId == 2) {
+                tutorVO.setProfessionName("实业型");
+            }
             tutorVO.setCreated(user.getCreated());
 
             if (StringUtils.isNotBlank(user.getDomains())) {

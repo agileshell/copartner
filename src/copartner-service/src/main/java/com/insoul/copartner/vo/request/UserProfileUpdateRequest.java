@@ -30,6 +30,8 @@ public class UserProfileUpdateRequest implements Serializable {
 
     private Long domainIds[];
 
+    private String email;
+
     public String getName() {
         return name;
     }
@@ -100,6 +102,14 @@ public class UserProfileUpdateRequest implements Serializable {
 
     public void setDomainIds(Long[] domainIds) {
         this.domainIds = domainIds;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }
