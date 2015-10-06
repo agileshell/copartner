@@ -15,11 +15,11 @@
 				margin-top: 44px;
 			}
 			.mui-input-row label {
-				width: 22%;
+				width: 30%;
 				padding: 10px 0 10px 10px;
 			}
 			.mui-input-row span {
-				width: 78%;
+				width: 70%;
 			}
 			.c-input {
 				margin-left: -20px;
@@ -43,6 +43,10 @@
 				right: 40px;
 				width: 40px;
 				height: 40px;
+			}
+			#businessPlanTmp {
+				position: absolute;
+				width: 40px;
 			}
 		</style>
 	</head>
@@ -116,6 +120,27 @@
 							<input id='contactPerson' name='contactPerson' type="text" value="" class="c-input">
 						</span>
 					</div>
+					<div class="mui-input-row">
+						<label>融资</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='financingId' name="financingId" type="hidden">
+							<input id='financingName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>融智</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='demandId' name="demandId" type="hidden">
+							<input id='demandName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>商业计划书</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='businessPlan' name='businessPlan' type="hidden" value="" >
+							<span id='businessPlanTmp'></span>
+						</span>
+					</div>
 				</form>
 				<div class="mui-input-row" style="margin: 10px 5px 0 5px;">
 					<textarea id="advantage" rows="3" placeholder="优势"></textarea>
@@ -184,6 +209,55 @@
 			businessRegistered.addEventListener('toggle', function(event) {
 				hasBusinessRegistered.value = event.detail.isActive ? 'true' : 'false';
 			});
+
+			var financingId = document.getElementById('financingId'),
+				financingName = document.getElementById('financingName'),
+				demandId = document.getElementById('demandId'),
+				demandName = document.getElementById('demandName');
+			financingId.value = '';
+			financingName.value = '';
+			demandId.value = '';
+			demandName.value = '';
+			var demands = [], financings = [];
+			app.listOwerRongzis(function(response) {
+				rongziTmps = response.body.list;
+				console.log(JSON.stringify(rongziTmps));
+				for (var i = 0, len = rongziTmps.length; i < len; i++) {
+					var financing = {
+						'text': rongziTmps[i].projectName,
+						'value': rongziTmps[i].id
+					}
+					financings[i] = financing;
+				}
+				var financingPicker = new $.PopPicker();
+				financingPicker.setData(financings);
+				financingName.addEventListener('tap', function(event) {
+					financingPicker.show(function(items) {
+						financingId.value = items[0].value;
+						financingName.value = items[0].text;
+					});
+				}, false);
+			});
+			app.listOwerRongzhis(function(response) {
+				rongzhiTmps = response.body.list;
+				console.log(JSON.stringify(rongzhiTmps));
+				for (var i = 0, len = rongzhiTmps.length; i < len; i++) {
+					var demand = {
+						'text': rongzhiTmps[i].projectName,
+						'value': rongzhiTmps[i].id
+					}
+					demands[i] = demand;
+				}
+				var demandPicker = new $.PopPicker();
+				demandPicker.setData(demands);
+				demandName.addEventListener('tap', function(event) {
+					demandPicker.show(function(items) {
+						demandId.value = items[0].value;
+						demandName.value = items[0].text;
+					});
+				}, false);
+			});
+
 			$.plusReady(function() {
 				var toProfilePage = function() {
 					var profilePage = plus.webview.getWebviewById('profile');
@@ -211,7 +285,10 @@
 						contactPerson: doc.getElementById('contactPerson').value,
 						hasBusinessRegistered: doc.getElementById('hasBusinessRegistered').value,
 						advantage: doc.getElementById('advantage').value,
-						content: doc.getElementById('content').value
+						content: doc.getElementById('content').value,
+						financingId: financingId.value,
+						demandId: demandId.value,
+						businessPlan: doc.getElementById('businessPlan').value
 					};
 					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
 					app.createProject(projectInfo, function(err) {

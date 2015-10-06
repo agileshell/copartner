@@ -15,11 +15,11 @@
 				margin-top: 44px;
 			}
 			.mui-input-row label {
-				width: 22%;
+				width: 30%;
 				padding: 10px 0 10px 10px;
 			}
 			.mui-input-row span {
-				width: 78%;
+				width: 70%;
 			}
 			.c-input {
 				margin-left: -20px;
@@ -33,6 +33,23 @@
 			}
 			.mui-btn {
 				padding: 10px;
+			}
+			#head {
+				height: 40px;
+				line-height: 40px;
+			}
+			#head-img {
+				position: absolute;
+				right: 40px;
+				width: 40px;
+				height: 40px;
+			}
+			#businessPlanTmp {
+				position: absolute;
+				width: 40px;
+			}
+			.undisplayed{
+				display: none;
 			}
 		</style>
 	</head>
@@ -87,6 +104,19 @@
 							<div class="mui-switch-handle"></div>
 						</div>
 					</div>
+					<div id="zz-a" class="mui-input-row">
+						<label style="width: 50%;">营业执照号</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 50%;">
+							<input id='businessLicense' name='businessLicense' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div id="zz-b" class="mui-input-row">
+						<label style="width: 50%;">营业执照图片</label>
+						<span  id="head" class="mui-pull-right mui-navigate-right" style="width: 50%;">
+							<input id='businessLicenseUrl' name='businessLicenseUrl' type="hidden" value="" >
+							<img class="head-img mui-action-preview" id="head-img" src="../images/blank.jpg"/>
+						</span>
+					</div>
 					<div class="mui-input-row">
 						<label>意向资金</label>
 						<span class="mui-pull-right mui-navigate-right">
@@ -96,13 +126,20 @@
 					<div class="mui-input-row">
 						<label>联系人</label>
 						<span class="mui-pull-right mui-navigate-right">
-							<input id='contact' name='contact' type="text" value="" class="c-input">
+							<input id='contact' name='contact' type="tel" value="" class="c-input">
 						</span>
 					</div>
 					<div class="mui-input-row">
 						<label>联系电话</label>
 						<span class="mui-pull-right mui-navigate-right">
-							<input id='contactPerson' name='contactPerson' type="text" value="" class="c-input">
+							<input id='contactPerson' name='contactPerson' type="tel" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>商业计划书</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='businessPlan' name='businessPlan' type="hidden" value="" >
+							<span id='businessPlanTmp'></span>
 						</span>
 					</div>
 				</form>
@@ -167,11 +204,22 @@
 					location.value = items[1].value;
 				});
 			}, false);
+
 			var businessRegistered = doc.getElementById('businessRegistered'),
-				hasBusinessRegistered = doc.getElementById('hasBusinessRegistered');
+				hasBusinessRegistered = doc.getElementById('hasBusinessRegistered'),
+				zzA = doc.getElementById('zz-a'),
+				zzB = doc.getElementById('zz-b');
 			businessRegistered.addEventListener('toggle', function(event) {
 				hasBusinessRegistered.value = event.detail.isActive ? 'true' : 'false';
+				if (hasBusinessRegistered.value == 'true') {
+					zzA.classList.remove('undisplayed');
+					zzB.classList.remove('undisplayed');
+				} else {
+					zzA.classList.add('undisplayed');
+					zzB.classList.add('undisplayed');
+				}
 			});
+
 			//ready
 			$.ready(function() {
 				var toProfilePage = function() {
@@ -200,7 +248,10 @@
 						funding: doc.getElementById('funding').value,
 						hasBusinessRegistered: doc.getElementById('hasBusinessRegistered').value,
 						advantage: doc.getElementById('advantage').value,
-						content: doc.getElementById('content').value
+						content: doc.getElementById('content').value,
+						businessLicense: doc.getElementById('businessLicense').value,
+						businessLicenseUrl: doc.getElementById('businessLicenseUrl').value,
+						businessPlan: doc.getElementById('businessPlan').value
 					};
 					var w = plus.nativeUI.showWaiting("　　 请等待...　　");
 					app.createRongzi(rzInfo, function(err) {
@@ -215,6 +266,84 @@
 						}, 200);
 					});
 				};
+
+				//更换头像
+				$(".mui-input-row").on("tap", "#head", function(e) {
+					var a = [{
+						title: "拍照"
+					}, {
+						title: "从手机相册选择"
+					}];
+					plus.nativeUI.actionSheet({
+						title: "修改头像",
+						cancel: "取消",
+						buttons: a
+					}, function(b) {
+						switch (b.index) {
+							case 0:
+								break;
+							case 1:
+								getImage();
+								break;
+							case 2:
+								galleryImg();
+								break;
+							default:
+								break
+						}
+					})
+				});
+				function getImage() {
+					var c = plus.camera.getCamera();
+					c.captureImage(function(e) {
+						plus.io.resolveLocalFileSystemURL(e, function(entry) {
+							var s = entry.toLocalURL() + "?version=" + new Date().getTime();
+							doc.getElementById("head-img").src = s;
+							upload(entry.fullPath);
+						}, function(e) {
+							console.log("读取拍照文件错误：" + e.message);
+						});
+					}, function(s) {
+						console.log("error" + s);
+					}, {
+						filename: "_doc/head.jpg"
+					})
+				}
+				// 从相册添加文件
+				function galleryImg(){
+					plus.gallery.pick(function(p){
+						var s = p + "?version=" + new Date().getTime();
+						doc.getElementById("head-img").src = s;
+						upload(p);
+					});
+				}
+				function upload(p) {
+					var wt = plus.nativeUI.showWaiting();
+					var task = plus.uploader.createUpload('http://123.57.55.59:8080/image', {
+							method: "POST"
+						},
+						function(t, status) { //上传完成
+							if (status == 200) {
+								wt.close();
+								var data = JSON.parse(t.responseText);
+								if (data.status == 'SUCCEED') {
+									plus.nativeUI.toast("上传成功");
+									doc.getElementById("businessLicenseUrl").value = data.body.image_path;
+								} else {
+									plus.nativeUI.toast("上传失败, " + app.ajaxFailedHandler(data.body.error.code));
+								}
+							} else {
+								wt.close();
+								plus.nativeUI.toast("上传失败");
+							}
+						}
+					);
+					task.addFile(p, {
+						key: 'image'
+					});
+					task.addData("needThumbnail", "true");
+					task.start();
+				}
 			});
 		})(mui, document);
 	</script>

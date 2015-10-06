@@ -435,6 +435,10 @@ owner.submitAuthenticate = function(info, callback) {
 		rzInfo.advantage = rzInfo.advantage || '';
 		rzInfo.content = rzInfo.content || '';
 		rzInfo.funding = rzInfo.funding;
+		rzInfo.hasBusinessRegistered = rzInfo.hasBusinessRegistered || 'true';
+		rzInfo.businessLicense = rzInfo.businessLicense || '';
+		rzInfo.businessLicenseUrl = rzInfo.businessLicenseUrl || '';
+		rzInfo.businessPlan = rzInfo.businessPlan || '';
 		if (rzInfo.projectName.length <= 0) {
 			return callback('项目名称不能为空');
 		} else if (rzInfo.projectName.length > 50) {
@@ -451,6 +455,14 @@ owner.submitAuthenticate = function(info, callback) {
 		}
 		if (rzInfo.financingPhaseId == 0) {
 			return callback('阶段不能为空');
+		}
+		if (rzInfo.hasBusinessRegistered == 'true') {
+			if (rzInfo.businessLicense.length <= 0) {
+				return callback('营业执照号不能为空');
+			}
+			if (rzInfo.businessLicenseUrl.length <= 0) {
+				return callback('请上传营业执照');
+			}
 		}
 		if (rzInfo.contact.length > 30) {
 			return callback('联系人不能大于30个字符');
@@ -479,7 +491,10 @@ owner.submitAuthenticate = function(info, callback) {
 				advantage: rzInfo.advantage,
 				content: rzInfo.content,
 				hasBusinessRegistered: rzInfo.hasBusinessRegistered,
-				funding: rzInfo.funding
+				funding: rzInfo.funding,
+				businessLicense: rzInfo.businessLicense,
+				businessLicenseUrl: rzInfo.businessLicenseUrl,
+				businessPlan: rzInfo.businessPlan
 			},
 			dataType: 'json',
 			type: 'post',
@@ -553,6 +568,21 @@ owner.submitAuthenticate = function(info, callback) {
 		})
 	};
 
+	owner.listOwerRongzis = function(successCallback) {
+		var userId = owner.getUserId();
+		mui.ajax(owner.apiURL + 'user/' + userId + '/financings', {
+			data: {
+				beused: false
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				return successCallback(data);
+			}
+		})
+	};
+
 	owner.createRongzhi = function(rzInfo, callback) {
 		callback = callback || $.noop;
 		rzInfo = rzInfo || {};
@@ -565,6 +595,11 @@ owner.submitAuthenticate = function(info, callback) {
 		rzInfo.advantage = rzInfo.advantage || '';
 		rzInfo.content = rzInfo.content || '';
 		rzInfo.reward = rzInfo.reward || '';
+		rzInfo.hasBusinessRegistered = rzInfo.hasBusinessRegistered || 'true';
+		rzInfo.businessLicense = rzInfo.businessLicense || '';
+		rzInfo.businessLicenseUrl = rzInfo.businessLicenseUrl || '';
+		rzInfo.businessPlan = rzInfo.businessPlan || '';
+
 		if (rzInfo.projectName.length <= 0) {
 			return callback('项目名称不能为空');
 		} else if (rzInfo.projectName.length > 50) {
@@ -578,6 +613,14 @@ owner.submitAuthenticate = function(info, callback) {
 		}
 		if (rzInfo.teamSizeId == 0) {
 			return callback('团队不能为空');
+		}
+		if (rzInfo.hasBusinessRegistered == 'true') {
+			if (rzInfo.businessLicense.length <= 0) {
+				return callback('营业执照号不能为空');
+			}
+			if (rzInfo.businessLicenseUrl.length <= 0) {
+				return callback('请上传营业执照');
+			}
 		}
 		if (rzInfo.contact.length > 30) {
 			return callback('联系人不能大于30个字符');
@@ -609,7 +652,10 @@ owner.submitAuthenticate = function(info, callback) {
 				advantage: rzInfo.advantage,
 				content: rzInfo.content,
 				hasBusinessRegistered: rzInfo.hasBusinessRegistered,
-				reward: rzInfo.reward
+				reward: rzInfo.reward,
+				businessLicense: rzInfo.businessLicense,
+				businessLicenseUrl: rzInfo.businessLicenseUrl,
+				businessPlan: rzInfo.businessPlan
 			},
 			dataType: 'json',
 			type: 'post',
@@ -684,6 +730,21 @@ owner.submitAuthenticate = function(info, callback) {
 		})
 	};
 
+	owner.listOwerRongzhis = function(successCallback) {
+		var userId = owner.getUserId();
+		mui.ajax(owner.apiURL + 'user/' + userId + '/demands', {
+			data: {
+				beused: false
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				return successCallback(data);
+			}
+		})
+	};
+
 	owner.createProject = function(projectInfo, callback) {
 		callback = callback || $.noop;
 		projectInfo = projectInfo || {};
@@ -697,6 +758,9 @@ owner.submitAuthenticate = function(info, callback) {
 		projectInfo.contactPerson = projectInfo.contactPerson || '';
 		projectInfo.advantage = projectInfo.advantage || '';
 		projectInfo.content = projectInfo.content || '';
+		projectInfo.financingId = projectInfo.financingId || 0;
+		projectInfo.demandId = projectInfo.demandId || 0;
+		projectInfo.businessPlan = projectInfo.businessPlan || '';
 		if (projectInfo.name.length <= 0) {
 			return callback('项目名称不能为空');
 		} else if (projectInfo.name.length > 50) {
@@ -741,7 +805,10 @@ owner.submitAuthenticate = function(info, callback) {
 				contactPerson: projectInfo.contactPerson,
 				advantage: projectInfo.advantage,
 				content: projectInfo.content,
-				hasBusinessRegistered: projectInfo.hasBusinessRegistered
+				hasBusinessRegistered: projectInfo.hasBusinessRegistered,
+				financingId: projectInfo.financingId,
+				demandId: projectInfo.demandId,
+				businessPlan: projectInfo.businessPlan
 			},
 			dataType: 'json',
 			type: 'post',
