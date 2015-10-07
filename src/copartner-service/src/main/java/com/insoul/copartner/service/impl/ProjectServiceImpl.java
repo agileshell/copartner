@@ -32,7 +32,6 @@ import com.insoul.copartner.dao.criteria.PaginationCriteria;
 import com.insoul.copartner.dao.criteria.ProjectCommentCriteria;
 import com.insoul.copartner.dao.criteria.ProjectCriteria;
 import com.insoul.copartner.domain.Demand;
-import com.insoul.copartner.domain.DemandLikers;
 import com.insoul.copartner.domain.Financing;
 import com.insoul.copartner.domain.FinancingPhase;
 import com.insoul.copartner.domain.IndustryDomain;
@@ -42,7 +41,6 @@ import com.insoul.copartner.domain.ProjectComments;
 import com.insoul.copartner.domain.ProjectLikers;
 import com.insoul.copartner.domain.ProjectLikersId;
 import com.insoul.copartner.domain.ProjectPhase;
-import com.insoul.copartner.domain.StartupRole;
 import com.insoul.copartner.domain.TeamSize;
 import com.insoul.copartner.domain.User;
 import com.insoul.copartner.exception.CException;
@@ -56,7 +54,6 @@ import com.insoul.copartner.vo.FinancingDetailVO;
 import com.insoul.copartner.vo.Pagination;
 import com.insoul.copartner.vo.ProjectDetailVO;
 import com.insoul.copartner.vo.ProjectVO;
-import com.insoul.copartner.vo.UserBriefVO;
 import com.insoul.copartner.vo.UserLeanVO;
 import com.insoul.copartner.vo.request.PaginationRequest;
 import com.insoul.copartner.vo.request.ProjectAddRequest;
@@ -403,26 +400,10 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         }
         ProjectDetailVO detail = new ProjectDetailVO();
 
-        Set<Long> projectIds = new HashSet<Long>();
-        projectIds.add(project.getId());
-        PaginationCriteria pagination = new PaginationCriteria();
-        pagination.setOffset(0);
-        pagination.setLimit(10);
-        List<ProjectLikers> projectLikeres = projectLikersDao.findByProjectIdsAndPagination(projectIds, pagination);
-        Set<Long> likerIds = new HashSet<Long>();
-        Map<Long, Set<Long>> projectIdMapLikerIds = new HashMap<Long, Set<Long>>();
-        for (ProjectLikers projectLiker : projectLikeres) {
-            Long userId = projectLiker.getId().getUserId();
-            Long pid = projectLiker.getId().getProjectId();
-            Set<Long> ids = projectIdMapLikerIds.containsKey(pid) ? projectIdMapLikerIds.get(pid) : new HashSet<Long>();
-            ids.add(userId);
-            projectIdMapLikerIds.put(pid, ids);
-            likerIds.add(userId);
-        }
-
         Demand demand = demandDAO.getDemandByProjectId(projectId);
         if (null != demand) {
             DemandDetailVO demandVO = new DemandDetailVO();
+            demandVO.setId(demand.getId());
             demandVO.setProjectName(demand.getProjectName());
             demandVO.setStatus(demand.getStatus());
 
@@ -451,40 +432,13 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
             demandVO.setBusinessLicenseUrl(CDNUtil.getFileFullPath(demand.getBusinessLicenseUrl()));
             demandVO.setBusinessPlan(CDNUtil.getFileFullPath(demand.getBusinessPlan()));
 
-            User owner = userDao.get(demand.getUserId());
-            UserBriefVO ownerVO = new UserBriefVO();
-            ownerVO.setUserId(owner.getId());
-            ownerVO.setName(owner.getName());
-            ownerVO.setAvatar(CDNUtil.getFullPath(owner.getAvatar()));
-            ownerVO.setLocation(owner.getFullLocation());
-            if (null != owner.getStartupRoleId()) {
-                StartupRole startupRole = startupRoleDao.get(owner.getStartupRoleId());
-                ownerVO.setRole(startupRole.getName());
-            }
-            demandVO.setUser(ownerVO);
-
-            List<DemandLikers> demandLikers = demandLikersDao.findByDemandId(demand.getId());
-            Set<Long> demandLikerIds = new HashSet<Long>();
-            for (DemandLikers demandLiker : demandLikers) {
-                demandLikerIds.add(demandLiker.getId().getUserId());
-            }
-            Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
-            List<User> users = userDao.getUserByIds(demandLikerIds);
-            for (User user : users) {
-                UserLeanVO userVO = new UserLeanVO();
-                userVO.setUserId(user.getId());
-                userVO.setName(user.getName());
-                userVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
-
-                likers.add(userVO);
-            }
-            demandVO.setLikers(likers);
             detail.setDemand(demandVO);
         }
 
         Financing financing = financingDAO.getFinancingByProjectId(projectId);
         if (null != financing) {
             FinancingDetailVO financingDetail = new FinancingDetailVO();
+            financingDetail.setId(financing.getId());
             financingDetail.setProjectName(financing.getProjectName());
             financingDetail.setFullLocation(financing.getFullLocation());
 
