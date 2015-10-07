@@ -183,7 +183,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         if (requestData.getDemandId() != 0) {
             Demand demand = demandDAO.get(requestData.getDemandId());
             if (demand != null) {
-                demand.setBeused((byte)1);
+                demand.setBeused((byte) 1);
                 demand.setProjectId(projectId);
                 demand.setUpdated(new Date());
             }
@@ -191,7 +191,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         if (requestData.getFinancingId() != 0) {
             Financing financing = financingDAO.get(requestData.getFinancingId());
             if (financing != null) {
-                financing.setBeused((byte)1);
+                financing.setBeused((byte) 1);
                 financing.setProjectId(projectId);
                 financing.setUpdated(new Date());
             }
@@ -488,11 +488,11 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
             financingDetail.setProjectName(financing.getProjectName());
             financingDetail.setFullLocation(financing.getFullLocation());
 
-            IndustryDomain industryDomain = industryDomainDao.get(financing.getFinancingPhaseId());
+            IndustryDomain industryDomain = industryDomainDao.get(financing.getIndustryDomainId());
             financingDetail.setIndustryDomainName(industryDomain.getName());
-            TeamSize teamSize = teamSizeDao.get(financing.getIndustryDomainId());
+            TeamSize teamSize = teamSizeDao.get(financing.getTeamSizeId());
             financingDetail.setTeamSizeName(teamSize.getName());
-            FinancingPhase financingPhase = financingPhaseDao.get(financing.getTeamSizeId());
+            FinancingPhase financingPhase = financingPhaseDao.get(financing.getFinancingPhaseId());
             financingDetail.setFinancingPhaseName(financingPhase.getName());
 
             financingDetail.setFullLocation(financing.getFullLocation());
@@ -522,12 +522,16 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         detail.setCommentCount(project.getCommentCount());
         detail.setLikeCount(project.getLikeCount());
         detail.setLocation(project.getFullLocation());
-        IndustryDomain industryDomain = industryDomainDao.get(financing.getFinancingPhaseId());
+
+        IndustryDomain industryDomain = industryDomainDao.get(project.getIndustryDomainId());
         detail.setIndustryDomain(industryDomain.getName());
-        TeamSize teamSize = teamSizeDao.get(financing.getIndustryDomainId());
+        TeamSize teamSize = teamSizeDao.get(project.getTeamSizeId());
         detail.setTeamSize(teamSize.getName());
-        FinancingPhase financingPhase = financingPhaseDao.get(financing.getTeamSizeId());
-        detail.setProjectPhase(financingPhase.getName());
+        ProjectPhase projectPhase = projectPhaseDao.get(project.getProjectPhaseId());
+        detail.setProjectPhase(projectPhase.getName());
+
+        detail.setContact(project.getContact());
+        detail.setContactPerson(project.getContactPerson());
 
         detail.setBusinessPlan(CDNUtil.getFileFullPath(project.getBusinessPlan()));
 

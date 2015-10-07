@@ -34,6 +34,10 @@ public class ProjectDetailVO implements Serializable {
 
     private String businessPlan;
 
+    private String contactPerson;// 联系人
+
+    private String contact;// 联系方式
+
     private FinancingDetailVO financing;
 
     private DemandDetailVO demand;
@@ -140,6 +144,22 @@ public class ProjectDetailVO implements Serializable {
 
     public void setBusinessPlan(String businessPlan) {
         this.businessPlan = businessPlan;
+    }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     public FinancingDetailVO getFinancing() {
