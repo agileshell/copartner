@@ -190,11 +190,11 @@ public class FinancingServiceImpl extends BaseServiceImpl implements IFinancingS
             detailVO.setProjectName(financing.getProjectName());
             detailVO.setFullLocation(financing.getFullLocation());
 
-            IndustryDomain industryDomain = industryDomainDao.get(financing.getFinancingPhaseId());
+            IndustryDomain industryDomain = industryDomainDao.get(financing.getIndustryDomainId());
             detailVO.setIndustryDomainName(industryDomain.getName());
-            TeamSize teamSize = teamSizeDao.get(financing.getIndustryDomainId());
+            TeamSize teamSize = teamSizeDao.get(financing.getTeamSizeId());
             detailVO.setTeamSizeName(teamSize.getName());
-            FinancingPhase financingPhase = financingPhaseDao.get(financing.getTeamSizeId());
+            FinancingPhase financingPhase = financingPhaseDao.get(financing.getFinancingPhaseId());
             detailVO.setFinancingPhaseName(financingPhase.getName());
 
             detailVO.setFullLocation(financing.getFullLocation());
