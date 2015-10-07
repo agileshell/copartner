@@ -316,8 +316,6 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
             }
             projectVO.setLikers(likers);
 
-            projectVO.setBusinessPlan(CDNUtil.getFullPath(project.getBusinessPlan()));
-
             projectVOs.add(projectVO);
         }
 
@@ -407,16 +405,6 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
 
         Set<Long> projectIds = new HashSet<Long>();
         projectIds.add(project.getId());
-        List<ProjectPhase> projectPhases = projectPhaseDao.findAll();
-        Map<Long, String> phaseIdMapName = new HashMap<Long, String>();
-        for (ProjectPhase projectPhase : projectPhases) {
-            phaseIdMapName.put(projectPhase.getId(), projectPhase.getName());
-        }
-        List<IndustryDomain> industryDomains = industryDomainDao.findAll();
-        Map<Long, String> domainIdMapName = new HashMap<Long, String>();
-        for (IndustryDomain industryDomain : industryDomains) {
-            domainIdMapName.put(industryDomain.getId(), industryDomain.getName());
-        }
         PaginationCriteria pagination = new PaginationCriteria();
         pagination.setOffset(0);
         pagination.setLimit(10);
@@ -530,13 +518,18 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         detail.setName(project.getName());
         detail.setLogo(CDNUtil.getFullPath(project.getLogo()));
         detail.setContent(project.getContent());
+        detail.setAdvantage(project.getAdvantage());
         detail.setCommentCount(project.getCommentCount());
         detail.setLikeCount(project.getLikeCount());
         detail.setLocation(project.getFullLocation());
+        IndustryDomain industryDomain = industryDomainDao.get(financing.getFinancingPhaseId());
+        detail.setIndustryDomain(industryDomain.getName());
+        TeamSize teamSize = teamSizeDao.get(financing.getIndustryDomainId());
+        detail.setTeamSize(teamSize.getName());
+        FinancingPhase financingPhase = financingPhaseDao.get(financing.getTeamSizeId());
+        detail.setProjectPhase(financingPhase.getName());
 
-        detail.setProjectPhase(phaseIdMapName.get(project.getProjectPhaseId()));
-        detail.setIndustryDomain(domainIdMapName.get(project.getIndustryDomainId()));
-        detail.setBusinessPlan(CDNUtil.getFullPath(project.getBusinessPlan()));
+        detail.setBusinessPlan(CDNUtil.getFileFullPath(project.getBusinessPlan()));
 
         return detail;
     }

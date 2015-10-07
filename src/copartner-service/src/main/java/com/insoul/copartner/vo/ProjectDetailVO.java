@@ -22,6 +22,10 @@ public class ProjectDetailVO implements Serializable {
 
     private String industryDomain;
 
+    private String teamSize;
+
+    private String advantage;
+
     private Long likeCount;
 
     private Long commentCount;
@@ -96,6 +100,22 @@ public class ProjectDetailVO implements Serializable {
 
     public void setIndustryDomain(String industryDomain) {
         this.industryDomain = industryDomain;
+    }
+
+    public String getTeamSize() {
+        return teamSize;
+    }
+
+    public void setTeamSize(String teamSize) {
+        this.teamSize = teamSize;
+    }
+
+    public String getAdvantage() {
+        return advantage;
+    }
+
+    public void setAdvantage(String advantage) {
+        this.advantage = advantage;
     }
 
     public Long getLikeCount() {
