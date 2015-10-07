@@ -124,16 +124,19 @@
 					</div>
 					<div class="mui-input-row">
 						<label style="width: 50%;">商业计划书</label>
-						<span class="mui-pull-right mui-navigate-right" style="width: 50%;">
+						<span id="businessPlanFile" class="mui-pull-right mui-navigate-right" style="width: 50%;">
 							<input id='businessPlan' name='businessPlan' type="hidden" value="" >
 							<span id='businessPlanTmp'></span>
 						</span>
 					</div>
 				</form>
 				<div class="mui-input-row" style="margin: 10px 5px 0 5px;">
-					<textarea id="reward" rows="2" placeholder="回报"></textarea>
-					<textarea id="advantage" rows="2" placeholder="优势"></textarea>
-					<textarea id="content" rows="3" placeholder="融智要求"></textarea>
+					<span style="font-size: 12px; color:  #bdbdbd;">回报</span>
+					<textarea id="reward" rows="2"></textarea>
+					<span style="font-size: 12px; color:  #bdbdbd;">优势</span>
+					<textarea id="advantage" rows="2"></textarea>
+					<span style="font-size: 12px; color:  #bdbdbd;">融智要求</span>
+					<textarea id="content" rows="3"></textarea>
 				</div>
 				<div class="mui-content-padded">
 					<button id='create-rongzhi-b' class="mui-btn mui-btn-block mui-btn-primary">确认</button>
@@ -321,6 +324,39 @@
 					task.addData("needThumbnail", "true");
 					task.start();
 				}
+
+				//上传文件
+				$(".mui-input-row").on("tap", "#businessPlanFile", function(e) {
+					var a = [{
+						title: "从文件系统选择"
+					}];
+					plus.nativeUI.actionSheet({
+						title: "上传",
+						cancel: "取消",
+						buttons: a
+					}, function(b) {
+						switch (b.index) {
+							case 0:
+								break;
+							case 1:
+								galleryFile();
+								break;
+							default:
+								break
+						}
+					})
+				});
+				function selectFile() {
+					plus.gallery.pick(function(path) {
+						var n = path.substr(path.lastIndexOf('/') + 1);
+						doc.getElementById("businessPlanTmp").innerText = n;
+						console.log(path);
+					}, function(e) {
+						console.log("读取文件错误：" + e.message);
+					}, {
+						filter: "*"
+					});
+				};
 			});
 		})(mui, document);
 	</script>

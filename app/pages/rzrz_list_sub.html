@@ -211,6 +211,45 @@
 				}
 			});
 		});
+
+		 //打开详情
+		mui('#pullrefresh').on('tap', 'a', function() {
+			if (rzrzType == 1) {
+				open_rongzi_detail(this.getAttribute('data-guid'));
+			} else if (rzrzType == 2) {
+				open_rongzhi_detail(this.getAttribute('data-guid'));
+			} else {
+				open_project_detail(this.getAttribute('data-guid'));
+			}
+		});
+		var rongzhiDetailWebview = null;
+		function open_rongzhi_detail(id) {
+			if (!rongzhiDetailWebview) {
+				rongzhiDetailWebview = plus.webview.getWebviewById('rongzhi_detail');
+			}
+			mui.fire(rongzhiDetailWebview, 'mui.view.beforeshow', {
+				guid: id
+			});
+		};
+		var rongziDetailWebview = null;
+		function open_rongzi_detail(id) {
+			if (!rongziDetailWebview) {
+				rongziDetailWebview = plus.webview.getWebviewById('rongzi_detail');
+			}
+			mui.fire(rongziDetailWebview, 'mui.view.beforeshow', {
+				guid: id
+			});
+		};
+		var projectDetailWebview = null;
+		function open_project_detail(id) {
+			if (!projectDetailWebview) {
+				projectDetailWebview = plus.webview.getWebviewById('project_detail');
+			}
+			mui.fire(projectDetailWebview, 'mui.view.beforeshow', {
+				guid: id
+			});
+		};
+
 		 //下拉刷新具体业务实现
 		function pulldownRefresh() {
 			setTimeout(function() {

@@ -136,15 +136,17 @@
 					</div>
 					<div class="mui-input-row">
 						<label>商业计划书</label>
-						<span class="mui-pull-right mui-navigate-right">
+						<span id="businessPlanFile" class="mui-pull-right mui-navigate-right">
 							<input id='businessPlan' name='businessPlan' type="hidden" value="" >
 							<span id='businessPlanTmp'></span>
 						</span>
 					</div>
 				</form>
 				<div class="mui-input-row" style="margin: 10px 5px 0 5px;">
-					<textarea id="advantage" rows="3" placeholder="优势"></textarea>
-					<textarea id="content" rows="3" placeholder="实施条件"></textarea>
+					<span style="font-size: 12px; color:  #bdbdbd;">优势</span>
+					<textarea id="advantage" rows="3"></textarea>
+					<span style="font-size: 12px; color:  #bdbdbd;">实施条件</span>
+					<textarea id="content" rows="3"></textarea>
 				</div>
 				<div class="mui-content-padded">
 					<button id='create-project-b' class="mui-btn mui-btn-block mui-btn-primary">确认</button>
@@ -220,14 +222,21 @@
 			demandName.value = '';
 			var demands = [], financings = [];
 			app.listOwerRongzis(function(response) {
-				rongziTmps = response.body.list;
-				console.log(JSON.stringify(rongziTmps));
-				for (var i = 0, len = rongziTmps.length; i < len; i++) {
-					var financing = {
-						'text': rongziTmps[i].projectName,
-						'value': rongziTmps[i].id
+				var rongziTmps = response.body.list, len = rongziTmps.length;
+				if (len > 0) {
+					for (var i = 0, len = rongziTmps.length; i < len; i++) {
+						var financing = {
+							'text': rongziTmps[i].projectName,
+							'value': rongziTmps[i].id
+						}
+						financings[i] = financing;
 					}
-					financings[i] = financing;
+				} else {
+						var financing = {
+							'text': '无可用的融资',
+							'value': 0
+						}
+						financings[0] = financing;
 				}
 				var financingPicker = new $.PopPicker();
 				financingPicker.setData(financings);
@@ -239,14 +248,21 @@
 				}, false);
 			});
 			app.listOwerRongzhis(function(response) {
-				rongzhiTmps = response.body.list;
-				console.log(JSON.stringify(rongzhiTmps));
-				for (var i = 0, len = rongzhiTmps.length; i < len; i++) {
-					var demand = {
-						'text': rongzhiTmps[i].projectName,
-						'value': rongzhiTmps[i].id
+				var rongzhiTmps = response.body.list, len = rongzhiTmps.length;
+				if (len > 0) {
+					for (var i = 0; i < len; i++) {
+						var demand = {
+							'text': rongzhiTmps[i].projectName,
+							'value': rongzhiTmps[i].id
+						}
+						demands[i] = demand;
 					}
-					demands[i] = demand;
+				} else {
+						var demand = {
+							'text': '无可用的融智',
+							'value': 0
+						}
+						demands[0] = demand;
 				}
 				var demandPicker = new $.PopPicker();
 				demandPicker.setData(demands);
@@ -383,6 +399,39 @@
 					task.addData("needThumbnail", "true");
 					task.start();
 				}
+				
+				//上传文件
+				$(".mui-input-row").on("tap", "#businessPlanFile", function(e) {
+					var a = [{
+						title: "从文件系统选择"
+					}];
+					plus.nativeUI.actionSheet({
+						title: "上传",
+						cancel: "取消",
+						buttons: a
+					}, function(b) {
+						switch (b.index) {
+							case 0:
+								break;
+							case 1:
+								galleryFile();
+								break;
+							default:
+								break
+						}
+					})
+				});
+				function selectFile() {
+					plus.gallery.pick(function(path) {
+						var n = path.substr(path.lastIndexOf('/') + 1);
+						doc.getElementById("businessPlanTmp").innerText = n;
+						console.log(path);
+					}, function(e) {
+						console.log("读取文件错误：" + e.message);
+					}, {
+						filter: "*"
+					});
+				};
 			});
 		})(mui, document);
 	</script>

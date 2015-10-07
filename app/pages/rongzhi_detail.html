@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创始人</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.mui-page,
+			.mui-page-content {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #efeff4;
+			}
+			.mui-page {
+				top: 45px;
+			}
+			.mui-scroll-wrapper,
+			.mui-scroll {
+				background-color: #efeff4;
+			}
+			.mui-page .mui-table-view:first-child {
+				margin-top: 0px;
+			}
+			.mui-page .mui-table-view:last-child {
+				margin-bottom: 30px;
+			}
+			.mui-table-view {
+				margin-top: 20px;
+			}
+			.head-img {
+				width: 70px;
+				height: 70px;
+				margin-right: 5px;
+				border-radius: 15%;
+			}
+			.coverImg {
+				width: 100%;
+				margin:0 auto;
+				text-align: center;
+			}
+			.c-overlay .c-loader {
+				display: block;
+			}
+			.c-overlay .mui-content {
+				display: none;
+			}
+			.undisplayed {
+				display: none;
+			}
+		</style>
+	</head>
+	<body class="c-overlay">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">融智详情</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-page">
+				<div class="mui-page-content">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell mui-media">
+								<img class="mui-pull-left head-img" id="head-img" src="../images/blank.jpg">
+								<div class="mui-media-body">
+									<span id="projectName"></span>
+									<p class='mui-ellipsis'>领域:<span style="padding-left: 5px;" id="industryDomain"></span></p>
+									<p class='mui-ellipsis'>地区:<span style="padding-left: 5px;" id="location"></span></p>
+									<p class='mui-ellipsis'>团队:<span style="padding-left: 5px;" id="teamSize"></span></p>
+								</div>
+						</li>
+					</ul>
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							融智要求
+							<textarea id="content" style="height:30px; color:  #bdbdbd; border: 0px; padding: 0px;"></textarea>
+						</li>
+						<li class="mui-table-view-cell">
+							回报
+							<textarea id="reward" style="height:30px;  color:  #bdbdbd; border: 0px; padding: 0px;"></textarea>
+						</li>
+						<li class="mui-table-view-cell">
+							优势
+							<textarea id="advantage" style="height:30px;  color:  #bdbdbd; border: 0px; padding: 0px;"></textarea>
+						</li>
+					</ul>
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							联系人<span class="mui-pull-right" id="contactPerson"></span>
+						</li>
+						<li class="mui-table-view-cell">
+							联系电话<span class="mui-pull-right" id="contact"></span>
+						</li>
+					</ul>
+					<ul class="mui-table-view" id="businessLicensePad">
+						<li class="mui-table-view-cell">
+							营业执照<span class="mui-pull-right" 	id="businessLicense"></span>
+						</li>
+						<li class="mui-table-view-cell">
+							<img class="coverImg" id="businessLicenseUrl"/>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+		<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+		<script type="text/javascript">
+			var guid = 0,
+				projectNameEl = document.getElementById('projectName'),
+				industryDomainEl = document.getElementById('industryDomain'),
+				locationEl = document.getElementById('location'),
+				teamSizeEl = document.getElementById('teamSize'),
+				contentEl = document.getElementById('content'),
+				rewardEl = document.getElementById('reward'),
+				advantageEl = document.getElementById('advantage'),
+				contactPersonEl = document.getElementById('contactPerson'),
+				contactEl = document.getElementById('contact'),
+				businessLicenseEl = document.getElementById('businessLicense'),
+				businessLicenseUrlEl = document.getElementById('businessLicenseUrl');
+			var businessLicensePadEl = document.getElementById('businessLicensePad');
+			mui.init({
+				swipeBack: true,
+				beforeback: function() {
+					setTimeout(function() {
+						projectNameEl.innerText = '';
+						industryDomainEl.innerText = '';
+						locationEl.innerText = '';
+						teamSizeEl.innerText = '';
+						contentEl.innerText = '';
+						rewardEl.innerText = '';
+						advantageEl.innerText = '';
+						contactPersonEl.innerText = '';
+						contactEl.innerText = '';
+						businessLicenseEl.innerText = '';
+						businessLicenseUrlEl.src = '';
+						document.body.classList.add('c-overlay');
+					}, 200);
+				}
+			});
+			(function($) {
+				var success = function(response) {
+					var obj = response.body;
+					projectNameEl.innerText = obj.projectName;
+					industryDomainEl.innerText = obj.industryDomain;
+					locationEl.innerText = obj.location;
+					teamSizeEl.innerText = obj.teamSize;
+					contentEl.innerText = obj.content;
+					rewardEl.innerText = obj.reward;
+					advantageEl.innerText = obj.advantage;
+					contactPersonEl.innerText = obj.contactPerson;
+					contactEl.innerText = obj.contact;
+					if (obj.hasBusinessRegistered) {
+						businessLicenseEl.innerText = obj.businessLicense;
+						businessLicenseUrlEl.src = obj.businessLicenseUrl;
+						businessLicensePadEl.classList.remove('undisplayed');
+					} else {
+						businessLicensePadEl.classList.add('undisplayed');
+					}
+
+					window.scrollTo(0, 0);
+					setTimeout(function() {
+						document.body.classList.remove('c-overlay');
+					}, 290);
+					mui.currentWebview.show();
+				},
+				error = function(errorType) {
+					mui.toast(app.ajaxErrorHandler(errorType));
+				};
+	
+				document.addEventListener('mui.view.beforeshow', function(event) {
+					if (event.detail.$$type === 'back') {
+						setTimeout(function() {
+							document.body.classList.remove('c-overlay');
+						}, 500);
+						return;
+					}
+	
+					app.getRongzhi(event.detail.guid, success, error);
+				});
+			})(mui);
+		</script>
+	</body>
+</html>

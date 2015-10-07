@@ -679,6 +679,60 @@ owner.submitAuthenticate = function(info, callback) {
 		})
 	};
 
+	owner.getRongzi = function(id, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'financing/' + id, {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				if (data.status == 'SUCCEED') {
+					return successCallback(data);
+				} else {
+					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				return errorCallback(owner.ajaxErrorHandler(type));
+			}
+		})
+	};
+
+	owner.getRongzhi = function(id, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'demand/' + id, {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				if (data.status == 'SUCCEED') {
+					return successCallback(data);
+				} else {
+					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				return errorCallback(owner.ajaxErrorHandler(type));
+			}
+		})
+	};
+
+	owner.getProject = function(id, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'project/' + id, {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				if (data.status == 'SUCCEED') {
+					return successCallback(data);
+				} else {
+					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				return errorCallback(owner.ajaxErrorHandler(type));
+			}
+		})
+	};
+
 	owner.listUserRongzhis = function(offset, limit, from, to, successCallback, errorCallback) {
 		var userId = owner.getUserId();
 		mui.ajax(owner.apiURL + 'user/' + userId + '/demands', {
