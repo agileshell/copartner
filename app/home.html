@@ -9,13 +9,55 @@
 		<link rel="stylesheet" href="css/mui.min.css">
 		<link rel="stylesheet" href="css/app.css" />
 		<style>
-			.mui-grid-view.mui-grid-9 {
-				background-color: #efeff4;
-			}
-			.mui-table-view:before,
-			.mui-table-view:after {
-				background-color: #efeff4;
-			}
+		.home-menu {
+			position: absolute;
+			left: 0; top: 0; right: 0; bottom: 0;
+		}
+		.list1, .list2, .list3, .list4 {
+			float: left;
+			position: relative;
+			border-radius: 5%;
+		}
+		.list1 {
+			height: 27%;
+		}
+		.list2 {
+			height: 27%;
+		}
+		.list3 {
+			height: 27%;
+		}
+		.list4 {
+			width: 32%;
+			height: 17%;
+		}
+		.list1, .list2, .list3, .list4 {
+			margin: 1% 0 0 1%;
+		}
+		.list1:last-child, .list2:last-child, .list3:last-child {
+			margin: 1% 1% 0 1%;
+		}
+		.list1 img, .list2 img, .list3 img{
+			padding: 5%;
+			display:table-cell;
+			vertical-align:middle;
+			margin: auto;
+			text-align: center;
+		}
+		.list1 span, .list2 span, .list3 span{
+			font: 15px bold 'microsoft yahei';
+			color: white;
+		}
+		.list4:after {
+			content:attr(data-name);
+			position: absolute;
+			left: 0; right: 0; top: 0; bottom: 0;
+			margin: auto;
+			text-align: center;
+			height: 20px;
+			font: 15px bold 'microsoft yahei';
+			color: white;
+		}
 		</style>
 	</head>
 
@@ -25,73 +67,96 @@
 			<h1 id="title" class="mui-title c-title"><span class="c-logo">创始人</span></h1>
 		</header>
 		<div class="mui-content">
-			<ul id="list" class="mui-table-view mui-grid-view mui-grid-9">
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a id="news_list" href="pages/news_list.html">
-						<span class="home-grid c-news-icon"></span>
-						<div class="mui-media-body">最新动态</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a id="zhengce_list" href="pages/zhengce_list.html">
-						<span class="home-grid c-zhengce-icon"></span>
-						<div class="mui-media-body">政策解读</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a id="ziyuan_list" href="pages/ziyuan_list.html">
-						<span class="home-grid c-resource-icon"></span>
-						<div class="mui-media-body">公共资源</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a id="rzrz_list" href="pages/rzrz_list.html">
-						<span class="home-grid c-rzrz-icon"></span>
-						<div class="mui-media-body">融资融智</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a id="renmai" href="pages/renmai.html">
-						<span class="home-grid c-renmai-icon"></span>
-						<div class="mui-media-body">人脉</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a id="contest" href="pages/contest.html">
-						<span class="home-grid c-community-icon"></span>
-						<div class="mui-media-body">创业大赛</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a id="tutor_list" href="pages/tutor_list.html">
-						<span class="home-grid c-tutor-icon"></span>
-						<div class="mui-media-body">创业导师</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a id="course_list" href="pages/course_list.html">
-						<span class="home-grid c-charging-icon"></span>
-						<div class="mui-media-body">充电站</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-					<a id="profile" href="pages/profile.html">
-						<span class="home-grid c-my-icon"></span>
-						<div class="mui-media-body">我</div>
-					</a>
-				</li>
-			</ul>
+			<div id="slider" class="mui-slider">
+				<div class="mui-slider-group mui-slider-loop">
+					<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+					<div class="mui-slider-item mui-slider-item-duplicate">
+						<a href="#">
+							<img src="./tmp/yuantiao.jpg">
+							<p class="mui-slider-title">静静看这世界</p>
+						</a>
+					</div>
+					<div class="mui-slider-item">
+						<a href="#">
+							<img src="./tmp/shuijiao.jpg">
+							<p class="mui-slider-title">幸福就是可以一起睡觉</p>
+						</a>
+					</div>
+					<div class="mui-slider-item">
+						<a href="#">
+							<img src="./tmp/cbd.jpg">
+							<p class="mui-slider-title">Color of SIP CBD</p>
+						</a>
+					</div>
+					<div class="mui-slider-item">
+						<a href="#">
+							<img src="./tmp/yuantiao.jpg">
+							<p class="mui-slider-title">静静看这世界</p>
+						</a>
+					</div>
+					<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+					<div class="mui-slider-item mui-slider-item-duplicate">
+						<a href="#">
+							<img src="./tmp/shuijiao.jpg">
+							<p class="mui-slider-title">幸福就是可以一起睡觉</p>
+						</a>
+					</div>
+				</div>
+				<div class="mui-slider-indicator mui-text-right">
+					<div class="mui-indicator mui-active"></div>
+					<div class="mui-indicator"></div>
+					<div class="mui-indicator"></div>
+				</div>
+			</div>
+			<div id="menus" class="home-menu">
+				<div class="list1" id="rzrz_list"  data-url="pages/rzrz_list.html" align="center" data-name="融资融智" style="background-color: #94ce6d; width: 58.5%;">
+					<img src="images/rzrz.png"/>
+					<span>融资融智</span>
+				</div>
+				<div class="list1" id="tutor_list" data-url="pages/tutor_list.html" align="center" data-name="创业导师" style="background-color: #5cb6df; width: 38.5%;">
+					<img src="images/ds.png"/>
+					<span>创业导师</span>
+				</div>
+				<div class="list2" id="renmai"  data-url="pages/renmai.html" align="center" data-name="人脉" style="background-color: #f8666a; width: 38.5%;">
+					<img src="images/rm.png"/>
+					<span>人脉</span>
+				</div>
+				<div class="list2" id="contest" data-url="pages/contest.html" align="center" data-name="创业大赛" style="background-color: #f3ac2b; width: 58.5%;">
+					<img src="images/cyds.png"/>
+					<span>创业大赛</span>
+				</div>
+				<div class="list3" id="course_list" data-url="pages/course_list.html" align="center" data-name="充电站" style="background-color: #f57750; width: 58.5%;">
+					<img src="images/cdz.png"/>
+					<span>充电站</span>
+				</div>
+				<div class="list3" id="profile" data-url="pages/profile.html" align="center" data-name="我" style="background-color: #bf68a5; width: 38.5%;">
+					<img src="images/me.png"/>
+					<span>我</span>
+				</div>
+				<div class="list4" id="news_list" data-url="pages/news_list.html" data-name="最新动态" style="background-color: #8060f1"></div>
+				<div class="list4" id="zhengce_list" data-url="pages/zhengce_list.html" data-name="政策解读" style="background-color: #8060f1"></div>
+				<div class="list4" id="ziyuan_list" data-url="pages/ziyuan_list.html" data-name="公共资源" style="background-color: #8060f1"></div>
+			</div>
 		</div>
-		<script src="js/mui.min.js"></script>
-		<script src="js/app.js"></script>
-		<script>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/app.js"></script>
+	<script>
 			(function() {
-				var menu = null,
-					main = null;
-				var showMenu = false;
+				var menu = null, main = null, showMenu = false;
 				mui.init({
+					swipeBack:true,
 					statusBarBackground: '#f7f7f7'
 				});
+
+				//slider
+				var slider = mui("#slider");
+				slider.slider({
+					interval: 5000
+				});
+				var topHeight = document.getElementById("slider").offsetHeight;
+				document.getElementById('menus').style.top = topHeight + 45 + 'px';
+
 				mui.plusReady(function() {
 					//仅支持竖屏显示
 					plus.screen.lockOrientation("portrait-primary");
@@ -139,7 +204,7 @@
 						}, 200);
 					}
 				});
-				//初始化，并预加载webview		
+				//初始化，并预加载webview
 				function preload() {
 					//内置浏览器
 					mui.preload({
@@ -195,11 +260,7 @@
 					profilePage = null,
 					renmaiPage = null,
 					contestPage = null;
-				mui('#list').on('tap', 'a', function() {
-					if ('#' == this.getAttribute('href')) {
-						plus.nativeUI.toast('TODO');
-						return;
-					}
+				mui('#menus').on('tap', 'div', function() {
 					var id = this.getAttribute('id');
 					if ('profile' == id || 'renmai' == id) {
 						var state = app.getState();
@@ -229,7 +290,7 @@
 					var aniShow = "pop-in";
 					mui.openWindow({
 						id: id,
-						url: this.href,
+						url: this.getAttribute('data-url'),
 						show: {
 							aniShow: aniShow
 						},
@@ -341,6 +402,5 @@
 				};
 			})();
 		</script>
-	</body>
 
 </html>

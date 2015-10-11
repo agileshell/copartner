@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创始人</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			.mui-bar-nav.mui-bar .c-icon-padded {
+				border: 1px solid #fff;
+				border-radius: 50%;
+				padding: 0px;
+				margin-top: 10px;
+				margin-right: 3px;
+			}
+			.type-list {
+				padding-top: 8px;
+				font-size: 17px;
+				display: inline-block;
+				margin: 0;
+				text-align: center;
+				vertical-align: middle;
+			}
+			.col-3 {
+				width: 33.3%;
+			}
+			.need_apply {
+				display: inline-block;
+				width: 2.64em;
+				height: 2.64em;
+				background: url(../images/ic_need_apply_default.png) no-repeat;
+				background-size: 2.64em 2.64em
+			}
+			.need_apply.selected {
+				background: url(../images/ic_need_apply_selected.png) no-repeat;
+				background-size: 2.64em 2.64em
+			}
+			.need_find_member {
+				display: inline-block;
+				width: 2.64em;
+				height: 2.64em;
+				background: url(../images/ic_need_find_member_default.png) no-repeat;
+				background-size: 2.64em 2.64em
+			}
+			.need_find_member.selected {
+				background: url(../images/ic_need_find_member_selected.png) no-repeat;
+				background-size: 2.64em 2.64em
+			}
+			.need_find_money {
+				display: inline-block;
+				width: 2.64em;
+				height: 2.64em;
+				background: url(../images/ic_need_find_money_default.png) no-repeat;
+				background-size: 2.64em 2.64em
+			}
+			.need_find_money.selected {
+				background: url(../images/ic_need_find_money_selected.png) no-repeat;
+				background-size: 2.64em 2.64em
+			}
+			.need_idea {
+				display: inline-block;
+				width: 2.64em;
+				height: 2.64em;
+				background: url(../images/ic_need_idea_default.png) no-repeat;
+				background-size: 2.64em 2.64em
+			}
+			.need_idea.selected {
+				background: url(../images/ic_need_idea_selected.png) no-repeat;
+				background-size: 2.64em 2.64em
+			}
+			.need_money {
+				display: inline-block;
+				width: 2.64em;
+				height: 2.64em;
+				background: url(../images/ic_need_money_default.png) no-repeat;
+				background-size: 2.64em 2.64em
+			}
+			.need_money.selected{
+				background: url(../images/ic_need_money_selected.png) no-repeat;
+				background-size: 2.64em 2.64em
+			}
+			.need_money.disable{
+				background: url(../images/ic_need_money_disable.png) no-repeat;
+				background-size: 2.64em 2.64em
+			}
+			.mui-media-body {
+				font-size: 14px;
+			}
+			.font-red {
+				color: #ff5552;
+			}
+			.mui-input-row label {
+				font-size: 14px;
+				padding: 14px 0 10px 10px;
+			}
+			.mui-input-row span {
+				font-size: 14px;
+				padding: 11px 40px 10px 10px;
+			}
+			.mui-input-content {
+				font-size: 14px;
+				padding: 10px;
+				margin: 0px;
+				border: 0px;
+			}
+			.undisplayed {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">发布需求</h1>
+			<a id="create-project-a" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right c-icon-padded"></a>
+		</header>
+		<div class="mui-content">
+			<div style="padding-top: 44px;">
+				<ul class="mui-table-view mui-grid-view" id="requirement_types">
+					<li class="type-list col-3" data-type="1">
+						<span class="need_apply selected" id="type_team"></span>
+						<div class="mui-media-body font-red" id="type_font_team">加入团队</div>
+					</li>
+					<li class="type-list col-3" data-type="2">
+						<span class="need_find_member" id="type_member"></span>
+						<div class="mui-media-body" id="type_font_member">寻求搭档</div>
+					</li>
+					<li class="type-list col-3" data-type="3">
+						<span class="need_find_money" id="type_finance"></span>
+						<div class="mui-media-body" id="type_font_finance">寻求融资</div>
+					</li>
+					<li class="type-list col-3" data-type="4">
+						<span class="need_idea" id="type_idea"></span>
+						<div class="mui-media-body" id="type_font_idea">寻求融智</div>
+					</li>
+					<li class="type-list col-3" data-type="5">
+						<span class="need_money disable" id="type_invest"></span>
+						<div class="mui-media-body" id="type_font_invest">投资项目</div>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-table-view" style="margin-top: 20px;" class="undisplayed" id="project_pad">
+				<div class="mui-input-row">
+					<label>相关项目</label>
+					<span class="mui-pull-right mui-navigate-right">请选择</span>
+				</div>
+			</div>
+			<div class="mui-table-view" style="margin-top: 20px;">
+					<textarea id="content" rows="4" class="mui-input-content" placeholder="描述你所拥有的软硬件资源，以及需求内容"></textarea>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/app.js"></script>
+	<script>
+	var type = 1,
+		projectPadEl = document.getElementById("project_pad"),
+		teamEl = document.getElementById("type_team"),
+		memberEl = document.getElementById("type_member"),
+		financeEl = document.getElementById("type_finance"),
+		ideaEl = document.getElementById("type_idea"),
+		investEl = document.getElementById("type_invest"),
+		teamFontEl = document.getElementById("type_font_team"),
+		memberFontEl = document.getElementById("type_font_member"),
+		financeFontEl = document.getElementById("type_font_finance"),
+		ideaFontEl = document.getElementById("type_font_idea"),
+		investFontEl = document.getElementById("type_font_invest");
+
+		mui.init({
+			swipeBack:true,
+			statusBarBackground: '#f7f7f7'
+		});
+		mui('#requirement_types').on('tap', 'li', function() {
+			type = this.getAttribute('data-type');
+			if (type == 1) {
+				projectPadEl.classList.add('undisplayed');
+
+				teamEl.classList.add('selected');
+				memberEl.classList.remove('selected');
+				financeEl.classList.remove('selected');
+				ideaEl.classList.remove('selected');
+				investEl.classList.remove('selected');
+
+				teamFontEl.classList.add('font-red');
+				memberFontEl.classList.remove('font-red');
+				financeFontEl.classList.remove('font-red');
+				ideaFontEl.classList.remove('font-red');
+				investFontEl.classList.remove('font-red');
+			} else if (type == 2) {
+				projectPadEl.classList.remove('undisplayed');
+
+				memberEl.classList.add('selected');
+				teamEl.classList.remove('selected');
+				financeEl.classList.remove('selected');
+				ideaEl.classList.remove('selected');
+				investEl.classList.remove('selected');
+
+				memberFontEl.classList.add('font-red');
+				teamFontEl.classList.remove('font-red');
+				financeFontEl.classList.remove('font-red');
+				ideaFontEl.classList.remove('font-red');
+				investFontEl.classList.remove('font-red');
+			} else if (type == 3) {
+				projectPadEl.classList.remove('undisplayed');
+
+				financeEl.classList.add('selected');
+				memberEl.classList.remove('selected');
+				teamEl.classList.remove('selected');
+				ideaEl.classList.remove('selected');
+				investEl.classList.remove('selected');
+
+				financeFontEl.classList.add('font-red');
+				memberFontEl.classList.remove('font-red');
+				teamFontEl.classList.remove('font-red');
+				ideaFontEl.classList.remove('font-red');
+				investFontEl.classList.remove('font-red');
+			} else if (type == 4) {
+				projectPadEl.classList.add('undisplayed');
+
+				ideaEl.classList.add('selected');
+				memberEl.classList.remove('selected');
+				teamEl.classList.remove('selected');
+				financeEl.classList.remove('selected');
+				investEl.classList.remove('selected');
+
+				ideaFontEl.classList.add('font-red');
+				memberFontEl.classList.remove('font-red');
+				teamFontEl.classList.remove('font-red');
+				financeFontEl.classList.remove('font-red');
+				investFontEl.classList.remove('font-red');
+			} else {
+				projectPadEl.classList.add('undisplayed');
+
+				investEl.classList.add('selected');
+				teamEl.classList.remove('selected');
+				memberEl.classList.remove('selected');
+				financeEl.classList.remove('selected');
+				ideaEl.classList.remove('selected');
+
+				investFontEl.classList.add('font-red');
+				teamFontEl.classList.remove('font-red');
+				memberFontEl.classList.remove('font-red');
+				financeFontEl.classList.remove('font-red');
+				ideaFontEl.classList.remove('font-red');
+			}
+		});
+	</script>
+</html>
