@@ -3,7 +3,7 @@ package com.insoul.copartner.service;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.vo.CommentVO;
 import com.insoul.copartner.vo.Pagination;
-import com.insoul.copartner.vo.RequirementVDetailVO;
+import com.insoul.copartner.vo.RequirementDetailVO;
 import com.insoul.copartner.vo.RequirementVO;
 import com.insoul.copartner.vo.request.PaginationRequest;
 import com.insoul.copartner.vo.request.RequirementAddRequest;
@@ -14,7 +14,7 @@ public interface IRequirementService {
 
     Pagination<RequirementVO> listRequirements(RequirementListRequest requestData);
 
-    RequirementVDetailVO getRequirement(Long requirementId) throws CException;
+    RequirementDetailVO getRequirement(Long requirementId) throws CException;
 
     void createRequirement(RequirementAddRequest requestData) throws CException;
 

@@ -3,7 +3,7 @@ package com.insoul.copartner.vo;
 import java.io.Serializable;
 import java.util.Set;
 
-public class RequirementVDetailVO implements Serializable {
+public class RequirementDetailVO implements Serializable {
 
     private static final long serialVersionUID = 2938064603299380029L;
 
