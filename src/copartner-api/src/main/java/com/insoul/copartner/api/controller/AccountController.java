@@ -60,6 +60,7 @@ public class AccountController extends BaseController {
         UserDetailVO userDetailVO = userService.register(userAddRequest);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("userId", userDetailVO.getUserId());
+        result.put("roleId", userDetailVO.getRoleId());
         result.put("name", userDetailVO.getName());
         result.put("avatar", userDetailVO.getAvatar());
         result.put("imId", userDetailVO.getImId());

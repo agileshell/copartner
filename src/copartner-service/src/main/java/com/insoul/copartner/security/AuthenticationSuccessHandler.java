@@ -45,6 +45,7 @@ public class AuthenticationSuccessHandler implements
 
             Map<String, Object> result = new HashMap<String, Object>();
             result.put("userId", user.getId());
+            result.put("roleId", user.getRoleId());
             result.put("name", user.getName());
             result.put("avatar", CDNUtil.getFullPath(user.getAvatar()));
             result.put("imId", user.getImId());

@@ -201,6 +201,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
         UserDetailVO userDetailVO = new UserDetailVO();
         userDetailVO.setUserId(userId);
+        userDetailVO.setRoleId(user.getRoleId());
         userDetailVO.setName(account);
         userDetailVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
         userDetailVO.setImId(imId);

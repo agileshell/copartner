@@ -12,8 +12,6 @@ public class ProjectLeanVO implements Serializable {
 
     private String logo;
 
-    private String content;
-
     private String projectPhase;
 
     private String location;
@@ -44,14 +42,6 @@ public class ProjectLeanVO implements Serializable {
 
     public void setLogo(String logo) {
         this.logo = logo;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getProjectPhase() {
