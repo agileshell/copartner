@@ -8,6 +8,8 @@
 
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
+		<link href="../css/mui.listpicker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
 		<style>
 			.mui-bar-nav.mui-bar .c-icon-padded {
 				border: 1px solid #fff;
@@ -116,7 +118,7 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 id="title" class="mui-title c-title">发布需求</h1>
-			<a id="create-project-a" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right c-icon-padded"></a>
+			<a id="create-requirement" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right c-icon-padded"></a>
 		</header>
 		<div class="mui-content">
 			<div style="padding-top: 44px;">
@@ -146,7 +148,8 @@
 			<div class="mui-table-view" style="margin-top: 20px;" class="undisplayed" id="project_pad">
 				<div class="mui-input-row">
 					<label>相关项目</label>
-					<span class="mui-pull-right mui-navigate-right">请选择</span>
+					<span class="mui-pull-right mui-navigate-right" id="projectName">请选择</span>
+					<input type="hidden" id="project" value="0"/>
 				</div>
 			</div>
 			<div class="mui-table-view" style="margin-top: 20px;">
@@ -156,8 +159,12 @@
 	</body>
 	<script src="../js/mui.min.js"></script>
 	<script src="../js/app.js"></script>
+	<script src="../js/mui.listpicker.js"></script>
+	<script src="../js/mui.poppicker.js"></script>
 	<script>
 	var type = 1,
+		projectEl = document.getElementById("project"),
+		contentEl = document.getElementById("content");
 		projectPadEl = document.getElementById("project_pad"),
 		teamEl = document.getElementById("type_team"),
 		memberEl = document.getElementById("type_member"),
@@ -233,20 +240,103 @@
 				financeFontEl.classList.remove('font-red');
 				investFontEl.classList.remove('font-red');
 			} else {
-				projectPadEl.classList.add('undisplayed');
-
-				investEl.classList.add('selected');
-				teamEl.classList.remove('selected');
-				memberEl.classList.remove('selected');
-				financeEl.classList.remove('selected');
-				ideaEl.classList.remove('selected');
-
-				investFontEl.classList.add('font-red');
-				teamFontEl.classList.remove('font-red');
-				memberFontEl.classList.remove('font-red');
-				financeFontEl.classList.remove('font-red');
-				ideaFontEl.classList.remove('font-red');
+				var roleId = app.getRoleId();
+				if (roleId == 2) {
+					projectPadEl.classList.add('undisplayed');
+	
+					investEl.classList.add('selected');
+					teamEl.classList.remove('selected');
+					memberEl.classList.remove('selected');
+					financeEl.classList.remove('selected');
+					ideaEl.classList.remove('selected');
+	
+					investFontEl.classList.add('font-red');
+					teamFontEl.classList.remove('font-red');
+					memberFontEl.classList.remove('font-red');
+					financeFontEl.classList.remove('font-red');
+					ideaFontEl.classList.remove('font-red');
+				}
 			}
+		});
+
+		var projectId = document.getElementById('project'),
+			projectName = document.getElementById('projectName');
+		projectId.value = '';
+		projectName.value = '';
+		var projects = [];
+		app.listOwerProjects(function(response) {
+			var reqs = response.body.list, len = reqs.length;
+			if (len > 0) {
+				for (var i = 0, len = reqs.length; i < len; i++) {
+					var req = {
+						'text': reqs[i].name,
+						'value': reqs[i].id
+					}
+					projects[i] = req;
+				}
+			} else {
+					var req = {
+						'text': '无可用的项目',
+						'value': 0
+					}
+					projects[0] = req;
+			}
+			var projectPicker = new mui.PopPicker();
+			projectPicker.setData(projects);
+			projectName.addEventListener('tap', function(event) {
+				projectPicker.show(function(items) {
+					projectId.value = items[0].value;
+					projectName.innerText = items[0].text;
+				});
+			}, false);
+		});
+
+		mui.plusReady(function() {
+			type == 1;
+			projectPadEl.classList.add('undisplayed');
+			teamEl.classList.add('selected');
+			memberEl.classList.remove('selected');
+			financeEl.classList.remove('selected');
+			ideaEl.classList.remove('selected');
+			investEl.classList.remove('selected');
+			teamFontEl.classList.add('font-red');
+			memberFontEl.classList.remove('font-red');
+			financeFontEl.classList.remove('font-red');
+			ideaFontEl.classList.remove('font-red');
+			investFontEl.classList.remove('font-red');
+
+			var roleId = app.getRoleId();
+			if (roleId == 2) {
+				investEl.classList.remove('disable');
+			}
+
+			var toRzrzPage = function() {
+				var rzrzPage = plus.webview.getWebviewById('rzrz_list');
+				rzrzPage.show();
+			};
+			document.getElementById('create-requirement').addEventListener('tap', function() {
+				createRequirement();
+			});
+
+			function createRequirement() {
+				var reqInfo = {
+					type: type,
+					content: contentEl.value,
+					projectId: projectEl.value
+				};
+				var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
+				app.createRequirement(reqInfo, function(err) {
+					setTimeout(function() {
+						wait.close();
+						if (err) {
+							plus.nativeUI.toast(err);
+							return;
+						} else {
+							toRzrzPage();
+						}
+					}, 200);
+				});
+			};
 		});
 	</script>
 </html>

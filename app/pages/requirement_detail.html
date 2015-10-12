@@ -1,9 +1,144 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="utf-8">
-		<title></title>
+		<title>创始人</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			.mui-page {
+				top: 45px;
+			}
+			.c-overlay .c-loader {
+				display: block;
+			}
+			.c-overlay .mui-content {
+				display: none;
+			}
+			.new-item {
+				padding: 15px 0 0 15px;
+				border-bottom: 1px solid #c8c7cc;
+			}
+			.project-name {
+				color: #C15151;
+				font-size: 15px;
+			}
+			.project-item {
+				display: block;
+				font-size: 12px;
+				line-height: 20px;
+			}
+			.user-avatar {
+				border-radius: 50%;
+				width: 40px;
+				float: left;
+			}
+			.user-info {
+				float: left;
+				margin-top: 5px;
+				margin-left: 5px;
+				font-size: 15px;
+			}
+			.user-info .user-name {
+				color: #C15151;
+			}
+			.user-info .time {
+				font-size: 12px;
+			}
+			.comment {
+				display: inline-block;
+				width: 1em;
+				height: 1em;
+				background: url(../images/ic_comment_default.png) no-repeat;
+				background-size: 1em 1em
+			}
+			.comment.selected {
+				background: url(../images/ic_comment_selected.png) no-repeat;
+				background-size: 1em 1em
+			}
+			.comment {
+				display: inline-block;
+				width: 1em;
+				height: 1em;
+				background: url(../images/ic_comment_default.png) no-repeat;
+				background-size: 1em 1em
+			}
+			.comment.selected {
+				background: url(../images/ic_comment_selected.png) no-repeat;
+				background-size: 1em 1em
+			}
+			.like {
+				display: inline-block;
+				width: 1em;
+				height: 1em;
+				background: url(../images/ic_like_default.png) no-repeat;
+				background-size: 1em 1em
+			}
+			.like.selected {
+				background: url(../images/ic_like_selected.png) no-repeat;
+				background-size: 1em 1em
+			}
+			.undisplayed {
+				display: none;
+			}
+		</style>
 	</head>
 	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">需求详情</h1>
+		</header>
+		<div class="mui-content" style="padding: 50px 5px 5px 5px; ">
+				<div style="overflow: hidden;">
+					<img src="../images/blank.jpg" class="user-avatar" id="user-avatar">
+					<div class="user-info">
+						<div class="user-name" id="user-name"></div>
+						<div class="time" id="created"></div>
+					</div>
+				</div>
+				<div class="mui-media-body" style="padding-left: 45px;">
+					<p class="mui-ellipsis-2" id="content"></p>
+				</div>
+				<div style="padding-top: 5px; padding-left: 45px;" calss="undisplayed">
+					<div style="overflow: hidden;">
+						<img src="../icons/100x100.png" class="user-avatar" id="project-logo">
+						<div class="user-info">
+							<div class="user-name" id="project-name"></div>
+						</div>
+					</div>
+					<div class="mui-media-body" style="padding-left: 45px;">
+						<span class="project-item" id="location-teamSize"></span>
+						<div class="project-item">
+							<span class="mui-badge mui-badge-success">领域</span>
+							<span id="industryDomain"></span>
+						</div>
+						<div class="project-item">
+							<span class="mui-badge mui-badge-primary">阶段</span>
+							<span id="projectPhase"></span>
+						</div>
+					</div>
+				</div>
+		</div>
 	</body>
+	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+	<script type="text/javascript">
+		var guid = 0,
+			userNameEl = document.getElementById('user-name'),
+			userAvatarEl = document.getElementById('user-avatar');
+
+		mui.init({
+			swipeBack: true
+		});
+		document.addEventListener('mui.view.beforeshow', function(event) {
+			window.scrollTo(0, 0);
+			setTimeout(function() {
+				document.body.classList.remove('c-overlay');
+			}, 290);
+			mui.currentWebview.show();
+		});
+	</script>
 </html>

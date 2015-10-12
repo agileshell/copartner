@@ -29,10 +29,48 @@
 			}
 			.user-info {
 				float: left;
-				margin-top: 10px;
+				margin-top: 5px;
 				margin-left: 5px;
-				color: #C15151;
 				font-size: 15px;
+			}
+			.user-info .user-name {
+				color: #C15151;
+			}
+			.user-info .time {
+				font-size: 12px;
+			}
+			.comment {
+				display: inline-block;
+				width: 1em;
+				height: 1em;
+				background: url(../images/ic_comment_default.png) no-repeat;
+				background-size: 1em 1em
+			}
+			.comment.selected {
+				background: url(../images/ic_comment_selected.png) no-repeat;
+				background-size: 1em 1em
+			}
+			.comment {
+				display: inline-block;
+				width: 1em;
+				height: 1em;
+				background: url(../images/ic_comment_default.png) no-repeat;
+				background-size: 1em 1em
+			}
+			.comment.selected {
+				background: url(../images/ic_comment_selected.png) no-repeat;
+				background-size: 1em 1em
+			}
+			.like {
+				display: inline-block;
+				width: 1em;
+				height: 1em;
+				background: url(../images/ic_like_default.png) no-repeat;
+				background-size: 1em 1em
+			}
+			.like.selected {
+				background: url(../images/ic_like_selected.png) no-repeat;
+				background-size: 1em 1em
 			}
 		</style>
 	</head>
@@ -47,15 +85,287 @@
 		<div class="mui-content">
 			<div id="pullrefresh" class="mui-scroll-wrapper">
 				<div id="requirement-item" class="mui-control-content mui-active">
-					<ul id="requirement-list" class="mui-table-view mui-table-view-chevron">
+					<ul id="requirement-list" class="mui-table-view">
 					</ul>
 				</div>
 				<div id="project-item" class="mui-control-content">
-					<ul id="project-list" class="mui-table-view mui-table-view-chevron">
+					<ul id="project-list" class="mui-table-view">
 					</ul>
 				</div>
 			</div>
 		</div>
 	</body>
+	<script id="requirement-template" type="text/x-handlebars-template">
+		<li id="requirement_{{id}}" class="mui-table-view-cell mui-media">
+			<a href="#" data-guid="{{id}}" data-type="requirement">
+				<div style="overflow: hidden;">
+					<img src="{{user.avatar}}" class="user-avatar">
+					<div class="user-info">
+						<div class="user-name">{{user.name}}</div>
+						<div class="time">{{created}}</div>
+					</div>
+				</div>
+				<div class="mui-media-body" style="padding-left: 45px;">
+					<p class="mui-ellipsis-2">[{{typeInfo}}] {{content}}</p>
+				</div>
+				<div style="padding-top: 5px; padding-left: 45px; {{displayed}}">
+					<div style="overflow: hidden;">
+						<img src="{{project.logo}}" class="user-avatar">
+						<div class="user-info">
+							<div class="user-name">{{project.name}}</div>
+						</div>
+					</div>
+					<div class="mui-media-body" style="padding-left: 45px;">
+						<span class="project-item">{{project.location}}，{{project.teamSize}}</span>
+						<div class="project-item">
+							<span class="mui-badge mui-badge-success">领域</span>
+							<span>{{project.industryDomain}}</span>
+						</div>
+						<div class="project-item">
+							<span class="mui-badge mui-badge-primary">阶段</span>
+							<span>{{project.projectPhase}}</span>
+						</div>
+					</div>
+				</div>
+			</a>
+			<div style="padding-top: 5px; float: right;">
+				<span class="like"></span>
+				<span style="font-size: .8em; color: #8f8f94; line-height: 1em;"> ({{likeCount}})</span>
+				<span class="comment"></span>
+				<span style="font-size: .8em; color: #8f8f94; line-height: 1em;">({{commentCount}})</span>
+			</div>
+		</li>
+	</script>
+	<script id="project-template" type="text/x-handlebars-template">
+		<li id="project_{{id}}" class="mui-table-view-cell mui-media">
+			<a href="#" data-guid="{{id}}" data-type="project">
+				<div style="overflow: hidden;">
+					<img src="{{logo}}" class="user-avatar">
+					<div class="user-info">
+						<div class="user-name">{{name}}</div>
+						<div class="time">{{created}}</div>
+					</div>
+				</div>
+				<div class="mui-media-body" style="padding-left: 45px;">
+					<span class="project-item">{{location}}，{{teamSize}}</span>
+					<div class="project-item">
+						<span class="mui-badge mui-badge-success">领域</span>
+						<span>{{industryDomain}}</span>
+					</div>
+					<div class="project-item">
+						<span class="mui-badge mui-badge-primary">阶段</span>
+						<span>{{projectPhase}}</span>
+					</div>
+					<div class="project-item">
+						<span class="mui-badge mui-badge-warning">优势</span>
+						<span>{{advantage}}</span>
+					</div>
+				</div>
+				<div style="padding-top: 5px; float: right;">
+					<span class="like"></span>
+					<span style="font-size: .8em; color: #8f8f94; line-height: 1em;">({{likeCount}})</span>
+					<span class="comment"></span>
+					<span style="font-size: .8em; color: #8f8f94; line-height: 1em;">({{commentCount}})</span>
+				</div>
+			</a>
+		</li>
+	</script>
+	<script type="text/javascript" charset="UTF-8" src="../js/handlebars-v2.0.0.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+	<script>
+		var 
+			rzrzType = 1,
+			requirementLatestRefreshRequestDate = 0,
+			requirementLatestLoadingRequestDate = 0,
+			projectLatestRefreshRequestDate = 0,
+			projectLatestLoadingRequestDate = 0,
+			projectIsFirstLoad = false,
+			requirementLoadingNoData = false,
+			projectLoadingNoData = false;
+		var divEl = document.createElement("div"),
+			requirementSource = document.getElementById("requirement-template").innerText,
+			requirementTemplate = Handlebars.compile(requirementSource),
+			projectSource = document.getElementById("project-template").innerText,
+			projectTemplate = Handlebars.compile(projectSource),
+			requirementEl = document.getElementById("requirement-list"),
+			projectEl = document.getElementById("project-list");
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				down: {
+					contentrefresh: '正在刷新...',
+					callback: pulldownRefresh
+				},
+				up: {
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
 
+		 //打开详情
+		mui('#pullrefresh').on('tap', 'a', function() {
+			var stype = this.getAttribute('data-type');
+			if (stype == 'requirement') {
+				open_requirement_detail(this.getAttribute('data-guid'));
+			} else if (stype == 'project') {
+				open_project_detail(this.getAttribute('data-guid'));
+			}
+		});
+		var requirementDetailWebview = null;
+		function open_requirement_detail(id) {
+			if (!requirementDetailWebview) {
+				requirementDetailWebview = plus.webview.getWebviewById('requirement_detail');
+			}
+			mui.fire(requirementDetailWebview, 'mui.view.beforeshow', {
+				guid: id
+			});
+		};
+		var projectDetailWebview = null;
+		function open_project_detail(id) {
+			if (!projectDetailWebview) {
+				projectDetailWebview = plus.webview.getWebviewById('project_detail');
+			}
+			mui.fire(projectDetailWebview, 'mui.view.beforeshow', {
+				guid: id
+			});
+		};
+
+		mui.plusReady(function() {
+			if (plus.networkinfo.getCurrentType() === plus.networkinfo.CONNECTION_NONE) {
+				plus.nativeUI.alert('无网络连接!');
+			} else {
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				}, 200);
+			}
+			mui('#rzrz-type').on('tap', 'a', function() {
+				var id = this.getAttribute('id');
+				//切换父Webview的创建button
+				plus.webview.currentWebview().parent().evalJS("changeAction('"+ id + "')");
+				if (id == 'requirement') {
+					rzrzType = 1;
+					if (!requirementLoadingNoData) {
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}
+				} else {
+					rzrzType = 2;
+					if (!projectIsFirstLoad) {
+						projectIsFirstLoad = true;
+						setTimeout(function() {
+							mui('#pullrefresh').pullRefresh().pullupLoading();
+						}, 200);
+					}
+					if (!projectLoadingNoData) {
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}
+				}
+			});
+		});
+
+		//下拉刷新具体业务实现
+		function pulldownRefresh() {
+			setTimeout(function() {
+				if (rzrzType == 1) {
+					var success = function(response) {
+							var items = response.body.list;
+							if (items.length > 0) {
+								//数据是按时间倒叙排列的
+								if (requirementLatestRefreshRequestDate == 0 && requirementLatestLoadingRequestDate == 0) {
+									requirementLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+								}
+								requirementLatestRefreshRequestDate = Date.parse(items[0].created);
+								for (var i = items.length - 1; i >= 0; i--) {
+									divEl.innerHTML = requirementTemplate(app.processRequirement(items[i]));
+									requirementEl.insertBefore(divEl.firstElementChild, requirementEl.firstElementChild);
+								}
+							}
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						};
+					app.listRequirements(0, 10, requirementLatestRefreshRequestDate, 0, success, error);
+				} else {
+					var success = function(response) {
+							var items = response.body.list;
+							if (items.length > 0) {
+								//数据是按时间倒叙排列的
+								if (projectLatestRefreshRequestDate == 0 && projectLatestLoadingRequestDate == 0) {
+									projectLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+								}
+								projectLatestRefreshRequestDate = Date.parse(items[0].created);
+								for (var i = items.length - 1; i >= 0; i--) {
+									divEl.innerHTML = projectTemplate(items[i]);
+									projectEl.insertBefore(divEl.firstElementChild, projectEl.firstElementChild);
+								}
+							}
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						};
+					app.listProjects(0, 10, projectLatestRefreshRequestDate, 0, success, error);
+				}
+			}, 1000);
+		};
+
+		//上拉加载具体业务实现
+		function pullupRefresh() {
+			setTimeout(function() {
+				if (rzrzType == 1) {
+					var success = function(response) {
+							var items = response.body.list;
+							if (items.length > 0) {
+								//数据是按时间倒叙排列的
+								if (requirementLatestRefreshRequestDate == 0 && requirementLatestLoadingRequestDate == 0) {
+									requirementLatestRefreshRequestDate = Date.parse(items[0].created);
+								}
+								requirementLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+								for (var i = 0, len = items.length; i < len; i++) {
+									divEl.innerHTML = requirementTemplate(app.processRequirement(items[i]));
+									requirementEl.appendChild(divEl.firstElementChild);
+								}
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+							} else {
+								requirementLoadingNoData = false;
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+							}
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+						};
+					app.listRequirements(0, 10, 0, requirementLatestLoadingRequestDate, success, error);
+				} else {
+					var success = function(response) {
+							var items = response.body.list;
+							if (items.length > 0) {
+								//数据是按时间倒叙排列的
+								if (projectLatestRefreshRequestDate == 0 && projectLatestLoadingRequestDate == 0) {
+									projectLatestRefreshRequestDate = Date.parse(items[0].created);
+								}
+								projectLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+								for (var i = 0, len = items.length; i < len; i++) {
+									divEl.innerHTML = projectTemplate(items[i]);
+									projectEl.appendChild(divEl.firstElementChild);
+								}
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+							} else {
+								projectLoadingNoData = false;
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+							}
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+						};
+					app.listProjects(0, 10, 0, projectLatestLoadingRequestDate, success, error);
+				}
+			}, 1000);
+		};
+	</script>
 </html>

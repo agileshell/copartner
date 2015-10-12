@@ -65,7 +65,6 @@
 			var loginPage = null, profilePage = null;
 			document.addEventListener('mui.view.beforeshow', function(event) {
 				var state = app.getState();
-				console.log(JSON.stringify(state));
 				//检查 "登录状态"
 				if (state.userId) {
 					document.getElementById('user-avatar').src = state.avatar;

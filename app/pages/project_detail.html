@@ -57,9 +57,6 @@
 			.c-overlay .mui-content {
 				display: none;
 			}
-			.undisplayed {
-				display: none;
-			}
 		</style>
 	</head>
 	<body class="c-overlay">
@@ -75,7 +72,7 @@
 								<img class="mui-pull-left head-img" id="logo" src="../images/blank.jpg">
 								<div class="mui-media-body">
 									<span id="name"></span>
-									<p class='mui-ellipsis'>融资阶段:<span style="padding-left: 5px;" id="financingPhaseName"></span></p>
+									<p class='mui-ellipsis'>项目阶段:<span style="padding-left: 5px;" id="projectPhase"></span></p>
 									<p class='mui-ellipsis'>领域:<span style="padding-left: 5px;" id="industryDomain"></span></p>
 									<p class='mui-ellipsis'>地区:<span style="padding-left: 5px;" id="location"></span></p>
 									<p class='mui-ellipsis'>团队:<span style="padding-left: 5px;" id="teamSize"></span></p>
@@ -85,11 +82,11 @@
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
 							实施条件
-							<textarea id="content" style="height:30px; color:  #bdbdbd; border: 0px; padding: 0px;"></textarea>
+							<textarea id="content" style="height:30px; color:  #bdbdbd; border: 0px; padding: 0px;" readonly="readonly"></textarea>
 						</li>
 						<li class="mui-table-view-cell">
 							优势
-							<textarea id="advantage" style="height:30px;  color:  #bdbdbd; border: 0px; padding: 0px;"></textarea>
+							<textarea id="advantage" style="height:30px;  color:  #bdbdbd; border: 0px; padding: 0px;" readonly="readonly"></textarea>
 						</li>
 					</ul>
 					<ul class="mui-table-view">
@@ -98,16 +95,6 @@
 						</li>
 						<li class="mui-table-view-cell">
 							联系电话<span class="mui-pull-right" id="contact"></span>
-						</li>
-					</ul>
-					<ul class="mui-table-view mui-table-view-chevron">
-						<li class="mui-table-view-cell" id="financingInfo">
-							<input id="financingId" value="0" type='hidden'>
-							<span class="mui-navigate-right">融资<span class="mui-pull-right" id="financing"></span></span>
-						</li>
-						<li class="mui-table-view-cell" id="demandInfo">
-							<input id="demandId" value="0" type='hidden'>
-							<span class="mui-navigate-right">融智<span class="mui-pull-right" id="demand"></span></span>
 						</li>
 					</ul>
 				</div>
@@ -119,26 +106,21 @@
 			var guid = 0,
 				nameEl = document.getElementById('name'),
 				logoEl = document.getElementById('logo'),
-				financingPhaseNameEl = document.getElementById('financingPhaseName'),
+				projectPhaseEl = document.getElementById('projectPhase'),
 				industryDomainEl = document.getElementById('industryDomain'),
 				locationEl = document.getElementById('location'),
 				teamSizeEl = document.getElementById('teamSize'),
 				contentEl = document.getElementById('content'),
 				advantageEl = document.getElementById('advantage'),
 				contactPersonEl = document.getElementById('contactPerson'),
-				contactEl = document.getElementById('contact'),
-				financingEl =  document.getElementById('financing'),
-				financingIdEl =  document.getElementById('financingId'),
-				demandEl = document.getElementById('demand');
-				demandIdEl =  document.getElementById('demandId');
-			var businessLicensePadEl = document.getElementById('businessLicensePad');
+				contactEl = document.getElementById('contact');
 			mui.init({
 				swipeBack: true,
 				beforeback: function() {
 					setTimeout(function() {
 						nameEl.innerText = '';
 						logoEl.src = '';
-						financingPhaseNameEl.innerText = '';
+						projectPhaseEl.innerText = '';
 						industryDomainEl.innerText = '';
 						locationEl.innerText = '';
 						teamSizeEl.innerText = '';
@@ -146,10 +128,6 @@
 						advantageEl.innerText = '';
 						contactPersonEl.innerText = '';
 						contactEl.innerText = '';
-						financingEl.innerText = '';
-						demandEl.innerText = '';
-						financingIdEl.value = 0;
-						demandIdEl.value = 0;
 
 						document.body.classList.add('c-overlay');
 					}, 200);
@@ -160,6 +138,7 @@
 					var obj = response.body;
 					nameEl.innerText = obj.name;
 					logoEl.src = obj.logo;
+					projectPhaseEl.innerText = obj.projectPhase;
 					industryDomainEl.innerText = obj.industryDomain;
 					locationEl.innerText = obj.location;
 					teamSizeEl.innerText = obj.teamSize;
@@ -167,21 +146,6 @@
 					advantageEl.innerText = obj.advantage;
 					contactPersonEl.innerText = obj.contactPerson;
 					contactEl.innerText = obj.contact;
-
-					if (obj.financing != null) {
-						financingEl.innerText = obj.financing.projectName;
-						financingIdEl.value = obj.financing.id;
-					} else {
-						financingEl.innerText = '无关联融资';
-						financingIdEl.value = 0;
-					}
-					if (obj.demand != null) {
-						demandEl.innerText = obj.demand.projectName;
-						demandIdEl.value = obj.demand.id;
-					} else {
-						demandEl.innerText ='无关联融智';
-						demandIdEl.value = 0;
-					}
 
 					window.scrollTo(0, 0);
 					setTimeout(function() {
@@ -203,37 +167,6 @@
 	
 					app.getProject(event.detail.guid, success, error);
 				});
-
-				document.getElementById("financingInfo").addEventListener('tap', function() {
-					if (financingIdEl.value >0) {
-						open_rongzi_detail(financingIdEl.value);
-					}
-					return;
-				});
-				document.getElementById("demandInfo").addEventListener('tap', function() {
-					if (demandIdEl.value >0) {
-						open_rongzi_detail(demandIdEl.value);
-					}
-					return;
-				});
-				var rongzhiDetailWebview = null;
-				function open_rongzhi_detail(id) {
-					if (!rongzhiDetailWebview) {
-						rongzhiDetailWebview = plus.webview.getWebviewById('rongzhi_detail');
-					}
-					mui.fire(rongzhiDetailWebview, 'mui.view.beforeshow', {
-						guid: id
-					});
-				};
-				var rongziDetailWebview = null;
-				function open_rongzi_detail(id) {
-					if (!rongziDetailWebview) {
-						rongziDetailWebview = plus.webview.getWebviewById('rongzi_detail');
-					}
-					mui.fire(rongziDetailWebview, 'mui.view.beforeshow', {
-						guid: id
-					});
-				};
 			})(mui);
 		</script>
 	</body>

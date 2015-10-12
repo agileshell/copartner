@@ -11,6 +11,13 @@
 		<link href="../css/mui.listpicker.css" rel="stylesheet" />
 		<link href="../css/mui.poppicker.css" rel="stylesheet" />
 		<style>
+			.mui-bar-nav.mui-bar .c-icon-padded {
+				border: 1px solid #fff;
+				border-radius: 50%;
+				padding: 0px;
+				margin-top: 10px;
+				margin-right: 3px;
+			}
 			.mui-page-content {
 				margin-top: 44px;
 			}
@@ -54,8 +61,8 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 id="title" class="mui-title c-title">创建项目</h1>
-			<a id="create-project-a" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right"></a>
+			<h1 id="title" class="mui-title c-title">发布项目</h1>
+			<a id="create-project-a" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right c-icon-padded"></a>
 		</header>
 		<div class="mui-content">
 			<div class="mui-page-content">
@@ -102,13 +109,6 @@
 						</span>
 					</div>
 					<div class="mui-input-row">
-						<label>实体店</label>
-						<input id='hasBusinessRegistered' name="hasBusinessRegistered" value="true" type="hidden">
-						<div id="businessRegistered" class="mui-switch mui-switch-mini mui-active ">
-							<div class="mui-switch-handle"></div>
-						</div>
-					</div>
-					<div class="mui-input-row">
 						<label>联系人</label>
 						<span class="mui-pull-right mui-navigate-right">
 							<input id='contact' name='contact' type="text" value="" class="c-input">
@@ -120,27 +120,6 @@
 							<input id='contactPerson' name='contactPerson' type="text" value="" class="c-input">
 						</span>
 					</div>
-					<div class="mui-input-row">
-						<label>融资</label>
-						<span class="mui-pull-right mui-navigate-right">
-							<input id='financingId' name="financingId" type="hidden">
-							<input id='financingName' type="text" value="" class="c-input">
-						</span>
-					</div>
-					<div class="mui-input-row">
-						<label>融智</label>
-						<span class="mui-pull-right mui-navigate-right">
-							<input id='demandId' name="demandId" type="hidden">
-							<input id='demandName' type="text" value="" class="c-input">
-						</span>
-					</div>
-					<div class="mui-input-row">
-						<label>商业计划书</label>
-						<span id="businessPlanFile" class="mui-pull-right mui-navigate-right">
-							<input id='businessPlan' name='businessPlan' type="hidden" value="" >
-							<span id='businessPlanTmp'></span>
-						</span>
-					</div>
 				</form>
 				<div class="mui-input-row" style="margin: 10px 5px 0 5px;">
 					<span style="font-size: 12px; color:  #bdbdbd;">优势</span>
@@ -149,7 +128,7 @@
 					<textarea id="content" rows="3"></textarea>
 				</div>
 				<div class="mui-content-padded">
-					<button id='create-project-b' class="mui-btn mui-btn-block mui-btn-primary">确认</button>
+					<button id='create-project-b' class="mui-btn mui-btn-block mui-btn-primary">发布</button>
 				</div>
 			</div>
 		</div>
@@ -206,73 +185,6 @@
 					location.value = items[1].value;
 				});
 			}, false);
-			var businessRegistered = doc.getElementById('businessRegistered'),
-				hasBusinessRegistered = doc.getElementById('hasBusinessRegistered');
-			businessRegistered.addEventListener('toggle', function(event) {
-				hasBusinessRegistered.value = event.detail.isActive ? 'true' : 'false';
-			});
-
-			var financingId = document.getElementById('financingId'),
-				financingName = document.getElementById('financingName'),
-				demandId = document.getElementById('demandId'),
-				demandName = document.getElementById('demandName');
-			financingId.value = '';
-			financingName.value = '';
-			demandId.value = '';
-			demandName.value = '';
-			var demands = [], financings = [];
-			app.listOwerRongzis(function(response) {
-				var rongziTmps = response.body.list, len = rongziTmps.length;
-				if (len > 0) {
-					for (var i = 0, len = rongziTmps.length; i < len; i++) {
-						var financing = {
-							'text': rongziTmps[i].projectName,
-							'value': rongziTmps[i].id
-						}
-						financings[i] = financing;
-					}
-				} else {
-						var financing = {
-							'text': '无可用的融资',
-							'value': 0
-						}
-						financings[0] = financing;
-				}
-				var financingPicker = new $.PopPicker();
-				financingPicker.setData(financings);
-				financingName.addEventListener('tap', function(event) {
-					financingPicker.show(function(items) {
-						financingId.value = items[0].value;
-						financingName.value = items[0].text;
-					});
-				}, false);
-			});
-			app.listOwerRongzhis(function(response) {
-				var rongzhiTmps = response.body.list, len = rongzhiTmps.length;
-				if (len > 0) {
-					for (var i = 0; i < len; i++) {
-						var demand = {
-							'text': rongzhiTmps[i].projectName,
-							'value': rongzhiTmps[i].id
-						}
-						demands[i] = demand;
-					}
-				} else {
-						var demand = {
-							'text': '无可用的融智',
-							'value': 0
-						}
-						demands[0] = demand;
-				}
-				var demandPicker = new $.PopPicker();
-				demandPicker.setData(demands);
-				demandName.addEventListener('tap', function(event) {
-					demandPicker.show(function(items) {
-						demandId.value = items[0].value;
-						demandName.value = items[0].text;
-					});
-				}, false);
-			});
 
 			$.plusReady(function() {
 				var toProfilePage = function() {
@@ -299,12 +211,8 @@
 						teamSizeId: doc.getElementById('teamSize').value,
 						contact: doc.getElementById('contact').value,
 						contactPerson: doc.getElementById('contactPerson').value,
-						hasBusinessRegistered: doc.getElementById('hasBusinessRegistered').value,
 						advantage: doc.getElementById('advantage').value,
-						content: doc.getElementById('content').value,
-						financingId: financingId.value,
-						demandId: demandId.value,
-						businessPlan: doc.getElementById('businessPlan').value
+						content: doc.getElementById('content').value
 					};
 					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
 					app.createProject(projectInfo, function(err) {
@@ -399,39 +307,6 @@
 					task.addData("needThumbnail", "true");
 					task.start();
 				}
-				
-				//上传文件
-				$(".mui-input-row").on("tap", "#businessPlanFile", function(e) {
-					var a = [{
-						title: "从文件系统选择"
-					}];
-					plus.nativeUI.actionSheet({
-						title: "上传",
-						cancel: "取消",
-						buttons: a
-					}, function(b) {
-						switch (b.index) {
-							case 0:
-								break;
-							case 1:
-								galleryFile();
-								break;
-							default:
-								break
-						}
-					})
-				});
-				function selectFile() {
-					plus.gallery.pick(function(path) {
-						var n = path.substr(path.lastIndexOf('/') + 1);
-						doc.getElementById("businessPlanTmp").innerText = n;
-						console.log(path);
-					}, function(e) {
-						console.log("读取文件错误：" + e.message);
-					}, {
-						filter: "*"
-					});
-				};
 			});
 		})(mui, document);
 	</script>

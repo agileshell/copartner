@@ -43,6 +43,7 @@
 					if (data.status == 'SUCCEED') {
 						var state = owner.getState();
 						state.userId = data.body.userId;
+						state.roleId = data.body.roleId;
 						state.imId = data.body.imId;
 						state.name = data.body.name;
 						state.avatar = data.body.avatar;
@@ -95,6 +96,15 @@
 			return state.userId;
 		} else {
 			return 0;
+		}
+	};
+
+	owner.getRoleId = function() {
+		var state = app.getState();
+		if (state.roleId) {
+			return state.roleId;
+		} else {
+			return 1;
 		}
 	};
 
@@ -186,6 +196,7 @@
 					if (data.status == 'SUCCEED') {
 						var state = owner.getState();
 						state.userId = data.body.userId;
+						state.roleId = data.body.roleId;
 						state.imId = data.body.imId;
 						state.name = data.body.name;
 						state.avatar = data.body.avatar;
@@ -422,240 +433,27 @@ owner.submitAuthenticate = function(info, callback) {
 		})
 	};
 
-	owner.createRongzi = function(rzInfo, callback) {
+	owner.createRequirement = function(req, callback) {
 		callback = callback || $.noop;
-		rzInfo = rzInfo || {};
-		rzInfo.projectName = rzInfo.projectName || '';
-		rzInfo.locationId = rzInfo.locationId || 0;
-		rzInfo.industryDomainId = rzInfo.industryDomainId || 0;
-		rzInfo.teamSizeId = rzInfo.teamSizeId || 0;
-		rzInfo.financingPhaseId = rzInfo.financingPhaseId || 0;
-		rzInfo.contact = rzInfo.contact || '';
-		rzInfo.contactPerson = rzInfo.contactPerson || '';
-		rzInfo.advantage = rzInfo.advantage || '';
-		rzInfo.content = rzInfo.content || '';
-		rzInfo.funding = rzInfo.funding;
-		rzInfo.hasBusinessRegistered = rzInfo.hasBusinessRegistered || 'true';
-		rzInfo.businessLicense = rzInfo.businessLicense || '';
-		rzInfo.businessLicenseUrl = rzInfo.businessLicenseUrl || '';
-		rzInfo.businessPlan = rzInfo.businessPlan || '';
-		if (rzInfo.projectName.length <= 0) {
-			return callback('项目名称不能为空');
-		} else if (rzInfo.projectName.length > 50) {
-			return callback('项目名称不能大于50个字符');
+		req = req || {};
+		req.type = req.type;
+		req.projectId = req.projectId || 0;
+		req.content = req.content || '';
+
+		if ((req.type == 2 && req.projectId == 0) || (req.type == 3 && req.projectId == 0)) {
+			return callback('请选择关联的项目');
 		}
-		if (rzInfo.locationId == 0) {
-			return callback('地区不能为空');
-		}
-		if (rzInfo.industryDomainId == 0) {
-			return callback('领域不能为空');
-		}
-		if (rzInfo.teamSizeId == 0) {
-			return callback('团队不能为空');
-		}
-		if (rzInfo.financingPhaseId == 0) {
-			return callback('阶段不能为空');
-		}
-		if (rzInfo.hasBusinessRegistered == 'true') {
-			if (rzInfo.businessLicense.length <= 0) {
-				return callback('营业执照号不能为空');
-			}
-			if (rzInfo.businessLicenseUrl.length <= 0) {
-				return callback('请上传营业执照');
-			}
-		}
-		if (rzInfo.contact.length > 30) {
-			return callback('联系人不能大于30个字符');
-		}
-		if (rzInfo.contactPerson.length > 30) {
-			return callback('联系电话不能大于30个字符');
-		}
-		if (rzInfo.advantage.length > 200) {
-			return callback('优势不能大于200个字符');
-		}
-		if (rzInfo.content.length <= 0) {
-			return callback('融资要求不能为空');
-		} else if (rzInfo.content.length > 200) {
-			return callback('融资要求不能大于200个字符');
+		if (req.content.length <= 0) {
+			return callback('需求信息不能为空');
+		} else if (req.content.length > 200) {
+			return callback('需求信息不能大于200个字符');
 		}
 
-		mui.ajax(owner.apiURL + 'financing', {
+		mui.ajax(owner.apiURL + 'requirement', {
 			data: {
-				projectName: rzInfo.projectName,
-				locationId: rzInfo.locationId,
-				industryDomainId: rzInfo.industryDomainId,
-				teamSizeId: rzInfo.teamSizeId,
-				financingPhaseId: rzInfo.financingPhaseId,
-				contact: rzInfo.contact,
-				contactPerson: rzInfo.contactPerson,
-				advantage: rzInfo.advantage,
-				content: rzInfo.content,
-				hasBusinessRegistered: rzInfo.hasBusinessRegistered,
-				funding: rzInfo.funding,
-				businessLicense: rzInfo.businessLicense,
-				businessLicenseUrl: rzInfo.businessLicenseUrl,
-				businessPlan: rzInfo.businessPlan
-			},
-			dataType: 'json',
-			type: 'post',
-			timeout: 5000,
-			success: function(data, textStatus) {
-				console.log(JSON.stringify(data));
-				if (data.status == 'SUCCEED') {
-					return callback();
-				} else {
-					return callback(owner.ajaxFailedHandler(data.body.error.code));
-				}
-			},
-			error: function(xhr, type, errorThrown) {
-				if (errorThrown == 'Forbidden') {
-					app.setState({});
-					owner.openLoginPage();
-				} else {
-					return callback(owner.ajaxErrorHandler(type));
-				}
-			}
-		})
-	};
-	owner.listUserRongzis = function(offset, limit, from, to, successCallback, errorCallback) {
-		var userId = owner.getUserId();
-		mui.ajax(owner.apiURL + 'user/' + userId + '/financings', {
-			data: {
-				offset: offset,
-				limit: limit,
-				from: from,
-				to: to
-			},
-			dataType: 'json',
-			type: 'get',
-			timeout: 5000,
-			success: function(data) {
-				console.log(JSON.stringify(data));
-				if (data.status == 'SUCCEED') {
-					return successCallback(data);
-				} else {
-					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
-				}
-			},
-			error: function(xhr, type, errorThrown) {
-				return errorCallback(owner.ajaxErrorHandler(type));
-			}
-		})
-	};
-
-	owner.listRongzis = function(offset, limit, from, to, successCallback, errorCallback) {
-		mui.ajax(owner.apiURL + 'financings', {
-			data: {
-				offset: offset,
-				limit: limit,
-				from: from,
-				to: to
-			},
-			dataType: 'json',
-			type: 'get',
-			timeout: 5000,
-			success: function(data) {
-				console.log(JSON.stringify(data));
-				if (data.status == 'SUCCEED') {
-					return successCallback(data);
-				} else {
-					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
-				}
-			},
-			error: function(xhr, type, errorThrown) {
-				return errorCallback(owner.ajaxErrorHandler(type));
-			}
-		})
-	};
-
-	owner.listOwerRongzis = function(successCallback) {
-		var userId = owner.getUserId();
-		mui.ajax(owner.apiURL + 'user/' + userId + '/financings', {
-			data: {
-				beused: false
-			},
-			dataType: 'json',
-			type: 'get',
-			timeout: 5000,
-			success: function(data) {
-				return successCallback(data);
-			}
-		})
-	};
-
-	owner.createRongzhi = function(rzInfo, callback) {
-		callback = callback || $.noop;
-		rzInfo = rzInfo || {};
-		rzInfo.projectName = rzInfo.projectName || '';
-		rzInfo.locationId = rzInfo.locationId || 0;
-		rzInfo.industryDomainId = rzInfo.industryDomainId || 0;
-		rzInfo.teamSizeId = rzInfo.teamSizeId || 0;
-		rzInfo.contact = rzInfo.contact || '';
-		rzInfo.contactPerson = rzInfo.contactPerson || '';
-		rzInfo.advantage = rzInfo.advantage || '';
-		rzInfo.content = rzInfo.content || '';
-		rzInfo.reward = rzInfo.reward || '';
-		rzInfo.hasBusinessRegistered = rzInfo.hasBusinessRegistered || 'true';
-		rzInfo.businessLicense = rzInfo.businessLicense || '';
-		rzInfo.businessLicenseUrl = rzInfo.businessLicenseUrl || '';
-		rzInfo.businessPlan = rzInfo.businessPlan || '';
-
-		if (rzInfo.projectName.length <= 0) {
-			return callback('项目名称不能为空');
-		} else if (rzInfo.projectName.length > 50) {
-			return callback('项目名称不能大于50个字符');
-		}
-		if (rzInfo.locationId == 0) {
-			return callback('地区不能为空');
-		}
-		if (rzInfo.industryDomainId == 0) {
-			return callback('领域不能为空');
-		}
-		if (rzInfo.teamSizeId == 0) {
-			return callback('团队不能为空');
-		}
-		if (rzInfo.hasBusinessRegistered == 'true') {
-			if (rzInfo.businessLicense.length <= 0) {
-				return callback('营业执照号不能为空');
-			}
-			if (rzInfo.businessLicenseUrl.length <= 0) {
-				return callback('请上传营业执照');
-			}
-		}
-		if (rzInfo.contact.length > 30) {
-			return callback('联系人不能大于30个字符');
-		}
-		if (rzInfo.contactPerson.length > 30) {
-			return callback('联系电话不能大于30个字符');
-		}
-		if (rzInfo.advantage.length > 200) {
-			return callback('优势不能大于200个字符');
-		}
-		if (rzInfo.content.length <= 0) {
-			return callback('融智要求不能为空');
-		} else if (rzInfo.content.length > 200) {
-			return callback('融智要求不能大于200个字符');
-		}
-		if (rzInfo.reward.length > 50) {
-			return callback('回报不能大于50个字符');
-		}
-
-		mui.ajax(owner.apiURL + 'demand', {
-			data: {
-				type: 1,
-				projectName: rzInfo.projectName,
-				locationId: rzInfo.locationId,
-				industryDomainId: rzInfo.industryDomainId,
-				teamSizeId: rzInfo.teamSizeId,
-				contact: rzInfo.contact,
-				contactPerson: rzInfo.contactPerson,
-				advantage: rzInfo.advantage,
-				content: rzInfo.content,
-				hasBusinessRegistered: rzInfo.hasBusinessRegistered,
-				reward: rzInfo.reward,
-				businessLicense: rzInfo.businessLicense,
-				businessLicenseUrl: rzInfo.businessLicenseUrl,
-				businessPlan: rzInfo.businessPlan
+				type: req.type,
+				projectId: req.projectId,
+				content: req.content
 			},
 			dataType: 'json',
 			type: 'post',
@@ -679,8 +477,59 @@ owner.submitAuthenticate = function(info, callback) {
 		})
 	};
 
-	owner.getRongzi = function(id, successCallback, errorCallback) {
-		mui.ajax(owner.apiURL + 'financing/' + id, {
+	owner.listUserRequirements = function(offset, limit, from, to, successCallback, errorCallback) {
+		var userId = owner.getUserId();
+		mui.ajax(owner.apiURL + 'user/' + userId + '/requirements', {
+			data: {
+				offset: offset,
+				limit: limit,
+				from: from,
+				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return successCallback(data);
+				} else {
+					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				return errorCallback(owner.ajaxErrorHandler(type));
+			}
+		})
+	};
+
+	owner.listRequirements = function(offset, limit, from, to, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'requirements', {
+			data: {
+				offset: offset,
+				limit: limit,
+				from: from,
+				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return successCallback(data);
+				} else {
+					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				return errorCallback(owner.ajaxErrorHandler(type));
+			}
+		})
+	};
+
+	owner.getRequirement= function(id, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'requirement/' + id, {
 			dataType: 'json',
 			type: 'get',
 			timeout: 5000,
@@ -696,23 +545,50 @@ owner.submitAuthenticate = function(info, callback) {
 			}
 		})
 	};
+	owner.processRequirement = function(req) {
+		var res = {};
+		res.id = req.id;
+		res.type = req.type;
+		res.content = req.content;
+		res.status = req.status;
+		res.likeCount = req.likeCount;
+		res.commentCount = req.commentCount;
+		res.user = req.user;
+		res.likers = req.likers;
+		res.created = req.created;
 
-	owner.getRongzhi = function(id, successCallback, errorCallback) {
-		mui.ajax(owner.apiURL + 'demand/' + id, {
-			dataType: 'json',
-			type: 'get',
-			timeout: 5000,
-			success: function(data) {
-				if (data.status == 'SUCCEED') {
-					return successCallback(data);
-				} else {
-					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
-				}
-			},
-			error: function(xhr, type, errorThrown) {
-				return errorCallback(owner.ajaxErrorHandler(type));
-			}
-		})
+		if (req.type == 1) {
+			res.typeInfo = '寻求加入团队';
+		} else if (req.type == 2) {
+			res.typeInfo = '寻求搭档';
+		} else if (req.type == 3) {
+			res.typeInfo = '寻求融资';
+		} else if (req.type == 4) {
+			res.typeInfo = '寻求融智';
+		} else {
+			res.typeInfo = '投资项目';
+		}
+
+		if (req.project != null) {
+			res.project = req.project;
+			res.displayed = '';
+		} else {
+			res.displayed = 'display: none;';
+
+			var project = {};
+			project.id = 0;
+			project.name = '';
+			project.logo = '';
+			project.content = '';
+			project.projectPhase = '';
+			project.location = '';
+			project.industryDomain = '';
+			project.teamSize = '';
+
+			res.project = project;
+		}
+
+		return res;
 	};
 
 	owner.getProject = function(id, successCallback, errorCallback) {
@@ -733,72 +609,6 @@ owner.submitAuthenticate = function(info, callback) {
 		})
 	};
 
-	owner.listUserRongzhis = function(offset, limit, from, to, successCallback, errorCallback) {
-		var userId = owner.getUserId();
-		mui.ajax(owner.apiURL + 'user/' + userId + '/demands', {
-			data: {
-				offset: offset,
-				limit: limit,
-				from: from,
-				to: to
-			},
-			dataType: 'json',
-			type: 'get',
-			timeout: 5000,
-			success: function(data) {
-				console.log(JSON.stringify(data));
-				if (data.status == 'SUCCEED') {
-					return successCallback(data);
-				} else {
-					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
-				}
-			},
-			error: function(xhr, type, errorThrown) {
-				return errorCallback(owner.ajaxErrorHandler(type));
-			}
-		})
-	};
-
-	owner.listRongzhis = function(offset, limit, from, to, successCallback, errorCallback) {
-		mui.ajax(owner.apiURL + 'demands', {
-			data: {
-				offset: offset,
-				limit: limit,
-				from: from,
-				to: to
-			},
-			dataType: 'json',
-			type: 'get',
-			timeout: 5000,
-			success: function(data) {
-				console.log(JSON.stringify(data));
-				if (data.status == 'SUCCEED') {
-					return successCallback(data);
-				} else {
-					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
-				}
-			},
-			error: function(xhr, type, errorThrown) {
-				return errorCallback(owner.ajaxErrorHandler(type));
-			}
-		})
-	};
-
-	owner.listOwerRongzhis = function(successCallback) {
-		var userId = owner.getUserId();
-		mui.ajax(owner.apiURL + 'user/' + userId + '/demands', {
-			data: {
-				beused: false
-			},
-			dataType: 'json',
-			type: 'get',
-			timeout: 5000,
-			success: function(data) {
-				return successCallback(data);
-			}
-		})
-	};
-
 	owner.createProject = function(projectInfo, callback) {
 		callback = callback || $.noop;
 		projectInfo = projectInfo || {};
@@ -812,9 +622,6 @@ owner.submitAuthenticate = function(info, callback) {
 		projectInfo.contactPerson = projectInfo.contactPerson || '';
 		projectInfo.advantage = projectInfo.advantage || '';
 		projectInfo.content = projectInfo.content || '';
-		projectInfo.financingId = projectInfo.financingId || 0;
-		projectInfo.demandId = projectInfo.demandId || 0;
-		projectInfo.businessPlan = projectInfo.businessPlan || '';
 		if (projectInfo.name.length <= 0) {
 			return callback('项目名称不能为空');
 		} else if (projectInfo.name.length > 50) {
@@ -858,11 +665,7 @@ owner.submitAuthenticate = function(info, callback) {
 				contact: projectInfo.contact,
 				contactPerson: projectInfo.contactPerson,
 				advantage: projectInfo.advantage,
-				content: projectInfo.content,
-				hasBusinessRegistered: projectInfo.hasBusinessRegistered,
-				financingId: projectInfo.financingId,
-				demandId: projectInfo.demandId,
-				businessPlan: projectInfo.businessPlan
+				content: projectInfo.content
 			},
 			dataType: 'json',
 			type: 'post',
@@ -937,6 +740,21 @@ owner.submitAuthenticate = function(info, callback) {
 		})
 	};
 
+	owner.listOwerProjects = function(successCallback) {
+		var userId = owner.getUserId();
+		mui.ajax(owner.apiURL + 'user/' + userId + '/projects', {
+			data: {
+				offset: 0,
+				limit: 100
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				return successCallback(data);
+			}
+		})
+	};
 
 	owner.openLoginPage = function() {
 		mui.openWindow({

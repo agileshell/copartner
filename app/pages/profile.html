@@ -71,10 +71,6 @@
 				padding: 15px 0 0 15px;
 				border-bottom: 1px solid #c8c7cc;
 			}
-			.project-name {
-				color: #C15151;
-				font-size: 15px;
-			}
 			.project-item {
 				display: block;
 				font-size: 12px;
@@ -86,6 +82,20 @@
 				font-size: 15px;
 				line-height: 40px;
 				color: #777;
+			}
+			.item-avatar {
+				border-radius: 50%;
+				width: 40px;
+				float: left;
+			}
+			.item-info {
+				float: left;
+				margin-top: 5px;
+				margin-left: 5px;
+				font-size: 15px;
+			}
+			.item-info .item-name {
+				color: #C15151;
 			}
 		</style>
 	</head>
@@ -115,36 +125,21 @@
 		<div class="mui-content">
 			<div class="mui-slider mui-fullscreen">
 				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-					<a class="mui-control-item mui-active" href="#rongzi">我的融资</a>
-					<a class="mui-control-item" href="#rongzhi">我的融智</a>
+					<a class="mui-control-item mui-active" href="#requirement">我的需求</a>
 					<a class="mui-control-item" href="#project">我的项目</a>
 				</div>
-				<div class="mui-slider-progress-bar mui-col-xs-4"></div>
-				<div class="mui-slider-group">
-					<div id="rongzi" class="mui-slider-item mui-control-content mui-active">
+				<div class="mui-slider-progress-bar mui-col-xs-6"></div>
+				<div class="mui-slider-group" id="pullrefresh">
+					<div id="requirement" class="mui-slider-item mui-control-content mui-active">
 						<div class="mui-scroll-wrapper">
 							<div class="mui-scroll">
 								<div class="new-item">
-									<img id="new-rongzi" src="../images/new-rongzi.png" style="width:200px" />
+									<img id="new-requirement" src="../images/new-requirement.png" style="width:200px" />
 								</div>
-								<ul id="rongzi-list" class="mui-table-view mui-table-view-chevron">
+								<ul id="requirement-list" class="mui-table-view">
 								</ul>
 								<div class="mui-pull-bottom-tips">
-									<span id="loading-rongzi" class="mui-pull-loading">点击加载更多</span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div id="rongzhi" class="mui-slider-item mui-control-content">
-						<div class="mui-scroll-wrapper">
-							<div class="mui-scroll">
-								<div class="new-item">
-									<img id="new-rongzhi" src="../images/new-rongzhi.png" style="width:200px" />
-								</div>
-								<ul id="rongzhi-list" class="mui-table-view mui-table-view-chevron">
-								</ul>
-								<div class="mui-pull-bottom-tips">
-									<span id="loading-rongzhi" class="mui-pull-loading">点击加载更多</span>
+									<span id="loading-requirement" class="mui-pull-loading">点击加载更多</span>
 								</div>
 							</div>
 						</div>
@@ -167,38 +162,50 @@
 			</div>
 		</div>
 	</body>
-	<script id="rongzi-template" type="text/x-handlebars-template">
-		<li id="rongzi_{{id}}" class="mui-table-view-cell mui-media">
-			<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+	<script id="requirement-template" type="text/x-handlebars-template">
+		<li id="requirement_{{id}}" class="mui-table-view-cell mui-media">
+			<a href="#" data-guid="{{id}}">
 				<div class="mui-media-body">
-					<span class="project-name">{{projectName}}</span>
-					<span class="project-item">{{location}} {{teamSize}}</span>
-					<span class="project-item">领域：{{industryDomain}}</span>
-					<span class="project-item">阶段：{{financingPhase}}</span>
-					<span class="project-item">融资：{{content}}</span>
-				</div>
-			</a>
-		</li>
-	</script>
-	<script id="rongzhi-template" type="text/x-handlebars-template">
-		<li id="rongzhi_{{id}}" class="mui-table-view-cell mui-media">
-			<a class='mui-navigate-right' href="#" data-guid="{{id}}">
-				<div class="mui-media-body">
-					<span class="project-name">{{projectName}}</span>
-					<span class="project-item">{{location}} {{teamSize}}</span>
-					<span class="project-item">回报：{{reward}}</span>
-					<span class="project-item">融智：{{content}}</span>
+					<a href="#" data-guid="{{id}}" data-type="requirement">
+						<p class="mui-ellipsis-2">[{{typeInfo}}] {{content}}</p>
+						<div style="padding-top: 5px; {{displayed}}">
+							<div style="overflow: hidden;">
+								<img src="{{project.logo}}" class="item-avatar" style="width: 40px;">
+								<div class="item-info">
+									<div class="item-name">{{project.name}}</div>
+								</div>
+							</div>
+							<div class="mui-media-body" style="padding-left: 45px;">
+								<span class="project-item">{{project.location}}，{{project.teamSize}}</span>
+								<div class="project-item">
+									<span class="mui-badge mui-badge-success">领域</span>
+									<span>{{project.industryDomain}}</span>
+								</div>
+								<div class="project-item">
+									<span class="mui-badge mui-badge-primary">阶段</span>
+									<span>{{project.projectPhase}}</span>
+								</div>
+							</div>
+						</div>
+					</a>
 				</div>
 			</a>
 		</li>
 	</script>
 	<script id="project-template" type="text/x-handlebars-template">
 		<li id="project_{{id}}" class="mui-table-view-cell mui-media">
-			<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+			<a class='mui-navigate-right' href="#" data-guid="{{id}}" data-type="project">
 				<div class="mui-media-body">
-					<span class="project-name">{{name}}</span>
-					<span class="project-item">{{location}} {{teamSize}}</span>
-					<span class="project-item">实施条件：{{content}}</span>
+					<div style="overflow: hidden;">
+						<img src="{{logo}}" class="item-avatar" style="width: 40px;">
+						<div class="item-info">
+							<div class="item-name">{{name}}</div>
+						</div>
+					</div>
+					<div class="mui-media-body" style="padding-left: 45px;">
+						<span class="project-item">{{location}} {{teamSize}}</span>
+						<span class="project-item"> 优势：{{advantage}}</span>
+					</div>
 				</div>
 			</a>
 		</li>
@@ -208,23 +215,17 @@
 	<script src="../js/app.js"></script>
 	<script type="text/javascript">
 		(function() {
-			var rongziDivEl = document.createElement("div"),
-				rongziSource = document.getElementById("rongzi-template").innerText,
-				rongziTemplate = Handlebars.compile(rongziSource),
-				rongziEl = document.getElementById("rongzi-list"),
-				rongzhiDivEl = document.createElement("div"),
-				rongzhiSource = document.getElementById("rongzhi-template").innerText,
-				rongzhiTemplate = Handlebars.compile(rongzhiSource),
-				rongzhiEl = document.getElementById("rongzhi-list"),
+			var requirementDivEl = document.createElement("div"),
+				requirementSource = document.getElementById("requirement-template").innerText,
+				requirementTemplate = Handlebars.compile(requirementSource),
+				requirementEl = document.getElementById("requirement-list"),
 				projectDivEl = document.createElement("div"),
 				projectSource = document.getElementById("project-template").innerText,
 				projectTemplate = Handlebars.compile(projectSource),
 				projectEl = document.getElementById("project-list");
-			var rongziIsFirstLoad = true,
-				rongzhiIsFirstLoad = true,
+			var requirementIsFirstLoad = true,
 				projectIsFirstLoad = true,
-				rongziLatestLoadingRequestDate = 0,
-				rongzhiLatestLoadingRequestDate = 0,
+				requirementLatestLoadingRequestDate = 0,
 				projectLatestLoadingRequestDate = 0;
 			var profileDetailWebview = null, authenticateWebview = null;
 			mui.init({
@@ -266,17 +267,11 @@
 							plus.nativeUI.toast(err);
 						};
 					app.getProfile(successCallback, errorCallback);
-					if (rongziIsFirstLoad || needReflush) {
-						rongziEl.innerHTML = '';
-						loadingRongzi();
-						rongziIsFirstLoad = false;
-						rongziLatestLoadingRequestDate = 0;
-					}
-					if (rongzhiIsFirstLoad || needReflush) {
-						rongzhiEl.innerHTML = '';
-						loadingRongzhi();
-						rongzhiIsFirstLoad = false;
-						rongzhiLatestLoadingRequestDate = 0;
+					if (requirementIsFirstLoad || needReflush) {
+						requirementEl.innerHTML = '';
+						loadingRequirement();
+						requirementIsFirstLoad = false;
+						requirementLatestLoadingRequestDate = 0;
 					}
 					if (projectIsFirstLoad || needReflush) {
 						projectEl.innerHTML = '';
@@ -301,22 +296,10 @@
 					mui.fire(authenticateWebview, 'mui.view.beforeshow', {});
 				});
 			});
-			document.getElementById('new-rongzi').addEventListener('tap', function() {
+			document.getElementById('new-requirement').addEventListener('tap', function() {
 				mui.openWindow({
-					url: 'create_rongzi.html',
-					id: 'create_rongzi',
-					show: {
-						aniShow: 'pop-in'
-					},
-					waiting: {
-						autoShow: false
-					}
-				});
-			});
-			document.getElementById('new-rongzhi').addEventListener('tap', function() {
-				mui.openWindow({
-					url: 'create_rongzhi.html',
-					id: 'create_rongzhi',
+					url: 'create_requirement.html',
+					id: 'create_requirement',
 					show: {
 						aniShow: 'pop-in'
 					},
@@ -337,27 +320,23 @@
 					}
 				});
 			});
-			document.getElementById('loading-rongzi').addEventListener('tap', function() {
-				rongziIsFirstLoad = false;
-				loadingRongzi();
-			});
-			document.getElementById('loading-rongzhi').addEventListener('tap', function() {
-				rongzhiIsFirstLoad = false;
-				loadingRongzhi();
+			document.getElementById('loading-requirement').addEventListener('tap', function() {
+				requirementIsFirstLoad = false;
+				loadingRequirement();
 			});
 			document.getElementById('loading-project').addEventListener('tap', function() {
 				projectIsFirstLoad = false;
 				loadingProject();
 			});
 
-			function loadingRongzi() {
+			function loadingRequirement() {
 				var success = function(response) {
 						var items = response.body.list;
 						if (items.length > 0) {
-							rongziLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+							requirementLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
 							for (var i = 0, len = items.length; i < len; i++) {
-								rongziDivEl.innerHTML = rongziTemplate(items[i]);
-								rongziEl.appendChild(rongziDivEl.firstElementChild);
+								requirementDivEl.innerHTML = requirementTemplate(app.processRequirement(items[i]));
+								requirementEl.appendChild(requirementDivEl.firstElementChild);
 							}
 						}
 					},
@@ -365,26 +344,7 @@
 						mui.toast(app.ajaxErrorHandler(errorType));
 					};
 				setTimeout(function() {
-					app.listUserRongzis(0, 10, 0, rongziLatestLoadingRequestDate, success, error);
-				}, 500);
-			};
-
-			function loadingRongzhi() {
-				var success = function(response) {
-						var items = response.body.list;
-						if (items.length > 0) {
-							rongzhiLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
-							for (var i = 0, len = items.length; i < len; i++) {
-								rongzhiDivEl.innerHTML = rongzhiTemplate(items[i]);
-								rongzhiEl.appendChild(rongzhiDivEl.firstElementChild);
-							}
-						}
-					},
-					error = function(errorType) {
-						mui.toast(app.ajaxErrorHandler(errorType));
-					};
-				setTimeout(function() {
-					app.listUserRongzhis(0, 10, 0, rongzhiLatestLoadingRequestDate, success, error);
+					app.listUserRequirements(0, 10, 0, requirementLatestLoadingRequestDate, success, error);
 				}, 500);
 			};
 
@@ -405,6 +365,34 @@
 				setTimeout(function() {
 					app.listUserProjects(0, 10, 0, projectLatestLoadingRequestDate, success, error);
 				}, 500);
+			};
+
+			 //打开详情
+			mui('#pullrefresh').on('tap', 'a', function() {
+				var stype = this.getAttribute('data-type');
+				if (stype == 'requirement') {
+					open_requirement_detail(this.getAttribute('data-guid'));
+				} else if (stype == 'project') {
+					open_project_detail(this.getAttribute('data-guid'));
+				}
+			});
+			var requirementDetailWebview = null;
+			function open_requirement_detail(id) {
+				if (!requirementDetailWebview) {
+					requirementDetailWebview = plus.webview.getWebviewById('requirement_detail');
+				}
+				mui.fire(requirementDetailWebview, 'mui.view.beforeshow', {
+					guid: id
+				});
+			};
+			var projectDetailWebview = null;
+			function open_project_detail(id) {
+				if (!projectDetailWebview) {
+					projectDetailWebview = plus.webview.getWebviewById('project_detail');
+				}
+				mui.fire(projectDetailWebview, 'mui.view.beforeshow', {
+					guid: id
+				});
 			};
 		})();
 	</script>
