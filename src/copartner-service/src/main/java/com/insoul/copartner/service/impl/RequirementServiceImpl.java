@@ -15,19 +15,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.insoul.copartner.constant.DemandStatus;
 import com.insoul.copartner.constant.ResponseCode;
+import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.IProjectDao;
+import com.insoul.copartner.dao.IProjectPhaseDao;
 import com.insoul.copartner.dao.IRequirementCommentsDao;
 import com.insoul.copartner.dao.IRequirementDao;
 import com.insoul.copartner.dao.IRequirementLikersDao;
+import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.dao.criteria.PaginationCriteria;
 import com.insoul.copartner.dao.criteria.RequirementCommentCriteria;
 import com.insoul.copartner.dao.criteria.RequirementCriteria;
+import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Project;
+import com.insoul.copartner.domain.ProjectPhase;
 import com.insoul.copartner.domain.Requirement;
 import com.insoul.copartner.domain.RequirementComments;
 import com.insoul.copartner.domain.RequirementLikers;
 import com.insoul.copartner.domain.RequirementLikersId;
+import com.insoul.copartner.domain.TeamSize;
 import com.insoul.copartner.domain.User;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
@@ -36,6 +42,7 @@ import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.util.ContentUtil;
 import com.insoul.copartner.vo.CommentVO;
 import com.insoul.copartner.vo.Pagination;
+import com.insoul.copartner.vo.ProjectLeanVO;
 import com.insoul.copartner.vo.RequirementDetailVO;
 import com.insoul.copartner.vo.RequirementVO;
 import com.insoul.copartner.vo.UserLeanVO;
@@ -53,15 +60,23 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
     @Resource
     private IRequirementDao requirementDao;
 
-
-    @Resource
-    private IProjectDao projectDao;
-
     @Resource
     private IRequirementCommentsDao requirementCommentsDao;
 
     @Resource
     private IRequirementLikersDao requirementLikersDao;
+
+    @Resource
+    private IProjectDao projectDao;
+
+    @Resource
+    private IProjectPhaseDao projectPhaseDao;
+
+    @Resource
+    private IIndustryDomainDao industryDomainDao;
+
+    @Resource
+    private ITeamSizeDao teamSizeDao;
 
     @Override
     public Pagination<RequirementVO> listRequirements(RequirementListRequest requestData) {
@@ -69,14 +84,14 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
         criteria.setUserId(requestData.getUserId());
-        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
-                : null);
+        criteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
 
         if (null != requestData.getUserId() && requestData.getUserId().equals(getUserId())) {
-            criteria.setStatus(new String[] {DemandStatus.ACTIVE.getValue(), DemandStatus.INACTIVE.getValue()});
+            criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue(), DemandStatus.INACTIVE.getValue() });
         } else {
-            criteria.setStatus(new String[] {DemandStatus.ACTIVE.getValue()});
+            criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue() });
         }
 
         List<Requirement> requirements = requirementDao.queryRequirement(criteria);
@@ -111,16 +126,15 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
         PaginationCriteria pagination = new PaginationCriteria();
         pagination.setOffset(0);
         pagination.setLimit(10);
-        List<RequirementLikers> requirementLikers =
-                requirementLikersDao.findByRequirementIdsAndPagination(requirementIds, pagination);
+        List<RequirementLikers> requirementLikers = requirementLikersDao
+                .findByRequirementIdsAndPagination(requirementIds, pagination);
         Set<Long> likerIds = new HashSet<Long>();
         Map<Long, Set<Long>> requirementIdMapLikerIds = new HashMap<Long, Set<Long>>();
         for (RequirementLikers requirementLiker : requirementLikers) {
             Long userId = requirementLiker.getId().getUserId();
             Long requirementId = requirementLiker.getId().getRequirementId();
-            Set<Long> ids =
-                    requirementIdMapLikerIds.containsKey(requirementId) ? requirementIdMapLikerIds.get(requirementId)
-                            : new HashSet<Long>();
+            Set<Long> ids = requirementIdMapLikerIds.containsKey(requirementId)
+                    ? requirementIdMapLikerIds.get(requirementId) : new HashSet<Long>();
             ids.add(userId);
             requirementIdMapLikerIds.put(requirementId, ids);
 
@@ -145,6 +159,23 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
             requirementVO.setCommentCount(requirement.getCommentCount());
             requirementVO.setLikeCount(requirement.getLikeCount());
             requirementVO.setCreated(requirement.getCreated());
+
+            // TODO
+            if (requirement.getProjectId() != null && requirement.getProjectId() > 0) {
+                Project project = projectDao.get(requirement.getProjectId());
+                ProjectLeanVO projectVO = new ProjectLeanVO();
+                projectVO.setId(project.getId());
+                projectVO.setName(project.getName());
+                projectVO.setLogo(CDNUtil.getFullPath(project.getLogo()));
+                projectVO.setLocation(project.getFullLocation());
+                IndustryDomain industryDomain = industryDomainDao.get(project.getIndustryDomainId());
+                projectVO.setIndustryDomain(industryDomain.getName());
+                TeamSize teamSize = teamSizeDao.get(project.getTeamSizeId());
+                projectVO.setTeamSize(teamSize.getName());
+                ProjectPhase projectPhase = projectPhaseDao.get(project.getProjectPhaseId());
+                projectVO.setProjectPhase(projectPhase.getName());
+                requirementVO.setProject(projectVO);
+            }
 
             Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
             Set<Long> ids = requirementIdMapLikerIds.get(requirement.getId());
@@ -181,6 +212,22 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
         ownerVO.setAvatar(CDNUtil.getFullPath(owner.getAvatar()));
         requirementdVO.setUser(ownerVO);
 
+        if (requirement.getProjectId() != null && requirement.getProjectId() > 0) {
+            Project project = projectDao.get(requirement.getProjectId());
+            ProjectLeanVO projectVO = new ProjectLeanVO();
+            projectVO.setId(project.getId());
+            projectVO.setName(project.getName());
+            projectVO.setLogo(CDNUtil.getFullPath(project.getLogo()));
+            projectVO.setLocation(project.getFullLocation());
+            IndustryDomain industryDomain = industryDomainDao.get(project.getIndustryDomainId());
+            projectVO.setIndustryDomain(industryDomain.getName());
+            TeamSize teamSize = teamSizeDao.get(project.getTeamSizeId());
+            projectVO.setTeamSize(teamSize.getName());
+            ProjectPhase projectPhase = projectPhaseDao.get(project.getProjectPhaseId());
+            projectVO.setProjectPhase(projectPhase.getName());
+            requirementdVO.setProject(projectVO);
+        }
+
         List<RequirementLikers> requirementLikers = requirementLikersDao.findByRequirementId(requirementId);
         Set<Long> likerIds = new HashSet<Long>();
         for (RequirementLikers requirementLiker : requirementLikers) {
@@ -206,15 +253,18 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
     public void createRequirement(RequirementAddRequest requestData) throws CException {
         long userId = getUserId();
 
-        Project project = projectDao.get(requestData.getProjectId());
-        if (null == project || !(project.getUserId().equals(userId))) {
-            throw CExceptionFactory.getException(CException.class, ResponseCode.PROJECT_NOT_EXIST);
+        Requirement requirement = new Requirement();
+        if (requestData.getProjectId() != null && requestData.getProjectId() > 0) {
+            Project project = projectDao.get(requestData.getProjectId());
+            if (null == project || !(project.getUserId().equals(userId))) {
+                throw CExceptionFactory.getException(CException.class, ResponseCode.PROJECT_NOT_EXIST);
+            }
+
+            requirement.setProjectId(requestData.getProjectId());
         }
 
-        Requirement requirement = new Requirement();
         requirement.setType(requestData.getType());
         requirement.setUserId(userId);
-        requirement.setProjectId(requestData.getProjectId());
         requirement.setContent(requestData.getContent());
         requirement.setCreated(new Date());
 

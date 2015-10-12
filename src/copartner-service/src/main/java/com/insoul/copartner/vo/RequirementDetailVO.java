@@ -15,7 +15,7 @@ public class RequirementDetailVO implements Serializable {
 
     private String status;
 
-    private ProjectVO project;
+    private ProjectLeanVO project;
 
     private UserLeanVO user;
 
@@ -57,11 +57,11 @@ public class RequirementDetailVO implements Serializable {
         this.status = status;
     }
 
-    public ProjectVO getProject() {
+    public ProjectLeanVO getProject() {
         return project;
     }
 
-    public void setProject(ProjectVO project) {
+    public void setProject(ProjectLeanVO project) {
         this.project = project;
     }
 

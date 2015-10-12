@@ -25,7 +25,7 @@ public class ContestEntry extends BaseEntity {
     @Column(name = "status", nullable = false)
     private String status = "active";// 状态 active, inactive, deleted
 
-    @Column(name = "contest_id", nullable = false)
+    @Column(name = "votes", nullable = false)
     private Long votes = 0L;
 
     @Column(name = "has_business_registered", nullable = false)

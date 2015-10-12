@@ -17,7 +17,7 @@ public class ProjectVO implements Serializable {
 
     private String logo;
 
-    private String content;
+    private String advantage;
 
     private String projectPhase;
 
@@ -62,12 +62,12 @@ public class ProjectVO implements Serializable {
         this.logo = logo;
     }
 
-    public String getContent() {
-        return content;
+    public String getAdvantage() {
+        return advantage;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setAdvantage(String advantage) {
+        this.advantage = advantage;
     }
 
     public String getProjectPhase() {
