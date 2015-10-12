@@ -46,9 +46,6 @@ public class Project extends BaseEntity {
     @Column(name = "industry_domain_id", nullable = false)
     private Long industryDomainId;// 行业
 
-    @Column(name = "has_business_registered", nullable = false)
-    private Boolean hasBusinessRegistered = false;// 是否工商注册
-
     @Column(name = "like_count", nullable = false)
     private Long likeCount = 0L;// 收藏次数
 
@@ -60,17 +57,6 @@ public class Project extends BaseEntity {
 
     @Column(name = "contact")
     private String contact;// 联系方式
-
-    @Column(name = "business_plan")
-    private String businessPlan;// 商业计划书
-
-    public String getBusinessPlan() {
-        return businessPlan;
-    }
-
-    public void setBusinessPlan(String businessPlan) {
-        this.businessPlan = businessPlan;
-    }
 
     public Long getUserId() {
         return userId;
@@ -160,14 +146,6 @@ public class Project extends BaseEntity {
         this.industryDomainId = industryDomainId;
     }
 
-    public Boolean getHasBusinessRegistered() {
-        return hasBusinessRegistered;
-    }
-
-    public void setHasBusinessRegistered(Boolean hasBusinessRegistered) {
-        this.hasBusinessRegistered = hasBusinessRegistered;
-    }
-
     public Long getLikeCount() {
         return likeCount;
     }
@@ -205,13 +183,11 @@ public class Project extends BaseEntity {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((advantage == null) ? 0 : advantage.hashCode());
-        result = prime * result + ((businessPlan == null) ? 0 : businessPlan.hashCode());
         result = prime * result + ((commentCount == null) ? 0 : commentCount.hashCode());
         result = prime * result + ((contact == null) ? 0 : contact.hashCode());
         result = prime * result + ((contactPerson == null) ? 0 : contactPerson.hashCode());
         result = prime * result + ((content == null) ? 0 : content.hashCode());
         result = prime * result + ((fullLocation == null) ? 0 : fullLocation.hashCode());
-        result = prime * result + ((hasBusinessRegistered == null) ? 0 : hasBusinessRegistered.hashCode());
         result = prime * result + ((industryDomainId == null) ? 0 : industryDomainId.hashCode());
         result = prime * result + ((likeCount == null) ? 0 : likeCount.hashCode());
         result = prime * result + ((locationId == null) ? 0 : locationId.hashCode());
@@ -238,11 +214,6 @@ public class Project extends BaseEntity {
                 return false;
         } else if (!advantage.equals(other.advantage))
             return false;
-        if (businessPlan == null) {
-            if (other.businessPlan != null)
-                return false;
-        } else if (!businessPlan.equals(other.businessPlan))
-            return false;
         if (commentCount == null) {
             if (other.commentCount != null)
                 return false;
@@ -267,11 +238,6 @@ public class Project extends BaseEntity {
             if (other.fullLocation != null)
                 return false;
         } else if (!fullLocation.equals(other.fullLocation))
-            return false;
-        if (hasBusinessRegistered == null) {
-            if (other.hasBusinessRegistered != null)
-                return false;
-        } else if (!hasBusinessRegistered.equals(other.hasBusinessRegistered))
             return false;
         if (industryDomainId == null) {
             if (other.industryDomainId != null)
@@ -320,4 +286,5 @@ public class Project extends BaseEntity {
             return false;
         return true;
     }
+
 }

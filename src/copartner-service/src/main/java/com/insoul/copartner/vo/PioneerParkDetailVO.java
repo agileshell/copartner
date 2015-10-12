@@ -7,37 +7,28 @@ import java.util.Date;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.insoul.copartner.util.CustomDateSerializer;
 
-/**
- * @author 刘飞 E-mail:liufei_it@126.com
- *
- * @version 1.0.0
- * @since 2015年9月29日 上午11:46:24
- */
 public class PioneerParkDetailVO implements Serializable {
 
     private static final long serialVersionUID = -887667914876496936L;
-    
+
     private Long id;
 
-    private String name;// 名称
+    private String name;
 
-    private String province;// 省
+    private String province;
 
-    private String city;// 市
+    private String city;
 
-    private String area;// 区
+    private String area;
 
-    private String addressDetail;// 详细地址
+    private String addressDetail;
 
-    private String address;// 地址 ＝ 省 ＋ 市 ＋ 区 ＋ 详细地址
+    private String address;
 
-    private BigDecimal longitude;// 经度
+    private BigDecimal longitude;
 
-    private BigDecimal latitude;// 纬度
+    private BigDecimal latitude;
 
-    /**
-     * 简介
-     */
     private String content;
 
     @JsonSerialize(using = CustomDateSerializer.class)

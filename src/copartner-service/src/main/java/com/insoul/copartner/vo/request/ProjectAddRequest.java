@@ -27,9 +27,6 @@ public class ProjectAddRequest implements Serializable {
     @NotNull
     private Long industryDomainId;// 行业
 
-    @NotNull
-    private Boolean hasBusinessRegistered;// 是否工商注册
-
     @NotBlank
     @StringLength(max = 200)
     private String content;// 实施条件
@@ -45,12 +42,6 @@ public class ProjectAddRequest implements Serializable {
 
     @StringLength(max = 30)
     private String contact;// 联系方式
-
-    private String businessPlan;// 商业计划书
-
-    private long demandId;
-
-    private long financingId;
 
     public String getName() {
         return name;
@@ -92,14 +83,6 @@ public class ProjectAddRequest implements Serializable {
         this.industryDomainId = industryDomainId;
     }
 
-    public Boolean getHasBusinessRegistered() {
-        return hasBusinessRegistered;
-    }
-
-    public void setHasBusinessRegistered(Boolean hasBusinessRegistered) {
-        this.hasBusinessRegistered = hasBusinessRegistered;
-    }
-
     public String getContent() {
         return content;
     }
@@ -138,30 +121,6 @@ public class ProjectAddRequest implements Serializable {
 
     public void setContact(String contact) {
         this.contact = contact;
-    }
-
-    public String getBusinessPlan() {
-        return businessPlan;
-    }
-
-    public void setBusinessPlan(String businessPlan) {
-        this.businessPlan = businessPlan;
-    }
-
-    public long getDemandId() {
-        return demandId;
-    }
-
-    public void setDemandId(long demandId) {
-        this.demandId = demandId;
-    }
-
-    public long getFinancingId() {
-        return financingId;
-    }
-
-    public void setFinancingId(long financingId) {
-        this.financingId = financingId;
     }
 
 }

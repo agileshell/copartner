@@ -10,7 +10,7 @@ public interface IDemandDao extends IBaseDao<Demand, Long> {
     List<Demand> queryDemand(DemandCriteria criteria);
 
     Long countDemand(DemandCriteria criteria);
-    
+
     Demand getDemandByProjectId(Long projectId);
 
 }

@@ -1,6 +1,7 @@
 package com.insoul.copartner.vo;
 
 import java.io.Serializable;
+import java.util.Set;
 
 public class ProjectDetailVO implements Serializable {
 
@@ -26,21 +27,15 @@ public class ProjectDetailVO implements Serializable {
 
     private String advantage;
 
+    private String contactPerson;
+
+    private String contact;
+
     private Long likeCount;
 
     private Long commentCount;
 
-    // private Set<UserLeanVO> likers;
-
-    private String businessPlan;
-
-    private String contactPerson;// 联系人
-
-    private String contact;// 联系方式
-
-    private FinancingDetailVO financing;
-
-    private DemandDetailVO demand;
+    private Set<UserLeanVO> likers;
 
     public long getId() {
         return id;
@@ -122,30 +117,6 @@ public class ProjectDetailVO implements Serializable {
         this.advantage = advantage;
     }
 
-    public Long getLikeCount() {
-        return likeCount;
-    }
-
-    public void setLikeCount(Long likeCount) {
-        this.likeCount = likeCount;
-    }
-
-    public Long getCommentCount() {
-        return commentCount;
-    }
-
-    public void setCommentCount(Long commentCount) {
-        this.commentCount = commentCount;
-    }
-
-    public String getBusinessPlan() {
-        return businessPlan;
-    }
-
-    public void setBusinessPlan(String businessPlan) {
-        this.businessPlan = businessPlan;
-    }
-
     public String getContactPerson() {
         return contactPerson;
     }
@@ -162,20 +133,28 @@ public class ProjectDetailVO implements Serializable {
         this.contact = contact;
     }
 
-    public FinancingDetailVO getFinancing() {
-        return financing;
+    public Long getLikeCount() {
+        return likeCount;
     }
 
-    public void setFinancing(FinancingDetailVO financing) {
-        this.financing = financing;
+    public void setLikeCount(Long likeCount) {
+        this.likeCount = likeCount;
     }
 
-    public DemandDetailVO getDemand() {
-        return demand;
+    public Long getCommentCount() {
+        return commentCount;
     }
 
-    public void setDemand(DemandDetailVO demand) {
-        this.demand = demand;
+    public void setCommentCount(Long commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public Set<UserLeanVO> getLikers() {
+        return likers;
+    }
+
+    public void setLikers(Set<UserLeanVO> likers) {
+        this.likers = likers;
     }
 
 }

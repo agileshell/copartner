@@ -27,8 +27,6 @@ public class ProjectRequest {
 
     private String contact;// 联系方式
 
-    private MultipartFile businessPlan;// 商业计划书
-
     public String getName() {
         return name;
     }
@@ -85,11 +83,4 @@ public class ProjectRequest {
         this.contact = contact;
     }
 
-    public MultipartFile getBusinessPlan() {
-        return businessPlan;
-    }
-
-    public void setBusinessPlan(MultipartFile businessPlan) {
-        this.businessPlan = businessPlan;
-    }
 }

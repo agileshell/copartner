@@ -22,14 +22,8 @@ import com.insoul.copartner.vo.InvestOrgVO;
 import com.insoul.copartner.vo.Pagination;
 import com.insoul.copartner.vo.request.InvestOrgListRequest;
 
-/**
- * @author 刘飞 E-mail:liufei_it@126.com
- *
- * @version 1.0.0
- * @since 2015年9月29日 下午12:19:19
- */
 @Service
-public class DefaultInvestOrgService extends BaseServiceImpl implements IInvestOrgService {
+public class InvestOrgServiceImpl extends BaseServiceImpl implements IInvestOrgService {
 
     @Resource
     private IInvestOrgDAO investOrgDAO;
@@ -40,24 +34,23 @@ public class DefaultInvestOrgService extends BaseServiceImpl implements IInvestO
         criteria.setName(requestData.getKeyword());
         criteria.setLimit(requestData.getLimit());
         criteria.setOffset(requestData.getOffset());
-        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData
-                .getFrom()) : null);
-        criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
+        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
                 : null);
-        
+        criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
+
         Long count = investOrgDAO.countInvestOrg(criteria);
         List<InvestOrg> list = investOrgDAO.queryInvestOrg(criteria);
         List<InvestOrgVO> investOrgVOs = new ArrayList<InvestOrgVO>();
         if (CollectionUtils.isNotEmpty(list)) {
-            for (InvestOrg p : list) {
+            for (InvestOrg investOrg : list) {
                 InvestOrgVO vo = new InvestOrgVO();
-                vo.setId(p.getId());
-                vo.setCreated(p.getCreated());
-                vo.setHardware(p.getHardware());
-                vo.setId(p.getId());
-                vo.setName(p.getName());
-                vo.setSpecials(p.getSpecials());
-                vo.setLogo(CDNUtil.getFullPath(p.getLogo()));
+                vo.setId(investOrg.getId());
+                vo.setName(investOrg.getName());
+                vo.setLogo(CDNUtil.getFullPath(investOrg.getLogo()));
+                vo.setHardware(investOrg.getHardware());
+                vo.setSpecials(investOrg.getSpecials());
+                vo.setCreated(investOrg.getCreated());
+
                 investOrgVOs.add(vo);
             }
         }
@@ -66,19 +59,20 @@ public class DefaultInvestOrgService extends BaseServiceImpl implements IInvestO
 
     @Override
     public InvestOrgDetailVO getInvestOrg(Long investOrgId) throws CException {
-        InvestOrg io = investOrgDAO.get(investOrgId);
-        if (null == io) {
+        InvestOrg investOrg = investOrgDAO.get(investOrgId);
+        if (null == investOrg) {
             throw CExceptionFactory.getException(CException.class, ResponseCode.INVEST_ORG_NOT_EXIST);
         }
+
         InvestOrgDetailVO detail = new InvestOrgDetailVO();
-        detail.setId(io.getId());
-        detail.setContent(io.getContent());
-        detail.setCreated(io.getCreated());
-        detail.setHardware(io.getHardware());
-        detail.setId(io.getId());
-        detail.setName(io.getName());
-        detail.setSpecials(io.getSpecials());
-        detail.setLogo(CDNUtil.getFullPath(io.getLogo()));
+        detail.setId(investOrg.getId());
+        detail.setName(investOrg.getName());
+        detail.setLogo(CDNUtil.getFullPath(investOrg.getLogo()));
+        detail.setHardware(investOrg.getHardware());
+        detail.setSpecials(investOrg.getSpecials());
+        detail.setContent(investOrg.getContent());
+        detail.setCreated(investOrg.getCreated());
+
         return detail;
     }
 }

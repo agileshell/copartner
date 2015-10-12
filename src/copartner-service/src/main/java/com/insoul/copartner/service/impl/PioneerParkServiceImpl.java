@@ -21,28 +21,21 @@ import com.insoul.copartner.vo.PioneerParkDetailVO;
 import com.insoul.copartner.vo.PioneerParkVO;
 import com.insoul.copartner.vo.request.PoineerParkListRequest;
 
-/**
- * @author 刘飞 E-mail:liufei_it@126.com
- *
- * @version 1.0.0
- * @since 2015年9月29日 上午11:56:23
- */
 @Service
-public class DefaultPioneerParkService extends BaseServiceImpl implements IPioneerParkService {
+public class PioneerParkServiceImpl extends BaseServiceImpl implements IPioneerParkService {
 
     @Resource
     private IPioneerParkDAO pioneerParkDAO;
-    
+
     @Override
     public Pagination<PioneerParkVO> listPioneerParks(PoineerParkListRequest requestData) {
         PioneerParkCriteria criteria = new PioneerParkCriteria();
         criteria.setName(requestData.getKeyword());
         criteria.setLimit(requestData.getLimit());
         criteria.setOffset(requestData.getOffset());
-        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData
-                .getFrom()) : null);
-        criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
+        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
                 : null);
+        criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
         criteria.setProvince(requestData.getProvince());
         Long count = pioneerParkDAO.countPioneerPark(criteria);
         List<PioneerPark> list = pioneerParkDAO.queryPioneerPark(criteria);
@@ -51,19 +44,16 @@ public class DefaultPioneerParkService extends BaseServiceImpl implements IPione
             for (PioneerPark p : list) {
                 PioneerParkVO vo = new PioneerParkVO();
                 vo.setId(p.getId());
+                vo.setName(p.getName());
                 vo.setAddress(p.getAddress());
-                vo.setAddressDetail(p.getAddressDetail());
-                vo.setArea(p.getArea());
-                vo.setCity(p.getCity());
-                vo.setCreated(p.getCreated());
-                vo.setId(vo.getId());
                 vo.setLatitude(p.getLatitude());
                 vo.setLongitude(p.getLongitude());
-                vo.setName(p.getName());
-                vo.setProvince(p.getProvince());
+                vo.setCreated(p.getCreated());
+
                 pioneerParkVOs.add(vo);
             }
         }
+
         return new Pagination<PioneerParkVO>(pioneerParkVOs, count);
     }
 
@@ -73,19 +63,20 @@ public class DefaultPioneerParkService extends BaseServiceImpl implements IPione
         if (null == pioneerPark) {
             throw CExceptionFactory.getException(CException.class, ResponseCode.PIONEER_PARK_NOT_EXIST);
         }
+
         PioneerParkDetailVO detail = new PioneerParkDetailVO();
         detail.setId(pioneerPark.getId());
+        detail.setName(pioneerPark.getName());
         detail.setAddress(pioneerPark.getAddress());
         detail.setAddressDetail(pioneerPark.getAddressDetail());
-        detail.setArea(pioneerPark.getArea());
+        detail.setProvince(pioneerPark.getProvince());
         detail.setCity(pioneerPark.getCity());
-        detail.setContent(pioneerPark.getContent());
-        detail.setCreated(pioneerPark.getCreated());
-        detail.setId(pioneerPark.getId());
+        detail.setArea(pioneerPark.getArea());
         detail.setLatitude(pioneerPark.getLatitude());
         detail.setLongitude(pioneerPark.getLongitude());
-        detail.setName(pioneerPark.getName());
-        detail.setProvince(pioneerPark.getProvince());
+        detail.setContent(pioneerPark.getContent());
+        detail.setCreated(pioneerPark.getCreated());
+
         return detail;
     }
 }

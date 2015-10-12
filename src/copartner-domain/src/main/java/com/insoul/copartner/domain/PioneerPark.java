@@ -8,11 +8,6 @@ import javax.persistence.Table;
 
 /**
  * 创业园
- * 
- * @author 刘飞 E-mail:liufei_it@126.com
- *
- * @version 1.0.0
- * @since 2015年9月29日 上午10:26:42
  */
 @Entity
 @Table(name = "pioneer_park", catalog = "copartner")
@@ -44,11 +39,8 @@ public class PioneerPark extends BaseEntity {
     @Column(name = "latitude", precision = 10, scale = 6)
     private BigDecimal latitude;// 纬度
 
-    /**
-     * 简介
-     */
     @Column(name = "content", columnDefinition = "TEXT")
-    private String content;
+    private String content;// 简介
 
     public String getName() {
         return name;

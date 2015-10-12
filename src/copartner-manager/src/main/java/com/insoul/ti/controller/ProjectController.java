@@ -54,7 +54,7 @@ public class ProjectController extends WebBase {
         ProjectCriteria criteria = new ProjectCriteria();
         criteria.setLimit(query.getPage_size());
         criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
-        criteria.setStatus(new String[] { request.getStatus() });
+        criteria.setStatus(new String[] {request.getStatus()});
         criteria.setName(request.getName());
         criteria.setUserId(request.getId());
         List<Project> list = projectDAO.queryProject(criteria);
@@ -95,7 +95,7 @@ public class ProjectController extends WebBase {
         }
         return mv;
     }
-    
+
     @RequestMapping("/edit/{projectId}")
     public ModelAndView edit(@PathVariable Long projectId, ViewRequest req) {
         ModelAndView mv = createModelView(PROJECT_EDIT, req);
@@ -109,24 +109,11 @@ public class ProjectController extends WebBase {
         }
         return mv;
     }
-    
+
     @RequestMapping("/update/{projectId}")
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
     public ModelAndView update(@PathVariable Long projectId, @Valid ProjectRequest request, BindingResult result) {
         Project project = projectDAO.get(projectId);
-        MultipartFile image = request.getBusinessPlan();
-        if (image != null) {
-            String fileType = FileUtil.getFileType(image.getOriginalFilename());
-            if (StringUtils.isNotBlank(fileType)) {
-                String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
-                try {
-                    String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
-                    if (StringUtils.isNotBlank(path)) project.setBusinessPlan(path);
-                } catch (Exception e) {
-                    log.error("UploadFile Error.", e);
-                }
-            }
-        }
         MultipartFile logo = request.getLogo();
         if (logo != null) {
             String fileType = FileUtil.getFileType(logo.getOriginalFilename());
@@ -134,7 +121,8 @@ public class ProjectController extends WebBase {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
                     String path = CDNUtil.uploadFile(logo.getInputStream(), fileName);
-                    if (StringUtils.isNotBlank(path)) project.setLogo(path);
+                    if (StringUtils.isNotBlank(path))
+                        project.setLogo(path);
                 } catch (Exception e) {
                     log.error("UploadFile Error.", e);
                 }
@@ -167,7 +155,6 @@ public class ProjectController extends WebBase {
         vo.setStatus(p.getStatus());
         vo.setUpdated(p.getUpdated());
         vo.setUserId(p.getUserId());
-        vo.setBusinessPlan(p.getBusinessPlan());
         IndustryDomain i = industryDomainDAO.get(p.getIndustryDomainId());
         if (i != null)
             vo.setIndustryDomainName(i.getName());

@@ -6,28 +6,20 @@ import java.util.Date;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.insoul.copartner.util.CustomDateSerializer;
 
-/**
- * @author 刘飞 E-mail:liufei_it@126.com
- *
- * @version 1.0.0
- * @since 2015年9月29日 下午12:11:37
- */
 public class InvestOrgDetailVO implements Serializable {
 
     private static final long serialVersionUID = 7654829579972770022L;
 
     private Long id;
-    
-    private String name;// 名称
 
-    private String specials;// 特色
+    private String name;
 
-    private String hardware;// 硬件
-    /**
-     * 简介
-     */
+    private String specials;
+
+    private String hardware;
+
     private String content;
-    
+
     private String logo;
 
     @JsonSerialize(using = CustomDateSerializer.class)
