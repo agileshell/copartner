@@ -153,6 +153,7 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
 
         for (Requirement requirement : requirements) {
             RequirementVO requirementVO = new RequirementVO();
+            requirementVO.setType(requirement.getType());
             requirementVO.setUser(userIdMapUserVO.get(requirement.getUserId()));
             requirementVO.setStatus(requirement.getStatus());
             requirementVO.setContent(ContentUtil.splitAndFilterString(requirement.getContent(), 80));
