@@ -35,6 +35,8 @@ public class ProjectDetailVO implements Serializable {
 
     private Long commentCount;
 
+    private UserLeanVO user;
+
     private Set<UserLeanVO> likers;
 
     public long getId() {
@@ -147,6 +149,14 @@ public class ProjectDetailVO implements Serializable {
 
     public void setCommentCount(Long commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public UserLeanVO getUser() {
+        return user;
+    }
+
+    public void setUser(UserLeanVO user) {
+        this.user = user;
     }
 
     public Set<UserLeanVO> getLikers() {

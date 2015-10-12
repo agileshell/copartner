@@ -386,6 +386,5 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
     }
 
     @Override
-    public void updateProject(ProjectUpdateRequest requestData) throws CException {
-    }
+    public void updateProject(ProjectUpdateRequest requestData) throws CException {}
 }

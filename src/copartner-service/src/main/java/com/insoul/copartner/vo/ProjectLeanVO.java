@@ -1,15 +1,10 @@
 package com.insoul.copartner.vo;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.insoul.copartner.util.CustomDateSerializer;
+public class ProjectLeanVO implements Serializable {
 
-public class ProjectVO implements Serializable {
-
-    private static final long serialVersionUID = -4435427359292836901L;
+    private static final long serialVersionUID = -1430904000416112107L;
 
     private long id;
 
@@ -26,17 +21,6 @@ public class ProjectVO implements Serializable {
     private String industryDomain;
 
     private String teamSize;
-
-    private Long likeCount;
-
-    private Long commentCount;
-
-    private UserLeanVO user;
-
-    private Set<UserLeanVO> likers;
-
-    @JsonSerialize(using = CustomDateSerializer.class)
-    private Date created;
 
     public long getId() {
         return id;
@@ -100,46 +84,6 @@ public class ProjectVO implements Serializable {
 
     public void setTeamSize(String teamSize) {
         this.teamSize = teamSize;
-    }
-
-    public Long getLikeCount() {
-        return likeCount;
-    }
-
-    public void setLikeCount(Long likeCount) {
-        this.likeCount = likeCount;
-    }
-
-    public Long getCommentCount() {
-        return commentCount;
-    }
-
-    public void setCommentCount(Long commentCount) {
-        this.commentCount = commentCount;
-    }
-
-    public UserLeanVO getUser() {
-        return user;
-    }
-
-    public void setUser(UserLeanVO user) {
-        this.user = user;
-    }
-
-    public Set<UserLeanVO> getLikers() {
-        return likers;
-    }
-
-    public void setLikers(Set<UserLeanVO> likers) {
-        this.likers = likers;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
     }
 
 }

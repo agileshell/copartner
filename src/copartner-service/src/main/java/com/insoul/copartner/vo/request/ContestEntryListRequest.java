@@ -8,17 +8,9 @@ public class ContestEntryListRequest extends PaginationRequest {
 
     private Long to;
 
-    private String keyword;
-    
-    private Long contestId;// 参与的大赛ID
+    private Long contestId;
 
-    public Long getContestId() {
-        return contestId;
-    }
-
-    public void setContestId(Long contestId) {
-        this.contestId = contestId;
-    }
+    private Long userId;
 
     public Long getFrom() {
         return from;
@@ -36,12 +28,20 @@ public class ContestEntryListRequest extends PaginationRequest {
         this.to = to;
     }
 
-    public String getKeyword() {
-        return keyword;
+    public Long getContestId() {
+        return contestId;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setContestId(Long contestId) {
+        this.contestId = contestId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
 }

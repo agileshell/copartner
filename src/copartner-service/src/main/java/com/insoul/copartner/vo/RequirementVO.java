@@ -21,7 +21,7 @@ public class RequirementVO implements Serializable {
 
     private ProjectVO project;
 
-    private UserBriefVO user;
+    private UserLeanVO user;
 
     private Long likeCount;
 
@@ -72,11 +72,11 @@ public class RequirementVO implements Serializable {
         this.project = project;
     }
 
-    public UserBriefVO getUser() {
+    public UserLeanVO getUser() {
         return user;
     }
 
-    public void setUser(UserBriefVO user) {
+    public void setUser(UserLeanVO user) {
         this.user = user;
     }
 

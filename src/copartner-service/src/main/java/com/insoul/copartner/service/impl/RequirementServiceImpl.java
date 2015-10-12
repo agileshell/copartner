@@ -19,7 +19,6 @@ import com.insoul.copartner.dao.IProjectDao;
 import com.insoul.copartner.dao.IRequirementCommentsDao;
 import com.insoul.copartner.dao.IRequirementDao;
 import com.insoul.copartner.dao.IRequirementLikersDao;
-import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.dao.criteria.PaginationCriteria;
 import com.insoul.copartner.dao.criteria.RequirementCommentCriteria;
@@ -29,7 +28,6 @@ import com.insoul.copartner.domain.Requirement;
 import com.insoul.copartner.domain.RequirementComments;
 import com.insoul.copartner.domain.RequirementLikers;
 import com.insoul.copartner.domain.RequirementLikersId;
-import com.insoul.copartner.domain.StartupRole;
 import com.insoul.copartner.domain.User;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
@@ -40,7 +38,6 @@ import com.insoul.copartner.vo.CommentVO;
 import com.insoul.copartner.vo.Pagination;
 import com.insoul.copartner.vo.RequirementDetailVO;
 import com.insoul.copartner.vo.RequirementVO;
-import com.insoul.copartner.vo.UserBriefVO;
 import com.insoul.copartner.vo.UserLeanVO;
 import com.insoul.copartner.vo.request.PaginationRequest;
 import com.insoul.copartner.vo.request.RequirementAddRequest;
@@ -56,17 +53,15 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
     @Resource
     private IRequirementDao requirementDao;
 
+
+    @Resource
+    private IProjectDao projectDao;
+
     @Resource
     private IRequirementCommentsDao requirementCommentsDao;
 
     @Resource
     private IRequirementLikersDao requirementLikersDao;
-
-    @Resource
-    private IStartupRoleDao startupRoleDao;
-
-    @Resource
-    private IProjectDao projectDao;
 
     @Override
     public Pagination<RequirementVO> listRequirements(RequirementListRequest requestData) {
@@ -102,24 +97,13 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
             userIds.add(requirement.getUserId());
         }
 
-        List<StartupRole> startupRoles = startupRoleDao.findAll();
-        Map<Long, String> roleIdMapName = new HashMap<Long, String>();
-        for (StartupRole startupRole : startupRoles) {
-            roleIdMapName.put(startupRole.getId(), startupRole.getName());
-        }
-
-        Map<Long, UserBriefVO> userIdMapUserVO = new HashMap<Long, UserBriefVO>();
+        Map<Long, UserLeanVO> userIdMapUserVO = new HashMap<Long, UserLeanVO>();
         List<User> users = userDao.getUserByIds(userIds);
         for (User user : users) {
-            UserBriefVO userVO = new UserBriefVO();
+            UserLeanVO userVO = new UserLeanVO();
             userVO.setUserId(user.getId());
             userVO.setName(user.getName());
             userVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
-            userVO.setLocation(user.getFullLocation());
-
-            if (null != user.getStartupRoleId() && roleIdMapName.containsKey(user.getStartupRoleId())) {
-                userVO.setRole(roleIdMapName.get(user.getStartupRoleId()));
-            }
 
             userIdMapUserVO.put(user.getId(), userVO);
         }
@@ -191,15 +175,10 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
         requirementdVO.setContent(requirement.getContent());
 
         User owner = userDao.get(requirement.getUserId());
-        UserBriefVO ownerVO = new UserBriefVO();
+        UserLeanVO ownerVO = new UserLeanVO();
         ownerVO.setUserId(owner.getId());
         ownerVO.setName(owner.getName());
         ownerVO.setAvatar(CDNUtil.getFullPath(owner.getAvatar()));
-        ownerVO.setLocation(owner.getFullLocation());
-        if (null != owner.getStartupRoleId()) {
-            StartupRole startupRole = startupRoleDao.get(owner.getStartupRoleId());
-            ownerVO.setRole(startupRole.getName());
-        }
         requirementdVO.setUser(ownerVO);
 
         List<RequirementLikers> requirementLikers = requirementLikersDao.findByRequirementId(requirementId);

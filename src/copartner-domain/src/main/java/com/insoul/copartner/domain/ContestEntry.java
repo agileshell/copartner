@@ -11,31 +11,39 @@ import javax.persistence.Table;
 @Table(name = "contest_entry", catalog = "copartner")
 public class ContestEntry extends BaseEntity {
 
-    private static final long serialVersionUID = -24101514121358706L;
+    private static final long serialVersionUID = 1738371565002304322L;
 
-    @Column(name = "name", nullable = false)
-    private String name;// 参赛项目名称
-
-    @Column(name = "user_name", nullable = false)
-    private String userName;// 参赛者姓名
+    @Column(name = "project_id", nullable = false)
+    private Long projectId;// 参赛项目
 
     @Column(name = "contest_id", nullable = false)
-    private Long contestId;// 参与的大赛ID
+    private Long contestId;// 大赛ID
 
-    @Column(name = "contact")
-    private String contact;// 参赛者联系方式
-
-    @Column(name = "cover_img")
-    private String coverImg;// 封皮
-    
-    @Column(name = "praise")
-    private Long praise = 0L;// 赞的次数
-    
-    @Column(name = "introduction", nullable = false)
-    private String introduction;// 项目简介
+    @Column(name = "user_id", nullable = false)
+    private Long userId;// 参赛人
 
     @Column(name = "status", nullable = false)
-    private String status;// 状态 active, inactive, deleted
+    private String status = "active";// 状态 active, inactive, deleted
+
+    @Column(name = "contest_id", nullable = false)
+    private Long votes = 0L;
+
+    @Column(name = "has_business_registered", nullable = false)
+    private Boolean hasBusinessRegistered = false;// 是否工商注册
+
+    @Column(name = "business_license")
+    private String businessLicense;// 营业执照号
+
+    @Column(name = "business_license_img")
+    private String businessLicenseImg;// 营业执照
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
 
     public Long getContestId() {
         return contestId;
@@ -45,53 +53,12 @@ public class ContestEntry extends BaseEntity {
         this.contestId = contestId;
     }
 
-    public String getName() {
-        return name;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public String getCoverImg() {
-        return coverImg;
-    }
-
-    public void setCoverImg(String coverImg) {
-        this.coverImg = coverImg;
-    }
-
-    public Long getPraise() {
-        if (praise == null) return 0L;
-        return praise;
-    }
-
-    public void setPraise(Long praise) {
-        this.praise = praise;
-    }
-
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getStatus() {
@@ -102,17 +69,50 @@ public class ContestEntry extends BaseEntity {
         this.status = status;
     }
 
+    public Long getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Long votes) {
+        this.votes = votes;
+    }
+
+    public Boolean getHasBusinessRegistered() {
+        return hasBusinessRegistered;
+    }
+
+    public void setHasBusinessRegistered(Boolean hasBusinessRegistered) {
+        this.hasBusinessRegistered = hasBusinessRegistered;
+    }
+
+    public String getBusinessLicense() {
+        return businessLicense;
+    }
+
+    public void setBusinessLicense(String businessLicense) {
+        this.businessLicense = businessLicense;
+    }
+
+    public String getBusinessLicenseImg() {
+        return businessLicenseImg;
+    }
+
+    public void setBusinessLicenseImg(String businessLicenseImg) {
+        this.businessLicenseImg = businessLicenseImg;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((contact == null) ? 0 : contact.hashCode());
-        result = prime * result + ((coverImg == null) ? 0 : coverImg.hashCode());
-        result = prime * result + ((introduction == null) ? 0 : introduction.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((praise == null) ? 0 : praise.hashCode());
+        result = prime * result + ((businessLicense == null) ? 0 : businessLicense.hashCode());
+        result = prime * result + ((businessLicenseImg == null) ? 0 : businessLicenseImg.hashCode());
+        result = prime * result + ((contestId == null) ? 0 : contestId.hashCode());
+        result = prime * result + ((hasBusinessRegistered == null) ? 0 : hasBusinessRegistered.hashCode());
+        result = prime * result + ((projectId == null) ? 0 : projectId.hashCode());
         result = prime * result + ((status == null) ? 0 : status.hashCode());
-        result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+        result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+        result = prime * result + ((votes == null) ? 0 : votes.hashCode());
         return result;
     }
 
@@ -125,41 +125,47 @@ public class ContestEntry extends BaseEntity {
         if (getClass() != obj.getClass())
             return false;
         ContestEntry other = (ContestEntry) obj;
-        if (contact == null) {
-            if (other.contact != null)
+        if (businessLicense == null) {
+            if (other.businessLicense != null)
                 return false;
-        } else if (!contact.equals(other.contact))
+        } else if (!businessLicense.equals(other.businessLicense))
             return false;
-        if (coverImg == null) {
-            if (other.coverImg != null)
+        if (businessLicenseImg == null) {
+            if (other.businessLicenseImg != null)
                 return false;
-        } else if (!coverImg.equals(other.coverImg))
+        } else if (!businessLicenseImg.equals(other.businessLicenseImg))
             return false;
-        if (introduction == null) {
-            if (other.introduction != null)
+        if (contestId == null) {
+            if (other.contestId != null)
                 return false;
-        } else if (!introduction.equals(other.introduction))
+        } else if (!contestId.equals(other.contestId))
             return false;
-        if (name == null) {
-            if (other.name != null)
+        if (hasBusinessRegistered == null) {
+            if (other.hasBusinessRegistered != null)
                 return false;
-        } else if (!name.equals(other.name))
+        } else if (!hasBusinessRegistered.equals(other.hasBusinessRegistered))
             return false;
-        if (praise == null) {
-            if (other.praise != null)
+        if (projectId == null) {
+            if (other.projectId != null)
                 return false;
-        } else if (!praise.equals(other.praise))
+        } else if (!projectId.equals(other.projectId))
             return false;
         if (status == null) {
             if (other.status != null)
                 return false;
         } else if (!status.equals(other.status))
             return false;
-        if (userName == null) {
-            if (other.userName != null)
+        if (userId == null) {
+            if (other.userId != null)
                 return false;
-        } else if (!userName.equals(other.userName))
+        } else if (!userId.equals(other.userId))
+            return false;
+        if (votes == null) {
+            if (other.votes != null)
+                return false;
+        } else if (!votes.equals(other.votes))
             return false;
         return true;
     }
+
 }

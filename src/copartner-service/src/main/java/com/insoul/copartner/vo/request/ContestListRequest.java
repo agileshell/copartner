@@ -8,8 +8,6 @@ public class ContestListRequest extends PaginationRequest {
 
     private Long to;
 
-    private String keyword;
-
     public Long getFrom() {
         return from;
     }
@@ -24,14 +22,6 @@ public class ContestListRequest extends PaginationRequest {
 
     public void setTo(Long to) {
         this.to = to;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
     }
 
 }

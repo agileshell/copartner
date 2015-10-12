@@ -1,35 +1,24 @@
 package com.insoul.copartner.vo;
 
-/**
- * @author 刘飞 E-mail:liufei_it@126.com
- *
- * @version 1.0.0
- * @since 2015年10月1日 下午11:24:21
- */
-public class ContestEntryDetailVO {
+import java.io.Serializable;
+
+public class ContestEntryDetailVO implements Serializable {
+
+    private static final long serialVersionUID = -2349115796793658537L;
 
     private Long id;
-    
-    private String name;// 参赛项目名称
 
-    private String userName;// 参赛者姓名
-    private Long contestId;// 参与的大赛ID
+    private ProjectLeanVO project;
 
-    private String contact;// 参赛者联系方式
+    private UserLeanVO user;
 
-    private String coverImg;// 封皮
-    
-    private Long praise;// 赞的次数
-    
-    private String introduction;// 项目简介
+    private Long votes;
 
-    public Long getContestId() {
-        return contestId;
-    }
+    private Boolean hasBusinessRegistered = false;
 
-    public void setContestId(Long contestId) {
-        this.contestId = contestId;
-    }
+    private String businessLicense;
+
+    private String businessLicenseImg;
 
     public Long getId() {
         return id;
@@ -39,51 +28,52 @@ public class ContestEntryDetailVO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public ProjectLeanVO getProject() {
+        return project;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProject(ProjectLeanVO project) {
+        this.project = project;
     }
 
-    public String getUserName() {
-        return userName;
+    public UserLeanVO getUser() {
+        return user;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUser(UserLeanVO user) {
+        this.user = user;
     }
 
-    public String getContact() {
-        return contact;
+    public Long getVotes() {
+        return votes;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public void setVotes(Long votes) {
+        this.votes = votes;
     }
 
-    public String getCoverImg() {
-        return coverImg;
+    public Boolean getHasBusinessRegistered() {
+        return hasBusinessRegistered;
     }
 
-    public void setCoverImg(String coverImg) {
-        this.coverImg = coverImg;
+    public void setHasBusinessRegistered(Boolean hasBusinessRegistered) {
+        this.hasBusinessRegistered = hasBusinessRegistered;
     }
 
-    public Long getPraise() {
-        return praise;
+    public String getBusinessLicense() {
+        return businessLicense;
     }
 
-    public void setPraise(Long praise) {
-        this.praise = praise;
+    public void setBusinessLicense(String businessLicense) {
+        this.businessLicense = businessLicense;
     }
 
-    public String getIntroduction() {
-        return introduction;
+    public String getBusinessLicenseImg() {
+        return businessLicenseImg;
     }
 
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
+    public void setBusinessLicenseImg(String businessLicenseImg) {
+        this.businessLicenseImg = businessLicenseImg;
     }
+
 }

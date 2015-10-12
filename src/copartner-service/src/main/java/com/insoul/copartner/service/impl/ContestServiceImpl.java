@@ -12,10 +12,20 @@ import org.springframework.stereotype.Service;
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.dao.IContestDAO;
 import com.insoul.copartner.dao.IContestEntryDAO;
+import com.insoul.copartner.dao.IIndustryDomainDao;
+import com.insoul.copartner.dao.IProjectDao;
+import com.insoul.copartner.dao.IProjectPhaseDao;
+import com.insoul.copartner.dao.ITeamSizeDao;
+import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.dao.criteria.ContestCriteria;
 import com.insoul.copartner.dao.criteria.ContestEntryCriteria;
 import com.insoul.copartner.domain.Contest;
 import com.insoul.copartner.domain.ContestEntry;
+import com.insoul.copartner.domain.IndustryDomain;
+import com.insoul.copartner.domain.Project;
+import com.insoul.copartner.domain.ProjectPhase;
+import com.insoul.copartner.domain.TeamSize;
+import com.insoul.copartner.domain.User;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.service.IContestService;
@@ -25,15 +35,11 @@ import com.insoul.copartner.vo.ContestEntryDetailVO;
 import com.insoul.copartner.vo.ContestEntryVO;
 import com.insoul.copartner.vo.ContestVO;
 import com.insoul.copartner.vo.Pagination;
+import com.insoul.copartner.vo.ProjectLeanVO;
+import com.insoul.copartner.vo.UserLeanVO;
 import com.insoul.copartner.vo.request.ContestEntryListRequest;
 import com.insoul.copartner.vo.request.ContestListRequest;
 
-/**
- * @author 刘飞 E-mail:liufei_it@126.com
- *
- * @version 1.0.0
- * @since 2015年10月1日 下午11:12:03
- */
 @Service
 public class ContestServiceImpl extends BaseServiceImpl implements IContestService {
 
@@ -43,16 +49,31 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
     @Resource
     private IContestEntryDAO contestEntryDAO;
 
+    @Resource
+    private IProjectDao projectDao;
+
+    @Resource
+    private IProjectPhaseDao projectPhaseDao;
+
+    @Resource
+    private IIndustryDomainDao industryDomainDao;
+
+    @Resource
+    private ITeamSizeDao teamSizeDao;
+
+    @Resource
+    private IUserDao userDao;
+
     @Override
     public Pagination<ContestVO> listContests(ContestListRequest requestData) {
         ContestCriteria criteria = new ContestCriteria();
-        criteria.setTitle(requestData.getKeyword());
         criteria.setStatus("active");
         criteria.setLimit(requestData.getLimit());
         criteria.setOffset(requestData.getOffset());
-        criteria.setFrom(
-                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
+        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
+                : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
+
         Long count = contestDAO.countContest(criteria);
         List<Contest> list = contestDAO.queryContest(criteria);
         List<ContestVO> VOs = new ArrayList<ContestVO>();
@@ -114,50 +135,81 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
     @Override
     public Pagination<ContestEntryVO> listContestEntries(ContestEntryListRequest requestData) {
         ContestEntryCriteria criteria = new ContestEntryCriteria();
-        criteria.setStatus("active");
-        criteria.setName(requestData.getKeyword());
+        criteria.setUserId(requestData.getUserId());
         criteria.setContestId(requestData.getContestId());
+        criteria.setStatus("active");
         criteria.setLimit(requestData.getLimit());
         criteria.setOffset(requestData.getOffset());
-        criteria.setFrom(
-                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
+        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
+                : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
+
         Long count = contestEntryDAO.countContestEntry(criteria);
         List<ContestEntry> list = contestEntryDAO.queryContestEntry(criteria);
-        List<ContestEntryVO> VOs = new ArrayList<ContestEntryVO>();
+
+        List<ContestEntryVO> vos = new ArrayList<ContestEntryVO>();
         if (CollectionUtils.isNotEmpty(list)) {
-            for (ContestEntry p : list) {
+            for (ContestEntry contestEntry : list) {
                 ContestEntryVO vo = new ContestEntryVO();
-                vo.setId(p.getId());
-                vo.setCoverImg(CDNUtil.getFullPath(p.getCoverImg()));
-                vo.setContact(p.getContact());
-                vo.setName(p.getName());
-                vo.setPraise(p.getPraise());
-                vo.setContestId(p.getContestId());
-                vo.setUserName(p.getUserName());
-                vo.setCreated(p.getCreated());
-                VOs.add(vo);
+                vo.setId(contestEntry.getId());
+                vo.setVotes(contestEntry.getVotes());
+
+                // TODO
+                Project project = projectDao.get(contestEntry.getProjectId());
+                ProjectLeanVO projectVO = new ProjectLeanVO();
+                projectVO.setId(project.getId());
+                projectVO.setName(project.getName());
+                projectVO.setLogo(CDNUtil.getFullPath(project.getLogo()));
+                projectVO.setLocation(project.getFullLocation());
+                IndustryDomain industryDomain = industryDomainDao.get(project.getIndustryDomainId());
+                projectVO.setIndustryDomain(industryDomain.getName());
+                TeamSize teamSize = teamSizeDao.get(project.getTeamSizeId());
+                projectVO.setTeamSize(teamSize.getName());
+                ProjectPhase projectPhase = projectPhaseDao.get(project.getProjectPhaseId());
+                projectVO.setProjectPhase(projectPhase.getName());
+                vo.setProject(projectVO);
+
+                vos.add(vo);
             }
         }
-        return new Pagination<ContestEntryVO>(VOs, count);
+
+        return new Pagination<ContestEntryVO>(vos, count);
     }
 
     @Override
     public ContestEntryDetailVO getContestEntry(Long contestEntryId) throws CException {
-        ContestEntry io = contestEntryDAO.get(contestEntryId);
-        if (null == io || !io.getStatus().equals("active")) {
+        ContestEntry contestEntry = contestEntryDAO.get(contestEntryId);
+        if (null == contestEntry || !contestEntry.getStatus().equals("active")) {
             throw CExceptionFactory.getException(CException.class, ResponseCode.CONTEST_ENTRY_NOT_EXIST);
         }
 
         ContestEntryDetailVO detail = new ContestEntryDetailVO();
-        detail.setId(io.getId());
-        detail.setCoverImg(CDNUtil.getFullPath(io.getCoverImg()));
-        detail.setContact(io.getContact());
-        detail.setName(io.getName());
-        detail.setContestId(io.getContestId());
-        detail.setPraise(io.getPraise());
-        detail.setUserName(io.getUserName());
-        detail.setIntroduction(io.getIntroduction());
+        detail.setId(contestEntry.getId());
+        detail.setVotes(contestEntry.getVotes());
+        detail.setHasBusinessRegistered(contestEntry.getHasBusinessRegistered());
+        detail.setBusinessLicense(contestEntry.getBusinessLicense());
+        detail.setBusinessLicenseImg(CDNUtil.getFullPath(contestEntry.getBusinessLicenseImg()));
+
+        Project project = projectDao.get(contestEntry.getProjectId());
+        ProjectLeanVO projectVO = new ProjectLeanVO();
+        projectVO.setId(project.getId());
+        projectVO.setName(project.getName());
+        projectVO.setLogo(CDNUtil.getFullPath(project.getLogo()));
+        projectVO.setLocation(project.getFullLocation());
+        IndustryDomain industryDomain = industryDomainDao.get(project.getIndustryDomainId());
+        projectVO.setIndustryDomain(industryDomain.getName());
+        TeamSize teamSize = teamSizeDao.get(project.getTeamSizeId());
+        projectVO.setTeamSize(teamSize.getName());
+        ProjectPhase projectPhase = projectPhaseDao.get(project.getProjectPhaseId());
+        projectVO.setProjectPhase(projectPhase.getName());
+        detail.setProject(projectVO);
+
+        User owner = userDao.get(contestEntry.getUserId());
+        UserLeanVO user = new UserLeanVO();
+        user.setUserId(owner.getId());
+        user.setName(owner.getName());
+        user.setAvatar(CDNUtil.getFullPath(owner.getAvatar()));
+        detail.setUser(user);
 
         return detail;
     }

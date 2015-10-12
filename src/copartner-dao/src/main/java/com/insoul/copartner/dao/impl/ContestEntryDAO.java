@@ -32,15 +32,10 @@ public class ContestEntryDAO extends BaseDaoImpl<ContestEntry, Long> implements 
     public Long countContestEntry(ContestEntryCriteria criteria) {
         return (Long) generateQuery(criteria, true).getSingleResult();
     }
-    
+
     private Query generateQuery(ContestEntryCriteria criteria, boolean count) {
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
-        if (StringUtils.isNotBlank(criteria.getName())) {
-            conditionStr.append(" AND name LIKE :name ");
-            params.put("name", "%" + criteria.getName() + "%");
-        }
-        
         if (null != criteria.getFrom()) {
             conditionStr.append(" AND created > :from");
             params.put("from", criteria.getFrom());
@@ -48,6 +43,10 @@ public class ContestEntryDAO extends BaseDaoImpl<ContestEntry, Long> implements 
         if (null != criteria.getTo()) {
             conditionStr.append(" AND created < :to");
             params.put("to", criteria.getTo());
+        }
+        if (criteria.getUserId() != null && criteria.getUserId() > 0L) {
+            conditionStr.append(" AND userId = :userId");
+            params.put("userId", criteria.getUserId());
         }
         if (criteria.getContestId() != null && criteria.getContestId() > 0L) {
             conditionStr.append(" AND contestId = :contestId");
