@@ -86,38 +86,38 @@
 			}
 		</style>
 	</head>
-	<body>
+	<body class="c-overlay">
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 id="title" class="mui-title c-title">需求详情</h1>
 		</header>
 		<div class="mui-content" style="padding: 50px 5px 5px 5px; ">
 				<div style="overflow: hidden;">
-					<img src="../images/blank.jpg" class="user-avatar" id="user-avatar">
+					<img src="../images/blank.jpg" class="user-avatar" id="user_avatar">
 					<div class="user-info">
-						<div class="user-name" id="user-name"></div>
-						<div class="time" id="created"></div>
+						<div class="user-name" id="user_name"></div>
+						<div class="time" id="req_created"></div>
 					</div>
 				</div>
 				<div class="mui-media-body" style="padding-left: 45px;">
-					<p class="mui-ellipsis-2" id="content"></p>
+					<p class="mui-ellipsis-2" id="req_content"></p>
 				</div>
-				<div style="padding-top: 5px; padding-left: 45px;" calss="undisplayed">
+				<div style="padding-top: 5px; padding-left: 45px;" calss="undisplayed" id="project_info">
 					<div style="overflow: hidden;">
-						<img src="../icons/100x100.png" class="user-avatar" id="project-logo">
+						<img src="../icons/100x100.png" class="user-avatar" id="project_logo">
 						<div class="user-info">
-							<div class="user-name" id="project-name"></div>
+							<div class="user-name" id="project_name"></div>
 						</div>
 					</div>
 					<div class="mui-media-body" style="padding-left: 45px;">
-						<span class="project-item" id="location-teamSize"></span>
+						<span class="project-item" id="project_location_teamSize"></span>
 						<div class="project-item">
 							<span class="mui-badge mui-badge-success">领域</span>
-							<span id="industryDomain"></span>
+							<span id="project_domain"></span>
 						</div>
 						<div class="project-item">
 							<span class="mui-badge mui-badge-primary">阶段</span>
-							<span id="projectPhase"></span>
+							<span id="project_phase"></span>
 						</div>
 					</div>
 				</div>
@@ -126,19 +126,71 @@
 	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
 	<script type="text/javascript">
-		var guid = 0,
-			userNameEl = document.getElementById('user-name'),
-			userAvatarEl = document.getElementById('user-avatar');
+        var guid = 0,
+            userNameEl = document.getElementById('user_name'),
+            userAvatarEl = document.getElementById('user_avatar'),
+            reqContentEl = document.getElementById('req_content'),
+            reqCreatedEl = document.getElementById('req_created'),
+            projectInfoEl = document.getElementById('project_info'),
+            projectLogoEl = document.getElementById('project_logo'),
+            projectNameEl = document.getElementById('project_name'),
+            projectLocationTeamSizeEl = document.getElementById('project_location_teamSize'),
+            projectDomainEl = document.getElementById('project_domain'),
+            projectPhaseEl = document.getElementById('project_phase');
 
-		mui.init({
-			swipeBack: true
-		});
-		document.addEventListener('mui.view.beforeshow', function(event) {
-			window.scrollTo(0, 0);
-			setTimeout(function() {
-				document.body.classList.remove('c-overlay');
-			}, 290);
-			mui.currentWebview.show();
-		});
-	</script>
+        mui.init({
+            swipeBack: true,
+            beforeback: function() {
+                setTimeout(function() {
+                    userNameEl.innerText = '';
+                    userAvatarEl.src = '';
+                    reqContentEl.innerText = '';
+                    reqCreatedEl.innerText = '';
+                    projectInfoEl.classList.add('undisplayed');
+                    projectLogoEl.src = '';
+                    projectNameEl.innerText = '';
+                    projectLocationTeamSizeEl.innerText = '';
+                    projectDomainEl.innerText = '';
+                    projectPhaseEl.innerText = '';
+                    document.body.classList.add('c-overlay');
+                }, 200);
+            }
+        });
+
+        document.addEventListener('mui.view.beforeshow', function(event) {
+            if (event.detail.$$type === 'back') {
+                setTimeout(function() {
+                    document.body.classList.remove('c-overlay');
+                }, 500);
+                return;
+            }
+            
+            var success = function(response) {
+                    requirement = response.body;
+
+                    userNameEl.innerText = requirement.user.name;
+                    userAvatarEl.src = requirement.user.avatar;
+                    reqContentEl.innerText = '[' + requirement.typeInfo + ']' +requirement.content;
+                    reqCreatedEl.innerText = requirement.created;
+                    if (requirement.project != null) {
+                        projectInfoEl.classList.remove('undisplayed');
+                        projectLogoEl.src = requirement.project.logo;
+                        projectNameEl.innerText = requirement.project.name;
+                        projectLocationTeamSizeEl.innerText = requirement.project.location + '，' + requirement.project.teamSize;
+                        projectDomainEl.innerText = requirement.project.industryDomain;
+                        projectPhaseEl.innerText = requirement.project.projectPhase;
+                    }
+
+                    window.scrollTo(0, 0);
+                    setTimeout(function() {
+                        document.body.classList.remove('c-overlay');
+                    }, 290);
+                    mui.currentWebview.show();
+                },
+                error = function(errorType) {
+                    mui.toast(app.ajaxErrorHandler(errorType));
+                };
+            app.getRequirement(event.detail.guid, success, error);
+        });
+    </script>
 </html>

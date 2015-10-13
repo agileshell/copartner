@@ -153,6 +153,7 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
 
         for (Requirement requirement : requirements) {
             RequirementVO requirementVO = new RequirementVO();
+            requirementVO.setId(requirement.getId());
             requirementVO.setType(requirement.getType());
             requirementVO.setUser(userIdMapUserVO.get(requirement.getUserId()));
             requirementVO.setStatus(requirement.getStatus());
@@ -200,18 +201,21 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
             throw CExceptionFactory.getException(CException.class, ResponseCode.DEMAND_NOT_EXIST);
         }
 
-        RequirementDetailVO requirementdVO = new RequirementDetailVO();
-        requirementdVO.setId(requirement.getId());
-        requirementdVO.setType(requirement.getType());
-        requirementdVO.setStatus(requirement.getStatus());
-        requirementdVO.setContent(requirement.getContent());
+        RequirementDetailVO requirementVO = new RequirementDetailVO();
+        requirementVO.setId(requirement.getId());
+        requirementVO.setType(requirement.getType());
+        requirementVO.setStatus(requirement.getStatus());
+        requirementVO.setContent(requirement.getContent());
+        requirementVO.setCommentCount(requirement.getCommentCount());
+        requirementVO.setLikeCount(requirement.getLikeCount());
+        requirementVO.setCreated(requirement.getCreated());
 
         User owner = userDao.get(requirement.getUserId());
         UserLeanVO ownerVO = new UserLeanVO();
         ownerVO.setUserId(owner.getId());
         ownerVO.setName(owner.getName());
         ownerVO.setAvatar(CDNUtil.getFullPath(owner.getAvatar()));
-        requirementdVO.setUser(ownerVO);
+        requirementVO.setUser(ownerVO);
 
         if (requirement.getProjectId() != null && requirement.getProjectId() > 0) {
             Project project = projectDao.get(requirement.getProjectId());
@@ -226,7 +230,7 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
             projectVO.setTeamSize(teamSize.getName());
             ProjectPhase projectPhase = projectPhaseDao.get(project.getProjectPhaseId());
             projectVO.setProjectPhase(projectPhase.getName());
-            requirementdVO.setProject(projectVO);
+            requirementVO.setProject(projectVO);
         }
 
         List<RequirementLikers> requirementLikers = requirementLikersDao.findByRequirementId(requirementId);
@@ -244,9 +248,9 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
 
             likers.add(userVO);
         }
-        requirementdVO.setLikers(likers);
+        requirementVO.setLikers(likers);
 
-        return requirementdVO;
+        return requirementVO;
     }
 
     @Override
