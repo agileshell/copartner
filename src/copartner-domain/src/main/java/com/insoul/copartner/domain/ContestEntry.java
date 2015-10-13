@@ -2,6 +2,8 @@ package com.insoul.copartner.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -9,6 +11,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "contest_entry", catalog = "copartner")
+@NamedQueries({
+        @NamedQuery(name = "ContestEntry.getByContestAndUser", query = "FROM ContestEntry WHERE contestId = :contestId AND userId = :userId") })
 public class ContestEntry extends BaseEntity {
 
     private static final long serialVersionUID = 1738371565002304322L;
@@ -27,6 +31,12 @@ public class ContestEntry extends BaseEntity {
 
     @Column(name = "votes", nullable = false)
     private Long votes = 0L;
+
+    @Column(name = "tutor_votes", nullable = false)
+    private Long tutorVotes = 0L; // 导师投票次数
+
+    @Column(name = "investor_votes", nullable = false)
+    private Long investorVotes = 0L;// 投资人投票次数
 
     @Column(name = "has_business_registered", nullable = false)
     private Boolean hasBusinessRegistered = false;// 是否工商注册
@@ -77,6 +87,22 @@ public class ContestEntry extends BaseEntity {
         this.votes = votes;
     }
 
+    public Long getTutorVotes() {
+        return tutorVotes;
+    }
+
+    public void setTutorVotes(Long tutorVotes) {
+        this.tutorVotes = tutorVotes;
+    }
+
+    public Long getInvestorVotes() {
+        return investorVotes;
+    }
+
+    public void setInvestorVotes(Long investorVotes) {
+        this.investorVotes = investorVotes;
+    }
+
     public Boolean getHasBusinessRegistered() {
         return hasBusinessRegistered;
     }
@@ -109,8 +135,10 @@ public class ContestEntry extends BaseEntity {
         result = prime * result + ((businessLicenseImg == null) ? 0 : businessLicenseImg.hashCode());
         result = prime * result + ((contestId == null) ? 0 : contestId.hashCode());
         result = prime * result + ((hasBusinessRegistered == null) ? 0 : hasBusinessRegistered.hashCode());
+        result = prime * result + ((investorVotes == null) ? 0 : investorVotes.hashCode());
         result = prime * result + ((projectId == null) ? 0 : projectId.hashCode());
         result = prime * result + ((status == null) ? 0 : status.hashCode());
+        result = prime * result + ((tutorVotes == null) ? 0 : tutorVotes.hashCode());
         result = prime * result + ((userId == null) ? 0 : userId.hashCode());
         result = prime * result + ((votes == null) ? 0 : votes.hashCode());
         return result;
@@ -145,6 +173,11 @@ public class ContestEntry extends BaseEntity {
                 return false;
         } else if (!hasBusinessRegistered.equals(other.hasBusinessRegistered))
             return false;
+        if (investorVotes == null) {
+            if (other.investorVotes != null)
+                return false;
+        } else if (!investorVotes.equals(other.investorVotes))
+            return false;
         if (projectId == null) {
             if (other.projectId != null)
                 return false;
@@ -154,6 +187,11 @@ public class ContestEntry extends BaseEntity {
             if (other.status != null)
                 return false;
         } else if (!status.equals(other.status))
+            return false;
+        if (tutorVotes == null) {
+            if (other.tutorVotes != null)
+                return false;
+        } else if (!tutorVotes.equals(other.tutorVotes))
             return false;
         if (userId == null) {
             if (other.userId != null)

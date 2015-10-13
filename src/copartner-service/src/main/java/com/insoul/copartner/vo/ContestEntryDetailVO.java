@@ -8,17 +8,23 @@ public class ContestEntryDetailVO implements Serializable {
 
     private Long id;
 
-    private ProjectLeanVO project;
+    private ProjectDetailVO project;
 
     private UserLeanVO user;
 
-    private Long votes;
+    private long votes;
+
+    private long tutorVotes;
+
+    private long investorVotes;
 
     private Boolean hasBusinessRegistered = false;
 
     private String businessLicense;
 
     private String businessLicenseImg;
+
+    private boolean isVote;
 
     public Long getId() {
         return id;
@@ -28,11 +34,11 @@ public class ContestEntryDetailVO implements Serializable {
         this.id = id;
     }
 
-    public ProjectLeanVO getProject() {
+    public ProjectDetailVO getProject() {
         return project;
     }
 
-    public void setProject(ProjectLeanVO project) {
+    public void setProject(ProjectDetailVO project) {
         this.project = project;
     }
 
@@ -44,12 +50,28 @@ public class ContestEntryDetailVO implements Serializable {
         this.user = user;
     }
 
-    public Long getVotes() {
+    public long getVotes() {
         return votes;
     }
 
-    public void setVotes(Long votes) {
+    public void setVotes(long votes) {
         this.votes = votes;
+    }
+
+    public long getTutorVotes() {
+        return tutorVotes;
+    }
+
+    public void setTutorVotes(long tutorVotes) {
+        this.tutorVotes = tutorVotes;
+    }
+
+    public long getInvestorVotes() {
+        return investorVotes;
+    }
+
+    public void setInvestorVotes(long investorVotes) {
+        this.investorVotes = investorVotes;
     }
 
     public Boolean getHasBusinessRegistered() {
@@ -74,6 +96,14 @@ public class ContestEntryDetailVO implements Serializable {
 
     public void setBusinessLicenseImg(String businessLicenseImg) {
         this.businessLicenseImg = businessLicenseImg;
+    }
+
+    public boolean isVote() {
+        return isVote;
+    }
+
+    public void setVote(boolean isVote) {
+        this.isVote = isVote;
     }
 
 }

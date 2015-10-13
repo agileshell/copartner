@@ -8,10 +8,12 @@ import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.dao.IContestDAO;
 import com.insoul.copartner.dao.IContestEntryDAO;
+import com.insoul.copartner.dao.IContestEntryVoteDao;
 import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.IProjectDao;
 import com.insoul.copartner.dao.IProjectPhaseDao;
@@ -21,6 +23,7 @@ import com.insoul.copartner.dao.criteria.ContestCriteria;
 import com.insoul.copartner.dao.criteria.ContestEntryCriteria;
 import com.insoul.copartner.domain.Contest;
 import com.insoul.copartner.domain.ContestEntry;
+import com.insoul.copartner.domain.ContestEntryVote;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Project;
 import com.insoul.copartner.domain.ProjectPhase;
@@ -32,13 +35,16 @@ import com.insoul.copartner.service.IContestService;
 import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.vo.ContestDetailVO;
 import com.insoul.copartner.vo.ContestEntryDetailVO;
+import com.insoul.copartner.vo.ContestEntryLeanVO;
 import com.insoul.copartner.vo.ContestEntryVO;
 import com.insoul.copartner.vo.ContestVO;
 import com.insoul.copartner.vo.Pagination;
+import com.insoul.copartner.vo.ProjectDetailVO;
 import com.insoul.copartner.vo.ProjectLeanVO;
 import com.insoul.copartner.vo.UserLeanVO;
 import com.insoul.copartner.vo.request.ContestEntryListRequest;
 import com.insoul.copartner.vo.request.ContestListRequest;
+import com.insoul.copartner.vo.request.ContestRegisterRequest;
 
 @Service
 public class ContestServiceImpl extends BaseServiceImpl implements IContestService {
@@ -63,6 +69,9 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
 
     @Resource
     private IUserDao userDao;
+
+    @Resource
+    private IContestEntryVoteDao contestEntryVoteDao;
 
     @Override
     public Pagination<ContestVO> listContests(ContestListRequest requestData) {
@@ -125,6 +134,71 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
             detail.setIntroduction(io.getIntroduction());
             detail.setTitle(io.getTitle());
             detail.setRegistration(io.getRegistration());
+            detail.setRegister(isRegister(io.getId()));
+
+            List<ContestEntryLeanVO> tutorVoteRanking = new ArrayList<ContestEntryLeanVO>();
+            List<ContestEntry> contestEntries = contestEntryDAO.tutorVoteRanking(io.getId(), 10);
+            for (ContestEntry contestEntry : contestEntries) {
+                ContestEntryLeanVO cl = new ContestEntryLeanVO();
+                cl.setId(contestEntry.getId());
+                cl.setVotes(contestEntry.getVotes());
+
+                Project project = projectDao.get(contestEntry.getProjectId());
+                ProjectLeanVO projectVO = new ProjectLeanVO();
+                projectVO.setId(project.getId());
+                projectVO.setName(project.getName());
+                projectVO.setLogo(CDNUtil.getFullPath(project.getLogo()));
+                projectVO.setLocation(project.getFullLocation());
+                IndustryDomain industryDomain = industryDomainDao.get(project.getIndustryDomainId());
+                projectVO.setIndustryDomain(industryDomain.getName());
+                TeamSize teamSize = teamSizeDao.get(project.getTeamSizeId());
+                projectVO.setTeamSize(teamSize.getName());
+                ProjectPhase projectPhase = projectPhaseDao.get(project.getProjectPhaseId());
+                projectVO.setProjectPhase(projectPhase.getName());
+                cl.setProject(projectVO);
+
+                User owner = userDao.get(contestEntry.getUserId());
+                UserLeanVO user = new UserLeanVO();
+                user.setUserId(owner.getId());
+                user.setName(owner.getName());
+                user.setAvatar(CDNUtil.getFullPath(owner.getAvatar()));
+                cl.setUser(user);
+
+                tutorVoteRanking.add(cl);
+            }
+            detail.setTutorVoteRanking(tutorVoteRanking);
+
+            List<ContestEntryLeanVO> investorVoteRanking = new ArrayList<ContestEntryLeanVO>();
+            List<ContestEntry> entries = contestEntryDAO.investorVoteRanking(io.getId(), 10);
+            for (ContestEntry contestEntry : entries) {
+                ContestEntryLeanVO cl = new ContestEntryLeanVO();
+                cl.setId(contestEntry.getId());
+                cl.setVotes(contestEntry.getVotes());
+
+                Project project = projectDao.get(contestEntry.getProjectId());
+                ProjectLeanVO projectVO = new ProjectLeanVO();
+                projectVO.setId(project.getId());
+                projectVO.setName(project.getName());
+                projectVO.setLogo(CDNUtil.getFullPath(project.getLogo()));
+                projectVO.setLocation(project.getFullLocation());
+                IndustryDomain industryDomain = industryDomainDao.get(project.getIndustryDomainId());
+                projectVO.setIndustryDomain(industryDomain.getName());
+                TeamSize teamSize = teamSizeDao.get(project.getTeamSizeId());
+                projectVO.setTeamSize(teamSize.getName());
+                ProjectPhase projectPhase = projectPhaseDao.get(project.getProjectPhaseId());
+                projectVO.setProjectPhase(projectPhase.getName());
+                cl.setProject(projectVO);
+
+                User owner = userDao.get(contestEntry.getUserId());
+                UserLeanVO user = new UserLeanVO();
+                user.setUserId(owner.getId());
+                user.setName(owner.getName());
+                user.setAvatar(CDNUtil.getFullPath(owner.getAvatar()));
+                cl.setUser(user);
+
+                investorVoteRanking.add(cl);
+            }
+            detail.setInvestorVoteRanking(investorVoteRanking);
         }
 
         return detail;
@@ -184,12 +258,15 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
         ContestEntryDetailVO detail = new ContestEntryDetailVO();
         detail.setId(contestEntry.getId());
         detail.setVotes(contestEntry.getVotes());
+        detail.setTutorVotes(contestEntry.getTutorVotes());
+        detail.setInvestorVotes(contestEntry.getInvestorVotes());
         detail.setHasBusinessRegistered(contestEntry.getHasBusinessRegistered());
         detail.setBusinessLicense(contestEntry.getBusinessLicense());
         detail.setBusinessLicenseImg(CDNUtil.getFullPath(contestEntry.getBusinessLicenseImg()));
+        detail.setVote(isVote(contestEntry.getId()));
 
         Project project = projectDao.get(contestEntry.getProjectId());
-        ProjectLeanVO projectVO = new ProjectLeanVO();
+        ProjectDetailVO projectVO = new ProjectDetailVO();
         projectVO.setId(project.getId());
         projectVO.setName(project.getName());
         projectVO.setLogo(CDNUtil.getFullPath(project.getLogo()));
@@ -200,6 +277,8 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
         projectVO.setTeamSize(teamSize.getName());
         ProjectPhase projectPhase = projectPhaseDao.get(project.getProjectPhaseId());
         projectVO.setProjectPhase(projectPhase.getName());
+        projectVO.setAdvantage(project.getAdvantage());
+        projectVO.setContent(project.getContent());
         detail.setProject(projectVO);
 
         User owner = userDao.get(contestEntry.getUserId());
@@ -210,5 +289,82 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
         detail.setUser(user);
 
         return detail;
+    }
+
+    @Override
+    public boolean isRegister(long contestId) {
+        long currentUserId = getUserId();
+        ContestEntry contestEntry = contestEntryDAO.getByContestAndUser(contestId, currentUserId);
+
+        return (null != contestEntry);
+    }
+
+    @Override
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public void register(long contestId, ContestRegisterRequest requestData) {
+        Contest contest = contestDAO.get(contestId);
+        if (null == contest) {
+            return;
+        }
+
+        long currentUserId = getUserId();
+        ContestEntry contestEntry = contestEntryDAO.getByContestAndUser(contestId, currentUserId);
+        if (null == contestEntry) {
+            contestEntry = new ContestEntry();
+            contestEntry.setContestId(contestId);
+            contestEntry.setProjectId(requestData.getProjectId());
+            contestEntry.setUserId(currentUserId);
+            contestEntry.setHasBusinessRegistered(requestData.getHasBusinessRegistered());
+            contestEntry.setBusinessLicense(requestData.getBusinessLicense());
+            contestEntry.setBusinessLicenseImg(requestData.getBusinessLicenseImg());
+            contestEntry.setCreated(new Date());
+
+            contestEntryDAO.save(contestEntry);
+        }
+    }
+
+    @Override
+    public boolean isVote(long contestEntryId) {
+        long currentUserId = getUserId();
+        ContestEntryVote contestEntryVote = contestEntryVoteDao.getByContestEntryAndVotor(contestEntryId,
+                currentUserId);
+
+        return (null != contestEntryVote);
+    }
+
+    @Override
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public void vote(long contestEntryId) {
+        ContestEntry contestEntry = contestEntryDAO.get(contestEntryId);
+        if (null == contestEntry) {
+            return;
+        }
+
+        long currentUserId = getUserId();
+        User user = userDao.get(currentUserId);
+        long roleId = user.getRoleId();
+        if (roleId == 1) {
+            return;
+        }
+
+        ContestEntryVote contestEntryVote = contestEntryVoteDao.getByContestEntryAndVotor(contestEntryId,
+                currentUserId);
+        if (null == contestEntryVote) {
+            contestEntryVote = new ContestEntryVote();
+            contestEntryVote.setContestEntryId(contestEntryId);
+            contestEntryVote.setVotorId(currentUserId);
+            contestEntryVote.setCreated(new Date());
+
+            contestEntryVoteDao.save(contestEntryVote);
+
+            contestEntry.setVotes(contestEntry.getVotes() + 1);
+            if (roleId == 2) {
+                contestEntry.setInvestorVotes(contestEntry.getInvestorVotes() + 1);
+            } else if (roleId == 3) {
+                contestEntry.setTutorVotes(contestEntry.getTutorVotes() + 1);
+            }
+            contestEntry.setUpdated(new Date());
+        }
+
     }
 }

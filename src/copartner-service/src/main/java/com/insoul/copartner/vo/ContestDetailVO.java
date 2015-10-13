@@ -1,19 +1,14 @@
 package com.insoul.copartner.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
-/**
- * @author 刘飞 E-mail:liufei_it@126.com
- *
- * @version 1.0.0
- * @since 2015年10月1日 下午11:09:00
- */
 public class ContestDetailVO implements Serializable {
 
     private static final long serialVersionUID = -6325269448027396783L;
 
     private Long id;
-    
+
     private String title;// 大赛标题
 
     private String introduction;// 大赛简介
@@ -21,6 +16,12 @@ public class ContestDetailVO implements Serializable {
     private String coverImg;// 封皮
 
     private String registration;// 报名信息
+
+    private boolean isRegister;// 是否报名
+
+    private List<ContestEntryLeanVO> tutorVoteRanking;
+
+    private List<ContestEntryLeanVO> investorVoteRanking;
 
     public Long getId() {
         return id;
@@ -61,4 +62,29 @@ public class ContestDetailVO implements Serializable {
     public void setRegistration(String registration) {
         this.registration = registration;
     }
+
+    public boolean isRegister() {
+        return isRegister;
+    }
+
+    public void setRegister(boolean isRegister) {
+        this.isRegister = isRegister;
+    }
+
+    public List<ContestEntryLeanVO> getTutorVoteRanking() {
+        return tutorVoteRanking;
+    }
+
+    public void setTutorVoteRanking(List<ContestEntryLeanVO> tutorVoteRanking) {
+        this.tutorVoteRanking = tutorVoteRanking;
+    }
+
+    public List<ContestEntryLeanVO> getInvestorVoteRanking() {
+        return investorVoteRanking;
+    }
+
+    public void setInvestorVoteRanking(List<ContestEntryLeanVO> investorVoteRanking) {
+        this.investorVoteRanking = investorVoteRanking;
+    }
+
 }

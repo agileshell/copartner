@@ -22,6 +22,7 @@ import com.insoul.copartner.service.IContestService;
 import com.insoul.copartner.util.ResponseUtil;
 import com.insoul.copartner.vo.request.ContestEntryListRequest;
 import com.insoul.copartner.vo.request.ContestListRequest;
+import com.insoul.copartner.vo.request.ContestRegisterRequest;
 
 @Controller
 public class ContestController extends BaseController {
@@ -65,5 +66,26 @@ public class ContestController extends BaseController {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getContestEntry(@PathVariable Long contestEntryId) throws CException {
         return ResponseUtil.jsonSucceed(contestService.getContestEntry(contestEntryId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/contest/{contestId}/register", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> register(@PathVariable Long contestId,
+            @Valid ContestRegisterRequest requestData, BindingResult result) throws CException {
+        if (result.hasErrors()) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+
+        contestService.register(contestId, requestData);
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/contestEntry/{contestEntryId}/vote", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> vote(@PathVariable Long contestEntryId) throws CException {
+        contestService.vote(contestEntryId);
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
     }
 }

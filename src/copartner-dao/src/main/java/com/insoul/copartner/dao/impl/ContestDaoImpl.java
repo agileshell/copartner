@@ -9,33 +9,42 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
-import com.insoul.copartner.dao.IContestEntryDAO;
-import com.insoul.copartner.dao.criteria.ContestEntryCriteria;
-import com.insoul.copartner.domain.ContestEntry;
+import com.insoul.copartner.dao.IContestDAO;
+import com.insoul.copartner.dao.criteria.ContestCriteria;
+import com.insoul.copartner.domain.Contest;
 
-/**
- * @author 刘飞 E-mail:liufei_it@126.com
- *
- * @version 1.0.0
- * @since 2015年9月29日 上午11:32:11
- */
 @Repository
-public class ContestEntryDAO extends BaseDaoImpl<ContestEntry, Long> implements IContestEntryDAO {
+public class ContestDaoImpl extends BaseDaoImpl<Contest, Long>implements IContestDAO {
+
+    @Override
+    public String getContestName(Long id) {
+        if (id == null || id <= 0L) {
+            return "";
+        }
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("id", id);
+        return (String) createNativeQuery("SELECT title FROM contest WHERE id = :id", args).getSingleResult();
+    }
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<ContestEntry> queryContestEntry(ContestEntryCriteria criteria) {
+    public List<Contest> queryContest(ContestCriteria criteria) {
         return generateQuery(criteria, false).getResultList();
     }
 
     @Override
-    public Long countContestEntry(ContestEntryCriteria criteria) {
+    public Long countContest(ContestCriteria criteria) {
         return (Long) generateQuery(criteria, true).getSingleResult();
     }
 
-    private Query generateQuery(ContestEntryCriteria criteria, boolean count) {
+    private Query generateQuery(ContestCriteria criteria, boolean count) {
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
+        if (StringUtils.isNotBlank(criteria.getTitle())) {
+            conditionStr.append(" AND title LIKE :title ");
+            params.put("title", "%" + criteria.getTitle() + "%");
+        }
+
         if (null != criteria.getFrom()) {
             conditionStr.append(" AND created > :from");
             params.put("from", criteria.getFrom());
@@ -43,14 +52,6 @@ public class ContestEntryDAO extends BaseDaoImpl<ContestEntry, Long> implements 
         if (null != criteria.getTo()) {
             conditionStr.append(" AND created < :to");
             params.put("to", criteria.getTo());
-        }
-        if (criteria.getUserId() != null && criteria.getUserId() > 0L) {
-            conditionStr.append(" AND userId = :userId");
-            params.put("userId", criteria.getUserId());
-        }
-        if (criteria.getContestId() != null && criteria.getContestId() > 0L) {
-            conditionStr.append(" AND contestId = :contestId");
-            params.put("contestId", criteria.getContestId());
         }
         if (StringUtils.isNotBlank(criteria.getStatus())) {
             conditionStr.append(" AND status = :status");
@@ -60,10 +61,10 @@ public class ContestEntryDAO extends BaseDaoImpl<ContestEntry, Long> implements 
         Query query = null;
         StringBuilder hql = new StringBuilder();
         if (count) {
-            hql.append("SELECT COUNT(*) FROM ContestEntry WHERE 1 = 1 ").append(conditionStr);
+            hql.append("SELECT COUNT(*) FROM Contest WHERE 1 = 1 ").append(conditionStr);
             query = createQuery(hql.toString(), params);
         } else {
-            hql.append("FROM ContestEntry WHERE 1=1").append(conditionStr).append(" ORDER BY created DESC");
+            hql.append("FROM Contest WHERE 1=1").append(conditionStr).append(" ORDER BY created DESC");
             query = createQuery(hql.toString(), params);
             if ((criteria.getLimit() != null) && (criteria.getLimit() != 0)) {
                 query.setMaxResults(criteria.getLimit());
