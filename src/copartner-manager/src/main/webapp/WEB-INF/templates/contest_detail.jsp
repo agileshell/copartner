@@ -47,10 +47,6 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-lg-2 control-label" for="rules">大赛规则:</label>
-										<div class="col-lg-10">${contest.rules}</div>
-									</div>
-									<div class="form-group">
 										<label class="col-lg-2 control-label" for="registration">报名信息:</label>
 										<div class="col-lg-10">${contest.registration}</div>
 									</div>

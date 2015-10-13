@@ -32,7 +32,6 @@
 					                      <ul class="nav nav-tabs">
 					                        <li class="active"><a href="#bash_info" data-toggle="tab">基本信息</a></li>
 					                        <li><a href="#extend_info" data-toggle="tab">图文信息</a></li>
-					                        <li><a href="#registration_info" data-toggle="tab">报名信息</a></li>
 					                      </ul>
 					                      <div class="tab-content" style="padding-bottom: 9px; border-bottom: 1px solid #ddd;">
 					                        <div class="tab-pane active" id="bash_info">
@@ -66,14 +65,6 @@
 														<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
 													</div>
 												</div>
-												<div class="form-group">
-													<label class="col-lg-2 control-label" for="rules">大赛规则:</label>
-													<div class="col-lg-10">
-														<textarea name="rules" id="rules" class="form-control" rows="3" placeholder="大赛规则"></textarea>
-													</div>
-												</div>
-					                        </div>
-					                        <div class="tab-pane" id="registration_info">
 					                        	<div class="form-group">
 													<label class="col-lg-2 control-label" for="registration">报名信息:</label>
 													<div class="col-lg-10">
@@ -109,30 +100,6 @@
 		$(document).ready(function() {
 			KindEditor.ready(function(K) {
 		        window.editor = K.create('#introduction', {
-		            langType : 'zh_CN',
-		            uploadJson : '/editor/file_upload',
-		            items : [
-		                     'source', '|', 'undo', 'redo', '|', 'preview', 'template', 'code', 'cut', 'copy', 'paste',
-		                     'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-		                     'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-		                     'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
-		                     'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-		                     'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
-		                     'flash', 'media', 'insertfile', 'table', 'hr', 'baidumap', 'pagebreak',
-		                     'anchor', 'link', 'unlink'
-		            ],
-		            minHeight : 300,
-		            width: "100%",
-		            minWidth: 300,
-		            autoHeightMode : true,
-		            afterCreate : function() {
-		                this.loadPlugin('autoheight');
-		            },
-		            afterBlur: function(){this.sync();}
-		        });
-		    });
-		    KindEditor.ready(function(K) {
-		        window.editor = K.create('#rules', {
 		            langType : 'zh_CN',
 		            uploadJson : '/editor/file_upload',
 		            items : [
