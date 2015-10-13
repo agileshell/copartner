@@ -58,13 +58,13 @@ public class ContestEntryController extends WebBase {
             }
             mv.addObject("query", query);
             mv.addObject("contestEntryList", voList);
-            mv.addObject("success", CollectionUtils.isNotEmpty(list));
+            mv.addObject("success", true);
             mv.addObject("req", request);
             return mv;
         }
         mv.addObject("query", query);
         mv.addObject("contestEntryList", voList);
-        mv.addObject("success", CollectionUtils.isNotEmpty(list));
+        mv.addObject("success", false);
         mv.addObject("req", request);
         return mv;
     }

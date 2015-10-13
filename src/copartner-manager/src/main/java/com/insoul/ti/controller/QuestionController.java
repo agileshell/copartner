@@ -150,11 +150,26 @@ public class QuestionController extends WebBase {
             answerVO.setContent(answer.getContent());
             answerVO.setCreated(answer.getCreated());
             answerVO.setStatus(answer.getStatus());
+            
             if (answer.getUserId().equals(tutorId)) {
                 answerVO.setAnsweror(tutor);
             } else if (answer.getUserId().equals(questionerId)) {
                 answerVO.setAnsweror(questioner);
+            } else {
+                try {
+                    UserLeanVO ar = new UserLeanVO();
+                    Long arId = answer.getUserId();
+                    User aru = userDAO.get(arId);
+                    if (null != aru) {
+                        ar.setUserId(arId);
+                        ar.setName(aru.getName());
+                        ar.setAvatar(CDNUtil.getFullPath(aru.getAvatar()));
+                    }
+                    answerVO.setAnsweror(ar);
+                } catch (Exception e) {
+                }
             }
+            
             answerVOS.add(answerVO);
         }
         questionVO.setAnswers0(answerVOS);

@@ -43,6 +43,7 @@ import com.insoul.copartner.dao.IProjectDao;
 import com.insoul.copartner.dao.IProjectPhaseDao;
 import com.insoul.copartner.dao.IQuestionCategoryDao;
 import com.insoul.copartner.dao.IQuestionDao;
+import com.insoul.copartner.dao.IRequirementDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IStartupStatusDao;
 import com.insoul.copartner.dao.ISystemSettingDao;
@@ -149,6 +150,9 @@ public class WebBase implements ServletContextAware {
 
     @Resource
     protected IContestEntryDAO contestEntryDAO;
+
+    @Resource
+    protected IRequirementDao requireDAO;
     
     protected static final String COMMONS_RESOURCES_MANAGER_VIEW_NAME = "resources_manager";
     

@@ -60,7 +60,7 @@
 										<div class="form-group">
 											<label class="col-lg-2 control-label">导师:</label>
 											<div class="col-lg-10">
-												<a href="/user/detail/${tutor.questioner.userId}">${tutor.questioner.name}</a>
+												<a href="/user/detail/${question.tutor.questioner.userId}">${question.tutor.questioner.name}</a>
 											</div>
 										</div>
 										<hr />
@@ -74,7 +74,7 @@
 												</tr>
 											</thead>
 											<tbody>
-												<c:forEach var="c" items="${tutor.answers0}" varStatus="status">
+												<c:forEach var="c" items="${question.answers0}" varStatus="status">
 													<tr>
 														<td>
 														<a href="/user/detail/${c.answeror.userId}">
