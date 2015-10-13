@@ -20,7 +20,17 @@ import com.insoul.copartner.domain.Contest;
  * @since 2015年9月29日 上午11:32:11
  */
 @Repository
-public class ContestDAO extends BaseDaoImpl<Contest, Long>implements IContestDAO {
+public class DefaultContestDAO extends BaseDaoImpl<Contest, Long>implements IContestDAO {
+    
+    @Override
+    public String getContestName(Long id) {
+        if (id == null || id <= 0L) {
+            return "";
+        }
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("id", id);
+        return (String) createNativeQuery("SELECT title FROM contest WHERE id = :id", args).getSingleResult();
+    }
 
     @SuppressWarnings("unchecked")
     @Override

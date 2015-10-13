@@ -20,6 +20,16 @@ import com.insoul.copartner.domain.User;
 @Repository
 public class UserDaoImpl extends BaseDaoImpl<User, Long> implements IUserDao {
 
+    @Override
+    public String getUserName(Long id) {
+        if (id == null || id <= 0L) {
+            return "";
+        }
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("id", id);
+        return (String) createNativeQuery("SELECT name FROM user WHERE id = :id", args).getSingleResult();
+    }
+
     public User getUserByEmail(String email) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("email", email);

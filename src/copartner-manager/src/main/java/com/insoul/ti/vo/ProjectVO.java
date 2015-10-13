@@ -37,15 +37,6 @@ public class ProjectVO extends BaseVO {
     private String contactPerson;// 联系人
 
     private String contact;// 联系方式
-    private String businessPlan;// 商业计划书
-
-	public String getBusinessPlan() {
-        return businessPlan;
-    }
-
-    public void setBusinessPlan(String businessPlan) {
-        this.businessPlan = businessPlan;
-    }
 
     public Long getUserId() {
 		return userId;

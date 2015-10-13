@@ -39,12 +39,6 @@
 </div>
 
 <div class="form-group">
-	<label class="col-lg-2 control-label" >商业计划书:</label>
-	<div class="col-lg-10">
-		<a href="${cdnDomain}${project.businessPlan}" target="_blank">查看商业计划书</a></div>
-</div>
-
-<div class="form-group">
 	<label class="col-lg-2 control-label" >项目发布者:</label>
 	<div class="col-lg-10"><a href="/user/detail/${project.userId}">${project.userName}</a></div>
 </div>

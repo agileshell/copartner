@@ -17,6 +17,16 @@ import com.insoul.copartner.domain.Project;
 @Repository
 public class ProjectDaoImpl extends BaseDaoImpl<Project, Long> implements IProjectDao {
 
+    @Override
+    public String getProjectName(Long id) {
+        if (id == null || id <= 0L) {
+            return "";
+        }
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("id", id);
+        return (String) createNativeQuery("SELECT name FROM project WHERE id = :id", args).getSingleResult();
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public List<Project> queryProject(ProjectCriteria criteria) {

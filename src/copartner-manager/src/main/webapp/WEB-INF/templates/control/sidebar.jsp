@@ -48,7 +48,16 @@
         <li>
 			<a <c:if test="${viewname == 'course_list'}"> class="open" </c:if> href="/course/list"><i class="icon-inbox"></i>充电站</a>
         </li>
+        
+        <li>
+			<a <c:if test="${viewname == 'project_list'}"> class="open" </c:if> href="/project/list"><i class="icon-bookmark"></i>项目管理</a>
+        </li>
+        
+        <li>
+			<a <c:if test="${viewname == 'comments_list'}"> class="open" </c:if> href="/comments/list"><i class="icon-comments"></i>评论管理</a>
+        </li>
 		
+		<!--
 		<li class="has_sub">
 			<a href="#" <c:if test="${viewname == 'project_list' || viewname == 'demand_list' || viewname == 'financing_list' || viewname == 'comments_list'}"> class="subdrop" </c:if>>
 				<i class="icon-star"></i>融资融智<span class="pull-right"><i class="icon-chevron-right"></i></span>
@@ -68,6 +77,7 @@
 		        </li>
 			</ul>
         </li>
+		-->
 		
 		<li class="has_sub">
 			<a href="#" <c:if test="${viewname == 'resources_manager'}"> class="subdrop" </c:if>>

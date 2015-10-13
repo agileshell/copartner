@@ -80,16 +80,6 @@
 </div>
 
 <div class="form-group">
-	<label class="col-lg-2 control-label" for="businessPlan">商业计划书:</label>
-	<div class="col-lg-6">
-		<input name="businessPlan" id="businessPlan" type="file" class="form-control" placeholder="商业计划书"></input>
-	</div>
-	<div class="col-lg-4">
-		<a href="${cdnDomain}${project.businessPlan}" target="_blank">查看商业计划书</a>
-	</div>
-</div>
-
-<div class="form-group">
 <label class="col-lg-2 control-label" for="advantage">优势:</label>
 <div class="col-lg-10">
 	<textarea name="advantage" id="advantage" class="form-control" rows="3" placeholder="优势">${project.advantage}</textarea>

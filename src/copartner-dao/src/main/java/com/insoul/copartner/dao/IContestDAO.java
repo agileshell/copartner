@@ -8,4 +8,6 @@ import com.insoul.copartner.domain.Contest;
 public interface IContestDAO extends IBaseDao<Contest, Long> {
     List<Contest> queryContest(ContestCriteria criteria);
     Long countContest(ContestCriteria criteria);
+    
+    String getContestName(Long id);
 }
