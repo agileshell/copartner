@@ -74,8 +74,8 @@
 						"redirect_uri": "http://123.57.55.59"
 					},
 					"weixin": {
-						"appid": "weixin_appid",
-						"appsecret": "weixin_sig"
+						"appid": "wxce184513b8be6877",
+						"appsecret": "f254c146b9032059373afc1fc7cb6141"
 					}
 				},
 				"share": {
@@ -90,8 +90,8 @@
 						"description": "可选，新浪微博分享"
 					},
 					"weixin": {
-						"appid": "weixin_appid",
-						"appsecret": "weixin_sig",
+						"appid": "wxce184513b8be6877",
+						"appsecret": "f254c146b9032059373afc1fc7cb6141",
 						"description": "可选，微信分享"
 					}
 				}
