@@ -70,8 +70,8 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
         criteria.setStatus("active");
         criteria.setLimit(requestData.getLimit());
         criteria.setOffset(requestData.getOffset());
-        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
-                : null);
+        criteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
 
         Long count = contestDAO.countContest(criteria);
@@ -104,7 +104,6 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
         detail.setCoverImg(CDNUtil.getFullPath(io.getCoverImg()));
         detail.setIntroduction(io.getIntroduction());
         detail.setTitle(io.getTitle());
-        detail.setRules(io.getRules());
         detail.setRegistration(io.getRegistration());
 
         return detail;
@@ -125,7 +124,6 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
             detail.setCoverImg(CDNUtil.getFullPath(io.getCoverImg()));
             detail.setIntroduction(io.getIntroduction());
             detail.setTitle(io.getTitle());
-            detail.setRules(io.getRules());
             detail.setRegistration(io.getRegistration());
         }
 
@@ -140,8 +138,8 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
         criteria.setStatus("active");
         criteria.setLimit(requestData.getLimit());
         criteria.setOffset(requestData.getOffset());
-        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
-                : null);
+        criteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
 
         Long count = contestEntryDAO.countContestEntry(criteria);

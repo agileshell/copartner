@@ -128,7 +128,6 @@ public class ContestController extends WebBase {
 		contest.setStatus(request.getStatus());
 		contest.setTitle(request.getTitle());
 		contest.setIntroduction(request.getIntroduction());
-        contest.setRules(request.getRules());
         contest.setRegistration(request.getRegistration());
 		contestDAO.update(contest);
 		return new ModelAndView("redirect:/contest/detail/" + contestId);
@@ -158,7 +157,6 @@ public class ContestController extends WebBase {
         contest.setStatus(request.getStatus());
         contest.setTitle(request.getTitle());
         contest.setIntroduction(request.getIntroduction());
-        contest.setRules(request.getRules());
         contest.setRegistration(request.getRegistration());
 		contestDAO.save(contest);
 		return new ModelAndView("redirect:/contest/detail/" + contest.getId());

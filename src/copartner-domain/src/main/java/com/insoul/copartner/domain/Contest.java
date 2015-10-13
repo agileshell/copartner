@@ -25,10 +25,6 @@ public class Contest extends BaseEntity {
     private String coverImg;// 封皮
 
     @Lob
-    @Column(name = "rules", nullable = false, columnDefinition = "TEXT")
-    private String rules;// 大赛规则
-
-    @Lob
     @Column(name = "registration", nullable = false, columnDefinition = "TEXT")
     private String registration;// 报名信息
 
@@ -59,14 +55,6 @@ public class Contest extends BaseEntity {
         this.coverImg = coverImg;
     }
 
-    public String getRules() {
-        return rules;
-    }
-
-    public void setRules(String rules) {
-        this.rules = rules;
-    }
-
     public String getRegistration() {
         return registration;
     }
@@ -90,7 +78,6 @@ public class Contest extends BaseEntity {
         result = prime * result + ((coverImg == null) ? 0 : coverImg.hashCode());
         result = prime * result + ((introduction == null) ? 0 : introduction.hashCode());
         result = prime * result + ((registration == null) ? 0 : registration.hashCode());
-        result = prime * result + ((rules == null) ? 0 : rules.hashCode());
         result = prime * result + ((status == null) ? 0 : status.hashCode());
         result = prime * result + ((title == null) ? 0 : title.hashCode());
         return result;
@@ -120,11 +107,6 @@ public class Contest extends BaseEntity {
                 return false;
         } else if (!registration.equals(other.registration))
             return false;
-        if (rules == null) {
-            if (other.rules != null)
-                return false;
-        } else if (!rules.equals(other.rules))
-            return false;
         if (status == null) {
             if (other.status != null)
                 return false;
@@ -137,4 +119,5 @@ public class Contest extends BaseEntity {
             return false;
         return true;
     }
+
 }

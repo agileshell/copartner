@@ -20,8 +20,6 @@ public class ContestDetailVO implements Serializable {
 
     private String coverImg;// 封皮
 
-    private String rules;// 大赛规则
-
     private String registration;// 报名信息
 
     public Long getId() {
@@ -54,14 +52,6 @@ public class ContestDetailVO implements Serializable {
 
     public void setCoverImg(String coverImg) {
         this.coverImg = coverImg;
-    }
-
-    public String getRules() {
-        return rules;
-    }
-
-    public void setRules(String rules) {
-        this.rules = rules;
     }
 
     public String getRegistration() {

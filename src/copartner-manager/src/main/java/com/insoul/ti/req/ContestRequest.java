@@ -19,8 +19,6 @@ public class ContestRequest {
 
     private MultipartFile coverImg;// 封皮
 
-    private String rules;// 大赛规则
-
     private String registration;// 报名信息
 
     private String status;// 状态 active,inactive,deleted
@@ -47,14 +45,6 @@ public class ContestRequest {
 
     public void setCoverImg(MultipartFile coverImg) {
         this.coverImg = coverImg;
-    }
-
-    public String getRules() {
-        return rules;
-    }
-
-    public void setRules(String rules) {
-        this.rules = rules;
     }
 
     public String getRegistration() {
