@@ -64,7 +64,6 @@
 									<tbody>
 										<c:if test="${!success}">
 											<tr><td colspan="9" style="text-align: center;">空空如也!!!</td></tr>
-											<tr><td colspan="9" style="text-align: center;"><a class="btn btn-default btn-sm" href="/contestentry/add">新建参赛项目</a></td></tr>
 										</c:if>
 										<c:if test="${success}">
 											<c:forEach var="c" items="${contestEntryList}" varStatus="status">
