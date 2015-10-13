@@ -1432,21 +1432,15 @@ owner.submitAuthenticate = function(info, callback) {
 		})
 	};
 
-	owner.listContestEntries = function(contestId, from, to, successCallback, errorCallback) {
-		console.log(contestId);
-		console.log(from);
-		console.log(to);
+	owner.listContestEntries = function(contestId, successCallback, errorCallback) {
 		mui.ajax(owner.apiURL + 'contestEntries', {
 			data: {
-				contestId: contestId,
-				from: from,
-				to: to
+				contestId: contestId
 			},
 			dataType: 'json',
 			type: 'get',
 			timeout: 5000,
 			success: function(data) {
-				console.log(JSON.stringify(data));
 				if (data.status == 'SUCCEED') {
 					return successCallback(data);
 				} else {
@@ -1469,6 +1463,41 @@ owner.submitAuthenticate = function(info, callback) {
 			},
 			error: function(xhr, type, errorThrown) {
 				errorCallback(type);
+			}
+		})
+	};
+
+	owner.registerContest = function(contestId, req, callback) {
+		callback = callback || $.noop;
+		req = req || {};
+		req.projectId = req.projectId || 0;
+		req.hasBusinessRegistered = req.hasBusinessRegistered || 'false';
+		req.businessLicense = req.businessLicense || '';
+		req.businessLicenseImg = req.businessLicenseImg || '';
+
+		if (req.projectId == 0) {
+			return callback('请选择参赛项目');
+		}
+
+		mui.ajax(owner.apiURL + 'contest/' + contestId + '/register', {
+			data: req,
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					app.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
 			}
 		})
 	};

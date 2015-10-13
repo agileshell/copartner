@@ -11,8 +11,7 @@
 		<style>
 			.item-content {
 				font-size: 12px;
-				padding: 0 10px;
-				padding-top: 10px;
+				padding: 10px;
 			}
 			.item-content ol {
 				margin: 0 0 0 20px;
@@ -46,7 +45,25 @@
 			}
 			.item-avatar {
 				float: left;
-				padding: 5px 5px 5px 0;
+				border-radius: 50%;
+			}
+			
+			.registration {
+				clear: both;
+				color: #41AAF2;
+				margin: 0 auto;
+				text-align: center;
+				padding-top: 15px;
+				padding-bottom: 10px;
+			}
+			.registration-btn {
+				line-height: 30px;
+				font-size: 15px;
+				padding: 8px 25px 8px 25px;
+				background-color: #fff;
+				-moz-border-radius: 5px; 
+				-webkit-border-radius: 5px;
+				border-radius: 5px; 
 			}
 		</style>
 	</head>
@@ -56,9 +73,9 @@
 			<div class="mui-slider mui-fullscreen">
 				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
 					<a class="mui-control-item mui-active" href="#introduction">大赛简介</a>
-					<a class="mui-control-item" href="#rules">大赛规则</a>
 					<a class="mui-control-item" href="#registration">大赛报名</a>
 					<a id="tap-entries" class="mui-control-item" href="#entries">参赛作品</a>
+					<a class="mui-control-item" href="#ranking">排行榜</a>
 				</div>
 				<div class="mui-slider-progress-bar mui-col-xs-3"></div>
 				<div id="content" class="mui-slider-group">
@@ -72,20 +89,13 @@
 							</div>
 						</div>
 					</div>
-					<div id="rules" class="mui-slider-item mui-control-content">
-						<div class="c-content">
-							<div class="mui-scroll-wrapper">
-								<div class="mui-scroll">
-									<div id="rules-content" class="item-content">
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
 					<div id="registration" class="mui-slider-item mui-control-content">
 						<div class="c-content">
 							<div class="mui-scroll-wrapper">
 								<div class="mui-scroll">
+									<div class="registration">
+										<span id="registration-btn" class="registration-btn">立即报名</span>
+									</div>
 									<div id="registration-content" class="item-content">
 									</div>
 								</div>
@@ -100,23 +110,35 @@
 							</div>
 						</div>
 					</div>
+					<div id="ranking" class="mui-slider-item mui-control-content">
+						<div class="c-content">
+							<div class="mui-scroll-wrapper">
+								<div class="mui-scroll">
+									<div id="ranking-content" class="item-content">
+										<div style="float: left; position: relative; width: 50%;">
+											<div style="color: #f47320;  padding-left: 15px;">导师评比排名</div>
+											<ul id="tutorVoteRanking" class="mui-table-view" style="background-color: #efeff4;">
+											</ul>
+										</div>
+										<div style="float: left; position: relative; width: 50%;">
+											<div style="color: #f47320; padding-left: 15px;">投资人评比排名</div>
+											<ul id="investorVoteRanking" class="mui-table-view" style="background-color: #efeff4;">
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 		<script id="entry-template" type="text/x-handlebars-template">
-			<li id="contest_{{id}}" class="mui-table-view-cell mui-media">
-				<a class='mui-navigate-right' href="#" data-guid="{{id}}">
-					<img src="{{coverImg}}" class="item-avatar" style="width:50px">
-					<div class="mui-media-body">
-						<span class="item-name">{{name}}</span>
-						<div class="new-item">
-							<span class="mui-icon mui-icon-person"></span>
-							<span>{{userName}}</span>
-						</div>
-						<div class="new-item">
-							<span class="mui-icon mui-icon-star"></span>
-							<span>{{praise}}</span>
-						</div>
+			<li id="entry_{{id}}" class="mui-table-view-cell mui-media">
+				<a href="#" data-guid="{{id}}">
+					<img src="{{project.logo}}" class="item-avatar" style="width:30px">
+					<div class="mui-media-body" style="padding: 5px;">
+						<span class="item-name">{{project.name}}</span>
 					</div>
 				</a>
 			</li>
@@ -125,18 +147,26 @@
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/app.js"></script>
 		<script type="text/javascript">
-			var contestId = 0, latestLoadingRequestDate = 0, introductionEl = document.getElementById('introduction-content'),
-				rulesEl = document.getElementById('rules-content'),
-				registrationEl = document.getElementById('registration-content');
+			var contestId = 0,
+				isRegister = false,
+				latestLoadingRequestDate = 0,
+				introductionEl = document.getElementById('introduction-content'),
+				rankingEl = document.getElementById('ranking-content'),
+				registrationEl = document.getElementById('registration-content'),
+				registrationBtnEl = document.getElementById('registration-btn');
+
 			var divEl = document.createElement("div"),
 				entrySource = document.getElementById("entry-template").innerText,
 				entryTemplate = Handlebars.compile(entrySource),
-				entriesEl = document.getElementById("entries-content");
+				entriesEl = document.getElementById("entries-content"),
+				tutorVoteRankingEl = document.getElementById("tutorVoteRanking"),
+				investorVoteRankingEl = document.getElementById("investorVoteRanking");
+
 			mui.init({
 				swipeBack: true
 			});
 			mui('.mui-scroll-wrapper').scroll({
-				indicators: true //是否显示滚动条
+				indicators: true
 			});
 			mui('#content').on('tap', 'a', function() {
 				var url = this.href;
@@ -154,9 +184,29 @@
 				contestEntity = response.body;
 				if (contestEntity.id > 0) {
 					introductionEl.innerHTML = contestEntity.introduction;
-					rulesEl.innerHTML = contestEntity.rules;
 					registrationEl.innerHTML = contestEntity.registration;
 					contestId = contestEntity.id;
+					isRegister = contestEntity.register;
+					if (isRegister == true) {
+						registrationBtnEl.innerText = '已报名';
+					}
+
+					var tutorVoteRankings = contestEntity.tutorVoteRanking;
+					if (tutorVoteRankings.length > 0) {
+						for (var i = 0, len = tutorVoteRankings.length; i < len; i++) {
+							divEl.innerHTML = entryTemplate(tutorVoteRankings[i]);
+							tutorVoteRankingEl.appendChild(divEl.firstElementChild);
+						}
+					}
+
+					var investorVoteRankings = contestEntity.investorVoteRanking;
+					if (investorVoteRankings.length > 0) {
+						for (var i = 0, len = investorVoteRankings.length; i < len; i++) {
+							console.log( entryTemplate(investorVoteRankings[i]));
+							divEl.innerHTML = entryTemplate(investorVoteRankings[i]);
+							investorVoteRankingEl.appendChild(divEl.firstElementChild);
+						}
+					}
 
 					window.scrollTo(0, 0);
 				} else {
@@ -166,10 +216,10 @@
 			error = function(errorType) {
 				mui.toast(app.ajaxErrorHandler(errorType));
 			};
+
 			var entryLoadSuccess = function(response) {
 				var items = response.body.list;
 				if (items.length > 0) {
-					latestLoadingRequestDate = Date.parse(items[items.length - 1].created);
 					for (var i = 0, len = items.length; i < len; i++) {
 						divEl.innerHTML = entryTemplate(items[i]);
 						entriesEl.appendChild(divEl.firstElementChild);
@@ -180,10 +230,13 @@
 				mui.toast(app.ajaxErrorHandler(errorType));
 			};
 
-			//打开详情
 			mui('#entries-content').on('tap', 'a', function() {
 				open_detail(this.getAttribute('data-guid'));
 			});
+			mui('#ranking-content').on('tap', 'a', function() {
+				open_detail(this.getAttribute('data-guid'));
+			});
+
 			var detailWebview = null; 
 			function open_detail(id) {
 				if (!detailWebview) {
@@ -197,11 +250,20 @@
 			mui.plusReady(function() {
 				app.getlatestContest(success, error);
 
-				document.getElementById('tap-entries').addEventListener('tap', function() {
-					app.listContestEntries(contestId, 0, latestLoadingRequestDate, entryLoadSuccess, entryLoadError);
+				app.listContestEntries(contestId, entryLoadSuccess, entryLoadError);
+
+				registrationBtnEl.addEventListener('tap', function() {
+					var roleId = app.getRoleId();
+					if (roleId != 1 || isRegister) {
+						return;
+					}
+					mui.openWindow({
+						url: 'contest_register.html', 
+						id:'contest_register',
+						extras:{contestId: contestId}
+					});
 				});
 			});
-
 		</script>
 	</body>
 </html>

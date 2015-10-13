@@ -9,49 +9,47 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<style>
-			html, boby {
-				background-color: #fff
+			html,
+			body {
+				background-color: #efeff4;
 			}
-			.c-content {
-				margin-top: 45px;
-			}
-			.c-item {
-				font-size: 12px;
-				line-height: 15px;
-				background-color: #fff
-			}
-			.c-item .mui-icon {
-				font-size: 16px;
-			}
-			#coverImg {
+			.mui-page,
+			.mui-page-content {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
 				width: 100%;
-				 margin:0 auto;
+				height: 100%;
+				background-color: #efeff4;
+			}
+			.mui-page {
+				top: 45px;
+			}
+			.mui-scroll-wrapper,
+			.mui-scroll {
+				background-color: #efeff4;
+			}
+			.mui-page .mui-table-view:first-child {
+				margin-top: 0px;
+			}
+			.mui-page .mui-table-view:last-child {
+				margin-bottom: 30px;
+			}
+			.mui-table-view {
+				margin-top: 20px;
+			}
+			.head-img {
+				width: 70px;
+				height: 70px;
+				margin-right: 5px;
+				border-radius: 15%;
+			}
+			.coverImg {
+				width: 100%;
+				margin:0 auto;
 				text-align: center;
-			}
-			.item-content {
-				font-size: 12px;
-				padding: 0 15px;
-				padding-top: 10px;
-				color: #000;
-				background-color: #fff
-			}
-			.item-content ol {
-				margin: 0 0 0 20px;
-				padding: 0;
-			}
-			.item-content p {
-				color: #000;
-				font-size: 12px;
-			}
-			.item-content img,
-			.item-content iframe {
-				max-width: 100%;
-				width: 100%;
-				height: auto;
-			}
-			embed,
-			object {
-				display: none;
 			}
 			.c-overlay .c-loader {
 				display: block;
@@ -59,97 +57,134 @@
 			.c-overlay .mui-content {
 				display: none;
 			}
+			.undisplayed {
+				display: none;
+			}
 		</style>
 	</head>
-
 	<body class="c-overlay">
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 id="title" class="mui-title c-title">参赛作品</h1>
 		</header>
 		<div class="mui-content">
-			<div class="c-content">
-				<img id="coverImg"/>
-				<div class="c-item">
+			<div class="mui-page">
+				<div class="mui-page-content">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell mui-media">
+								<img class="mui-pull-left head-img" id="logo" src="../images/blank.jpg">
+								<div class="mui-media-body">
+									<span id="name"></span>
+									<p class='mui-ellipsis'>项目阶段:<span style="padding-left: 5px;" id="projectPhase"></span></p>
+									<p class='mui-ellipsis'>领域:<span style="padding-left: 5px;" id="industryDomain"></span></p>
+									<p class='mui-ellipsis'>地区:<span style="padding-left: 5px;" id="location"></span></p>
+									<p class='mui-ellipsis'>团队:<span style="padding-left: 5px;" id="teamSize"></span></p>
+								</div>
+						</li>
+					</ul>
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
-							<span class="mui-icon mui-icon-flag"></span>
-							<span id="name"></span>
+							实施条件
+							<textarea id="content" style="height:30px; color:  #bdbdbd; border: 0px; padding: 0px;" readonly="readonly"></textarea>
 						</li>
 						<li class="mui-table-view-cell">
-							<span class="mui-icon mui-icon-person"></span>
-							<span id="userName"></span>
+							优势
+							<textarea id="advantage" style="height:30px;  color:  #bdbdbd; border: 0px; padding: 0px;" readonly="readonly"></textarea>
+						</li>
+					</ul>
+					<ul class="mui-table-view" id="businessLicensePad">
+						<li class="mui-table-view-cell">
+							营业执照<span class="mui-pull-right" 	id="businessLicense"></span>
 						</li>
 						<li class="mui-table-view-cell">
-							<span class="mui-icon mui-icon-star"></span>
-							<span id="praise"></span>
+							<img class="coverImg" id="businessLicenseUrl"/>
+						</li>
+					</ul>
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							参赛者<span class="mui-pull-right" id="owner"></span>
 						</li>
 					</ul>
 				</div>
-				<div id="content" class="item-content">
-				</div>
 			</div>
 		</div>
-		<div id="loader" class="c-loader">加载中...</div>
-	</body>
-	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
-	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
-	<script type="text/javascript">
-		var guid = 0, coverImgEl = document.getElementById('coverImg'), nameEl = document.getElementById('name'), userNameEl = document.getElementById('userName'), praiseEl = document.getElementById('praise'), contentEl = document.getElementById('content');
-		mui.init({
-			swipeBack: true,
-			beforeback: function() {
-				setTimeout(function() {
-					coverImgEl.src = '';
-					nameEl.innerText = '';
-					userNameEl.innerText = '';
-					praiseEl.innerText = '';
-					contentEl.innerHTML = '';
-					document.body.classList.add('c-overlay');
-				}, 200);
-			}
-		});
-		mui('#content').on('tap', 'a', function() {
-			var url = this.href;
-			var protocol = /^([\w-]+:)\/\//.test(url) ? RegExp.$1 : '';
-			if (protocol === 'http:' || protocol === 'https:') { //外部链接
-				var browserMainWebview = plus.webview.getWebviewById('browser_main');
-				var browserWebview = plus.webview.getWebviewById('browser');
-				mui.fire(browserMainWebview, 'mui.view.beforeshow');
-				browserWebview.loadURL(url);
-				browserMainWebview.show('slide-in-bottom', 200);
-			}
-		});
-		(function($) {
-			var success = function(response) {
-				var entry = response.body;
-				coverImgEl.src = entry.coverImg;
-				nameEl.innerText = entry.name;
-				userNameEl.innerText = entry.userName;
-				praiseEl.innerText = entry.praise;
-				contentEl.innerHTML = entry.introduction;
+		<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+		<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+		<script type="text/javascript">
+			var guid = 0,
+				nameEl = document.getElementById('name'),
+				logoEl = document.getElementById('logo'),
+				projectPhaseEl = document.getElementById('projectPhase'),
+				industryDomainEl = document.getElementById('industryDomain'),
+				locationEl = document.getElementById('location'),
+				teamSizeEl = document.getElementById('teamSize'),
+				contentEl = document.getElementById('content'),
+				advantageEl = document.getElementById('advantage'),
+				ownerEl = document.getElementById('owner'),
+				businessLicenseEl = document.getElementById('businessLicense'),
+				businessLicenseUrlEl = document.getElementById('businessLicenseUrl');
+			var businessLicensePadEl = document.getElementById('businessLicensePad');
+			mui.init({
+				swipeBack: true,
+				beforeback: function() {
+					setTimeout(function() {
+						nameEl.innerText = '';
+						logoEl.src = '';
+						projectPhaseEl.innerText = '';
+						industryDomainEl.innerText = '';
+						locationEl.innerText = '';
+						teamSizeEl.innerText = '';
+						contentEl.innerText = '';
+						advantageEl.innerText = '';
+						ownerEl.innerText = '';
+						businessLicenseEl.innerText = '';
+						businessLicenseUrlEl.src = '';
 
-				window.scrollTo(0, 0);
-				setTimeout(function() {
-					document.body.classList.remove('c-overlay');
-				}, 290);
-				mui.currentWebview.show();
-			},
-			error = function(errorType) {
-				mui.toast(app.ajaxErrorHandler(errorType));
-			};
+						document.body.classList.add('c-overlay');
+					}, 200);
+				}
+			});
+			(function($) {
+				var success = function(response) {
+					var obj = response.body;
+					nameEl.innerText = obj.project.name;
+					logoEl.src = obj.project.logo;
+					projectPhaseEl.innerText = obj.project.projectPhase;
+					industryDomainEl.innerText = obj.project.industryDomain;
+					locationEl.innerText = obj.project.location;
+					teamSizeEl.innerText = obj.project.teamSize;
+					contentEl.innerText = obj.project.content;
+					advantageEl.innerText = obj.project.advantage;
+					ownerEl.innerText = obj.user.name;
+					if (obj.hasBusinessRegistered) {
+						businessLicenseEl.innerText = obj.businessLicense;
+						businessLicenseUrlEl.src = obj.businessLicenseImg;
+						businessLicensePadEl.classList.remove('undisplayed');
+					} else {
+						businessLicensePadEl.classList.add('undisplayed');
+					}
 
-			document.addEventListener('mui.view.beforeshow', function(event) {
-				if (event.detail.$$type === 'back') {
+					window.scrollTo(0, 0);
 					setTimeout(function() {
 						document.body.classList.remove('c-overlay');
-					}, 500);
-					return;
-				}
-
-				app.getContestEntry(event.detail.guid, success, error);
-			});
-		})(mui);
-	</script>
-
+					}, 290);
+					mui.currentWebview.show();
+				},
+				error = function(errorType) {
+					mui.toast(app.ajaxErrorHandler(errorType));
+				};
+	
+				document.addEventListener('mui.view.beforeshow', function(event) {
+					if (event.detail.$$type === 'back') {
+						setTimeout(function() {
+							document.body.classList.remove('c-overlay');
+						}, 500);
+						return;
+					}
+	
+					app.getContestEntry(event.detail.guid, success, error);
+				});
+			})(mui);
+		</script>
+	</body>
 </html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创始人</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<link href="../css/mui.listpicker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<style>
+			.mui-bar-nav.mui-bar .c-icon-padded {
+				border: 1px solid #fff;
+				border-radius: 50%;
+				padding: 0px;
+				margin-top: 10px;
+				margin-right: 3px;
+			}
+			.mui-page-content {
+				margin-top: 44px;
+			}
+			.mui-input-row label {
+				width: 30%;
+				padding: 10px 0 10px 10px;
+			}
+			.mui-input-row span {
+				width: 70%;
+			}
+			.c-input {
+				margin-left: -20px;
+				text-align: right;
+			}
+			.mui-input-row textarea {
+				margin-bottom: 5px;
+			}
+			.mui-content-padded {
+				margin-top: 30px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+			#head {
+				height: 40px;
+				line-height: 40px;
+			}
+			#head-img {
+				position: absolute;
+				right: 40px;
+				width: 40px;
+				height: 40px;
+			}
+			#businessPlanTmp {
+				position: absolute;
+				width: 40px;
+			}
+			.undisplayed{
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">大赛报名</h1>
+			<a id="register-a" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right c-icon-padded"></a>
+		</header>
+		<div class="mui-content">
+			<div class="mui-page-content">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>参赛项目</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='project' name="project" type="hidden">
+							<input id='projectName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label>工商注册</label>
+						<input id='hasBusinessRegistered' name="hasBusinessRegistered" value="true" type="hidden">
+						<div id="businessRegistered" class="mui-switch mui-switch-mini mui-active ">
+							<div class="mui-switch-handle"></div>
+						</div>
+					</div>
+					<div id="zz-a" class="mui-input-row">
+						<label style="width: 50%;">营业执照号</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 50%;">
+							<input id='businessLicense' name='businessLicense' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div id="zz-b" class="mui-input-row">
+						<label style="width: 50%;">营业执照图片</label>
+						<span  id="head" class="mui-pull-right mui-navigate-right" style="width: 50%;">
+							<input id='businessLicenseUrl' name='businessLicenseUrl' type="hidden" value="" >
+							<img class="head-img mui-action-preview" id="head-img" src="../images/blank.jpg"/>
+						</span>
+					</div>
+				</form>
+				<div class="mui-content-padded">
+					<button id='register-b' class="mui-btn mui-btn-block mui-btn-primary">提交</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/app.js"></script>
+	<script src="../js/mui.listpicker.js"></script>
+	<script src="../js/mui.poppicker.js"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			var businessRegistered = doc.getElementById('businessRegistered'),
+				hasBusinessRegistered = doc.getElementById('hasBusinessRegistered'),
+				zzA = doc.getElementById('zz-a'),
+				zzB = doc.getElementById('zz-b');
+			businessRegistered.addEventListener('toggle', function(event) {
+				hasBusinessRegistered.value = event.detail.isActive ? 'true' : 'false';
+				if (hasBusinessRegistered.value == 'true') {
+					zzA.classList.remove('undisplayed');
+					zzB.classList.remove('undisplayed');
+				} else {
+					zzA.classList.add('undisplayed');
+					zzB.classList.add('undisplayed');
+				}
+			});
+
+			var projectId = doc.getElementById('project'),
+				projectName = doc.getElementById('projectName');
+			projectId.value = '';
+			projectName.value = '';
+			var projects = [];
+			app.listOwerProjects(function(response) {
+				var reqs = response.body.list, len = reqs.length;
+				if (len > 0) {
+					for (var i = 0, len = reqs.length; i < len; i++) {
+						var req = {
+							'text': reqs[i].name,
+							'value': reqs[i].id
+						}
+						projects[i] = req;
+					}
+				} else {
+						var req = {
+							'text': '无可用的项目',
+							'value': 0
+						}
+						projects[0] = req;
+				}
+				var projectPicker = new mui.PopPicker();
+				projectPicker.setData(projects);
+				projectName.addEventListener('tap', function(event) {
+					projectPicker.show(function(items) {
+						projectId.value = items[0].value;
+						projectName.value = items[0].text;
+					});
+				}, false);
+			});
+
+			$.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				var contestId = self.contestId;
+				doc.getElementById('register-a').addEventListener('tap', function() {
+					registerContest();
+				});
+				doc.getElementById('register-b').addEventListener('tap', function() {
+					registerContest();
+				});
+
+				function registerContest() {
+					var req = {
+						projectId: projectId.value,
+						hasBusinessRegistered: doc.getElementById('hasBusinessRegistered').value,
+						businessLicense: doc.getElementById('businessLicense').value,
+						businessLicenseImg: doc.getElementById('businessLicenseUrl').value
+					};
+					var w = plus.nativeUI.showWaiting("　　 请等待...　　");
+					app.registerContest(contestId, req, function(err) {
+						setTimeout(function() {
+							w.close();
+							if (err) {
+								plus.nativeUI.toast(err);
+								return;
+							} else {
+								plus.webview.getLaunchWebview().show();
+							}
+						}, 200);
+					});
+				};
+
+				$(".mui-input-row").on("tap", "#head", function(e) {
+					var a = [{
+						title: "拍照"
+					}, {
+						title: "从手机相册选择"
+					}];
+					plus.nativeUI.actionSheet({
+						title: "上传营业执照",
+						cancel: "取消",
+						buttons: a
+					}, function(b) {
+						switch (b.index) {
+							case 0:
+								break;
+							case 1:
+								getImage();
+								break;
+							case 2:
+								galleryImg();
+								break;
+							default:
+								break
+						}
+					})
+				});
+				function getImage() {
+					var c = plus.camera.getCamera();
+					c.captureImage(function(e) {
+						plus.io.resolveLocalFileSystemURL(e, function(entry) {
+							var s = entry.toLocalURL() + "?version=" + new Date().getTime();
+							doc.getElementById("head-img").src = s;
+							upload(entry.fullPath);
+						}, function(e) {
+							console.log("读取拍照文件错误：" + e.message);
+						});
+					}, function(s) {
+						console.log("error" + s);
+					}, {
+						filename: "_doc/head.jpg"
+					})
+				}
+				function galleryImg(){
+					plus.gallery.pick(function(p){
+						var s = p + "?version=" + new Date().getTime();
+						doc.getElementById("head-img").src = s;
+						upload(p);
+					});
+				}
+				function upload(p) {
+					var wt = plus.nativeUI.showWaiting();
+					var task = plus.uploader.createUpload('http://123.57.55.59:8080/image', {
+							method: "POST"
+						},
+						function(t, status) { //上传完成
+							if (status == 200) {
+								wt.close();
+								var data = JSON.parse(t.responseText);
+								if (data.status == 'SUCCEED') {
+									plus.nativeUI.toast("上传成功");
+									doc.getElementById("businessLicenseUrl").value = data.body.image_path;
+								} else {
+									plus.nativeUI.toast("上传失败, " + app.ajaxFailedHandler(data.body.error.code));
+								}
+							} else {
+								wt.close();
+								plus.nativeUI.toast("上传失败");
+							}
+						}
+					);
+					task.addFile(p, {
+						key: 'image'
+					});
+					task.addData("needThumbnail", "true");
+					task.start();
+				}
+			});
+		})(mui, document);
+	</script>
+</html>
