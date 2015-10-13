@@ -47,6 +47,7 @@ public class ContestEntryController extends WebBase {
         criteria.setLimit(query.getPage_size());
         criteria.setOffset(Long.valueOf(query.getIndex()).intValue());
         criteria.setContestId(request.getContestId());
+        criteria.setUserId(request.getUserId());
         List<ContestEntry> list = contestEntryDAO.queryContestEntry(criteria);
         Long count = contestEntryDAO.countContestEntry(criteria);
         query.setCount((count == null || count <= 0L) ? 0 : count.intValue());

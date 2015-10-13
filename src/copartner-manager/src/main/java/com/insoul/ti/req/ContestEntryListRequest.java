@@ -1,7 +1,5 @@
 package com.insoul.ti.req;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * @author 刘飞 E-mail:liufei_it@126.com
  * 
@@ -10,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class ContestEntryListRequest extends PageRequest {
 
-    private String name;// 参赛项目名称
+    private Long userId;// 参赛项目名称
 
     private Long contestId;// 参与的大赛ID
 
@@ -18,8 +16,8 @@ public class ContestEntryListRequest extends PageRequest {
     protected ContestEntryListRequest Q() {
         StringBuilder sb = new StringBuilder();
         boolean appended = false;
-        if (StringUtils.isNotBlank(name)) {
-            sb.append("name").append("=").append(name);
+        if (userId != null && userId > 0L) {
+            sb.append("userId").append("=").append(userId);
             appended = true;
         }
         if (contestId != null && contestId > 0L) {
@@ -33,12 +31,12 @@ public class ContestEntryListRequest extends PageRequest {
         return this;
     }
 
-    public String getName() {
-        return name;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getContestId() {

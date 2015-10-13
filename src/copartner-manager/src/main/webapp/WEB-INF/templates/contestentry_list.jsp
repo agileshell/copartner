@@ -24,9 +24,9 @@
 								<div class="padd">
 									<form class="form-horizontal" role="form" action="/contestentry/list" method="get">
 										<div class="form-group">
-											<label class="col-lg-1 control-label" for="name">参赛项目:</label>
+											<label class="col-lg-1 control-label" for="userId">参赛者ID:</label>
 											<div class="col-lg-3">
-												<input name="name" id="name" value="${req.name}" type="text" class="form-control" placeholder="参赛项目">
+												<input name="userId" id="userId" value="${req.userId}" type="text" class="form-control" placeholder="参赛者ID">
 											</div>
 											<label class="col-lg-1 control-label" for="contestId">大赛ID:</label>
 											<div class="col-lg-3">
