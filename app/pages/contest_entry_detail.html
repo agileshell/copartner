@@ -13,6 +13,9 @@
 			body {
 				background-color: #efeff4;
 			}
+			.mui-bar .c-operation {
+				font-size: 16px;
+			}
 			.mui-page,
 			.mui-page-content {
 				position: absolute;
@@ -66,6 +69,9 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 id="title" class="mui-title c-title">参赛作品</h1>
+			<a id="vote" class="mui-action-menu mui-icon mui-icon-star mui-pull-right">
+				<span class="c-operation" id="vote-msg">投票</span>
+			</a>
 		</header>
 		<div class="mui-content">
 			<div class="mui-page">
@@ -80,6 +86,14 @@
 									<p class='mui-ellipsis'>地区:<span style="padding-left: 5px;" id="location"></span></p>
 									<p class='mui-ellipsis'>团队:<span style="padding-left: 5px;" id="teamSize"></span></p>
 								</div>
+						</li>
+					</ul>
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							导师投票数<span class="mui-pull-right" id="tutorVotes">111</span>
+						</li>
+						<li class="mui-table-view-cell">
+							投资人投票数<span class="mui-pull-right" id="investorVotes">1111</span>
 						</li>
 					</ul>
 					<ul class="mui-table-view">
@@ -111,7 +125,7 @@
 		<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
 		<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
 		<script type="text/javascript">
-			var guid = 0,
+			var guid = 0, isVote = false, loginPage = null,
 				nameEl = document.getElementById('name'),
 				logoEl = document.getElementById('logo'),
 				projectPhaseEl = document.getElementById('projectPhase'),
@@ -122,7 +136,11 @@
 				advantageEl = document.getElementById('advantage'),
 				ownerEl = document.getElementById('owner'),
 				businessLicenseEl = document.getElementById('businessLicense'),
-				businessLicenseUrlEl = document.getElementById('businessLicenseUrl');
+				businessLicenseUrlEl = document.getElementById('businessLicenseUrl'),
+				tutorVotesEl = document.getElementById('tutorVotes'),
+				investorVotesEl = document.getElementById('investorVotes'),
+				voteMsgEl = document.getElementById('vote-msg'),
+				voteBtnEl = document.getElementById('vote');
 			var businessLicensePadEl = document.getElementById('businessLicensePad');
 			mui.init({
 				swipeBack: true,
@@ -139,6 +157,9 @@
 						ownerEl.innerText = '';
 						businessLicenseEl.innerText = '';
 						businessLicenseUrlEl.src = '';
+						tutorVotesEl.innerText = '';
+						investorVotesEl.innerText = '';
+						voteMsgEl.innerText = '';
 
 						document.body.classList.add('c-overlay');
 					}, 200);
@@ -164,6 +185,14 @@
 						businessLicensePadEl.classList.add('undisplayed');
 					}
 
+					isVote = obj.vote;
+					if (obj.vote == true) {
+						voteMsgEl.innerText = '已投票';
+					}
+
+					tutorVotesEl.innerText = obj.tutorVotes;
+					investorVotesEl.innerText = obj.investorVotes;
+
 					window.scrollTo(0, 0);
 					setTimeout(function() {
 						document.body.classList.remove('c-overlay');
@@ -181,8 +210,40 @@
 						}, 500);
 						return;
 					}
-	
+					guid = event.detail.guid;
 					app.getContestEntry(event.detail.guid, success, error);
+				});
+				voteBtnEl.addEventListener('tap', function() {
+					var state = app.getState();
+					if (!state.userId) {
+						if (!loginPage) {
+							loginPage = plus.webview.getWebviewById('login');
+						}
+						loginPage.show();
+						return;
+					}
+
+					if (isVote) {
+						return;
+					}
+					var roleId = app.getRoleId();
+					if (roleId == 1) {
+						plus.nativeUI.toast("无权投票");
+						return;
+					}
+
+					var w = plus.nativeUI.showWaiting("　　 请等待...　　");
+					app.vote(guid, function(err) {
+						setTimeout(function() {
+							w.close();
+							if (err) {
+								plus.nativeUI.toast(err);
+								return;
+							} else {
+								plus.nativeUI.toast('投票成功');
+							}
+						}, 200);
+					});
 				});
 			})(mui);
 		</script>

@@ -101,6 +101,7 @@
 
 	owner.getRoleId = function() {
 		var state = app.getState();
+		console.log(JSON.stringify(state));
 		if (state.roleId) {
 			return state.roleId;
 		} else {
@@ -394,7 +395,7 @@ owner.submitAuthenticate = function(info, callback) {
 		}
 
 		if (info.authenticationInfo.length < 10) {
-			return callback('认证说明不能为空');
+			return callback('认证说明不能小于10个字符');
 		} else if (info.authenticationInfo.length > 100) {
 			return callback('认证说明不能大于100个字符');
 		}
@@ -1481,6 +1482,29 @@ owner.submitAuthenticate = function(info, callback) {
 
 		mui.ajax(owner.apiURL + 'contest/' + contestId + '/register', {
 			data: req,
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					app.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
+	};
+	
+	owner.vote = function(entryId, callback) {
+		mui.ajax(owner.apiURL + 'contestEntry/' + entryId + '/vote', {
 			dataType: 'json',
 			type: 'post',
 			timeout: 5000,

@@ -202,7 +202,6 @@
 					var investorVoteRankings = contestEntity.investorVoteRanking;
 					if (investorVoteRankings.length > 0) {
 						for (var i = 0, len = investorVoteRankings.length; i < len; i++) {
-							console.log( entryTemplate(investorVoteRankings[i]));
 							divEl.innerHTML = entryTemplate(investorVoteRankings[i]);
 							investorVoteRankingEl.appendChild(divEl.firstElementChild);
 						}
@@ -247,12 +246,22 @@
 				});
 			};
 
+			var loginPage = null;
 			mui.plusReady(function() {
 				app.getlatestContest(success, error);
 
 				app.listContestEntries(contestId, entryLoadSuccess, entryLoadError);
 
 				registrationBtnEl.addEventListener('tap', function() {
+					var state = app.getState();
+					if (!state.userId) {
+						if (!loginPage) {
+							loginPage = plus.webview.getWebviewById('login');
+						}
+						loginPage.show();
+						return;
+					}
+
 					var roleId = app.getRoleId();
 					if (roleId != 1 || isRegister) {
 						return;
