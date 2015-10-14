@@ -240,7 +240,8 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
         for (RequirementLikers requirementLiker : requirementLikers) {
             likerIds.add(requirementLiker.getId().getUserId());
         }
-        requirementVO.setIsliked(likerIds.contains(getUserId()));
+        long currentUserId = getUserId();
+        requirementVO.setIsliked(likerIds.contains(currentUserId));
 
         Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
         List<User> users = userDao.getUserByIds(likerIds);

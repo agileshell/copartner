@@ -129,8 +129,8 @@
 				</div>
 			</a>
 			<div style="padding-top: 5px; float: right;">
-				<span class="like"></span>
-				<span style="font-size: .8em; color: #8f8f94; line-height: 1em;"> ({{likeCount}})</span>
+				<span class="like{{liked}}" data-guid="{{id}}" data-value="{{likeCount}}"></span>
+				<span style="font-size: .8em; color: #8f8f94; line-height: 1em;" id="requirement_like_{{id}}"> ({{likeCount}})</span>
 				<span class="comment"></span>
 				<span style="font-size: .8em; color: #8f8f94; line-height: 1em;">({{commentCount}})</span>
 			</div>
@@ -162,8 +162,8 @@
 					</div>
 				</div>
 				<div style="padding-top: 5px; float: right;">
-					<span class="like"></span>
-					<span style="font-size: .8em; color: #8f8f94; line-height: 1em;">({{likeCount}})</span>
+					<span class="like{{liked}}" data-guid="{{id}}" data-value="{{likeCount}}"></span>
+					<span style="font-size: .8em; color: #8f8f94; line-height: 1em;" id="project_like_{{id}}">({{likeCount}})</span>
 					<span class="comment"></span>
 					<span style="font-size: .8em; color: #8f8f94; line-height: 1em;">({{commentCount}})</span>
 				</div>
@@ -174,8 +174,7 @@
 	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
 	<script>
-		var 
-			rzrzType = 1,
+		var  rzrzType = 1, loginPage = null,
 			requirementLatestRefreshRequestDate = 0,
 			requirementLatestLoadingRequestDate = 0,
 			projectLatestRefreshRequestDate = 0,
@@ -202,6 +201,52 @@
 					callback: pullupRefresh
 				}
 			}
+		});
+
+		mui('#requirement-list').on('tap', '.like', function() {
+			var state = app.getState();
+			if (!state.userId) {
+				if (!loginPage) {
+					loginPage = plus.webview.getWebviewById('login');
+				}
+				loginPage.show();
+				return;
+			}
+			var sid = this.getAttribute('data-guid'), likecount = this.getAttribute('data-value');
+			if (this.classList.toString().indexOf("selected") > 0) {
+				likecount--;
+				this.classList.remove('selected');
+				app.unlikeRequirement(sid, function(){});
+			} else {
+				likecount++;
+				this.classList.add('selected');
+				app.likeRequirement(sid, function(){});
+			}
+			this.setAttribute('data-value', likecount);
+			document.getElementById("requirement_like_" + sid).innerText = '(' + likecount + ')';
+		});
+
+		mui('#project-list').on('tap', '.like', function() {
+			var state = app.getState();
+			if (!state.userId) {
+				if (!loginPage) {
+					loginPage = plus.webview.getWebviewById('login');
+				}
+				loginPage.show();
+				return;
+			}
+			var sid = this.getAttribute('data-guid'), likecount = this.getAttribute('data-value');
+			if (this.classList.toString().indexOf("selected") > 0) {
+				likecount--;
+				this.classList.remove('selected');
+				app.unlikeProject(sid, function(){});
+			} else {
+				likecount++;
+				this.classList.add('selected');
+				app.likeProject(sid, function(){});
+			}
+			this.setAttribute('data-value', likecount);
+			document.getElementById("project_like_" + sid).innerText = '(' + likecount + ')';
 		});
 
 		 //打开详情
@@ -298,6 +343,11 @@
 								}
 								projectLatestRefreshRequestDate = Date.parse(items[0].created);
 								for (var i = items.length - 1; i >= 0; i--) {
+									if (items[i].isliked) {
+										items[i].liked = 'selected';
+									} else {
+										items[i].liked = '';
+									}
 									divEl.innerHTML = projectTemplate(items[i]);
 									projectEl.insertBefore(divEl.firstElementChild, projectEl.firstElementChild);
 								}
@@ -350,6 +400,11 @@
 								}
 								projectLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
 								for (var i = 0, len = items.length; i < len; i++) {
+									if (items[i].isliked) {
+										items[i].liked = 'selected';
+									} else {
+										items[i].liked = '';
+									}
 									divEl.innerHTML = projectTemplate(items[i]);
 									projectEl.appendChild(divEl.firstElementChild);
 								}

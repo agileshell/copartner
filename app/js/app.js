@@ -557,6 +557,7 @@ owner.submitAuthenticate = function(info, callback) {
 		res.user = req.user;
 		res.likers = req.likers;
 		res.created = req.created;
+		res.isliked = req.isliked;
 
 		if (req.type == 1) {
 			res.typeInfo = '寻求加入团队';
@@ -589,7 +590,106 @@ owner.submitAuthenticate = function(info, callback) {
 			res.project = project;
 		}
 
+		if (req.isliked) {
+			res.liked = 'selected';
+		} else {
+			res.liked = '';
+		}
 		return res;
+	};
+
+	owner.likeRequirement = function(id, callback) {
+		mui.ajax(owner.apiURL + 'requirement/' + id + '/like', {
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					app.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
+	};
+
+	owner.unlikeRequirement = function(id, callback) {
+		mui.ajax(owner.apiURL + 'requirement/' + id + '/like', {
+			dataType: 'json',
+			type: 'delete',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					app.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
+	};
+
+	owner.likeProject = function(id, callback) {
+		mui.ajax(owner.apiURL + 'project/' + id + '/like', {
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					app.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
+	};
+
+	owner.unlikeProject = function(id, callback) {
+		mui.ajax(owner.apiURL + 'project/' + id + '/like', {
+			dataType: 'json',
+			type: 'delete',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					app.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
 	};
 
 	owner.getProject = function(id, successCallback, errorCallback) {
@@ -1502,7 +1602,7 @@ owner.submitAuthenticate = function(info, callback) {
 			}
 		})
 	};
-	
+
 	owner.vote = function(entryId, callback) {
 		mui.ajax(owner.apiURL + 'contestEntry/' + entryId + '/vote', {
 			dataType: 'json',
