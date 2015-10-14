@@ -43,7 +43,7 @@ public class RequirementLikersDaoImpl extends BaseDaoImpl<RequirementLikers, Req
         parameters.put("requirementIds", requirementIds);
 
         Query query =
-                createQuery("FROM RequirementLikers WHERE id.requirementId IN :requirementIds ORDER BY created DESC",
+                createQuery("FROM RequirementLikers WHERE id.requirementId IN (:requirementIds) ORDER BY created DESC",
                         parameters);
         if ((pagination.getLimit() != null) && (pagination.getLimit() != 0)) {
             query.setMaxResults(pagination.getLimit());

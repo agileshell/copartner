@@ -44,7 +44,7 @@ public class ProjectLikersDaoImpl extends BaseDaoImpl<ProjectLikers, ProjectLike
             Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("projectIds", projectIds);
 
-            Query query = createQuery("FROM ProjectLikers WHERE id.projectId IN :projectIds ORDER BY created DESC",
+            Query query = createQuery("FROM ProjectLikers WHERE id.projectId IN (:projectIds) ORDER BY created DESC",
                     parameters);
             if ((pagination.getLimit() != null) && (pagination.getLimit() != 0)) {
                 query.setMaxResults(pagination.getLimit());

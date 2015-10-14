@@ -20,6 +20,9 @@ public class RequirementLikersId implements Serializable {
         return requirementId;
     }
 
+    public RequirementLikersId() {
+    }
+
     public RequirementLikersId(Long requirementId, Long userId) {
         super();
         this.requirementId = requirementId;

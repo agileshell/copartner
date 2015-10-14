@@ -100,6 +100,8 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
     }
 
     private List<RequirementVO> formatRequirements(List<Requirement> requirements) {
+        long currentUserId = getUserId();
+
         List<RequirementVO> requirementVOs = new ArrayList<RequirementVO>();
         if (requirements == null || requirements.isEmpty()) {
             return requirementVOs;
@@ -178,13 +180,13 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
                 projectVO.setProjectPhase(projectPhase.getName());
                 requirementVO.setProject(projectVO);
             }
-
             Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
             Set<Long> ids = requirementIdMapLikerIds.get(requirement.getId());
             if (null != ids) {
                 for (Long id : ids) {
                     likers.add(userIdMapUser.get(id));
                 }
+                requirementVO.setIsliked(ids.contains(currentUserId));
             }
             requirementVO.setLikers(likers);
 
@@ -238,6 +240,8 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
         for (RequirementLikers requirementLiker : requirementLikers) {
             likerIds.add(requirementLiker.getId().getUserId());
         }
+        requirementVO.setIsliked(likerIds.contains(getUserId()));
+
         Set<UserLeanVO> likers = new HashSet<UserLeanVO>();
         List<User> users = userDao.getUserByIds(likerIds);
         for (User user : users) {

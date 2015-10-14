@@ -196,6 +196,8 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
     }
 
     private List<ProjectVO> formatProjects(List<Project> projects) {
+        long currentUserId = getUserId();
+
         List<ProjectVO> projectVOs = new ArrayList<ProjectVO>();
         if (projects == null || projects.isEmpty()) {
             return projectVOs;
@@ -272,6 +274,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
                 for (Long id : ids) {
                     likers.add(userIdMapUser.get(id));
                 }
+                projectVO.setIsliked(ids.contains(currentUserId));
             }
             projectVO.setLikers(likers);
 

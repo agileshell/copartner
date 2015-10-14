@@ -38,6 +38,8 @@ public class ProjectVO implements Serializable {
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
 
+    private boolean isliked;
+
     public long getId() {
         return id;
     }
@@ -140,6 +142,14 @@ public class ProjectVO implements Serializable {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public boolean isIsliked() {
+        return isliked;
+    }
+
+    public void setIsliked(boolean isliked) {
+        this.isliked = isliked;
     }
 
 }
