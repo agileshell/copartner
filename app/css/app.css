@@ -182,3 +182,39 @@ a {
 .c-display-none {
 	display: none;
 }
+
+.send-message {
+	position: relative;
+	margin: 5px 5px 5px 5px;
+	height: 40px;
+}
+.send-message .send-msg-btn {
+	float: right;
+	width: 75px;
+	line-height: 38px;
+	height: 38px;
+	margin-left: 5px;
+	font-size: 14px;
+	background-color: #FDFDFD;
+	border: 1px solid #D7D7D7;
+	text-align: center;
+}
+.send-message .message-input-box {
+	border-radius: 3px;
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAABGdBTUEAALGPC/xhBQAAAPlQTFRFmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZAAAAmZmZ5KmwVQAAAFJ0Uk5T2k1Lpaf67ojkc5dbXCWCdP3PQfftRR2OsOm8wfJYrUBOkYkjzFn2SQXljVOpJOqmVIGe76Qq8PWhdkwwPUSq4mkEq5yZ+DddARIC/P4D+RHNAFNYFooAAAC3SURBVBjTVdDFEsJAEATQxd3d3d2dhGAhCUtm/v9jCFVsWOb4DlPdTYA/0SlYgPDi01x2h5WnKPWAciQclfJ4PMk2949azWI5JnlVv0k9KrWhgPGE+f6u9k/w0IUaMBK10dOQzgAYbbT5R4YLYDTB9RNe+mwHX5K7OP3I8gZfUi54VgxZ7YFRCi+yIdcDi0OUDFYNoVszM7lhWqvU1fGvGAnSQBbVO9ee6FcazjX4icg5Ekr+zQhvBU9YhAVrUs0AAAAASUVORK5CYII=);
+	background-size: 11px 11px;
+	background-repeat: no-repeat;
+	background-position: 6px 14px;
+	padding: 0 0 0 25px;
+	background-color: #F9F9F9;
+	border: 1px solid #D7D7D7;
+	overflow: hidden;
+}
+.send-message input.message-input {
+	margin: 0;
+	padding: 8px 0;
+	font-size: 16px;
+	width: 100%;
+	height: 100%;
+	border: none;
+}

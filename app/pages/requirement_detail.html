@@ -84,6 +84,43 @@
 			.undisplayed {
 				display: none;
 			}
+			.comments-list ol, ul {
+				list-style: none;
+			}
+			.comments-list .comments-item {
+				margin-bottom: 9px;
+			}
+			.comments-list .comments-item .comments-item-bd {
+				padding: 0 0 0 30px;
+				position: relative;
+			}
+			.comments-list .ui-avatar {
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			.comments-list .ui-avatar img {
+				width: 30px;
+				height: 30px;
+				border-radius: 10%;
+			}
+			.comments-list .comments-content {
+				font-size: 13px;
+				position: relative;
+				line-height: 1.5;
+				padding-left: 5px;
+				color: #8f8f94;
+			}
+			.comments-list .comments-op {
+				line-height: 18px;
+				position: relative;
+			}
+			.comments-list .comments-op span {
+				margin-right: 10px;
+			}
+			.c_tx {
+				color: #f2c372;
+			}
 		</style>
 	</head>
 	<body class="c-overlay">
@@ -92,93 +129,133 @@
 			<h1 id="title" class="mui-title c-title">需求详情</h1>
 		</header>
 		<div class="mui-content" style="padding: 50px 5px 5px 5px;">
-				<div style="border-bottom: 1px solid #e6e6e6;">
+			<div style="border-bottom: 1px solid #e6e6e6;">
+				<div style="overflow: hidden;">
+					<img src="../images/blank.jpg" class="user-avatar" id="user_avatar">
+					<div class="user-info">
+						<div class="user-name" id="user_name"></div>
+						<div class="time" id="req_created"></div>
+					</div>
+				</div>
+				<div class="mui-media-body" style="padding-left: 45px;">
+					<p class="mui-ellipsis-5" id="req_content"></p>
+				</div>
+				<div style="padding-top: 5px; padding-left: 45px;" calss="undisplayed" id="project_info">
 					<div style="overflow: hidden;">
-						<img src="../images/blank.jpg" class="user-avatar" id="user_avatar">
+						<img src="../icons/100x100.png" class="user-avatar" id="project_logo">
 						<div class="user-info">
-							<div class="user-name" id="user_name"></div>
-							<div class="time" id="req_created"></div>
+							<div class="user-name" id="project_name"></div>
 						</div>
 					</div>
 					<div class="mui-media-body" style="padding-left: 45px;">
-						<p class="mui-ellipsis-5" id="req_content"></p>
-					</div>
-					<div style="padding-top: 5px; padding-left: 45px;" calss="undisplayed" id="project_info">
-						<div style="overflow: hidden;">
-							<img src="../icons/100x100.png" class="user-avatar" id="project_logo">
-							<div class="user-info">
-								<div class="user-name" id="project_name"></div>
-							</div>
+						<span class="project-item" id="project_location_teamSize"></span>
+						<div class="project-item">
+							<span class="mui-badge mui-badge-success">领域</span>
+							<span id="project_domain"></span>
 						</div>
-						<div class="mui-media-body" style="padding-left: 45px;">
-							<span class="project-item" id="project_location_teamSize"></span>
-							<div class="project-item">
-								<span class="mui-badge mui-badge-success">领域</span>
-								<span id="project_domain"></span>
-							</div>
-							<div class="project-item">
-								<span class="mui-badge mui-badge-primary">阶段</span>
-								<span id="project_phase"></span>
-							</div>
+						<div class="project-item">
+							<span class="mui-badge mui-badge-primary">阶段</span>
+							<span id="project_phase"></span>
 						</div>
 					</div>
 				</div>
-				<div style="padding-top: 10px; float: right;">
-					<span class="like" id="likebtn"></span>
-					<span style="font-size: .8em; color: #8f8f94; line-height: 1em;" id="like_count"></span>
-					<span class="comment"></span>
-					<span style="font-size: .8em; color: #8f8f94; line-height: 1em;" id="comment_count"></span>
-				</div>
-				<div style="clear: both;"></div>
-				<div id="likers" style="padding-top: 5px; padding-left: 10px; padding-right: 10px; color: #eb7350; font-size: 12px;">
-				</div>
+			</div>
+			<div style="padding-top: 10px; float: right;">
+				<span class="like" id="likebtn"></span>
+				<span style="font-size: .8em; color: #8f8f94; line-height: 1em;" id="like_count"></span>
+				<span class="comment"></span>
+				<span style="font-size: .8em; color: #8f8f94; line-height: 1em;" id="comment_count"></span>
+			</div>
+			<div style="clear: both;"></div>
+			<div id="likers" style="padding: 5px 5px 5px 30px; color: #eb7350; font-size: 12px;">
+			</div>
+			<div style="clear: both;"></div>
+			<div class="comments-list" style="padding-bottom: 42px;">
+				<ul id="comment-list">
+				</ul>
+			</div>
 		</div>
+		<nav class="mui-bar mui-bar-tab">
+			<div class="send-message">
+				<div id="send-msg" class="send-msg-btn">评论</div>
+				<div class="message-input-box">
+					<input id="comment-content" name="content" type="text" class="message-input" placeholder="输入消息内容">
+				</div>
+			</div>
+		</nav>
 	</body>
+	<script id="comment-template" type="text/x-handlebars-template">
+		<li class="comments-item">
+			<div class="comments-item-bd">
+				<div class="ui-avatar">
+					<img class="q_namecard" src="{{commentor.avatar}}">
+				</div>
+				<div class="comments-content">
+					<span class="c_tx">{{commentor.name}}</span>: {{content}}
+					<div class="comments-op">
+						<span class=" ui-mr10 state">{{created}}</span>
+					</div>
+				</div>
+			</div>
+		</li>
+	</script>
+	<script type="text/javascript" charset="UTF-8" src="../js/handlebars-v2.0.0.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
 	<script type="text/javascript">
-        var requirementId = 0, projectId = 0, likecount = 0, isliked = false,
-            userNameEl = document.getElementById('user_name'),
-            userAvatarEl = document.getElementById('user_avatar'),
-            reqContentEl = document.getElementById('req_content'),
-            reqCreatedEl = document.getElementById('req_created'),
-            projectInfoEl = document.getElementById('project_info'),
-            projectLogoEl = document.getElementById('project_logo'),
-            projectNameEl = document.getElementById('project_name'),
-            projectLocationTeamSizeEl = document.getElementById('project_location_teamSize'),
-            projectDomainEl = document.getElementById('project_domain'),
-            projectPhaseEl = document.getElementById('project_phase'),
-            likeCountEl = document.getElementById('like_count'),
-            commentCountEl = document.getElementById('comment_count'),
-            likebtnEl =document.getElementById('likebtn'),
-            likersEl = document.getElementById('likers');
+		var loginPage = null, requirementId = 0, projectId = 0, likecount = 0, commentcount = 0, isliked = false,
+			userNameEl = document.getElementById('user_name'),
+			userAvatarEl = document.getElementById('user_avatar'),
+			reqContentEl = document.getElementById('req_content'),
+			reqCreatedEl = document.getElementById('req_created'),
+			projectInfoEl = document.getElementById('project_info'),
+			projectLogoEl = document.getElementById('project_logo'),
+			projectNameEl = document.getElementById('project_name'),
+			projectLocationTeamSizeEl = document.getElementById('project_location_teamSize'),
+			projectDomainEl = document.getElementById('project_domain'),
+			projectPhaseEl = document.getElementById('project_phase'),
+			likeCountEl = document.getElementById('like_count'),
+			commentCountEl = document.getElementById('comment_count'),
+			likebtnEl =document.getElementById('likebtn'),
+			likersEl = document.getElementById('likers');
 
-        mui.init({
-            swipeBack: true,
-            beforeback: function() {
-                setTimeout(function() {
-                    userNameEl.innerText = '';
-                    userAvatarEl.src = '';
-                    reqContentEl.innerText = '';
-                    reqCreatedEl.innerText = '';
-                    projectInfoEl.classList.add('undisplayed');
-                    projectLogoEl.src = '';
-                    projectNameEl.innerText = '';
-                    projectLocationTeamSizeEl.innerText = '';
-                    projectDomainEl.innerText = '';
-                    projectPhaseEl.innerText = '';
-                    likeCountEl.innerText = '';
-                    commentCountEl.innerText = '';
-                    likecount = 0;
-                    likersEl.innerHTML = '';
-                    document.body.classList.add('c-overlay');
-                }, 200);
-            }
-        });
+		var divEl = document.createElement("div"),
+			commentSource = document.getElementById("comment-template").innerText,
+			commentTemplate = Handlebars.compile(commentSource),
+			commentsEl = document.getElementById("comment-list"),
+			contentEl = document.getElementById("comment-content");
 
-        projectInfoEl.addEventListener('tap', function() {
-            open_project_detail(projectId);
-        });
+		mui.init({
+			swipeBack: true,
+			beforeback: function() {
+				setTimeout(function() {
+					requirementId = 0;
+					projectId = 0;
+					likecount = 0;
+					isliked = false;
+					userNameEl.innerText = '';
+					userAvatarEl.src = '';
+					reqContentEl.innerText = '';
+					reqCreatedEl.innerText = '';
+					projectInfoEl.classList.add('undisplayed');
+					projectLogoEl.src = '';
+					projectNameEl.innerText = '';
+					projectLocationTeamSizeEl.innerText = '';
+					projectDomainEl.innerText = '';
+					projectPhaseEl.innerText = '';
+					likeCountEl.innerText = '';
+					commentCountEl.innerText = '';
+					likersEl.innerHTML = '';
+					commentsEl.innerHTML = '';
+					likebtnEl.classList.remove('selected');
+					document.body.classList.add('c-overlay');
+				}, 200);
+			}
+		});
+
+		projectInfoEl.addEventListener('tap', function() {
+			open_project_detail(projectId);
+		});
 		var projectDetailWebview = null;
 		function open_project_detail(id) {
 			if (!projectDetailWebview) {
@@ -199,77 +276,145 @@
 				return;
 			}
 			if (isliked) {
-				likecount--;
-				this.classList.remove('selected');
-				isliked = false;
-				document.getElementById('liker_' + state.userId).remove();
-				app.unlikeRequirement(requirementId, function(){});
+				app.unlikeRequirement(requirementId, function(){
+					likecount--;
+					likebtnEl.classList.remove('selected');
+					isliked = false;
+					document.getElementById('liker_' + state.userId).remove();
+					likeCountEl.innerText = '(' + likecount + ')';
+				});
 			} else {
-				likecount++;
-				this.classList.add('selected');
-				isliked = true;
-				var likerSpan = "<span id='liker_" + state.userId + "' style='padding-left: 5px'>" + state.name  +"<span>";
-				likersEl.innerHTML += likerSpan;
-				app.likeRequirement(requirementId, function(){});
+				app.likeRequirement(requirementId, function(){
+					likecount++;
+					likebtnEl.classList.add('selected');
+					isliked = true;
+					var likerSpan = "<span id='liker_" + state.userId + "' style='padding-left: 5px'>" + state.name  +"<span>";
+					if (likecount == 1) {
+						likerSpan = '<span class="like"></span>' + likerSpan;
+					}
+					likersEl.innerHTML += likerSpan;
+					likeCountEl.innerText = '(' + likecount + ')';
+				});
 			}
-			likeCountEl.innerText = '(' + likecount + ')';
 		});
 
-        document.addEventListener('mui.view.beforeshow', function(event) {
-            if (event.detail.$$type === 'back') {
-                setTimeout(function() {
-                    document.body.classList.remove('c-overlay');
-                }, 500);
-                return;
-            }
+		document.addEventListener('mui.view.beforeshow', function(event) {
+			if (event.detail.$$type === 'back') {
+				setTimeout(function() {
+					document.body.classList.remove('c-overlay');
+				}, 500);
+				return;
+			}
 
-            var success = function(response) {
-                    requirement = app.processRequirement(response.body);
+			var success = function(response) {
+				requirement = app.processRequirement(response.body);
 
-					requirementId = requirement.id;
-					likecount = requirement.likeCount;
-                    userNameEl.innerText = requirement.user.name;
-                    userAvatarEl.src = requirement.user.avatar;
-                    reqContentEl.innerText = '[' + requirement.typeInfo + ']' +requirement.content;
-                    reqCreatedEl.innerText = requirement.created;
-                    likeCountEl.innerText = '(' + requirement.likeCount + ')';
-                    commentCountEl.innerText = '(' + requirement.commentCount + ')';
-                    projectId = requirement.project.id;
-                    if (projectId > 0) {
-                        projectInfoEl.classList.remove('undisplayed');
-                        projectLogoEl.src = requirement.project.logo;
-                        projectNameEl.innerText = requirement.project.name;
-                        projectLocationTeamSizeEl.innerText = requirement.project.location + '，' + requirement.project.teamSize;
-                        projectDomainEl.innerText = requirement.project.industryDomain;
-                        projectPhaseEl.innerText = requirement.project.projectPhase;
-                    } else {
-                        projectInfoEl.classList.add('undisplayed');
-                    }
+				requirementId = requirement.id;
+				likecount = requirement.likeCount;
+				commentcount = requirement.commentCount;
 
-                    isliked = requirement.isliked;
-                    if (isliked) {
-                    		likebtnEl.classList.add('selected');
-                    }
+				userNameEl.innerText = requirement.user.name;
+				userAvatarEl.src = requirement.user.avatar;
+				reqContentEl.innerText = '[' + requirement.typeInfo + ']' +requirement.content;
+				reqCreatedEl.innerText = requirement.created;
+				likeCountEl.innerText = '(' + likecount + ')';
+				commentCountEl.innerText = '(' + commentcount + ')';
+				projectId = requirement.project.id;
+				if (projectId > 0) {
+					projectInfoEl.classList.remove('undisplayed');
+					projectLogoEl.src = requirement.project.logo;
+					projectNameEl.innerText = requirement.project.name;
+					projectLocationTeamSizeEl.innerText = requirement.project.location + '，' + requirement.project.teamSize;
+					projectDomainEl.innerText = requirement.project.industryDomain;
+					projectPhaseEl.innerText = requirement.project.projectPhase;
+				} else {
+					projectInfoEl.classList.add('undisplayed');
+				}
 
-					var likerusers = requirement.likers;
-					if (likerusers.length > 0) {
-						var likerSpans = '';
-						for (var i = 0, len = likerusers.length; i < len; i++) {
-							likerSpans += "<span id='liker_" + likerusers[i].userId + "' style='padding-left: 5px'>" + likerusers[i].name  +"<span>";
-						}
-						likersEl.innerHTML = likerSpans;
+				isliked = requirement.isliked;
+				if (isliked) {
+					likebtnEl.classList.add('selected');
+				}
+
+				var likerusers = requirement.likers;
+				if (likerusers.length > 0) {
+					var likerSpans = '<span class="like"></span>';
+					for (var i = 0, len = likerusers.length; i < len; i++) {
+						likerSpans += "<span id='liker_" + likerusers[i].userId + "' style='padding-left: 5px'>" + likerusers[i].name  +"<span>";
 					}
+					likersEl.innerHTML = likerSpans;
+				}
 
-                    window.scrollTo(0, 0);
-                    setTimeout(function() {
-                        document.body.classList.remove('c-overlay');
-                    }, 290);
-                    mui.currentWebview.show();
-                },
-                error = function(errorType) {
-                    mui.toast(app.ajaxErrorHandler(errorType));
-                };
-            app.getRequirement(event.detail.guid, success, error);
-        });
-    </script>
+				var commentlist = requirement.comments;
+				if (commentcount > 0) {
+					for (var i = commentcount - 1; i >= 0; i--) {
+						divEl.innerHTML = commentTemplate(commentlist[i]);
+						commentsEl.insertBefore(divEl.firstElementChild, commentsEl.firstElementChild);
+					}
+				}
+
+				window.scrollTo(0, 0);
+				setTimeout(function() {
+					document.body.classList.remove('c-overlay');
+				}, 290);
+				mui.currentWebview.show();
+			},
+			error = function(errorType) {
+				mui.toast(app.ajaxErrorHandler(errorType));
+			};
+			app.getRequirement(event.detail.guid, success, error);
+		});
+
+		//comment
+		var commentSuccess = function(response) {
+			var items = response.body.list;
+			commentcount = items.length;
+			if (commentcount > 0) {
+				for (var i = commentcount - 1; i >= 0; i--) {
+					divEl.innerHTML = commentTemplate(items[i]);
+					commentsEl.insertBefore(divEl.firstElementChild, commentsEl.firstElementChild);
+				}
+			}
+		},
+		commentError = function(errorType) {
+			mui.toast(app.ajaxErrorHandler(errorType));
+		};
+		//app.listRequirementComments(requirementId, 0, 10, commentSuccess, commentError);
+
+		document.getElementById("send-msg").addEventListener("tap", function() {
+			var state = app.getState();
+			if (!state.userId) {
+				if (!loginPage) {
+					loginPage = plus.webview.getWebviewById('login');
+				}
+				loginPage.show();
+				return;
+			}
+
+			var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
+			var content = contentEl.value;
+			app.commentRequirement(requirementId, content, function(err) {
+				setTimeout(function() {
+					wait.close();
+					if (err) {
+						plus.nativeUI.toast(err);
+						return;
+					} else {
+						contentEl.value = '';
+						commentcount++;
+						commentCountEl.innerText = '(' + commentcount + ')';
+
+						var answer = {}, commentor={};
+						commentor.name = state.name;
+						commentor.avatar = state.avatar;
+						answer.commentor = commentor;
+						answer.content = content;
+						answer.created = new Date().toLocaleTimeString();
+						divEl.innerHTML = commentTemplate(answer);
+						commentsEl.appendChild(divEl.firstElementChild);
+					}
+				}, 200);
+			});
+		});	
+	</script>
 </html>

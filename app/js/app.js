@@ -364,7 +364,7 @@
 		})
 	};
 
-owner.submitAuthenticate = function(info, callback) {
+    owner.submitAuthenticate = function(info, callback) {
 		callback = callback || $.noop;
 		info = info || {};
 		info.roleId = info.roleId || 0;
@@ -434,6 +434,64 @@ owner.submitAuthenticate = function(info, callback) {
 		})
 	};
 
+	owner.commentRequirement = function(requirementId, content, callback) {
+		callback = callback || $.noop;
+		var requestData = {};
+		requestData.content = content;
+
+		if (content.length <= 0) {
+			return callback('评论不能为空');
+		} else if (content.length > 100) {
+			return callback('评论不能大于100个字符');
+		}
+
+		mui.ajax(owner.apiURL + 'requirement/' + requirementId + '/comment', {
+			data: requestData,
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					app.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
+	};
+
+    owner.listRequirementComments = function(requirementId, offset, limit, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'requirement/' + requirementId + '/comments', {
+			data: {
+				offset: offset,
+				limit: limit
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				console.log(JSON.stringify(data));
+				if (data.status == 'SUCCEED') {
+					return successCallback(data);
+				} else {
+					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				return errorCallback(owner.ajaxErrorHandler(type));
+			}
+		})
+	};
+
 	owner.createRequirement = function(req, callback) {
 		callback = callback || $.noop;
 		req = req || {};
@@ -491,7 +549,7 @@ owner.submitAuthenticate = function(info, callback) {
 			type: 'get',
 			timeout: 5000,
 			success: function(data) {
-				console.log(JSON.stringify(data));
+
 				if (data.status == 'SUCCEED') {
 					return successCallback(data);
 				} else {
@@ -516,7 +574,6 @@ owner.submitAuthenticate = function(info, callback) {
 			type: 'get',
 			timeout: 5000,
 			success: function(data) {
-				console.log(JSON.stringify(data));
 				if (data.status == 'SUCCEED') {
 					return successCallback(data);
 				} else {
@@ -556,6 +613,7 @@ owner.submitAuthenticate = function(info, callback) {
 		res.commentCount = req.commentCount;
 		res.user = req.user;
 		res.likers = req.likers;
+		res.comments = req.comments;
 		res.created = req.created;
 		res.isliked = req.isliked;
 
@@ -604,7 +662,6 @@ owner.submitAuthenticate = function(info, callback) {
 			type: 'post',
 			timeout: 5000,
 			success: function(data, textStatus) {
-				console.log(JSON.stringify(data));
 				if (data.status == 'SUCCEED') {
 					return callback();
 				} else {
