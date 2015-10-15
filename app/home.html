@@ -259,7 +259,7 @@
 				var loginPage = null,
 					profilePage = null,
 					renmaiPage = null,
-					contestPage = null;
+					rzrzPage = null;
 				mui('#menus').on('tap', 'div', function() {
 					var id = this.getAttribute('id');
 					if ('profile' == id || 'renmai' == id) {
@@ -286,6 +286,11 @@
 							loginPage.show();
 							return;
 						}
+					} else if ('rzrz_list' == id) {
+						if (!rzrzPage) {
+							rzrzPage = plus.webview.getWebviewById('rzrz_list');
+						}
+						mui.fire(rzrzPage, 'mui.view.beforeshow', {});
 					}
 					var aniShow = "pop-in";
 					mui.openWindow({

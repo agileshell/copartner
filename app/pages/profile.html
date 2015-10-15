@@ -223,6 +223,10 @@
 				projectSource = document.getElementById("project-template").innerText,
 				projectTemplate = Handlebars.compile(projectSource),
 				projectEl = document.getElementById("project-list");
+
+			var loadingRequirementEl = document.getElementById('loading-requirement'),
+				loadingProjectEl = document.getElementById('loading-project');
+
 			var requirementIsFirstLoad = true,
 				projectIsFirstLoad = true,
 				requirementLatestLoadingRequestDate = 0,
@@ -320,11 +324,14 @@
 					}
 				});
 			});
-			document.getElementById('loading-requirement').addEventListener('tap', function() {
+
+			loadingRequirementEl.addEventListener('tap', function() {
+				loadingRequirementEl.innerText = '加载中';
 				requirementIsFirstLoad = false;
 				loadingRequirement();
 			});
-			document.getElementById('loading-project').addEventListener('tap', function() {
+			loadingProjectEl.addEventListener('tap', function() {
+				loadingProjectEl.innerText = '加载中';
 				projectIsFirstLoad = false;
 				loadingProject();
 			});
@@ -339,9 +346,11 @@
 								requirementEl.appendChild(requirementDivEl.firstElementChild);
 							}
 						}
+						loadingRequirementEl.innerText = '点击加载更多';
 					},
 					error = function(errorType) {
 						mui.toast(app.ajaxErrorHandler(errorType));
+						loadingRequirementEl.innerText = '点击加载更多';
 					};
 				setTimeout(function() {
 					app.listUserRequirements(0, 10, 0, requirementLatestLoadingRequestDate, success, error);
@@ -358,9 +367,11 @@
 								projectEl.appendChild(projectDivEl.firstElementChild);
 							}
 						}
+						loadingProjectEl.innerText = '点击加载更多';
 					},
 					error = function(errorType) {
 						mui.toast(app.ajaxErrorHandler(errorType));
+						loadingProjectEl.innerText = '点击加载更多';
 					};
 				setTimeout(function() {
 					app.listUserProjects(0, 10, 0, projectLatestLoadingRequestDate, success, error);

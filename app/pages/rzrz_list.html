@@ -67,9 +67,16 @@
 				newsWebview.evalJS('mui.scrollTo(0, 100)');
 			}
 		});
-		var loginPage = null;
+		var loginPage = null, rzrzSubPage = null;
 		var operation = 'create_requirement';
 		mui.plusReady(function() {
+			document.addEventListener('mui.view.beforeshow', function(event) {
+				if (!rzrzSubPage) {
+					rzrzSubPage = plus.webview.getWebviewById('rzrz_list_sub');
+				}
+				mui.fire(rzrzSubPage, 'mui.view.beforeshow', {});
+			});
+
 			document.getElementById('create-operation').addEventListener('tap', function() {
 				if (app.getUserId() == 0) {
 					if (!loginPage) {

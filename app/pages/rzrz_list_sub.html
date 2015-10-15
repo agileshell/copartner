@@ -129,7 +129,7 @@
 				</div>
 			</a>
 			<div style="padding-top: 5px; float: right;">
-				<span class="like{{liked}}" data-guid="{{id}}" data-value="{{likeCount}}"></span>
+				<span class="like {{liked}}" data-guid="{{id}}" data-value="{{likeCount}}"></span>
 				<span style="font-size: .8em; color: #8f8f94; line-height: 1em;" id="requirement_like_{{id}}"> ({{likeCount}})</span>
 				<span class="comment"></span>
 				<span style="font-size: .8em; color: #8f8f94; line-height: 1em;">({{commentCount}})</span>
@@ -162,7 +162,7 @@
 					</div>
 				</div>
 				<div style="padding-top: 5px; float: right;">
-					<span class="like{{liked}}" data-guid="{{id}}" data-value="{{likeCount}}"></span>
+					<span class="like {{liked}}" data-guid="{{id}}" data-value="{{likeCount}}"></span>
 					<span style="font-size: .8em; color: #8f8f94; line-height: 1em;" id="project_like_{{id}}">({{likeCount}})</span>
 					<span class="comment"></span>
 					<span style="font-size: .8em; color: #8f8f94; line-height: 1em;">({{commentCount}})</span>
@@ -281,10 +281,22 @@
 			if (plus.networkinfo.getCurrentType() === plus.networkinfo.CONNECTION_NONE) {
 				plus.nativeUI.alert('无网络连接!');
 			} else {
-				setTimeout(function() {
+				document.addEventListener('mui.view.beforeshow', function(event) {
+					rzrzType = 1;
+					requirementLatestRefreshRequestDate = 0;
+					requirementLatestLoadingRequestDate = 0;
+					projectLatestRefreshRequestDate = 0;
+					projectLatestLoadingRequestDate = 0;
+					projectIsFirstLoad = false;
+					requirementLoadingNoData = false;
+					projectLoadingNoData = false;
+					requirementEl.innerHTML = '';
+					projectEl.innerHTML = '';
+
 					mui('#pullrefresh').pullRefresh().pullupLoading();
-				}, 200);
+				});
 			}
+
 			mui('#rzrz-type').on('tap', 'a', function() {
 				var id = this.getAttribute('id');
 				//切换父Webview的创建button

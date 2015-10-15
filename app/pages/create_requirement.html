@@ -312,6 +312,7 @@
 
 			var toRzrzPage = function() {
 				var rzrzPage = plus.webview.getWebviewById('rzrz_list');
+				mui.fire(rzrzPage, 'mui.view.beforeshow', {});
 				rzrzPage.show();
 			};
 			document.getElementById('create-requirement').addEventListener('tap', function() {
