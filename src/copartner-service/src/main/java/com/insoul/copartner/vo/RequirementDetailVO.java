@@ -2,6 +2,7 @@ package com.insoul.copartner.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -33,6 +34,8 @@ public class RequirementDetailVO implements Serializable {
     private Date created;
 
     private boolean isliked;
+
+    private List<CommentVO> comments;
 
     public long getId() {
         return id;
@@ -120,6 +123,14 @@ public class RequirementDetailVO implements Serializable {
 
     public void setIsliked(boolean isliked) {
         this.isliked = isliked;
+    }
+
+    public List<CommentVO> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentVO> comments) {
+        this.comments = comments;
     }
 
 }

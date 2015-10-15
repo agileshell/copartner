@@ -2,9 +2,6 @@ package com.insoul.copartner.vo.request;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.insoul.copartner.validate.constraint.StringLength;
@@ -13,11 +10,8 @@ public class RequirementCommentRequest implements Serializable {
 
     private static final long serialVersionUID = 3571510122031006583L;
 
-    @NotNull
-    @Min(1)
     private Long requirementId;
 
-    @Min(1)
     private Long parentId = 0L;
 
     @NotBlank

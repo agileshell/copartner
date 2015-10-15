@@ -1,6 +1,10 @@
 package com.insoul.copartner.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.insoul.copartner.util.CustomDateSerializer;
 
 public class CommentVO implements Serializable {
 
@@ -13,6 +17,9 @@ public class CommentVO implements Serializable {
     private String content;
 
     private UserLeanVO commentor;
+
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date created;
 
     public Long getId() {
         return id;
@@ -44,6 +51,14 @@ public class CommentVO implements Serializable {
 
     public void setCommentor(UserLeanVO commentor) {
         this.commentor = commentor;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
 }

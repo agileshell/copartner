@@ -84,14 +84,14 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
         criteria.setUserId(requestData.getUserId());
-        criteria.setFrom(
-                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
+        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
+                : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
 
         if (null != requestData.getUserId() && requestData.getUserId().equals(getUserId())) {
-            criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue(), DemandStatus.INACTIVE.getValue() });
+            criteria.setStatus(new String[] {DemandStatus.ACTIVE.getValue(), DemandStatus.INACTIVE.getValue()});
         } else {
-            criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue() });
+            criteria.setStatus(new String[] {DemandStatus.ACTIVE.getValue()});
         }
 
         List<Requirement> requirements = requirementDao.queryRequirement(criteria);
@@ -128,15 +128,16 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
         PaginationCriteria pagination = new PaginationCriteria();
         pagination.setOffset(0);
         pagination.setLimit(10);
-        List<RequirementLikers> requirementLikers = requirementLikersDao
-                .findByRequirementIdsAndPagination(requirementIds, pagination);
+        List<RequirementLikers> requirementLikers =
+                requirementLikersDao.findByRequirementIdsAndPagination(requirementIds, pagination);
         Set<Long> likerIds = new HashSet<Long>();
         Map<Long, Set<Long>> requirementIdMapLikerIds = new HashMap<Long, Set<Long>>();
         for (RequirementLikers requirementLiker : requirementLikers) {
             Long userId = requirementLiker.getId().getUserId();
             Long requirementId = requirementLiker.getId().getRequirementId();
-            Set<Long> ids = requirementIdMapLikerIds.containsKey(requirementId)
-                    ? requirementIdMapLikerIds.get(requirementId) : new HashSet<Long>();
+            Set<Long> ids =
+                    requirementIdMapLikerIds.containsKey(requirementId) ? requirementIdMapLikerIds.get(requirementId)
+                            : new HashSet<Long>();
             ids.add(userId);
             requirementIdMapLikerIds.put(requirementId, ids);
 
@@ -254,6 +255,14 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
             likers.add(userVO);
         }
         requirementVO.setLikers(likers);
+
+        RequirementCommentCriteria criteria = new RequirementCommentCriteria();
+        criteria.setOffset(0);
+        criteria.setLimit(10);
+        criteria.setRequirementId(requirementId);
+        List<RequirementComments> comments = requirementCommentsDao.queryComments(criteria);
+        List<CommentVO> commentVOs = formatComments(comments);
+        requirementVO.setComments(commentVOs);
 
         return requirementVO;
     }
@@ -396,6 +405,7 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
             commentVO.setParentId(comment.getParentId());
             commentVO.setContent(comment.getContent());
             commentVO.setCommentor(userIdMapUser.get(comment.getUserId()));
+            commentVO.setCreated(comment.getCreated());
 
             commentVOs.add(commentVO);
         }

@@ -92,15 +92,15 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
         criteria.setUserId(requestData.getUserId());
-        criteria.setFrom(
-                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
+        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
+                : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
         criteria.setName(requestData.getKeyword());
 
         if (null != requestData.getUserId() && requestData.getUserId().equals(getUserId())) {
-            criteria.setStatus(new String[] { ProjectStatus.ACTIVE.getValue(), ProjectStatus.INACTIVE.getValue() });
+            criteria.setStatus(new String[] {ProjectStatus.ACTIVE.getValue(), ProjectStatus.INACTIVE.getValue()});
         } else {
-            criteria.setStatus(new String[] { ProjectStatus.ACTIVE.getValue() });
+            criteria.setStatus(new String[] {ProjectStatus.ACTIVE.getValue()});
         }
 
         List<Project> projects = projectDao.queryProject(criteria);
@@ -235,8 +235,9 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         for (ProjectLikers projectLiker : projectLikeres) {
             Long userId = projectLiker.getId().getUserId();
             Long projectId = projectLiker.getId().getProjectId();
-            Set<Long> ids = projectIdMapLikerIds.containsKey(projectId) ? projectIdMapLikerIds.get(projectId)
-                    : new HashSet<Long>();
+            Set<Long> ids =
+                    projectIdMapLikerIds.containsKey(projectId) ? projectIdMapLikerIds.get(projectId)
+                            : new HashSet<Long>();
             ids.add(userId);
             projectIdMapLikerIds.put(projectId, ids);
 
@@ -350,6 +351,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
             commentVO.setParentId(comment.getParentId());
             commentVO.setContent(comment.getContent());
             commentVO.setCommentor(userIdMapUser.get(comment.getUserId()));
+            commentVO.setCreated(comment.getCreated());
 
             commentVOs.add(commentVO);
         }
@@ -388,6 +390,5 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
     }
 
     @Override
-    public void updateProject(ProjectUpdateRequest requestData) throws CException {
-    }
+    public void updateProject(ProjectUpdateRequest requestData) throws CException {}
 }

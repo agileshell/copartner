@@ -46,7 +46,7 @@ public class ProjectCommentsDaoImpl extends BaseDaoImpl<ProjectComments, Long> i
 			hql.append("SELECT COUNT(*) FROM ProjectComments WHERE 1 = 1").append(conditionStr);
 			query = createQuery(hql.toString(), params);
 		} else {
-			hql.append("FROM ProjectComments WHERE 1 = 1").append(conditionStr).append(" ORDER BY created DESC");
+			hql.append("FROM ProjectComments WHERE 1 = 1").append(conditionStr);
 			query = createQuery(hql.toString(), params);
 			if ((criteria.getLimit() != null) && (criteria.getLimit() != 0)) {
 				query.setMaxResults(criteria.getLimit());
