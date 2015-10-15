@@ -60,7 +60,7 @@
 										<div class="form-group">
 											<label class="col-lg-2 control-label">导师:</label>
 											<div class="col-lg-10">
-												<a href="/user/detail/${question.tutor.questioner.userId}">${question.tutor.questioner.name}</a>
+												<a href="/user/detail/${question.tutor.userId}">${question.tutor.name}</a>
 											</div>
 										</div>
 										<hr />
