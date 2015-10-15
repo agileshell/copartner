@@ -78,7 +78,7 @@
 													<tr>
 														<td>
 														<a href="/user/detail/${c.answeror.userId}">
-														<img class="user_icon" alt="${c.answeror.name}" src="${cdnDomain}${c.answeror.avatar}"></img>
+														<img class="user_icon" alt="${c.answeror.name}" src="${c.answeror.avatar}"></img>
 														${c.answeror.name}
 														</a>
 														</td>
