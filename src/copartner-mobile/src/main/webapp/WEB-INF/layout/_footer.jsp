@@ -9,5 +9,5 @@
         <li><a rel="nofollow" href="home">客户端APP</a></li>
     </ul>
     <div class="m-1px-line-up"></div>
-    <div class="footer-copyright">Copyright © 2014-2015 希芳阁绿化 版权所有</div>
+    <div class="footer-copyright">Copyright © 2014-2015 佰汇帮 版权所有</div>
 </footer>
