@@ -69,28 +69,44 @@ public class ContestEntryController extends WebBase {
         return mv;
     }
     
-    private ContestEntryVO toContestEntryVO(ContestEntry contestEntry) {
+    private ContestEntryVO toContestEntryVO(ContestEntry c) {
         ContestEntryVO vo = new ContestEntryVO();
-        vo.setBusinessLicense(contestEntry.getBusinessLicense());
-        vo.setBusinessLicenseImg(contestEntry.getBusinessLicenseImg());
-        vo.setContestId(contestEntry.getContestId());
+        vo.setBusinessLicense(c.getBusinessLicense());
+        vo.setBusinessLicenseImg(c.getBusinessLicenseImg());
+        vo.setContestId(c.getContestId());
         try {
-            vo.setContestName(contestDAO.getContestName(contestEntry.getContestId()));
+            vo.setContestName(contestDAO.getContestName(c.getContestId()));
         } catch (Exception ingore) {}
-        vo.setCreated(contestEntry.getCreated());
-        vo.setHasBusinessRegistered(contestEntry.getHasBusinessRegistered());
-        vo.setId(contestEntry.getId());
-        vo.setProjectId(contestEntry.getProjectId());
+        vo.setCreated(c.getCreated());
+        vo.setHasBusinessRegistered(c.getHasBusinessRegistered());
+        vo.setId(c.getId());
+        vo.setProjectId(c.getProjectId());
         try {
-            vo.setProjectName(projectDAO.getProjectName(contestEntry.getProjectId()));
+            vo.setProjectName(projectDAO.getProjectName(c.getProjectId()));
         } catch (Exception ingore) {}
-        vo.setStatus(contestEntry.getStatus());
-        vo.setUpdated(contestEntry.getUpdated());
-        vo.setUserId(contestEntry.getUserId());
+        vo.setStatus(c.getStatus());
+        vo.setUpdated(c.getUpdated());
+        vo.setUserId(c.getUserId());
         try {
-            vo.setUserName(userDAO.getUserName(contestEntry.getUserId()));
+            vo.setUserName(userDAO.getUserName(c.getUserId()));
         } catch (Exception ingore) {}
-        vo.setVotes(contestEntry.getVotes());
+        vo.setVotes(c.getVotes());
+        
+        vo.setLocation(c.getLocation());
+        vo.setInstance(c.getInstance());
+        vo.setIndustry(c.getIndustry());
+        vo.setLegalFormation(c.getLegalFormation());
+        vo.setEmployqty(c.getEmployqty());
+        vo.setRegtime(c.getRegtime());
+        vo.setLegalPerson(c.getLegalPerson());
+        vo.setUserCategory(c.getUserCategory());
+        vo.setContact(c.getContact());
+        vo.setIdNumber(c.getIdNumber());
+        vo.setBankName(c.getBankName());
+        vo.setBankUserName(c.getBankUserName());
+        vo.setBankAccount(c.getBankAccount());
+        vo.setSupportMoney(c.getSupportMoney());
+        
         return vo;
     }
     

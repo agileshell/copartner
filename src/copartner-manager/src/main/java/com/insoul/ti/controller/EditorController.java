@@ -46,7 +46,9 @@ public class EditorController extends WebBase {
         JSONObject json = new JSONObject();
         json.put("success", false);
         try {
-            String uri = CDNUtil.uploadFile(image.getInputStream(), image.getOriginalFilename());
+            String originalFilename = image.getOriginalFilename();
+            String fileExt = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+            String uri = CDNUtil.uploadFile(image.getInputStream(), System.nanoTime() + "." + fileExt);
             json.put("success", true);
             json.put("image", GlobalProperties.CDN_DOMAIN + uri);
         } catch (Throwable e) {
@@ -111,7 +113,7 @@ public class EditorController extends WebBase {
                 }
                 JSONObject json = new JSONObject();
                 try {
-                    String uri = CDNUtil.uploadFile(file.getInputStream(), fileName);
+                    String uri = CDNUtil.uploadFile(file.getInputStream(), System.nanoTime() + "." + fileExt);
                     json.put("error", 0);
                     json.put("url", GlobalProperties.CDN_DOMAIN + uri);
                     out.print(json.toString());

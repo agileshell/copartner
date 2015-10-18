@@ -25,6 +25,7 @@
 	
 	<mapping path="/contest/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
 	<mapping path="/contestentry/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/contestproject/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
 	
 	<mapping path="/require/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
 	

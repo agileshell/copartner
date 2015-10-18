@@ -64,6 +64,65 @@
 					                      </div>
 										</div>
 									</div>
+									
+									
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">所在市县或园区:</label>
+										<div class="col-lg-10">${contestEntry.location}</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">创业实体名称:</label>
+										<div class="col-lg-10">${contestEntry.instance}</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">所属行业:</label>
+										<div class="col-lg-10">${contestEntry.industry}</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">企业法律形态:</label>
+										<div class="col-lg-10">${contestEntry.legalFormation}</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">吸纳就业人数:</label>
+										<div class="col-lg-10">${contestEntry.employqty}</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">注册时间:</label>
+										<div class="col-lg-10">${contestEntry.regtime}</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">法定代表人:</label>
+										<div class="col-lg-10">${contestEntry.legalPerson}</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">人员类别:</label>
+										<div class="col-lg-10">${contestEntry.userCategory}</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">联系方式:</label>
+										<div class="col-lg-10">${contestEntry.contact}</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">身份证:</label>
+										<div class="col-lg-10">${contestEntry.idNumber}</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">开户行:</label>
+										<div class="col-lg-10">${contestEntry.bankName}</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">开户名:</label>
+										<div class="col-lg-10">${contestEntry.bankUserName}</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">账号:</label>
+										<div class="col-lg-10">${contestEntry.bankAccount}</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label" for="contact">申请扶持金额:</label>
+										<div class="col-lg-10">${contestEntry.supportMoney}</div>
+									</div>
+									
 									<hr/>
 									<div class="form-group">
 										<div class="col-lg-offset-1 col-lg-12">
