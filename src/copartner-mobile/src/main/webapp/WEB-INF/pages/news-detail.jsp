@@ -29,7 +29,7 @@
 <!-- header start -->
 <header>
     <div class="header-bar">
-        <div id="layout_urlblack" data-url="" class="header-icon-back">
+        <div id="layout_urlblack" data-url="news" class="header-icon-back">
             <span>返回</span>
         </div>
         <div class="header-title">动态详情</div>

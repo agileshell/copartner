@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="config.jsp"%>
 <head>
-<title>我是创始人</title>
+<title>客户端APP</title>
 <script>
 	var browser={  
 	    versions:function(){
@@ -94,6 +94,11 @@ a {
         </div>
     </a>
 </div>
+<!-- footer start -->
+<div style="position:fixed; bottom:0; width: 100%">
+<%@ include file="../layout/_footer.jsp"%>
+</div>
+<!-- footer end -->
 <script>
     function is_weixin() {
         var ua = navigator.userAgent.toLowerCase();

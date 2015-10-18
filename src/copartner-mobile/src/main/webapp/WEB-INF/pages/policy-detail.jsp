@@ -29,7 +29,7 @@
 <!-- header start -->
 <header>
     <div class="header-bar">
-        <div id="layout_urlblack" data-url="" class="header-icon-back">
+        <div id="layout_urlblack" data-url="policy_list" class="header-icon-back">
             <span>返回</span>
         </div>
         <div class="header-title">政策详情</div>
