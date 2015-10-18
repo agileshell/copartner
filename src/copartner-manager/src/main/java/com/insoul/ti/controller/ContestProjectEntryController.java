@@ -224,10 +224,10 @@ public class ContestProjectEntryController extends WebBase {
                 cell.setCellValue(new HSSFRichTextString(c.getLegalFormation()));
                 cell.setCellStyle(style);
                 cell = row.createCell(5);
-                cell.setCellValue(new HSSFRichTextString(c.getEmployqty() + ""));
+                cell.setCellValue(new HSSFRichTextString(c.getRegtime()));
                 cell.setCellStyle(style);
                 cell = row.createCell(6);
-                cell.setCellValue(new HSSFRichTextString(c.getRegtime()));
+                cell.setCellValue(new HSSFRichTextString(c.getEmployqty() + ""));
                 cell.setCellStyle(style);
                 cell = row.createCell(7);
                 cell.setCellValue(new HSSFRichTextString(c.getLegalPerson()));
