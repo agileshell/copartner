@@ -20,6 +20,8 @@ public class ContestEntryVote extends BaseEntity {
     @Column(name = "votor_id", nullable = false)
     private Long votorId;
 
+    private String comment;
+
     public Long getContestEntryId() {
         return contestEntryId;
     }
@@ -36,10 +38,19 @@ public class ContestEntryVote extends BaseEntity {
         this.votorId = votorId;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
+        result = prime * result + ((comment == null) ? 0 : comment.hashCode());
         result = prime * result + ((contestEntryId == null) ? 0 : contestEntryId.hashCode());
         result = prime * result + ((votorId == null) ? 0 : votorId.hashCode());
         return result;
@@ -54,6 +65,11 @@ public class ContestEntryVote extends BaseEntity {
         if (getClass() != obj.getClass())
             return false;
         ContestEntryVote other = (ContestEntryVote) obj;
+        if (comment == null) {
+            if (other.comment != null)
+                return false;
+        } else if (!comment.equals(other.comment))
+            return false;
         if (contestEntryId == null) {
             if (other.contestEntryId != null)
                 return false;

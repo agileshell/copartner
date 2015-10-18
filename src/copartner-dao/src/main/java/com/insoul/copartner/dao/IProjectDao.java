@@ -12,7 +12,7 @@ public interface IProjectDao extends IBaseDao<Project, Long> {
     Long countProject(ProjectCriteria criteria);
 
     long count();
-    
+
     String getProjectName(Long id);
 
 }

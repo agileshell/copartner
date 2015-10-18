@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.insoul.copartner.constant.ResponseCode;
@@ -83,8 +84,9 @@ public class ContestController extends BaseController {
 
     @RequestMapping(value = "/contestEntry/{contestEntryId}/vote", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> vote(@PathVariable Long contestEntryId) throws CException {
-        contestService.vote(contestEntryId);
+    public ResponseEntity<Map<String, Object>> vote(@PathVariable Long contestEntryId, @RequestParam String comment)
+            throws CException {
+        contestService.vote(contestEntryId, comment);
 
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
     }

@@ -19,9 +19,13 @@ public class ContestDetailVO implements Serializable {
 
     private boolean isRegister;// 是否报名
 
+    private long ownProjectCount;// 当前用户拥有的project的数量
+
     private List<ContestEntryLeanVO> tutorVoteRanking;
 
     private List<ContestEntryLeanVO> investorVoteRanking;
+
+    private List<ContestEntryVO> contestEntries;
 
     public Long getId() {
         return id;
@@ -71,6 +75,14 @@ public class ContestDetailVO implements Serializable {
         this.isRegister = isRegister;
     }
 
+    public long getOwnProjectCount() {
+        return ownProjectCount;
+    }
+
+    public void setOwnProjectCount(long ownProjectCount) {
+        this.ownProjectCount = ownProjectCount;
+    }
+
     public List<ContestEntryLeanVO> getTutorVoteRanking() {
         return tutorVoteRanking;
     }
@@ -85,6 +97,14 @@ public class ContestDetailVO implements Serializable {
 
     public void setInvestorVoteRanking(List<ContestEntryLeanVO> investorVoteRanking) {
         this.investorVoteRanking = investorVoteRanking;
+    }
+
+    public List<ContestEntryVO> getContestEntries() {
+        return contestEntries;
+    }
+
+    public void setContestEntries(List<ContestEntryVO> contestEntries) {
+        this.contestEntries = contestEntries;
     }
 
 }

@@ -28,5 +28,5 @@ public interface IContestService {
 
     boolean isVote(long contestEntryId);
 
-    void vote(long contestEntryId);
+    void vote(long contestEntryId, String comment);
 }

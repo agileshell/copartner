@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.insoul.copartner.constant.ProjectStatus;
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.dao.IContestDAO;
 import com.insoul.copartner.dao.IContestEntryDAO;
@@ -21,6 +22,7 @@ import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.dao.criteria.ContestCriteria;
 import com.insoul.copartner.dao.criteria.ContestEntryCriteria;
+import com.insoul.copartner.dao.criteria.ProjectCriteria;
 import com.insoul.copartner.domain.Contest;
 import com.insoul.copartner.domain.ContestEntry;
 import com.insoul.copartner.domain.ContestEntryVote;
@@ -199,6 +201,20 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
                 investorVoteRanking.add(cl);
             }
             detail.setInvestorVoteRanking(investorVoteRanking);
+
+            ProjectCriteria projectcriteria = new ProjectCriteria();
+            projectcriteria.setUserId(getUserId());
+            projectcriteria
+                    .setStatus(new String[] { ProjectStatus.ACTIVE.getValue(), ProjectStatus.INACTIVE.getValue() });
+            Long count = projectDao.countProject(projectcriteria);
+            detail.setOwnProjectCount(count);
+
+            ContestEntryListRequest requestData = new ContestEntryListRequest();
+            requestData.setContestId(io.getId());
+            requestData.setOffset(0);
+            requestData.setLimit(10);
+            List<ContestEntryVO> entryVOs = this.listContestEntries(requestData).getList();
+            detail.setContestEntries(entryVOs);
         }
 
         return detail;
@@ -310,6 +326,11 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
         long currentUserId = getUserId();
         ContestEntry contestEntry = contestEntryDAO.getByContestAndUser(contestId, currentUserId);
         if (null == contestEntry) {
+            Project project = projectDao.get(requestData.getProjectId());
+            if (null == project) {
+                return;
+            }
+
             contestEntry = new ContestEntry();
             contestEntry.setContestId(contestId);
             contestEntry.setProjectId(requestData.getProjectId());
@@ -318,6 +339,24 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
             contestEntry.setBusinessLicense(requestData.getBusinessLicense());
             contestEntry.setBusinessLicenseImg(requestData.getBusinessLicenseImg());
             contestEntry.setCreated(new Date());
+
+            contestEntry.setLocation(requestData.getLocationCampus());
+            contestEntry.setInstance(requestData.getInstance());
+
+            IndustryDomain industryDomain = industryDomainDao.get(project.getIndustryDomainId());
+            contestEntry.setIndustry(industryDomain.getName());
+
+            contestEntry.setLegalFormation(requestData.getLegalFormation());
+            contestEntry.setEmployqty(requestData.getEmployqty());
+            contestEntry.setRegtime(requestData.getRegtime());
+            contestEntry.setLegalPerson(requestData.getLegalPerson());
+            contestEntry.setUserCategory(requestData.getUserCategory());
+            contestEntry.setContact(project.getContact());
+            contestEntry.setIdNumber(requestData.getIdNumber());
+            contestEntry.setBankName(requestData.getBankName());
+            contestEntry.setBankUserName(requestData.getBankUserName());
+            contestEntry.setBankAccount(requestData.getBankAccount());
+            contestEntry.setSupportMoney(requestData.getSupportMoney());
 
             contestEntryDAO.save(contestEntry);
         }
@@ -334,7 +373,7 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
 
     @Override
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-    public void vote(long contestEntryId) {
+    public void vote(long contestEntryId, String comment) {
         ContestEntry contestEntry = contestEntryDAO.get(contestEntryId);
         if (null == contestEntry) {
             return;
@@ -353,6 +392,7 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
             contestEntryVote = new ContestEntryVote();
             contestEntryVote.setContestEntryId(contestEntryId);
             contestEntryVote.setVotorId(currentUserId);
+            contestEntryVote.setComment(comment);
             contestEntryVote.setCreated(new Date());
 
             contestEntryVoteDao.save(contestEntryVote);

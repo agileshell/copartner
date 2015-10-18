@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.insoul.copartner.constant.ProjectStatus;
 import com.insoul.copartner.constant.ResponseCode;
+import com.insoul.copartner.dao.IContestDAO;
+import com.insoul.copartner.dao.IContestEntryDAO;
 import com.insoul.copartner.dao.IDemandLikersDao;
 import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.ILocationDao;
@@ -25,9 +27,12 @@ import com.insoul.copartner.dao.IProjectPhaseDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.dao.IUserDao;
+import com.insoul.copartner.dao.criteria.ContestCriteria;
 import com.insoul.copartner.dao.criteria.PaginationCriteria;
 import com.insoul.copartner.dao.criteria.ProjectCommentCriteria;
 import com.insoul.copartner.dao.criteria.ProjectCriteria;
+import com.insoul.copartner.domain.Contest;
+import com.insoul.copartner.domain.ContestEntry;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Location;
 import com.insoul.copartner.domain.Project;
@@ -86,21 +91,27 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
     @Resource
     private IDemandLikersDao demandLikersDao;
 
+    @Resource
+    private IContestDAO contestDAO;
+
+    @Resource
+    private IContestEntryDAO contestEntryDAO;
+
     @Override
     public Pagination<ProjectVO> listProjects(ProjectListRequest requestData) {
         ProjectCriteria criteria = new ProjectCriteria();
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
         criteria.setUserId(requestData.getUserId());
-        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
-                : null);
+        criteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
         criteria.setName(requestData.getKeyword());
 
         if (null != requestData.getUserId() && requestData.getUserId().equals(getUserId())) {
-            criteria.setStatus(new String[] {ProjectStatus.ACTIVE.getValue(), ProjectStatus.INACTIVE.getValue()});
+            criteria.setStatus(new String[] { ProjectStatus.ACTIVE.getValue(), ProjectStatus.INACTIVE.getValue() });
         } else {
-            criteria.setStatus(new String[] {ProjectStatus.ACTIVE.getValue()});
+            criteria.setStatus(new String[] { ProjectStatus.ACTIVE.getValue() });
         }
 
         List<Project> projects = projectDao.queryProject(criteria);
@@ -145,7 +156,9 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         project.setFullLocation(fullLocation.toString());
         project.setLocationId(requestData.getLocationId());
 
-        project.setUserId(getUserId());
+        long currentUserId = getUserId();
+
+        project.setUserId(currentUserId);
         project.setName(requestData.getName());
         project.setLogo(requestData.getLogo());
         project.setAdvantage(requestData.getAdvantage());
@@ -155,6 +168,41 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         project.setCreated(new Date());
 
         projectDao.save(project);
+
+        if (requestData.getRegisterContest()) {
+            ContestCriteria criteria = new ContestCriteria();
+            criteria.setStatus("active");
+            criteria.setLimit(1);
+            List<Contest> list = contestDAO.queryContest(criteria);
+            if (null != list && list.size() > 0) {
+                Contest contest = list.get(0);
+
+                ContestEntry contestEntry = new ContestEntry();
+                contestEntry.setContestId(contest.getId());
+                contestEntry.setProjectId(project.getId());
+                contestEntry.setUserId(currentUserId);
+                contestEntry.setHasBusinessRegistered(requestData.getHasBusinessRegistered());
+                contestEntry.setBusinessLicense(requestData.getBusinessLicense());
+                contestEntry.setBusinessLicenseImg(requestData.getBusinessLicenseImg());
+                contestEntry.setCreated(new Date());
+
+                contestEntry.setLocation(requestData.getLocationCampus());
+                contestEntry.setInstance(requestData.getInstance());
+                contestEntry.setIndustry(industryDomain.getName());
+                contestEntry.setLegalFormation(requestData.getLegalFormation());
+                contestEntry.setEmployqty(requestData.getEmployqty());
+                contestEntry.setRegtime(requestData.getRegtime());
+                contestEntry.setLegalPerson(requestData.getLegalPerson());
+                contestEntry.setUserCategory(requestData.getUserCategory());
+                contestEntry.setContact(project.getContact());
+                contestEntry.setIdNumber(requestData.getIdNumber());
+                contestEntry.setBankName(requestData.getBankName());
+                contestEntry.setBankUserName(requestData.getBankUserName());
+                contestEntry.setBankAccount(requestData.getBankAccount());
+                contestEntry.setSupportMoney(requestData.getSupportMoney());
+                contestEntryDAO.save(contestEntry);
+            }
+        }
     }
 
     @Override
@@ -235,9 +283,8 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
         for (ProjectLikers projectLiker : projectLikeres) {
             Long userId = projectLiker.getId().getUserId();
             Long projectId = projectLiker.getId().getProjectId();
-            Set<Long> ids =
-                    projectIdMapLikerIds.containsKey(projectId) ? projectIdMapLikerIds.get(projectId)
-                            : new HashSet<Long>();
+            Set<Long> ids = projectIdMapLikerIds.containsKey(projectId) ? projectIdMapLikerIds.get(projectId)
+                    : new HashSet<Long>();
             ids.add(userId);
             projectIdMapLikerIds.put(projectId, ids);
 
@@ -390,5 +437,6 @@ public class ProjectServiceImpl extends BaseServiceImpl implements IProjectServi
     }
 
     @Override
-    public void updateProject(ProjectUpdateRequest requestData) throws CException {}
+    public void updateProject(ProjectUpdateRequest requestData) throws CException {
+    }
 }
