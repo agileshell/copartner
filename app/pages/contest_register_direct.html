@@ -60,7 +60,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 id="title" class="mui-title c-title">发布项目</h1>
+			<h1 id="title" class="mui-title c-title">参赛项目</h1>
 			<a id="create-project-a" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right c-icon-padded"></a>
 		</header>
 		<div class="mui-content">
@@ -119,13 +119,6 @@
 							<input id='contactPerson' name='contactPerson' type="text" value="" class="c-input">
 						</span>
 					</div>
-					<div class="mui-input-row">
-						<label style="width: 45%;">参与大会评审</label>
-						<input id='registerContest' name="registerContest" value="false" type="hidden">
-						<div id="registerContestName" class="mui-switch">
-							<div class="mui-switch-handle"></div>
-						</div>
-					</div>
 				</form>
 				<div class="mui-input-row" style="margin: 10px 5px 0 5px;">
 					<span style="font-size: 12px; color:  #bdbdbd;">优势</span>
@@ -133,7 +126,7 @@
 					<span style="font-size: 12px; color:  #bdbdbd;">实施条件</span>
 					<textarea id="content" rows="3"></textarea>
 				</div>
-				<form id='contest-entry-form' class="mui-input-group undisplayed">
+				<form id='contest-entry-form' class="mui-input-group">
 					<div class="mui-input-row">
 						<label>工商注册</label>
 						<input id='hasBusinessRegistered' name="hasBusinessRegistered" value="true" type="hidden">
@@ -301,18 +294,6 @@
 					zzB.classList.add('undisplayed');
 				}
 			});
-			//registerContest
-			var registerContestName = doc.getElementById('registerContestName'),
-				registerContest = doc.getElementById('registerContest'),
-				contestEntryForm = doc.getElementById('contest-entry-form');
-			registerContestName.addEventListener('toggle', function(event) {
-				registerContest.value = event.detail.isActive ? 'true' : 'false';
-				if (registerContest.value == 'true') {
-					contestEntryForm.classList.remove('undisplayed');
-				} else {
-					contestEntryForm.classList.add('undisplayed');
-				}
-			});
 			var legalFormationPicker = new $.PopPicker();
 			legalFormationPicker.setData(legalFormationData);
 			var legalFormation = doc.getElementById('legalFormation');
@@ -358,7 +339,7 @@
 						advantage: doc.getElementById('advantage').value,
 						content: doc.getElementById('content').value,
 
-						registerContest: doc.getElementById('registerContest').value,
+						registerContest: true,
 						hasBusinessRegistered: doc.getElementById('hasBusinessRegistered').value,
 						businessLicense: doc.getElementById('businessLicense').value,
 						businessLicenseImg: doc.getElementById('businessLicenseUrl').value,

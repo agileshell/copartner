@@ -51,10 +51,6 @@
 				width: 40px;
 				height: 40px;
 			}
-			#businessPlanTmp {
-				position: absolute;
-				width: 40px;
-			}
 			.undisplayed{
 				display: none;
 			}
@@ -96,6 +92,78 @@
 							<img class="head-img mui-action-preview" id="head-img" src="../images/blank.jpg"/>
 						</span>
 					</div>
+					<div class="mui-input-row">
+						<label style="width: 50%;">所在市县/园区</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 50%;">
+							<input id='locationCampus' name='locationCampus' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 40%;">创业实体名称</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 60%;">
+							<input id='instance' name='instance' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 40%;">企业法律形态</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 60%;">
+							<input id='legalFormation' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 40%;">吸纳就业人数</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 60%;">
+							<input id='employqty' type="tel" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 40%;">注册时间</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 60%;">
+							<input id='regtime' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 40%;">法定代表人</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 60%;">
+							<input id='legalPerson' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 40%;">人员类别</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 60%;">
+							<input id='userCategory' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 40%;">身份证</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 60%;">
+							<input id='idNumber' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 40%;">开户行</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 60%;">
+							<input id='bankName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 40%;">开户名</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 60%;">
+							<input id='bankUserName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 40%;">开户账号</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 60%;">
+							<input id='bankAccount' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 40%;">申请扶持金额</label>
+						<span class="mui-pull-right mui-navigate-right" style="width: 60%;">
+							<input id='supportMoney' type="text" value="" class="c-input">
+						</span>
+					</div>
 				</form>
 				<div class="mui-content-padded">
 					<button id='register-b' class="mui-btn mui-btn-block mui-btn-primary">提交</button>
@@ -107,6 +175,7 @@
 	<script src="../js/app.js"></script>
 	<script src="../js/mui.listpicker.js"></script>
 	<script src="../js/mui.poppicker.js"></script>
+	<script src="../js/meta.data.js"></script>
 	<script>
 		(function($, doc) {
 			$.init();
@@ -157,6 +226,23 @@
 				}, false);
 			});
 
+			var legalFormationPicker = new $.PopPicker();
+			legalFormationPicker.setData(legalFormationData);
+			var legalFormation = doc.getElementById('legalFormation');
+			legalFormation.addEventListener('tap', function(event) {
+				legalFormationPicker.show(function(items) {
+					legalFormation.value = items[0].text;
+				});
+			}, false);
+			var userCategoryPicker = new $.PopPicker();
+			userCategoryPicker.setData(userCategoryData);
+			var userCategory = doc.getElementById('userCategory');
+			userCategory.addEventListener('tap', function(event) {
+				userCategoryPicker.show(function(items) {
+					userCategory.value = items[0].text;
+				});
+			}, false);
+
 			$.plusReady(function() {
 				var self = plus.webview.currentWebview();
 				var contestId = self.contestId;
@@ -172,7 +258,20 @@
 						projectId: projectId.value,
 						hasBusinessRegistered: doc.getElementById('hasBusinessRegistered').value,
 						businessLicense: doc.getElementById('businessLicense').value,
-						businessLicenseImg: doc.getElementById('businessLicenseUrl').value
+						businessLicenseImg: doc.getElementById('businessLicenseUrl').value,
+
+						locationCampus: doc.getElementById('locationCampus').value,
+						instance: doc.getElementById('instance').value,
+						legalFormation: doc.getElementById('legalFormation').value,
+						employqty: doc.getElementById('employqty').value,
+						regtime: doc.getElementById('regtime').value,
+						legalPerson: doc.getElementById('legalPerson').value,
+						userCategory: doc.getElementById('userCategory').value,
+						idNumber: doc.getElementById('idNumber').value,
+						bankName: doc.getElementById('bankName').value,
+						bankUserName: doc.getElementById('bankUserName').value,
+						bankAccount: doc.getElementById('bankAccount').value,
+						supportMoney: doc.getElementById('supportMoney').value
 					};
 					var w = plus.nativeUI.showWaiting("　　 请等待...　　");
 					app.registerContest(contestId, req, function(err) {

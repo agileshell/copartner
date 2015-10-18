@@ -9,6 +9,15 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<style>
+			.c-overlay .mui-bar-tab {
+				display: none;
+			}
+			.c-overlay .c-loader {
+				display: block;
+			}
+			.c-overlay .mui-content {
+				display: none;
+			}
 			.item-content {
 				font-size: 12px;
 				padding: 10px;
@@ -68,16 +77,15 @@
 		</style>
 	</head>
 
-	<body>
+	<body class="c-overlay">
 		<div class="mui-content">
 			<div class="mui-slider mui-fullscreen">
 				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
 					<a class="mui-control-item mui-active" href="#introduction">大赛简介</a>
 					<a class="mui-control-item" href="#registration">大赛报名</a>
-					<a id="tap-entries" class="mui-control-item" href="#entries">参赛作品</a>
+					<a id="tap-entries" class="mui-control-item" href="#entries">参赛项目</a>
 					<a class="mui-control-item" href="#ranking">排行榜</a>
 				</div>
-				<div class="mui-slider-progress-bar mui-col-xs-3"></div>
 				<div id="content" class="mui-slider-group">
 					<div id="introduction" class="mui-slider-item mui-control-content mui-active">
 						<div class="c-content">
@@ -116,12 +124,18 @@
 								<div class="mui-scroll">
 									<div id="ranking-content" class="item-content">
 										<div style="float: left; position: relative; width: 50%;">
-											<div style="color: #f47320;  padding-left: 15px;">导师评比排名</div>
+											<div style="color: #f47320;  padding-left: 15px;">
+												<span><img src="../images/reward.gif" width="18" style="width: 18px;"/></span>
+												<span>导师评比排名</span>
+											</div>
 											<ul id="tutorVoteRanking" class="mui-table-view" style="background-color: #efeff4;">
 											</ul>
 										</div>
 										<div style="float: left; position: relative; width: 50%;">
-											<div style="color: #f47320; padding-left: 15px;">投资人评比排名</div>
+											<div style="color: #f47320; padding-left: 15px;">
+												<span><img src="../images/reward.gif" width="18" style="width: 18px;"/></span>
+												<span>投资人评比排名</span>
+											</div>
 											<ul id="investorVoteRanking" class="mui-table-view" style="background-color: #efeff4;">
 											</ul>
 										</div>
@@ -133,6 +147,7 @@
 				</div>
 			</div>
 		</div>
+		<div id="loader" class="c-loader">加载中...</div>
 		<script id="entry-template" type="text/x-handlebars-template">
 			<li id="entry_{{id}}" class="mui-table-view-cell mui-media">
 				<a href="#" data-guid="{{id}}">
@@ -150,6 +165,7 @@
 			var contestId = 0,
 				isRegister = false,
 				latestLoadingRequestDate = 0,
+				ownProjectCount = 0,
 				introductionEl = document.getElementById('introduction-content'),
 				rankingEl = document.getElementById('ranking-content'),
 				registrationEl = document.getElementById('registration-content'),
@@ -187,6 +203,7 @@
 					registrationEl.innerHTML = contestEntity.registration;
 					contestId = contestEntity.id;
 					isRegister = contestEntity.register;
+					ownProjectCount = contestEntity.ownProjectCount;
 					if (isRegister == true) {
 						registrationBtnEl.innerText = '已报名';
 					}
@@ -207,7 +224,18 @@
 						}
 					}
 
+					var entryList = response.body.contestEntries;
+					if (entryList.length > 0) {
+						for (var i = 0, len = entryList.length; i < len; i++) {
+							divEl.innerHTML = entryTemplate(entryList[i]);
+							entriesEl.appendChild(divEl.firstElementChild);
+						}
+					}
+
 					window.scrollTo(0, 0);
+					setTimeout(function() {
+						document.body.classList.remove('c-overlay');
+					}, 290);
 				} else {
 					mui.toast('暂无大赛活动');
 				}
@@ -250,11 +278,6 @@
 			mui.plusReady(function() {
 				app.getlatestContest(success, error);
 
-				//TODO
-				setTimeout(function() {
-					app.listContestEntries(contestId, entryLoadSuccess, entryLoadError);
-				}, 800);
-
 				registrationBtnEl.addEventListener('tap', function() {
 					var state = app.getState();
 					if (!state.userId) {
@@ -269,11 +292,18 @@
 					if (roleId != 1 || isRegister) {
 						return;
 					}
-					mui.openWindow({
-						url: 'contest_register.html', 
-						id:'contest_register',
-						extras:{contestId: contestId}
-					});
+					if (ownProjectCount > 0) {
+						mui.openWindow({
+							url: 'contest_register.html', 
+							id:'contest_register',
+							extras:{contestId: contestId}
+						});
+					} else {
+						mui.openWindow({
+							url: 'contest_register_direct.html', 
+							id:'contest_register_direct'
+						});
+					}
 				});
 			});
 		</script>

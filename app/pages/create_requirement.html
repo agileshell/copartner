@@ -310,10 +310,12 @@
 				investEl.classList.remove('disable');
 			}
 
-			var toRzrzPage = function() {
-				var rzrzPage = plus.webview.getWebviewById('rzrz_list');
-				mui.fire(rzrzPage, 'mui.view.beforeshow', {});
-				rzrzPage.show();
+			var toProfilePage = function() {
+				var profilePage = plus.webview.getWebviewById('profile');
+				$.fire(profilePage, 'mui.view.beforeshow', {
+					needReflush: true
+				});
+				profilePage.show();
 			};
 			document.getElementById('create-requirement').addEventListener('tap', function() {
 				createRequirement();
@@ -333,7 +335,7 @@
 							plus.nativeUI.toast(err);
 							return;
 						} else {
-							toRzrzPage();
+							toProfilePage();
 						}
 					}, 200);
 				});

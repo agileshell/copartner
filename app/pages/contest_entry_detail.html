@@ -13,6 +13,15 @@
 			body {
 				background-color: #efeff4;
 			}
+			.c-overlay .mui-bar-tab {
+				display: none;
+			}
+			.c-overlay .c-loader {
+				display: block;
+			}
+			.c-overlay .mui-content {
+				display: none;
+			}
 			.mui-bar .c-operation {
 				font-size: 16px;
 			}
@@ -68,7 +77,7 @@
 	<body class="c-overlay">
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 id="title" class="mui-title c-title">参赛作品</h1>
+			<h1 id="title" class="mui-title c-title">参赛项目</h1>
 			<a id="vote" class="mui-action-menu mui-icon mui-icon-star mui-pull-right">
 				<span class="c-operation" id="vote-msg">投票</span>
 			</a>
@@ -122,6 +131,7 @@
 				</div>
 			</div>
 		</div>
+		<div id="loader" class="c-loader">加载中...</div>
 		<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
 		<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
 		<script type="text/javascript">
@@ -213,7 +223,9 @@
 					guid = event.detail.guid;
 					app.getContestEntry(event.detail.guid, success, error);
 				});
-				voteBtnEl.addEventListener('tap', function() {
+				voteBtnEl.addEventListener('tap', function(e) {
+					e.detail.gesture.preventDefault();
+
 					var state = app.getState();
 					if (!state.userId) {
 						if (!loginPage) {
@@ -232,17 +244,24 @@
 						return;
 					}
 
-					var w = plus.nativeUI.showWaiting("　　 请等待...　　");
-					app.vote(guid, function(err) {
-						setTimeout(function() {
-							w.close();
-							if (err) {
-								plus.nativeUI.toast(err);
-								return;
-							} else {
-								plus.nativeUI.toast('投票成功');
-							}
-						}, 200);
+					var btnArray = ['投票', '取消'];
+					mui.prompt('请输入你对该项目的评语：', '', '投票', btnArray, function(e) {
+						if (e.index == 0) {
+							var w = plus.nativeUI.showWaiting("　　 请等待...　　");
+							app.vote(guid, e.value, function(err) {
+								setTimeout(function() {
+									w.close();
+									if (err) {
+										plus.nativeUI.toast(err);
+										return;
+									} else {
+										 isVote = true;
+										 voteMsgEl.innerText = '已投票';
+										plus.nativeUI.toast('投票成功');
+									}
+								}, 200);
+							});
+						}
 					});
 				});
 			})(mui);

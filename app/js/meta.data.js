@@ -198,3 +198,30 @@ var locationData = [
 {"value": 33, "text": "澳门", "children": [{"value":373, "text": "澳门"}]},
 {"value": 34, "text": "台湾", "children": [{"value":374, "text": "台湾"}]}
 ];
+
+var legalFormationData = [{
+	"value": "公司",
+	"text": "公司"
+}, {
+	"value": "个人",
+	"text": "个人"
+}];
+var userCategoryData = [{
+	"value": "大学生",
+	"text": "大学生"
+}, {
+	"value": "中专技校生",
+	"text": "中专技校生"
+}, {
+	"value": "复转军人",
+	"text": "复转军人"
+}, {
+	"value": "返乡创业",
+	"text": "返乡创业"
+}, {
+	"value": "CZ员",
+	"text": "持就失业登记证人"
+}, {
+	"value": "其他人员",
+	"text": "其他人员"
+}];

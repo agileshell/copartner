@@ -91,7 +91,7 @@
 	};
 
 	owner.getUserId = function() {
-		var state = app.getState();
+		var state = owner.getState();
 		if (state.userId) {
 			return state.userId;
 		} else {
@@ -100,7 +100,7 @@
 	};
 
 	owner.getRoleId = function() {
-		var state = app.getState();
+		var state = owner.getState();
 		console.log(JSON.stringify(state));
 		if (state.roleId) {
 			return state.roleId;
@@ -287,7 +287,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					errorCallback(owner.ajaxErrorHandler(type));
@@ -355,7 +355,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
@@ -425,7 +425,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
@@ -460,7 +460,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
@@ -527,7 +527,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
@@ -670,7 +670,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
@@ -693,7 +693,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
@@ -717,7 +717,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
@@ -740,7 +740,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
@@ -780,6 +780,24 @@
 		projectInfo.contactPerson = projectInfo.contactPerson || '';
 		projectInfo.advantage = projectInfo.advantage || '';
 		projectInfo.content = projectInfo.content || '';
+
+		projectInfo.registerContest = projectInfo.registerContest || 'false';
+		projectInfo.hasBusinessRegistered = projectInfo.hasBusinessRegistered || 'false';
+		projectInfo.businessLicense = projectInfo.businessLicense || '';
+		projectInfo.businessLicenseImg = projectInfo.businessLicenseImg || '';
+		projectInfo.locationCampus = projectInfo.locationCampus || '';
+		projectInfo.instance = projectInfo.instance || '';
+		projectInfo.legalFormation = projectInfo.legalFormation || '';
+		projectInfo.employqty = projectInfo.employqty || 0;
+		projectInfo.regtime = projectInfo.regtime || '';
+		projectInfo.legalPerson = projectInfo.legalPerson || '';
+		projectInfo.userCategory = projectInfo.userCategory || '';
+		projectInfo.idNumber = projectInfo.idNumber || '';
+		projectInfo.bankName = projectInfo.bankName || '';
+		projectInfo.bankUserName = projectInfo.bankUserName || '';
+		projectInfo.bankAccount = projectInfo.bankAccount || '';
+		projectInfo.supportMoney = projectInfo.supportMoney || '';
+
 		if (projectInfo.name.length <= 0) {
 			return callback('项目名称不能为空');
 		} else if (projectInfo.name.length > 50) {
@@ -812,19 +830,47 @@
 			return callback('实施条件不能大于200个字符');
 		}
 
+		if (projectInfo.registerContest == "true") {
+			if (projectInfo.locationCampus.length <= 0) {
+				return callback('所在市县或园区不能为空');
+			}
+			if (projectInfo.instance.length <= 0) {
+				return callback('创业实体名称不能为空');
+			}
+			if (projectInfo.legalFormation.length <= 0) {
+				return callback('企业法律形态不能为空');
+			}
+			if (projectInfo.employqty == 0) {
+				return callback('吸纳就业人数不能为空');
+			}
+			if (projectInfo.regtime.length <= 0) {
+				return callback('注册时间不能为空');
+			}
+			if (projectInfo.legalPerson.length <= 0) {
+				return callback('法定代表人不能为空');
+			}
+			if (projectInfo.userCategory.length <= 0) {
+				return callback('人员类别不能为空');
+			}
+			if (projectInfo.idNumber.length <= 0) {
+				return callback('身份证不能为空');
+			}
+			if (projectInfo.bankName.length <= 0) {
+				return callback('开户行不能为空');
+			}
+			if (projectInfo.bankUserName.length <= 0) {
+				return callback('开户名不能为空');
+			}
+			if (projectInfo.bankAccount.length <= 0) {
+				return callback('开户账号不能为空');
+			}
+			if (projectInfo.supportMoney.length <= 0) {
+				return callback('申请扶持金额不能为空');
+			}
+		}
+
 		mui.ajax(owner.apiURL + 'project', {
-			data: {
-				name: projectInfo.name,
-				logo: projectInfo.logo,
-				projectPhaseId: projectInfo.projectPhaseId,
-				locationId: projectInfo.locationId,
-				industryDomainId: projectInfo.industryDomainId,
-				teamSizeId: projectInfo.teamSizeId,
-				contact: projectInfo.contact,
-				contactPerson: projectInfo.contactPerson,
-				advantage: projectInfo.advantage,
-				content: projectInfo.content
-			},
+			data: projectInfo,
 			dataType: 'json',
 			type: 'post',
 			timeout: 5000,
@@ -838,7 +884,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
@@ -885,7 +931,6 @@
 			type: 'get',
 			timeout: 5000,
 			success: function(data) {
-				console.log(JSON.stringify(data));
 				if (data.status == 'SUCCEED') {
 					return successCallback(data);
 				} else {
@@ -979,7 +1024,7 @@
 		} else if ('timeout' == errorType) {
 			errorMessage = '网络较差，连接请求超时!';
 		} else {
-			errorMessage = '系统错误!';
+			errorMessage = '网络异常!';
 		}
 
 		return errorMessage;
@@ -1300,7 +1345,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
@@ -1472,7 +1517,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
@@ -1504,7 +1549,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 					return callback(owner.ajaxErrorHandler(type));
 				} else {
@@ -1533,6 +1578,9 @@
 
 
 	owner.searchFriends = function(keyword, successCallback, errorCallback) {
+		if (keyword.length <= 0) {
+			return errorCallback('关键字不能为空');
+		}
 		mui.ajax(owner.apiURL + 'user/friends/search?keyword=' + keyword, {
 			dataType: 'json',
 			type: 'get',
@@ -1541,7 +1589,7 @@
 				successCallback(data);
 			},
 			error: function(xhr, type, errorThrown) {
-				errorCallback(type);
+				errorCallback(owner.ajaxErrorHandler(type));
 			}
 		})
 	};
@@ -1566,11 +1614,9 @@
 			type: 'get',
 			timeout: 5000,
 			success: function(data) {
-				//console.log("listFriends success : " + JSON.stringify(data));
 				successCallback(data);
 			},
 			error: function(xhr, type, errorThrown) {
-				//console.log("listFriends error : " + JSON.stringify(type));
 				errorCallback(type);
 			}
 		})
@@ -1615,7 +1661,7 @@
 		mui.ajax(owner.apiURL + 'contestEntry/' + id, {
 			dataType: 'json',
 			type: 'get',
-			timeout: 5000,
+			timeout: 10000,
 			success: function(data) {
 				successCallback(data);
 			},
@@ -1633,8 +1679,57 @@
 		req.businessLicense = req.businessLicense || '';
 		req.businessLicenseImg = req.businessLicenseImg || '';
 
+		req.locationCampus = req.locationCampus || '';
+		req.instance = req.instance || '';
+		req.legalFormation = req.legalFormation || '';
+		req.employqty = req.employqty || 0;
+		req.regtime = req.regtime || '';
+		req.legalPerson = req.legalPerson || '';
+		req.userCategory = req.userCategory || '';
+		req.idNumber = req.idNumber || '';
+		req.bankName = req.bankName || '';
+		req.bankUserName = req.bankUserName || '';
+		req.bankAccount = req.bankAccount || '';
+		req.supportMoney = req.supportMoney || '';
+
 		if (req.projectId == 0) {
 			return callback('请选择参赛项目');
+		}
+		if (req.locationCampus.length <= 0) {
+			return callback('所在市县或园区不能为空');
+		}
+		if (req.instance.length <= 0) {
+			return callback('创业实体名称不能为空');
+		}
+		if (req.legalFormation.length <= 0) {
+			return callback('企业法律形态不能为空');
+		}
+		if (req.employqty == 0) {
+			return callback('吸纳就业人数不能为空');
+		}
+		if (req.regtime.length <= 0) {
+			return callback('注册时间不能为空');
+		}
+		if (req.legalPerson.length <= 0) {
+			return callback('法定代表人不能为空');
+		}
+		if (req.userCategory.length <= 0) {
+			return callback('人员类别不能为空');
+		}
+		if (req.idNumber.length <= 0) {
+			return callback('身份证不能为空');
+		}
+		if (req.bankName.length <= 0) {
+			return callback('开户行不能为空');
+		}
+		if (req.bankUserName.length <= 0) {
+			return callback('开户名不能为空');
+		}
+		if (req.bankAccount.length <= 0) {
+			return callback('开户账号不能为空');
+		}
+		if (req.supportMoney.length <= 0) {
+			return callback('申请扶持金额不能为空');
 		}
 
 		mui.ajax(owner.apiURL + 'contest/' + contestId + '/register', {
@@ -1651,7 +1746,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
@@ -1660,8 +1755,15 @@
 		})
 	};
 
-	owner.vote = function(entryId, callback) {
+	owner.vote = function(entryId, comment, callback) {
+		if (comment.length <= 0) {
+			return callback('评语不能为空');
+		}
+
 		mui.ajax(owner.apiURL + 'contestEntry/' + entryId + '/vote', {
+			data: {
+				comment: comment
+			},
 			dataType: 'json',
 			type: 'post',
 			timeout: 5000,
@@ -1674,7 +1776,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				if (errorThrown == 'Forbidden') {
-					app.setState({});
+					owner.setState({});
 					owner.openLoginPage();
 				} else {
 					return callback(owner.ajaxErrorHandler(type));

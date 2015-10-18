@@ -5,7 +5,6 @@
 		<meta charset="utf-8">
 		<title>创始人</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/mui.indexedlist.css" />
 		<link rel="stylesheet" href="../css/app.css" />
@@ -20,7 +19,7 @@
 				z-index: 1;
 				top: 35px;
 			}
-            .user-name {
+			.user-name {
 				color: #C15151;
 				font-size: 15px;
 			}
@@ -32,7 +31,7 @@
 		</style>
 	</head>
 	<body>
-        <div class="mui-content" style="padding: 0px 5px;">
+		<div class="mui-content" style="padding: 0px 5px;">
 			<div class="mui-segmented-control c-control">
 				<a id="contact-book" class="mui-control-item mui-active" href="#contact-book-item">通讯录</a>
 				<a id="chat-history" class="mui-control-item" href="#chat-history-item">聊天</a>
@@ -62,7 +61,7 @@
 					</div>
 					<!-- end -->
 				</div>
-                <div id="chat-history-item" class="mui-control-content">
+				<div id="chat-history-item" class="mui-control-content">
 					<ul id="content-list" class="mui-table-view mui-table-view-chevron">
 						<li id="im_id" class="mui-table-view-cell mui-media">
 							<a class='mui-navigate-right' href="chat.html?id=1" data-guid="1">
@@ -84,7 +83,6 @@
 	<script>
 		mui.init();
 		mui.ready(function() {
-
 			var friendsListEl = document.getElementById("friendsList");
 			var success = function(response) {
 				var friends = response.body;
@@ -97,7 +95,6 @@
 					friendsHtml += ("<li data-group=\"" + group + 
 									"\" class=\"mui-table-view-divider mui-indexed-list-group\">" + 
 									group + "</li>");
-					console.log(group + " : " + JSON.stringify(friends[group]));
 					for (var i = 0, len = groupFriends.length; i < len; i++) {
 						var fd = groupFriends[i];
 						friendsHtml += ("<li data-value=\"" + fd.abbr + "\" data-tags=\"" + fd.pinyin + 
@@ -106,7 +103,6 @@
 										"</li>");
 					}
 				}
-				console.log("friendsHtml : " + friendsHtml);
 				friendsListEl.innerHTML = friendsHtml;
 			},
 			error = function(errorType) {
@@ -122,6 +118,8 @@
 			//create
 			window.indexedList = new mui.IndexedList(list);
 		});
+
+		//打开聊天详情页面
 		mui('.mui-table-view').on('tap', 'li', function() {
 			open_chat(this.getAttribute('data-guid'));
 		});
