@@ -110,6 +110,13 @@
 	};
 
 	/**
+	 * DeviceToken
+	 **/
+	owner.addDeviceToken = function(token, os) {
+		//TODO
+	};
+
+	/**
 	 * 获取版本信息
 	 **/
 	owner.getAppVersion = function(successCallback, errorCallback) {
