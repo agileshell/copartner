@@ -12,8 +12,8 @@
 			return (password.length >= 6 && password.length <= 16 && password.match(/^[0-9a-zA-Z]*$/));
 		};
 
-	owner.apiURL = 'http://123.57.55.59:8080/';
-
+	//owner.apiURL = 'http://123.57.55.59:8080/';
+	owner.apiURL = 'http://192.168.4.106:8080/copartner-api/';
 	/**
 	 * 用户登录
 	 **/
@@ -65,13 +65,55 @@
 	/**
 	 * 第三方登录
 	 **/
-	owner.logingByAuth = function(authUserInfo, callback) {
-		//TODO
-		var state = owner.getState();
-		state.userId = 1;
-		state.imId = 1;
-		owner.setState(state);
-		return callback();
+	owner.logingByAuth = function(provider, authResult, authUserInfo, callback) {
+		var loginInfo = {}, providerId = 0;
+		if (provider == 'qq') {
+			providerId = 1;
+			loginInfo.nickname = authUserInfo.nickname;
+			loginInfo.avatar = authUserInfo.figureurl_2;
+			loginInfo.accessToken = authResult.access_token;
+			loginInfo.uid = authResult.openid;
+		} else if (provider == 'sinaweibo') {
+			providerId = 2;
+			loginInfo.nickname = authUserInfo.screen_name;
+			loginInfo.avatar = authUserInfo.profile_image_url;
+			loginInfo.accessToken = authResult.token;
+			loginInfo.uid = authResult.uid;
+		} else if (provider == 'weixin') {
+			providerId = 3;
+			loginInfo.nickname = authUserInfo.nickname;
+			loginInfo.avatar = authUserInfo.headimgurl;
+			loginInfo.accessToken = authResult.access_token;
+			loginInfo.uid = authResult.unionid;
+		}
+
+		mui.ajax(owner.apiURL + 'account/signin/' + providerId, {
+			data: loginInfo,
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				if (textStatus == 'success') {
+					if (data.status == 'SUCCEED') {
+						var state = owner.getState();
+						state.userId = data.body.userId;
+						state.roleId = data.body.roleId;
+						state.imId = data.body.imId;
+						state.name = data.body.name;
+						state.avatar = data.body.avatar;
+						owner.setState(state);
+						return callback();
+					} else {
+						return callback(owner.ajaxFailedHandler(data.body.error.code));
+					}
+				} else {
+					return callback('系统错误');
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				return callback(owner.ajaxErrorHandler(type));
+			}
+		})
 	};
 
 	/**

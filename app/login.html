@@ -132,17 +132,19 @@
 							oauthArea.appendChild(btn);
 						}
 						$(oauthArea).on('tap', '.oauth-btn', function() {
-							var auth = auths[this.authId];
+							var provider = this.authId;
+							var auth = auths[provider];
 							var waiting = plus.nativeUI.showWaiting();
 							auth.login(function() {
 								waiting.close();
 								plus.nativeUI.toast("登录认证成功");
-								alert(JSON.stringify(auth.authResult));
+
+								var authResult = auth.authResult;
+
 								auth.getUserInfo(function() {
 									plus.nativeUI.toast("获取用户信息成功：");
-									alert(JSON.stringify(auth.userInfo));
 									var authUserInfo = auth.userInfo;
-									app.logingByAuth(authUserInfo, function() {
+									app.logingByAuth(provider, authResult, authUserInfo, function() {
 										toProfilePage();
 									});
 								}, function(e) {
