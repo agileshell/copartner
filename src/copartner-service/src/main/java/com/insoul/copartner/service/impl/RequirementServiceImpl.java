@@ -85,14 +85,14 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
         criteria.setUserId(requestData.getUserId());
-        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
-                : null);
+        criteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
 
         if (null != requestData.getUserId() && requestData.getUserId().equals(getUserId())) {
-            criteria.setStatus(new String[] {DemandStatus.ACTIVE.getValue(), DemandStatus.INACTIVE.getValue()});
+            criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue(), DemandStatus.INACTIVE.getValue() });
         } else {
-            criteria.setStatus(new String[] {DemandStatus.ACTIVE.getValue()});
+            criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue() });
         }
 
         List<Requirement> requirements = requirementDao.queryRequirement(criteria);
@@ -127,18 +127,15 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
         }
 
         PaginationCriteria pagination = new PaginationCriteria();
-        pagination.setOffset(0);
-        pagination.setLimit(10);
-        List<RequirementLikers> requirementLikers =
-                requirementLikersDao.findByRequirementIdsAndPagination(requirementIds, pagination);
+        List<RequirementLikers> requirementLikers = requirementLikersDao
+                .findByRequirementIdsAndPagination(requirementIds, pagination);
         Set<Long> likerIds = new HashSet<Long>();
         Map<Long, Set<Long>> requirementIdMapLikerIds = new HashMap<Long, Set<Long>>();
         for (RequirementLikers requirementLiker : requirementLikers) {
             Long userId = requirementLiker.getId().getUserId();
             Long requirementId = requirementLiker.getId().getRequirementId();
-            Set<Long> ids =
-                    requirementIdMapLikerIds.containsKey(requirementId) ? requirementIdMapLikerIds.get(requirementId)
-                            : new HashSet<Long>();
+            Set<Long> ids = requirementIdMapLikerIds.containsKey(requirementId)
+                    ? requirementIdMapLikerIds.get(requirementId) : new HashSet<Long>();
             ids.add(userId);
             requirementIdMapLikerIds.put(requirementId, ids);
 
@@ -421,12 +418,33 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
             return vos;
         }
 
+        PaginationCriteria pagination = new PaginationCriteria();
+        List<RequirementLikers> requirementLikers = requirementLikersDao.findByRequirementIdsAndPagination(ids,
+                pagination);
+        Map<Long, Set<Long>> requirementIdMapLikerIds = new HashMap<Long, Set<Long>>();
+        for (RequirementLikers requirementLiker : requirementLikers) {
+            Long userId = requirementLiker.getId().getUserId();
+            Long requirementId = requirementLiker.getId().getRequirementId();
+            Set<Long> rids = requirementIdMapLikerIds.containsKey(requirementId)
+                    ? requirementIdMapLikerIds.get(requirementId) : new HashSet<Long>();
+            rids.add(userId);
+            requirementIdMapLikerIds.put(requirementId, rids);
+        }
+
+        long currentUserId = getUserId();
+
         List<Requirement> requirements = requirementDao.findByIds(ids);
         for (Requirement requirement : requirements) {
             RequirementRefreshVO vo = new RequirementRefreshVO();
             vo.setId(requirement.getId());
             vo.setLikeCount(requirement.getLikeCount());
             vo.setCommentCount(requirement.getCommentCount());
+
+            Set<Long> likerids = requirementIdMapLikerIds.get(requirement.getId());
+            if (null != likerids) {
+                vo.setIsliked(likerids.contains(currentUserId));
+            }
+
             vos.add(vo);
         }
 

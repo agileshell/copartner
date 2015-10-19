@@ -12,6 +12,8 @@ public class RequirementRefreshVO implements Serializable {
 
     private long commentCount;
 
+    private boolean isliked;
+
     public long getId() {
         return id;
     }
@@ -34,6 +36,14 @@ public class RequirementRefreshVO implements Serializable {
 
     public void setCommentCount(long commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public boolean isIsliked() {
+        return isliked;
+    }
+
+    public void setIsliked(boolean isliked) {
+        this.isliked = isliked;
     }
 
 }

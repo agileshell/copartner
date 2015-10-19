@@ -124,7 +124,7 @@ public class RequirementController extends BaseController {
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/requirement/refresh", method = RequestMethod.GET)
+    @RequestMapping(value = "/requirements/refresh", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> listRefreshInfo(@RequestParam String ids) throws DataValidationException {
         Set<Long> requirementIds = new HashSet<Long>();
