@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.insoul.copartner.exception.CException;
+import com.insoul.copartner.vo.LoginResponse;
 import com.insoul.copartner.vo.ResumeVO;
 import com.insoul.copartner.vo.UserDetailVO;
 import com.insoul.copartner.vo.request.ResumeRequest;
@@ -38,6 +39,6 @@ public interface IUserService {
 
     Set<ResumeVO> listUserWorkResume();
 
-    long loginUse3rdOauth(SignInByThirdPartRequest signInBy3rdPartRequest) throws CException;
+    LoginResponse loginUse3rdOauth(SignInByThirdPartRequest signInBy3rdPartRequest) throws CException;
 
 }

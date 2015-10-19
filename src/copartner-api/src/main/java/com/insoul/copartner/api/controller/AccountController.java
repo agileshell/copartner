@@ -30,6 +30,7 @@ import com.insoul.copartner.security.SecurityUtil;
 import com.insoul.copartner.service.IUserService;
 import com.insoul.copartner.util.ResponseUtil;
 import com.insoul.copartner.util.ValidationUtil;
+import com.insoul.copartner.vo.LoginResponse;
 import com.insoul.copartner.vo.UserDetailVO;
 import com.insoul.copartner.vo.request.PasswordChangeRequest;
 import com.insoul.copartner.vo.request.PasswordRestRequest;
@@ -53,9 +54,8 @@ public class AccountController extends BaseController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> register(@Valid UserAddRequest userAddRequest,
-            BindingResult validResult, HttpServletRequest request, HttpServletResponse response, HttpSession session)
-            throws CException {
+    public ResponseEntity<Map<String, Object>> register(@Valid UserAddRequest userAddRequest, BindingResult validResult,
+            HttpServletRequest request, HttpServletResponse response, HttpSession session) throws CException {
         if (validResult.hasErrors()) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
@@ -121,12 +121,12 @@ public class AccountController extends BaseController {
         }
         signInBy3rdPartRequest.setProviderId(providerId);
 
-        long userId = userService.loginUse3rdOauth(signInBy3rdPartRequest);
-        String securityUserName = SecurityUtil.get3rdSecurityUserName(providerId, userId);
+        LoginResponse loginResponse = userService.loginUse3rdOauth(signInBy3rdPartRequest);
+        String securityUserName = SecurityUtil.get3rdSecurityUserName(providerId, loginResponse.getUserId());
         UserDetails details = userDetailsService.loadUserByUsername(securityUserName);
         SecurityUtil.login(details, request, response, session);
 
-        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+        return ResponseUtil.jsonSucceed(loginResponse, HttpStatus.OK);
     }
 
 }

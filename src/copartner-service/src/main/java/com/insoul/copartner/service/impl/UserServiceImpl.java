@@ -54,6 +54,7 @@ import com.insoul.copartner.util.ValidationUtil;
 import com.insoul.copartner.util.mail.MailUtil;
 import com.insoul.copartner.util.sms.SMSUtil;
 import com.insoul.copartner.vo.IndustryDomainVO;
+import com.insoul.copartner.vo.LoginResponse;
 import com.insoul.copartner.vo.ResumeVO;
 import com.insoul.copartner.vo.StartupRoleVO;
 import com.insoul.copartner.vo.StartupStatusVO;
@@ -142,8 +143,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
             }
 
             String code = userAddRequest.getCode();
-            UserAccountConfirmation userAccountConfirmation =
-                    userAccountConfirmationDao.getUserAccountConfirmation(CommonConstant.MOBILE, account, code);
+            UserAccountConfirmation userAccountConfirmation = userAccountConfirmationDao
+                    .getUserAccountConfirmation(CommonConstant.MOBILE, account, code);
             if (null != userAccountConfirmation) {
                 userAccountConfirmation.setIsConfirmed(true);
                 userAccountConfirmation.setConfirmed(new Date());
@@ -192,9 +193,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("userName", account);
-            String verifyEmailURL =
-                    new StringBuilder(GlobalProperties.VERIFY_EMAIL_URL).append("?account=").append(account)
-                            .append("&code=").append(code).toString();
+            String verifyEmailURL = new StringBuilder(GlobalProperties.VERIFY_EMAIL_URL).append("?account=")
+                    .append(account).append("&code=").append(code).toString();
             params.put("verifyEmailURL", verifyEmailURL);
 
             sendMail(userId, MessageType.REGISTER.getValue(), account, params);
@@ -292,9 +292,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("userName", account);
-            String retrievePwdCheck =
-                    new StringBuilder(GlobalProperties.RESET_PASSWORD_URL).append("?account=").append(account)
-                            .append("&code=").append(code).toString();
+            String retrievePwdCheck = new StringBuilder(GlobalProperties.RESET_PASSWORD_URL).append("?account=")
+                    .append(account).append("&code=").append(code).toString();
             params.put("retrievePwdCheck", retrievePwdCheck);
 
             sendMail(user.getId(), MessageType.RETRIEVE_PWD.getValue(), account, params);
@@ -629,8 +628,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
     @Override
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
-    public long loginUse3rdOauth(SignInByThirdPartRequest signInBy3rdPartRequest) throws CException {
-        long userId = 0;
+    public LoginResponse loginUse3rdOauth(SignInByThirdPartRequest signInBy3rdPartRequest) throws CException {
+        LoginResponse loginResponse = new LoginResponse();
         Date now = new Date();
 
         int providerId = signInBy3rdPartRequest.getProviderId();
@@ -639,19 +638,33 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         String refreshToken = signInBy3rdPartRequest.getRefreshToken();
         Long expireIn = signInBy3rdPartRequest.getExpireIn();
 
+        User user = null;
+
         User3rdAccountAccess user3rdAccountAccess = user3rdAccountAccessDao.getByProviderAndUid(providerId, uid);
         if (null == user3rdAccountAccess) {
-            User user = new User();
+            user = new User();
 
             String salt = PasswordUtil.genSalt();
             user.setName(signInBy3rdPartRequest.getNickname());
+            if (StringUtils.isNoneEmpty(signInBy3rdPartRequest.getAvatar())) {
+                user.setAvatar(signInBy3rdPartRequest.getAvatar());
+            }
             user.setSalt(salt);
             user.setPassword(PasswordUtil.encodePassword(PasswordUtil.genPassword(10), salt));
             user.setClientIp(getIp());
             user.setCreated(now);
+
+            setDefaultValue(user);
+
             userDao.save(user);
 
-            userId = user.getId();
+            long userId = user.getId();
+
+            Long imId = IMUtils.register(userId, providerId + "_" + userId, GlobalProperties.DEFAULT_AVATAR_URL);
+            if (0 != imId) {
+                user.setImId(imId);
+                userDao.update(user);
+            }
 
             user3rdAccountAccess = new User3rdAccountAccess();
             user3rdAccountAccess.setUserId(userId);
@@ -662,16 +675,31 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
             user3rdAccountAccess.setExpires(expireIn);
             user3rdAccountAccess.setCreated(now);
             user3rdAccountAccessDao.save(user3rdAccountAccess);
+
+            UserFriends userFriends = new UserFriends();
+            UserFriendsId id = new UserFriendsId(userId, GlobalProperties.IM_ROBOT_ID);
+            userFriends.setId(id);
+            userFriends.setCreated(new Date());
+            userFriends.setIsPassed(true);
+            userFriendsDAO.save(userFriends);
         } else {
-            userId = user3rdAccountAccess.getUserId();
+            long userId = user3rdAccountAccess.getUserId();
 
             user3rdAccountAccess.setAccessToken(signInBy3rdPartRequest.getAccessToken());
             user3rdAccountAccess.setRefreshToken(signInBy3rdPartRequest.getRefreshToken());
             user3rdAccountAccess.setExpires(signInBy3rdPartRequest.getExpireIn());
             user3rdAccountAccess.setUpdated(now);
+
+            user = userDao.get(userId);
         }
 
-        return userId;
+        loginResponse.setUserId(user.getId());
+        loginResponse.setRoleId(user.getRoleId());
+        loginResponse.setName(user.getName());
+        loginResponse.setImId(user.getImId());
+        loginResponse.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+
+        return loginResponse;
     }
 
     private Set<ResumeVO> formatResumes(List<Resume> resumes) {

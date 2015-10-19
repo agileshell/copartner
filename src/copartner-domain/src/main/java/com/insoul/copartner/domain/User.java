@@ -48,7 +48,7 @@ public class User extends BaseEntity {
     private String salt;
 
     @Column(name = "status", nullable = false)
-    private String status;// 状态
+    private String status = "active";// 状态
 
     @Column(name = "avatar")
     private String avatar;// 头像

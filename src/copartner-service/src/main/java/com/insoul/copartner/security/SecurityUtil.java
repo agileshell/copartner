@@ -28,7 +28,7 @@ public class SecurityUtil {
     }
 
     public static String get3rdSecurityUserName(int providerId, long userId) {
-        String providerName = providerId == 1 ? "qq" : (providerId == 1 ? "sina" : "weixin");
+        String providerName = providerId == 1 ? "qq" : (providerId == 2 ? "sina" : "weixin");
 
         return new StringBuilder(providerName).append(SECURITY_USERNAME_DELIMITER).append(userId).toString();
     }
