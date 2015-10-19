@@ -20,9 +20,10 @@ public class CourseRequest {
 
     @NotNull
     private String synopsis;// 摘要,显示列表使用
+    
+    private MultipartFile coverImg;// 封皮
 
-    @NotNull
-    private MultipartFile media;// 视频
+    private String media;// 视频
 
     @NotNull
     private Integer time;// 时长, 单位:分钟
@@ -32,6 +33,22 @@ public class CourseRequest {
 
     @NotNull
     private int free; // 是否免费
+
+    public MultipartFile getCoverImg() {
+        return coverImg;
+    }
+
+    public void setCoverImg(MultipartFile coverImg) {
+        this.coverImg = coverImg;
+    }
+
+    public String getMedia() {
+        return media;
+    }
+
+    public void setMedia(String media) {
+        this.media = media;
+    }
 
     public String getName() {
         return name;
@@ -55,14 +72,6 @@ public class CourseRequest {
 
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
-    }
-
-    public MultipartFile getMedia() {
-        return media;
-    }
-
-    public void setMedia(MultipartFile media) {
-        this.media = media;
     }
 
     public Integer getTime() {

@@ -22,6 +22,9 @@ public class Course extends BaseEntity {
     @Column(name = "synopsis", nullable = false)
     private String synopsis;// 摘要,显示列表使用
 
+    @Column(name = "cover_img")
+    private String coverImg;// 封皮
+
     @Column(name = "url", nullable = false)
     private String url;// 链接
 
@@ -39,6 +42,14 @@ public class Course extends BaseEntity {
 
     @Column(name = "is_free", nullable = false)
     private Boolean isFree = true; // 是否免费
+
+    public String getCoverImg() {
+        return coverImg;
+    }
+
+    public void setCoverImg(String coverImg) {
+        this.coverImg = coverImg;
+    }
 
     public String getName() {
         return name;

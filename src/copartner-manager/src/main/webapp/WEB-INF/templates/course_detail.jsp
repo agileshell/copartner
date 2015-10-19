@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <head>
 	<title>课程详情</title>
+	<link rel="stylesheet" href="${cdn}css/prettyPhoto.css"></link>
 	<link href="${cdn}css/video-js.css" rel="stylesheet" type="text/css">
 	<script src="${cdn}js/video.js"></script>
 </head>
@@ -62,6 +63,17 @@
 										</div>
 										
 										<div class="form-group">
+											<label class="col-lg-2 control-label">封皮:</label>
+											<div class="col-lg-10">
+												<div class="gallery">
+							                      	<a href="${cdnDomain}${content.coverImg}" class="prettyPhoto[pp_gal]">
+							                      		<img src="${cdnDomain}${content.coverImg}" alt="${content.title}" width="500">
+							                      	</a>
+							                      </div>
+											</div>
+										</div>
+										
+										<div class="form-group">
 											<label class="col-lg-2 control-label">视频:</label>
 											<div class="col-lg-10">
 											  <video id="cop.video.media" class="video-js vjs-default-skin" controls preload="none" width="500" height="300"
@@ -92,5 +104,7 @@
 			</div>
 		</div>
 	</div>
+	
+	<script src="${cdn}js/jquery.prettyPhoto.js"></script>
 
 </body>

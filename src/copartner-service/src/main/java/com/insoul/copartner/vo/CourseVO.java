@@ -13,6 +13,8 @@ public class CourseVO implements Serializable {
 	private Long courseId;
 
 	private String name;// 课程名称
+	
+	private String coverImg;// 封皮
 
 	private String speaker;// 主讲人
 
@@ -27,7 +29,15 @@ public class CourseVO implements Serializable {
 	@JsonSerialize(using = CustomDateSerializer.class)
 	private Date created;
 
-	public Long getCourseId() {
+	public String getCoverImg() {
+        return coverImg;
+    }
+
+    public void setCoverImg(String coverImg) {
+        this.coverImg = coverImg;
+    }
+
+    public Long getCourseId() {
 		return courseId;
 	}
 

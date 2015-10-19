@@ -19,6 +19,9 @@ public class CourseAddRequest implements Serializable {
     @NotBlank
     @StringLength(max = 20)
     private String speaker;// 主讲人
+    
+    @NotBlank
+    private String coverImg;// 封皮
 
     @NotBlank
     @StringLength(max = 50)
@@ -29,6 +32,14 @@ public class CourseAddRequest implements Serializable {
 
     @NotNull
     private Integer time;// 时长, 单位:分钟
+
+    public String getCoverImg() {
+        return coverImg;
+    }
+
+    public void setCoverImg(String coverImg) {
+        this.coverImg = coverImg;
+    }
 
     public String getName() {
         return name;

@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <head>
 	<title>课程编辑</title>
+	<link rel="stylesheet" href="${cdn}css/prettyPhoto.css"></link>
 	<link href="${cdn}css/video-js.css" rel="stylesheet" type="text/css">
 	<script src="${cdn}js/video.js"></script>
 </head>
@@ -82,6 +83,23 @@
 												</div>
 					                        </div>
 					                        <div class="tab-pane" id="tab2">
+										
+												<div class="form-group">
+													<label class="col-lg-2 control-label">封皮:</label>
+													<div class="col-lg-10">
+														<div class="gallery">
+									                      	<a href="${cdnDomain}${content.coverImg}" class="prettyPhoto[pp_gal]">
+									                      		<img src="${cdnDomain}${content.coverImg}" alt="${content.title}" width="500">
+									                      	</a>
+									                      </div>
+													</div>
+												</div>
+					                        	<div class="form-group">
+													<label class="col-lg-2 control-label" for="coverImg">封皮<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
+													</div>
+												</div>
 												<div class="form-group">
 													<label class="col-lg-2 control-label">视频:</label>
 													<div class="col-lg-10">
@@ -122,6 +140,8 @@
 		</div>
 	</div>
 	
+	<script src="${cdn}js/jquery.prettyPhoto.js"></script>
+	
 	<script>
 		$(document).ready(function() {
 			$('#name').focus();
@@ -150,6 +170,9 @@
 	                time: {
 	                	required: true,
 	                	digits: true
+	                },
+	                coverImg: {
+	                	required: true
 	                }
 	            },
 	            messages: {
@@ -171,6 +194,9 @@
 	                time: {
 	                    required: '时长不能为空',
 	                    digits: "只能输入整数"
+	                },
+	                coverImg: {
+	                	required: "必须上传封皮"
 	                }
 	            },
 	            submitHandler: function(form) {

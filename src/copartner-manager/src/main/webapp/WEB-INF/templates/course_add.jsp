@@ -81,9 +81,15 @@
 					                        </div>
 					                        <div class="tab-pane" id="tab2">
 												<div class="form-group">
+													<label class="col-lg-2 control-label" for="coverImg">封皮<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
+													</div>
+												</div>
+												<div class="form-group">
 													<label class="col-lg-2 control-label" for="media">视频<span class="cofrequired">*</span>:</label>
 													<div class="col-lg-10">
-														<input name="media" id="media" type="file" class="form-control" placeholder="视频"></input>
+														<input name="media" id="media" type="text" class="form-control" placeholder="视频"></input>
 													</div>
 												</div>
 					                        </div>
@@ -137,6 +143,9 @@
 	                },
 	                media: {
 	                	required: true
+	                },
+	                coverImg: {
+	                	required: true
 	                }
 	            },
 	            messages: {
@@ -161,6 +170,9 @@
 	                },
 	                media: {
 	                	required: "必须上传视频"
+	                },
+	                coverImg: {
+	                	required: "必须上传封皮"
 	                }
 	            },
 	            submitHandler: function(form) {

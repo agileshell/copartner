@@ -121,21 +121,21 @@ public class CourseController extends WebBase {
         course.setStatus(request.getStatus());
         course.setSynopsis(request.getSynopsis());
         course.setTime(request.getTime());
-        MultipartFile media = request.getMedia();
+        MultipartFile img = request.getCoverImg();
         String url = StringUtils.EMPTY;
-        if (media != null) {
-            String fileType = FileUtil.getFileType(media.getOriginalFilename());
+        if (img != null) {
+            String fileType = FileUtil.getFileType(img.getOriginalFilename());
             if (StringUtils.isNotBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
-                    url = CDNUtil.uploadFile(media.getInputStream(), fileName);
-                    if (StringUtils.isNotBlank(url)) course.setUrl(url);
+                    url = CDNUtil.uploadFile(img.getInputStream(), fileName);
+                    if (StringUtils.isNotBlank(url)) course.setCoverImg(url);
                 } catch (Exception e) {
                     log.error("UploadFile Media Error.", e);
                 }
             }
         }
-        
+        course.setUrl(request.getMedia());
         course.setUpdated(new Date());
         courseDAO.update(course);
 		return new ModelAndView("redirect:/course/detail/" + courseId);
@@ -155,20 +155,21 @@ public class CourseController extends WebBase {
 		course.setSynopsis(request.getSynopsis());
 		course.setTime(request.getTime());
 		course.setUpdated(date);
-		MultipartFile media = request.getMedia();
+		MultipartFile img = request.getCoverImg();
 		String url = StringUtils.EMPTY;
-		if (media != null) {
-            String fileType = FileUtil.getFileType(media.getOriginalFilename());
+		if (img != null) {
+            String fileType = FileUtil.getFileType(img.getOriginalFilename());
             if (StringUtils.isNotBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
-                    url = CDNUtil.uploadFile(media.getInputStream(), fileName);
-                    if (StringUtils.isNotBlank(url)) course.setUrl(url);
+                    url = CDNUtil.uploadFile(img.getInputStream(), fileName);
+                    if (StringUtils.isNotBlank(url)) course.setCoverImg(url);
                 } catch (Exception e) {
                     log.error("UploadFile Media Error.", e);
                 }
             }
         }
+        course.setUrl(request.getMedia());
 		course.setUserId(0L);
 		courseDAO.save(course);
 		return new ModelAndView("redirect:/course/detail/" + course.getId());
