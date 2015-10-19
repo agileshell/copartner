@@ -20,6 +20,7 @@ import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.exception.DataValidationException;
+import com.insoul.copartner.service.IDeviceService;
 import com.insoul.copartner.service.IUserFriendsService;
 import com.insoul.copartner.service.IUserService;
 import com.insoul.copartner.util.ResponseUtil;
@@ -37,13 +38,16 @@ public class UserController extends BaseController {
     @Resource
     private IUserFriendsService userFriendsService;
 
+    @Resource
+    private IDeviceService deviceService;
+
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getProfileDetail() {
 
         return ResponseUtil.jsonSucceed(userService.getUserProfileDetail(), HttpStatus.OK);
     }
-    
+
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> authentication(@Valid UserAuthenticateRequest request,
@@ -156,5 +160,24 @@ public class UserController extends BaseController {
     public ResponseEntity<Map<String, Object>> listNewFriends() {
 
         return ResponseUtil.jsonSucceed(userFriendsService.listFriends(false), HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/device/{OS}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> createCustomerDeviceToken(@PathVariable("OS") String deviceOs,
+            @RequestParam String deviceToken) throws DataValidationException {
+
+        deviceService.addUserDeviceToken(deviceOs, deviceToken);
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/device", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> deleteCustomerDeviceToken() {
+        deviceService.deleteUserDeviceToken();
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
     }
 }

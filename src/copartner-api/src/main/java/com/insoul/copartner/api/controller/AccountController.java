@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +33,7 @@ import com.insoul.copartner.util.ValidationUtil;
 import com.insoul.copartner.vo.UserDetailVO;
 import com.insoul.copartner.vo.request.PasswordChangeRequest;
 import com.insoul.copartner.vo.request.PasswordRestRequest;
+import com.insoul.copartner.vo.request.SignInByThirdPartRequest;
 import com.insoul.copartner.vo.request.UserAddRequest;
 
 @Controller
@@ -105,6 +107,24 @@ public class AccountController extends BaseController {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
         userService.changePassword(request.getOldPassword(), request.getPassword());
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/signin/{providerId}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> signInAccount(@PathVariable("providerId") Integer providerId,
+            @Valid SignInByThirdPartRequest signInBy3rdPartRequest, BindingResult validResult,
+            HttpServletRequest request, HttpServletResponse response, HttpSession session) throws CException {
+        if (providerId > 3 || providerId < 1 || validResult.hasErrors()) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+        signInBy3rdPartRequest.setProviderId(providerId);
+
+        long userId = userService.loginUse3rdOauth(signInBy3rdPartRequest);
+        String securityUserName = SecurityUtil.get3rdSecurityUserName(providerId, userId);
+        UserDetails details = userDetailsService.loadUserByUsername(securityUserName);
+        SecurityUtil.login(details, request, response, session);
 
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
     }

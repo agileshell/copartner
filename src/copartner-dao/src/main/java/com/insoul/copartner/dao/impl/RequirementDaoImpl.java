@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Query;
 
@@ -66,6 +67,17 @@ public class RequirementDaoImpl extends BaseDaoImpl<Requirement, Long> implement
         }
 
         return query;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Requirement> findByIds(Set<Long> ids) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("ids", ids);
+
+        Query query = createQuery("FROM Requirement WHERE id IN (:ids) ORDER BY created DESC", parameters);
+
+        return query.getResultList();
     }
 
 }

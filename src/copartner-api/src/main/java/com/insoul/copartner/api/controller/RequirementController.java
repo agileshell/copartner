@@ -1,6 +1,8 @@
 package com.insoul.copartner.api.controller;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -12,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.insoul.copartner.constant.ResponseCode;
@@ -119,5 +122,17 @@ public class RequirementController extends BaseController {
         requirementService.unlikeRequirement(requirementId);
 
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/requirement/refresh", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> listRefreshInfo(@RequestParam String ids) throws DataValidationException {
+        Set<Long> requirementIds = new HashSet<Long>();
+        String strIds[] = ids.split(",");
+        for (String id : strIds) {
+            requirementIds.add(Long.valueOf(id));
+        }
+
+        return ResponseUtil.jsonSucceed(requirementService.listRefreshInfo(requirementIds), HttpStatus.OK);
     }
 }

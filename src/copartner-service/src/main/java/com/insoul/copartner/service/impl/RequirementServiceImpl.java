@@ -44,6 +44,7 @@ import com.insoul.copartner.vo.CommentVO;
 import com.insoul.copartner.vo.Pagination;
 import com.insoul.copartner.vo.ProjectLeanVO;
 import com.insoul.copartner.vo.RequirementDetailVO;
+import com.insoul.copartner.vo.RequirementRefreshVO;
 import com.insoul.copartner.vo.RequirementVO;
 import com.insoul.copartner.vo.UserLeanVO;
 import com.insoul.copartner.vo.request.PaginationRequest;
@@ -411,5 +412,24 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
         }
 
         return commentVOs;
+    }
+
+    @Override
+    public List<RequirementRefreshVO> listRefreshInfo(Set<Long> ids) {
+        List<RequirementRefreshVO> vos = new ArrayList<RequirementRefreshVO>();
+        if (ids == null || ids.size() <= 0) {
+            return vos;
+        }
+
+        List<Requirement> requirements = requirementDao.findByIds(ids);
+        for (Requirement requirement : requirements) {
+            RequirementRefreshVO vo = new RequirementRefreshVO();
+            vo.setId(requirement.getId());
+            vo.setLikeCount(requirement.getLikeCount());
+            vo.setCommentCount(requirement.getCommentCount());
+            vos.add(vo);
+        }
+
+        return vos;
     }
 }

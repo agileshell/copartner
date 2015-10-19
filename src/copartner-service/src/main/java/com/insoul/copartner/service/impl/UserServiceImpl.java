@@ -25,6 +25,7 @@ import com.insoul.copartner.dao.IMessageDao;
 import com.insoul.copartner.dao.IResumeDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IStartupStatusDao;
+import com.insoul.copartner.dao.IUser3rdAccountAccessDao;
 import com.insoul.copartner.dao.IUserAccountConfirmationDao;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.dao.IUserFriendsDao;
@@ -36,6 +37,7 @@ import com.insoul.copartner.domain.Resume;
 import com.insoul.copartner.domain.StartupRole;
 import com.insoul.copartner.domain.StartupStatus;
 import com.insoul.copartner.domain.User;
+import com.insoul.copartner.domain.User3rdAccountAccess;
 import com.insoul.copartner.domain.UserAccountConfirmation;
 import com.insoul.copartner.domain.UserAccountConfirmationId;
 import com.insoul.copartner.domain.UserFriends;
@@ -57,6 +59,7 @@ import com.insoul.copartner.vo.StartupRoleVO;
 import com.insoul.copartner.vo.StartupStatusVO;
 import com.insoul.copartner.vo.UserDetailVO;
 import com.insoul.copartner.vo.request.ResumeRequest;
+import com.insoul.copartner.vo.request.SignInByThirdPartRequest;
 import com.insoul.copartner.vo.request.UserAddRequest;
 import com.insoul.copartner.vo.request.UserAuthenticateRequest;
 import com.insoul.copartner.vo.request.UserProfileUpdateRequest;
@@ -93,6 +96,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
     @Resource
     private IUserFriendsDao userFriendsDAO;
+
+    @Resource
+    private IUser3rdAccountAccessDao user3rdAccountAccessDao;
 
     @Override
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
@@ -136,8 +142,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
             }
 
             String code = userAddRequest.getCode();
-            UserAccountConfirmation userAccountConfirmation = userAccountConfirmationDao
-                    .getUserAccountConfirmation(CommonConstant.MOBILE, account, code);
+            UserAccountConfirmation userAccountConfirmation =
+                    userAccountConfirmationDao.getUserAccountConfirmation(CommonConstant.MOBILE, account, code);
             if (null != userAccountConfirmation) {
                 userAccountConfirmation.setIsConfirmed(true);
                 userAccountConfirmation.setConfirmed(new Date());
@@ -186,8 +192,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("userName", account);
-            String verifyEmailURL = new StringBuilder(GlobalProperties.VERIFY_EMAIL_URL).append("?account=")
-                    .append(account).append("&code=").append(code).toString();
+            String verifyEmailURL =
+                    new StringBuilder(GlobalProperties.VERIFY_EMAIL_URL).append("?account=").append(account)
+                            .append("&code=").append(code).toString();
             params.put("verifyEmailURL", verifyEmailURL);
 
             sendMail(userId, MessageType.REGISTER.getValue(), account, params);
@@ -285,8 +292,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("userName", account);
-            String retrievePwdCheck = new StringBuilder(GlobalProperties.RESET_PASSWORD_URL).append("?account=")
-                    .append(account).append("&code=").append(code).toString();
+            String retrievePwdCheck =
+                    new StringBuilder(GlobalProperties.RESET_PASSWORD_URL).append("?account=").append(account)
+                            .append("&code=").append(code).toString();
             params.put("retrievePwdCheck", retrievePwdCheck);
 
             sendMail(user.getId(), MessageType.RETRIEVE_PWD.getValue(), account, params);
@@ -617,6 +625,53 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         List<Resume> resumes = resumeDao.getByUserIdAndType(getUserId(), (byte) 2);
 
         return formatResumes(resumes);
+    }
+
+    @Override
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public long loginUse3rdOauth(SignInByThirdPartRequest signInBy3rdPartRequest) throws CException {
+        long userId = 0;
+        Date now = new Date();
+
+        int providerId = signInBy3rdPartRequest.getProviderId();
+        String uid = signInBy3rdPartRequest.getUid();
+        String accessToken = signInBy3rdPartRequest.getAccessToken();
+        String refreshToken = signInBy3rdPartRequest.getRefreshToken();
+        Long expireIn = signInBy3rdPartRequest.getExpireIn();
+
+        User3rdAccountAccess user3rdAccountAccess = user3rdAccountAccessDao.getByProviderAndUid(providerId, uid);
+        if (null == user3rdAccountAccess) {
+            User user = new User();
+
+            String salt = PasswordUtil.genSalt();
+            user.setName(signInBy3rdPartRequest.getNickname());
+            user.setSalt(salt);
+            user.setPassword(PasswordUtil.encodePassword(PasswordUtil.genPassword(10), salt));
+            user.setClientIp(getIp());
+            user.setCreated(now);
+            userDao.save(user);
+
+            userId = user.getId();
+
+            user3rdAccountAccess = new User3rdAccountAccess();
+            user3rdAccountAccess.setUserId(userId);
+            user3rdAccountAccess.setProviderId(providerId);
+            user3rdAccountAccess.setUid(uid);
+            user3rdAccountAccess.setAccessToken(accessToken);
+            user3rdAccountAccess.setRefreshToken(refreshToken);
+            user3rdAccountAccess.setExpires(expireIn);
+            user3rdAccountAccess.setCreated(now);
+            user3rdAccountAccessDao.save(user3rdAccountAccess);
+        } else {
+            userId = user3rdAccountAccess.getUserId();
+
+            user3rdAccountAccess.setAccessToken(signInBy3rdPartRequest.getAccessToken());
+            user3rdAccountAccess.setRefreshToken(signInBy3rdPartRequest.getRefreshToken());
+            user3rdAccountAccess.setExpires(signInBy3rdPartRequest.getExpireIn());
+            user3rdAccountAccess.setUpdated(now);
+        }
+
+        return userId;
     }
 
     private Set<ResumeVO> formatResumes(List<Resume> resumes) {

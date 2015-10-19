@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.insoul.copartner.constant.UserStatus;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.domain.User;
+import com.insoul.copartner.security.SecurityUtil;
 import com.insoul.copartner.security.model.UserDetailsImpl;
 import com.insoul.copartner.util.ValidationUtil;
 
@@ -31,14 +32,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             user = userDao.getUserByEmail(username);
         } else if (ValidationUtil.isMobilePhoneNumber(username)) {
             user = userDao.getUserByMobile(username);
+        } else {
+            long userId = SecurityUtil.getUserIdFrom3rdSecurityUserName(username);
+            if (userId > 0) {// 3td login
+                user = userDao.get(userId);
+            }
         }
 
         if (null == user || !UserStatus.ACTIVE.getValue().equals(user.getStatus())) {
             throw new UsernameNotFoundException("error_no_user");
         }
 
-        UserDetailsImpl details = new UserDetailsImpl(username, user.getPassword(), true, true, true, true,
-                getAuthorities(0));
+        UserDetailsImpl details =
+                new UserDetailsImpl(username, user.getPassword(), true, true, true, true, getAuthorities(0));
         details.setUserId(user.getId());
         details.setName(username);
         details.setSalt(user.getSalt());
