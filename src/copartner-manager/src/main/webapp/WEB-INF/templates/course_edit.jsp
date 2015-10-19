@@ -170,9 +170,6 @@
 	                time: {
 	                	required: true,
 	                	digits: true
-	                },
-	                coverImg: {
-	                	required: true
 	                }
 	            },
 	            messages: {
@@ -194,9 +191,6 @@
 	                time: {
 	                    required: '时长不能为空',
 	                    digits: "只能输入整数"
-	                },
-	                coverImg: {
-	                	required: "必须上传封皮"
 	                }
 	            },
 	            submitHandler: function(form) {

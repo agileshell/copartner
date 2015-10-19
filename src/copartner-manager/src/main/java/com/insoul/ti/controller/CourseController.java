@@ -135,7 +135,9 @@ public class CourseController extends WebBase {
                 }
             }
         }
-        course.setUrl(request.getMedia());
+        if (StringUtils.isNotBlank(request.getMedia())) {
+            course.setUrl(request.getMedia());
+        }
         course.setUpdated(new Date());
         courseDAO.update(course);
 		return new ModelAndView("redirect:/course/detail/" + courseId);
@@ -169,7 +171,9 @@ public class CourseController extends WebBase {
                 }
             }
         }
-        course.setUrl(request.getMedia());
+        if (StringUtils.isNotBlank(request.getMedia())) {
+            course.setUrl(request.getMedia());
+        }
 		course.setUserId(0L);
 		courseDAO.save(course);
 		return new ModelAndView("redirect:/course/detail/" + course.getId());
