@@ -17,7 +17,7 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" id="backBtn"></a>
 			<h1 id="title" class="mui-title c-title">融资融智</h1>
 			<a id="create-operation" class="mui-action-menu mui-icon mui-icon-plusempty mui-pull-right">
 				<span class="c-operation">发布需求</span>
@@ -67,6 +67,11 @@
 				newsWebview.evalJS('mui.scrollTo(0, 100)');
 			}
 		});
+
+		document.getElementById("backBtn").addEventListener('tap', function() {
+			plus.webview.getLaunchWebview().show();
+		});
+
 		var loginPage = null, rzrzSubPage = null;
 		var operation = 'create_requirement';
 		mui.plusReady(function() {

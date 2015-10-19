@@ -96,7 +96,7 @@
 							nameEl.innerText = course.name;
 							infoEl.innerText = '主讲人：' + course.speaker + '，时长：' + course.time + '分钟';
 							synopsisEl.innerHTML = course.synopsis;
-							videoEl.innerHTML = "<video id='video' controls poster='" + course.url + "?vframe/jpg/offset/0/w/" + clentW + "' width='" + clentW + "'><source src='" + course.url + "' type='video/mp4' /></video>";
+							videoEl.innerHTML = "<video id='video' controls poster='" + course.coverImg + "' width='" + clentW + "'><source src='" + course.url + "' type='video/mp4' /></video>";
 							window.scrollTo(0, 0);
 							//显示当前页面
 							mui.currentWebview.show();
@@ -105,29 +105,6 @@
 							mui.toast(app.ajaxErrorHandler(errorType));
 						};
 					app.getCourseByGuid(event.detail.guid, success, error);
-				});
-				//分享
-				var Intent = null,
-					main = null;
-				// H5 plus事件处理
-				$.plusReady(function() {
-					Intent = plus.android.importClass("android.content.Intent");
-					main = plus.android.runtimeMainActivity();
-				});
-				document.getElementById("share").addEventListener('tap', function(event) {
-					event.stopPropagation();
-					var intent = new Intent(Intent.ACTION_SEND);
-					intent.setType("text/plain");
-					//TODO
-					intent.putExtra(Intent.EXTRA_TEXT, nameEl.innerText + '（' + guid + '）');
-					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					main.startActivity(Intent.createChooser(intent, "系统分享"));
-				});
-				//收藏
-				document.getElementById("like").addEventListener('tap', function(event) {
-					event.stopPropagation();
-					//TODO
-					mui.toast('收藏成功');
 				});
 			})(mui);
 		</script>

@@ -128,8 +128,8 @@
 					</div>
 				</div>
 			</a>
-			<div style="padding-top: 5px; float: right;">
-				<span class="like {{liked}}" data-guid="{{id}}" data-value="{{likeCount}}"></span>
+			<div style="padding-top: 20px; float: right;">
+				<span class="like {{liked}}" data-guid="{{id}}" data-value="{{likeCount}}" id="requirement_like_icon_{{id}}"></span>
 				<span style="font-size: .8em; color: #8f8f94; line-height: 1em;" id="requirement_like_{{id}}"> ({{likeCount}})</span>
 				<span class="comment"></span>
 				<span style="font-size: .8em; color: #8f8f94; line-height: 1em;" id="requirement_comment_{{id}}">({{commentCount}})</span>
@@ -161,20 +161,20 @@
 						<span>{{advantage}}</span>
 					</div>
 				</div>
-				<div style="padding-top: 5px; float: right;">
-					<span class="like {{liked}}" data-guid="{{id}}" data-value="{{likeCount}}"></span>
-					<span style="font-size: .8em; color: #8f8f94; line-height: 1em;" id="project_like_{{id}}">({{likeCount}})</span>
-					<span class="comment"></span>
-					<span style="font-size: .8em; color: #8f8f94; line-height: 1em;">({{commentCount}})</span>
-				</div>
 			</a>
+			<div style="padding-top: 20px; float: right;">
+				<span class="like {{liked}}" data-guid="{{id}}" data-value="{{likeCount}}"></span>
+				<span style="font-size: .8em; color: #8f8f94; line-height: 1em;" id="project_like_{{id}}">({{likeCount}})</span>
+				<span class="comment"></span>
+				<span style="font-size: .8em; color: #8f8f94; line-height: 1em;">({{commentCount}})</span>
+			</div>
 		</li>
 	</script>
 	<script type="text/javascript" charset="UTF-8" src="../js/handlebars-v2.0.0.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
 	<script>
-		var  rzrzType = 1, loginPage = null,
+		var  rzrzType = 1, loginPage = null, ids = '',
 			requirementLatestRefreshRequestDate = 0,
 			requirementLatestLoadingRequestDate = 0,
 			projectLatestRefreshRequestDate = 0,
@@ -277,23 +277,38 @@
 			});
 		};
 
+		document.addEventListener('mui.view.beforeshow', function(event) {
+			var succ = function(response) {
+					var items = response.body;
+					if (items.length > 0) {
+						for (var i = items.length - 1; i >= 0; i--) {
+							var item = items[i];
+							document.getElementById("requirement_like_icon_" + item.id).setAttribute('data-value', item.likeCount);
+							if (item.isliked) {
+								document.getElementById("requirement_like_icon_" + item.id).classList.add('selected');
+							} else {
+								document.getElementById("requirement_like_icon_" + item.id).classList.remove('selected');
+							}
+							document.getElementById("requirement_like_" + item.id).innerText = '(' + item.likeCount + ')';
+							document.getElementById("requirement_comment_" + item.id).innerText = '(' + item.commentCount + ')';
+						}
+					}
+				},
+				err = function(errorType) {
+					mui.toast(app.ajaxErrorHandler(errorType));
+				};
+			if (ids != '') {
+				app.refreshRequirements(ids, succ, err);
+			}
+		});
+
 		mui.plusReady(function() {
 			if (plus.networkinfo.getCurrentType() === plus.networkinfo.CONNECTION_NONE) {
 				plus.nativeUI.alert('无网络连接!');
 			} else {
-				document.addEventListener('mui.view.beforeshow', function(event) {
-					requirementLatestRefreshRequestDate = 0;
-					requirementLatestLoadingRequestDate = 0;
-					projectLatestRefreshRequestDate = 0;
-					projectLatestLoadingRequestDate = 0;
-					projectIsFirstLoad = false;
-					requirementLoadingNoData = false;
-					projectLoadingNoData = false;
-					requirementEl.innerHTML = '';
-					projectEl.innerHTML = '';
-
+				setTimeout(function() {
 					mui('#pullrefresh').pullRefresh().pullupLoading();
-				});
+				}, 200);
 			}
 
 			mui('#rzrz-type').on('tap', 'a', function() {
@@ -333,6 +348,11 @@
 								}
 								requirementLatestRefreshRequestDate = Date.parse(items[0].created);
 								for (var i = items.length - 1; i >= 0; i--) {
+									if (ids != '') {
+										ids = ids + ',' + items[i].id;
+									} else {
+										ids = items[i].id;
+									}
 									divEl.innerHTML = requirementTemplate(app.processRequirement(items[i]));
 									requirementEl.insertBefore(divEl.firstElementChild, requirementEl.firstElementChild);
 								}
@@ -387,6 +407,11 @@
 								}
 								requirementLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
 								for (var i = 0, len = items.length; i < len; i++) {
+									if (ids != '') {
+										ids = ids + ',' + items[i].id;
+									} else {
+										ids = items[i].id;
+									}
 									divEl.innerHTML = requirementTemplate(app.processRequirement(items[i]));
 									requirementEl.appendChild(divEl.firstElementChild);
 								}

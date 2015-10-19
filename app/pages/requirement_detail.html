@@ -125,7 +125,7 @@
 	</head>
 	<body class="c-overlay">
 		<header class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" id="backBtn"></a>
 			<h1 id="title" class="mui-title c-title">需求详情</h1>
 		</header>
 		<div class="mui-content" style="padding: 50px 5px 5px 5px;">
@@ -226,31 +226,37 @@
 			contentEl = document.getElementById("comment-content");
 
 		mui.init({
-			swipeBack: true,
-			beforeback: function() {
-				setTimeout(function() {
-					requirementId = 0;
-					projectId = 0;
-					likecount = 0;
-					isliked = false;
-					userNameEl.innerText = '';
-					userAvatarEl.src = '';
-					reqContentEl.innerText = '';
-					reqCreatedEl.innerText = '';
-					projectInfoEl.classList.add('undisplayed');
-					projectLogoEl.src = '';
-					projectNameEl.innerText = '';
-					projectLocationTeamSizeEl.innerText = '';
-					projectDomainEl.innerText = '';
-					projectPhaseEl.innerText = '';
-					likeCountEl.innerText = '';
-					commentCountEl.innerText = '';
-					likersEl.innerHTML = '';
-					commentsEl.innerHTML = '';
-					likebtnEl.classList.remove('selected');
-					document.body.classList.add('c-overlay');
-				}, 200);
+			swipeBack: true
+		});
+
+		var rzrzPage = null;
+		document.getElementById("backBtn").addEventListener('tap', function() {
+			requirementId = 0;
+			projectId = 0;
+			likecount = 0;
+			isliked = false;
+			userNameEl.innerText = '';
+			userAvatarEl.src = '';
+			reqContentEl.innerText = '';
+			reqCreatedEl.innerText = '';
+			projectInfoEl.classList.add('undisplayed');
+			projectLogoEl.src = '';
+			projectNameEl.innerText = '';
+			projectLocationTeamSizeEl.innerText = '';
+			projectDomainEl.innerText = '';
+			projectPhaseEl.innerText = '';
+			likeCountEl.innerText = '';
+			commentCountEl.innerText = '';
+			likersEl.innerHTML = '';
+			commentsEl.innerHTML = '';
+			likebtnEl.classList.remove('selected');
+			document.body.classList.add('c-overlay');
+
+			if (!rzrzPage) {
+				rzrzPage = plus.webview.getWebviewById('rzrz_list');
 			}
+			mui.fire(rzrzPage, 'mui.view.beforeshow', {});
+			rzrzPage.show();
 		});
 
 		projectInfoEl.addEventListener('tap', function() {
@@ -299,14 +305,28 @@
 		});
 
 		document.addEventListener('mui.view.beforeshow', function(event) {
-			if (event.detail.$$type === 'back') {
-				setTimeout(function() {
-					document.body.classList.remove('c-overlay');
-				}, 500);
-				return;
-			}
-
 			var success = function(response) {
+				requirementId = 0;
+				projectId = 0;
+				likecount = 0;
+				isliked = false;
+				userNameEl.innerText = '';
+				userAvatarEl.src = '';
+				reqContentEl.innerText = '';
+				reqCreatedEl.innerText = '';
+				projectInfoEl.classList.add('undisplayed');
+				projectLogoEl.src = '';
+				projectNameEl.innerText = '';
+				projectLocationTeamSizeEl.innerText = '';
+				projectDomainEl.innerText = '';
+				projectPhaseEl.innerText = '';
+				likeCountEl.innerText = '';
+				commentCountEl.innerText = '';
+				likersEl.innerHTML = '';
+				commentsEl.innerHTML = '';
+				likebtnEl.classList.remove('selected');
+				document.body.classList.add('c-overlay');
+
 				requirement = app.processRequirement(response.body);
 
 				requirementId = requirement.id;

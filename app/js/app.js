@@ -12,8 +12,8 @@
 			return (password.length >= 6 && password.length <= 16 && password.match(/^[0-9a-zA-Z]*$/));
 		};
 
-	//owner.apiURL = 'http://123.57.55.59:8080/';
-	owner.apiURL = 'http://192.168.4.106:8080/copartner-api/';
+	owner.apiURL = 'http://123.57.55.59:8080/';
+
 	/**
 	 * 用户登录
 	 **/
@@ -619,6 +619,24 @@
 				from: from,
 				to: to
 			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				if (data.status == 'SUCCEED') {
+					return successCallback(data);
+				} else {
+					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				return errorCallback(owner.ajaxErrorHandler(type));
+			}
+		})
+	};
+
+	owner.refreshRequirements = function(ids, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'requirements/refresh?ids=' + ids, {
 			dataType: 'json',
 			type: 'get',
 			timeout: 5000,
@@ -1347,6 +1365,11 @@
 		courseInfo.time = course.time;
 		courseInfo.clicks = course.clicks;
 		courseInfo.url = course.url;
+		if (!course.coverImg) {
+			courseInfo.coverImg = '../images/blank.jpg';
+		} else {
+			courseInfo.coverImg = course.coverImg;
+		}
 
 		return courseInfo;
 	};
