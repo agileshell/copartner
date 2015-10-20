@@ -42,9 +42,6 @@
 			line-height: 15px;
 			background-color: #FFFFFF;
 		}
-		.c-item .mui-icon {
-			font-size: 18px;
-		}
 		.c-icon {
 			font-size: 14px;
 			color: #000;
@@ -71,20 +68,16 @@
 		<div class="c-item">
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell">
-					<span class="mui-icon mui-icon-phone"></span>
-					<span id="user-mobile" style="padding-left: 10px; color: #999999;"></span>
+					<span class="c-icon">邮箱:</span>
+					<span id="user-email" style="padding-left: 5px; color: #999999;"></span>
 				</li>
 				<li class="mui-table-view-cell">
-					<span class="mui-icon mui-icon-email"></span>
-					<span id="user-email" style="padding-left: 10px; color: #999999;"></span>
+					<span class="c-icon">领域:</span>
+					<span id="user-domain" style="padding-left: 5px; color: #999999;"></span>
 				</li>
 				<li class="mui-table-view-cell">
-					<span class="c-icon">领域：</span>
-					<span id="user-domain" style="color: #999999;"></span>
-				</li>
-				<li class="mui-table-view-cell">
-					<span class="c-icon">类型：</span>
-					<span id="user-profession" style="color: #999999;"></span>
+					<span class="c-icon">类型:</span>
+					<span id="user-profession" style="padding-left: 5px; color: #999999;"></span>
 				</li>
 			</ul>
 			<div id="user-info" class="item-content">
@@ -95,7 +88,6 @@
 		<script type="text/javascript">
 			var nameEl = document.getElementById("user-name");
 			var avatarEl = document.getElementById("user-avatar");
-			var mobileEl = document.getElementById("user-mobile");
 			var emailEl = document.getElementById("user-email");
 			var domainEl = document.getElementById("user-domain");
 			var professionEl = document.getElementById("user-profession");
@@ -108,9 +100,8 @@
 					var success = function(response) {
 							user = response.body;
 							nameEl.innerText = user.name;
-							mobileEl.innerText = user.mobile;
 							emailEl.innerText = user.email ? user.email : '暂无';
-							domainEl.innerText = user.fullDomains;
+							domainEl.innerText = user.fullDomains ? user.fullDomains : '暂无';
 							professionEl.innerText = user.professionName;
 							infoEl.innerText = user.introduction;
 							avatarEl.src = user.avatar;

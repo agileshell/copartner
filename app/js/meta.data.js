@@ -31,6 +31,12 @@ var industryDomainData = [{
 }, {
 	"value": 11,
 	"text": "其它"
+}, {
+	"value": 12,
+	"text": "农业"
+}, {
+	"value": 13,
+	"text": "环保"
 }];
 
 var teamSizeData = [{

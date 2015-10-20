@@ -162,19 +162,12 @@
 			};
 			var questionDetailWebview = null;
 			function open_question_detail(id) {
-				if (app.getUserId() == 0) {
-					if (!loginPage) {
-						loginPage = plus.webview.getWebviewById('login');
-					}
-					loginPage.show();
-				} else {
-					if (!questionDetailWebview) {
-						questionDetailWebview = plus.webview.getWebviewById('question_detail');
-					}
-					mui.fire(questionDetailWebview, 'mui.view.beforeshow', {
-						guid: id
-					});
+				if (!questionDetailWebview) {
+					questionDetailWebview = plus.webview.getWebviewById('question_detail');
 				}
+				mui.fire(questionDetailWebview, 'mui.view.beforeshow', {
+					guid: id
+				});
 			};
 
 			mui('#type').on('tap', 'a', function() {
