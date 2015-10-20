@@ -12,8 +12,7 @@
 			return (password.length >= 6 && password.length <= 16 && password.match(/^[0-9a-zA-Z]*$/));
 		};
 
-	// owner.apiURL = 'http://123.57.55.59:8080/';
-	owner.apiURL = 'http://192.168.4.106:8080/copartner-api/';
+	owner.apiURL = 'http://123.57.55.59:8080/';
 
 	/**
 	 * 用户登录
@@ -1913,6 +1912,46 @@
 				} else {
 					return callback(owner.ajaxErrorHandler(type));
 				}
+			}
+		})
+	};
+
+	owner.listFavourites = function(offset, limit, from, to, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'user/favourites', {
+			data: {
+				offset: offset,
+				limit: limit,
+				from: from,
+				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+
+	owner.listOwnQuestions = function(offset, limit, from, to, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'user/questions', {
+			data: {
+				offset: offset,
+				limit: limit,
+				from: from,
+				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
 			}
 		})
 	};

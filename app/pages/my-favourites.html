@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创始人</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">我的收藏</h1>
+		</header>
+		<div class="mui-content" style="padding-top: 44px;">
+			<div id="pullrefresh" class="mui-scroll-wrapper">
+				<ul id="item-list" class="mui-table-view">
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script id="item-template" type="text/x-handlebars-template">
+		<li id="item_{{id}}" class="mui-table-view-cell mui-media">
+			<a href="#" data-guid="{{id}}" data-type="{{entityType}}">
+				<img class="mui-media-object mui-pull-left" src="{{coverImg}}">
+				<div class="mui-media-body">
+					<span class="mui-ellipsis-2">{{title}}</span>
+				</div>
+			</a>
+		</li>
+	</script>
+	<script src="../js/handlebars-v2.0.0.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/app.js"></script>
+	<script type="text/javascript">
+		var latestRefreshRequestDate = 0,
+			latestLoadingRequestDate = 0;
+
+		var divEl = document.createElement("div"),
+			itemSource = document.getElementById("item-template").innerText,
+			itemTemplate = Handlebars.compile(itemSource),
+			itemListEl = document.getElementById("item-list");
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				down: {
+					contentrefresh: '正在刷新...',
+					callback: pulldownRefresh
+				},
+				up: {
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+
+		mui.plusReady(function() {
+		});
+
+		var newsDetailWebview = null,  contentDetailWebview = null;
+		document.addEventListener('mui.view.beforeshow', function(event) {
+			itemListEl.innerHTML = '';
+			latestRefreshRequestDate = 0;
+			latestLoadingRequestDate = 0;
+			setTimeout(function() {
+				mui('#pullrefresh').pullRefresh().pullupLoading();
+			}, 200);
+
+			setTimeout(function() {
+				newsDetailWebview = mui.preload({
+					id: 'news_detail',
+					url: 'news_detail.html',
+					show: {
+						aniShow: 'none'
+					}
+				});
+				contentDetailWebview = mui.preload({
+					id: 'zhengce_detail',
+					url: 'zhengce_detail.html',
+					show: {
+						aniShow: 'none'
+					}
+				});
+			}, 500);
+		});
+
+		mui('#pullrefresh').on('tap', 'a', function() {
+			var type = this.getAttribute('data-type');
+			if (type == 'news') {
+				open_new_detail(this.getAttribute('data-guid'));
+			} else {
+				open_content_detail(this.getAttribute('data-guid'));
+			}
+		});
+		function open_new_detail(id) {
+			if (!newsDetailWebview) {
+				newsDetailWebview = plus.webview.getWebviewById('news_detail');
+			}
+			mui.fire(newsDetailWebview, 'mui.view.beforeshow', {
+				guid: id
+			});
+		};
+		function open_content_detail(id) {
+			if (!contentDetailWebview) {
+				contentDetailWebview = plus.webview.getWebviewById('zhengce_detail');
+			}
+			mui.fire(contentDetailWebview, 'mui.view.beforeshow', {
+				guid: id
+			});
+		};
+
+		//下拉刷新具体业务实现
+		function pulldownRefresh() {
+			setTimeout(function() {
+				var success = function(response) {
+					var news = response.body;
+					if (news.length > 0) {
+						if (latestRefreshRequestDate == 0 && latestLoadingRequestDate == 0) {
+							latestLoadingRequestDate = Date.parse(news[news.length - 1].created);
+						}
+						latestRefreshRequestDate = Date.parse(news[0].created);
+						for (var i = news.length - 1; i >= 0; i--) {
+							divEl.innerHTML = itemTemplate(news[i]);
+							itemListEl.insertBefore(divEl.firstElementChild, itemListEl.firstElementChild);
+						}
+					}
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+				},
+				error = function(errorType) {
+					mui.toast(app.ajaxErrorHandler(errorType));
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+				};
+				app.listFavourites(0, 10, latestRefreshRequestDate, 0, success, error);
+			}, 1000);
+		};
+		 //上拉加载具体业务实现
+		function pullupRefresh() {
+			setTimeout(function() {
+				var success = function(response) {
+					var news = response.body;
+					if (news.length > 0) {
+						if (latestLoadingRequestDate == 0 && latestRefreshRequestDate == 0) {
+							latestRefreshRequestDate = Date.parse(news[0].created);
+						}
+						latestLoadingRequestDate = Date.parse(news[news.length - 1].created);
+						for (var i = 0, len = news.length; i < len; i++) {
+							divEl.innerHTML = itemTemplate(news[i]);
+							itemListEl.appendChild(divEl.firstElementChild);
+						}
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+					} else {
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+					}
+				},
+				error = function(errorType) {
+					mui.toast(app.ajaxErrorHandler(errorType));
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+				};
+				app.listFavourites(0, 10, 0, latestLoadingRequestDate, success, error);
+			}, 1000);
+		};
+	</script>
+</html>

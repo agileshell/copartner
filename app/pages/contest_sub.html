@@ -56,7 +56,7 @@
 				float: left;
 				border-radius: 50%;
 			}
-			
+
 			.registration {
 				clear: both;
 				color: #41AAF2;
@@ -74,6 +74,10 @@
 				-webkit-border-radius: 5px;
 				border-radius: 5px; 
 			}
+
+			.undisplayed {
+				display: none;
+			}
 		</style>
 	</head>
 
@@ -82,7 +86,7 @@
 			<div class="mui-slider mui-fullscreen">
 				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
 					<a class="mui-control-item mui-active" href="#introduction">大赛简介</a>
-					<a class="mui-control-item" href="#registration">大赛报名</a>
+					<a class="mui-control-item" href="#registration" id="registrationSlider">大赛报名</a>
 					<a id="tap-entries" class="mui-control-item" href="#entries">参赛项目</a>
 					<a class="mui-control-item" href="#ranking">排行榜</a>
 				</div>
@@ -170,6 +174,8 @@
 				rankingEl = document.getElementById('ranking-content'),
 				registrationEl = document.getElementById('registration-content'),
 				registrationBtnEl = document.getElementById('registration-btn');
+			var registrationDivEl = document.getElementById('registration'),
+				registrationSliderEl = document.getElementById('registrationSlider');
 
 			var divEl = document.createElement("div"),
 				entrySource = document.getElementById("entry-template").innerText,
@@ -206,6 +212,12 @@
 					ownProjectCount = contestEntity.ownProjectCount;
 					if (isRegister == true) {
 						registrationBtnEl.innerText = '已报名';
+					}
+
+					var state = app.getState();
+					if (state.roleId > 1) {
+						registrationSliderEl.remove();
+						registrationDivEl.remove();
 					}
 
 					var tutorVoteRankings = contestEntity.tutorVoteRanking;

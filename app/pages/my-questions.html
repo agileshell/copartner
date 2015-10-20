@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创始人</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			.tutor-item {
+				display: block;
+				font-size: 12px;
+				line-height: 20px;
+			}
+			.tutor-avatar {
+				border-radius: 50%;
+				width: 40px;
+				float: left;
+			}
+			.tutor-info {
+				float: left;
+				margin-top: 10px;
+				margin-left: 5px;
+				color: #C15151;
+				font-size: 15px;
+			}
+			.question-name {
+				color: #C15151;
+				font-size: 15px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">我的提问</h1>
+		</header>
+		<div class="mui-content" style="padding-top: 44px;">
+			<div id="pullrefresh" class="mui-scroll-wrapper">
+				<ul id="question-list" class="mui-table-view mui-table-view-chevron">
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script id="question-template" type="text/x-handlebars-template">
+		<li id="question_{{id}}" class="mui-table-view-cell mui-media">
+			<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+				<div style="overflow: hidden;">
+					<img src="{{questioner.avatar}}" class="tutor-avatar">
+					<span class="tutor-info">{{questioner.name}}</span>
+				</div>
+				<div class="mui-media-body" style="padding-left: 45px;">
+					<span class="question-name mui-ellipsis-2">{{title}}</span>
+					<span class="tutor-item">类别：{{categoryName}}</span>
+					<span class="tutor-item mui-ellipsis-2">问题：{{content}}</span>
+					<span class="tutor-item">提问时间：{{created}}</span>
+				</div>
+			</a>
+		</li>
+	</script>
+	<script src="../js/handlebars-v2.0.0.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/app.js"></script>
+	<script>
+		var questionLatestRefreshRequestDate = 0,
+			questionLatestLoadingRequestDate = 0;
+		var divEl = document.createElement("div"),
+			questionSource = document.getElementById("question-template").innerText,
+			questionTemplate = Handlebars.compile(questionSource),
+			questionEl = document.getElementById("question-list");
+
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				down: {
+					contentrefresh: '正在刷新...',
+					callback: pulldownRefresh
+				},
+				up: {
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+
+		mui.plusReady(function() {
+		});
+
+		var questionDetailWebview = null;
+		document.addEventListener('mui.view.beforeshow', function(event) {
+			questionEl.innerHTML = '';
+			questionLatestRefreshRequestDate = 0;
+			questionLatestLoadingRequestDate = 0;
+
+			setTimeout(function() {
+				mui('#pullrefresh').pullRefresh().pullupLoading();
+			}, 200);
+
+			setTimeout(function() {
+				questionDetailWebview = mui.preload({
+					id: 'question_detail',
+					url: 'question_detail.html',
+					show: {
+						aniShow: 'none'
+					}
+				});
+			}, 500);
+		});
+
+		mui('#pullrefresh').on('tap', 'a', function() {
+			open_question_detail(this.getAttribute('data-guid'));
+		});
+		function open_question_detail(id) {
+			if (!questionDetailWebview) {
+				questionDetailWebview = plus.webview.getWebviewById('question_detail');
+			}
+			mui.fire(questionDetailWebview, 'mui.view.beforeshow', {
+				guid: id
+			});
+		};
+
+		//下拉刷新具体业务实现
+		function pulldownRefresh() {
+			setTimeout(function() {
+				var success = function(response) {
+					var questions = response.body;
+					if (questions.length > 0) {
+						if (questionLatestRefreshRequestDate == 0 && questionLatestLoadingRequestDate == 0) {
+							questionLatestLoadingRequestDate = Date.parse(questions[questions.length - 1].created);
+						}
+						questionLatestRefreshRequestDate = Date.parse(questions[0].created);
+						for (var i = questions.length - 1; i >= 0; i--) {
+							divEl.innerHTML = questionTemplate(app.processQuestion(questions[i]));
+							questionEl.insertBefore(divEl.firstElementChild, questionEl.firstElementChild);
+						}
+					}
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+				},
+				error = function(errorType) {
+					mui.toast(app.ajaxErrorHandler(errorType));
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+				};
+				app.listOwnQuestions(0, 10, questionLatestRefreshRequestDate, 0, success, error);
+			}, 1000);
+		};
+		 //上拉加载具体业务实现
+		function pullupRefresh() {
+			setTimeout(function() {
+				var success = function(response) {
+					var questions = response.body;
+					if (questions.length > 0) {
+						if (questionLatestLoadingRequestDate == 0 && questionLatestRefreshRequestDate == 0) {
+							questionLatestRefreshRequestDate = Date.parse(questions[0].created);
+						}
+						questionLatestLoadingRequestDate = Date.parse(questions[questions.length - 1].created);
+						for (var i = questions.length - 1; i >= 0; i--) {
+							divEl.innerHTML = questionTemplate(app.processQuestion(questions[i]));
+							questionEl.insertBefore(divEl.firstElementChild, questionEl.firstElementChild);
+						}
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+					} else {
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+					}
+				},
+				error = function(errorType) {
+					mui.toast(app.ajaxErrorHandler(errorType));
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+				};
+				app.listOwnQuestions(0, 10, 0, questionLatestLoadingRequestDate, success, error);
+			}, 1000);
+		};
+	</script>
+</html>
