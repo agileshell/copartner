@@ -12,7 +12,8 @@
 			return (password.length >= 6 && password.length <= 16 && password.match(/^[0-9a-zA-Z]*$/));
 		};
 
-	owner.apiURL = 'http://123.57.55.59:8080/';
+	// owner.apiURL = 'http://123.57.55.59:8080/';
+	owner.apiURL = 'http://192.168.4.106:8080/copartner-api/';
 
 	/**
 	 * 用户登录
@@ -1166,6 +1167,29 @@
 		return newsInfo;
 	};
 
+	owner.likeNews = function(id, callback) {
+		mui.ajax(owner.apiURL + 'news/' + id + '/like', {
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					owner.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
+	};
+
 	/**
 	 * 获取contents列表
 	 **/
@@ -1219,6 +1243,29 @@
 			contentInfo.image = content.coverImg;
 		}
 		return contentInfo;
+	};
+
+	owner.likeContent = function(id, callback) {
+		mui.ajax(owner.apiURL + 'content/' + id + '/like', {
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data, textStatus) {
+				if (data.status == 'SUCCEED') {
+					return callback();
+				} else {
+					return callback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				if (errorThrown == 'Forbidden') {
+					owner.setState({});
+					owner.openLoginPage();
+				} else {
+					return callback(owner.ajaxErrorHandler(type));
+				}
+			}
+		})
 	};
 
 	/**

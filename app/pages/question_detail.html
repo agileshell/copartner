@@ -163,7 +163,9 @@
 				answerPadEl = document.getElementById("answer-pad"),
 				questionId = 0,
 				name = '',
-				avatar = '';
+				avatar = '',
+				questionerId = 0,
+				tutorId = 0;
 			var divEl = document.createElement("div"),
 				historyListEl = document.getElementById("message-list"),
 				replySource = document.getElementById("reply-template").innerText,
@@ -177,8 +179,8 @@
 						avatarEl.src = '';
 						categoryEl.innerText = '';
 						createdEl.innerText = '';
-						historyListEl.innerHTML = '';
 						answerPadEl.classList.add('undisplayed');
+						historyListEl.innerHTML = '';
 						document.body.classList.add('c-overlay');
 					}, 200);
 				}
@@ -206,7 +208,7 @@
 							currentUserId = app.getUserId();
 							questionerId = question.questioner.userId;
 							tutorId = question.tutor.userId;
-							if (currentUserId == questionerId || currentUserId == tutorId) {
+							if (currentUserId <= 0 || currentUserId == questionerId || currentUserId == tutorId) {
 								answerPadEl.classList.remove('undisplayed');
 							}
 
@@ -234,13 +236,18 @@
 
 				var loginPage = null;
 				function answerQuestion() {
-					if (app.getUserId() == 0) {
+					if (currentUserId == 0) {
 						if (!loginPage) {
 							loginPage = plus.webview.getWebviewById('login');
 						}
 						loginPage.show();
 						return;
-					} 
+					}
+
+					if (currentUserId != questionerId && currentUserId != tutorId) {
+						plus.nativeUI.toast('无权解答此问题');
+						return;
+					}
 
 					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
 					var content = contentEl.value;

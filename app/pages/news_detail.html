@@ -9,9 +9,8 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<style>
-			span .mui-icon {
+			span.mui-icon {
 				font-size: 14px;
-				color: #41AAF2;
 			}
 			.c-overlay .mui-bar-tab {
 				display: none;
@@ -68,6 +67,15 @@
 			object {
 				display: none;
 			}
+			.like {
+				display: inline-block;
+				background: url(../images/ic_like_default.png) no-repeat;
+				background-size: 1em 1em
+			}
+			.like.selected {
+				background: url(../images/ic_like_selected.png) no-repeat;
+				background-size: 1em 1em
+			}
 		</style>
 	</head>
 
@@ -78,9 +86,9 @@
 		</header>
 		<nav class="mui-bar mui-bar-tab">
 			<a id="like" class="mui-tab-item" href="#">
-				<span class="mui-icon mui-icon-star" style="float: left; margin-left: 20px;"></span>
+				<span class="mui-icon like" id="likebtn" style="float: left; margin-left: 20px;"></span>
 			</a>
-			<a id="share" class="mui-tab-item" href="#">
+			<a  id="share" class="mui-tab-item" href="#">
 				<span class="mui-icon mui-icon-upload" style="float: right; margin-right: 20px;"></span>
 			</a>
 		</nav>
@@ -102,8 +110,10 @@
 		var titleEl = document.getElementById("c-article-title");
 		var timeEl = document.getElementById("c-article-time");
 		var articleEl = document.getElementById("c-article-article");
+		var likebtnEl = document.getElementById('likebtn');
 		var shares=null;
-		var guid = '',  shareUrl = '', shareTitle = '', shareContent = '', shareCoverImg = '';
+		var loginPage = null;
+		var guid = '',  shareUrl = '', shareTitle = '', shareContent = '', shareCoverImg = '', isliked = false;
 		mui.init({
 			swipeBack: true, //启用右滑关闭功能
 			beforeback: function() {
@@ -111,6 +121,8 @@
 					titleEl.innerText = '';
 					timeEl.innerText = '';
 					articleEl.innerHTML = '';
+					isliked = false;
+					likebtnEl.classList.remove('selected');
 					document.body.classList.add('c-overlay');
 				}, 200);
 			}
@@ -147,6 +159,11 @@
 						shareTitle = news.title;
 						shareContent = news.synopsis;
 
+						isliked = news.isliked;
+						if (isliked) {
+							likebtnEl.classList.add('selected');
+						}
+
 						window.scrollTo(0, 0);
 						setTimeout(function() {
 							document.body.classList.remove('c-overlay');
@@ -163,14 +180,32 @@
 				updateSerivces();
 			});
 			//分享
-			document.getElementById("share").addEventListener('tap', function(event) {
+			document.getElementById('share').addEventListener('tap', function(event) {
 				shareShow();
 			});
 			//收藏
-			document.getElementById("like").addEventListener('tap', function(event) {
+			document.getElementById('like').addEventListener('tap', function(event) {
+				var state = app.getState();
+				if (!state.userId) {
+					if (!loginPage) {
+						loginPage = plus.webview.getWebviewById('login');
+					}
+					loginPage.show();
+					return;
+				}
+
 				event.stopPropagation();
-				//TODO
-				mui.toast('收藏成功');
+				var success = function(){
+					if (isliked) {
+						isliked = false;
+						likebtnEl.classList.remove('selected');
+					} else {
+						isliked = true;
+						likebtnEl.classList.add('selected');
+						mui.toast('收藏成功');
+					}
+				};
+				app.likeNews(guid, success);
 			});
 		})(mui);
 
