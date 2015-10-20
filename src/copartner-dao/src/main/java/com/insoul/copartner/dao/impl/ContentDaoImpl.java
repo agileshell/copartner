@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Query;
 
@@ -80,6 +81,19 @@ public class ContentDaoImpl extends BaseDaoImpl<Content, Long> implements IConte
         }
 
         return query;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Content> findByContentIds(Set<Long> contentIds) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("contentIds", contentIds);
+
+        Query query =
+                createQuery("FROM Content WHERE id IN (:contentIds) ORDER BY created DESC",
+                        parameters);
+
+        return query.getResultList();
     }
 
 }

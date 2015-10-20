@@ -7,11 +7,15 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.insoul.copartner.constant.EntityType;
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.dao.IContentDao;
+import com.insoul.copartner.dao.IUserFavouritesDao;
 import com.insoul.copartner.dao.criteria.ContentCriteria;
 import com.insoul.copartner.domain.Content;
+import com.insoul.copartner.domain.UserFavourites;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.service.IContentService;
@@ -27,6 +31,9 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
     @Resource
     private IContentDao contentDao;
 
+    @Resource
+    private IUserFavouritesDao userFavouritesDao;
+
     @Override
     public Pagination<ContentVO> listContents(ContentListRequest requestData) {
         List<ContentVO> contentVOs = new ArrayList<ContentVO>();
@@ -34,7 +41,7 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
         ContentCriteria contentCriteria = new ContentCriteria();
         contentCriteria.setOffset(requestData.getOffset());
         contentCriteria.setLimit(requestData.getLimit());
-        contentCriteria.setStatus(new String[] { "active" });
+        contentCriteria.setStatus(new String[] {"active"});
         contentCriteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData
                 .getFrom()) : null);
         contentCriteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
@@ -75,6 +82,25 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
         contentVO.setCreated(content.getCreated());
 
         return contentVO;
+    }
+
+    @Override
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public void likeOrUnlikeContent(Long contentId) {
+        long userId = getUserId();
+        UserFavourites userFavourites =
+                userFavouritesDao.getByUserIdAndEntity(userId, contentId, EntityType.CONTENT.getValue());
+        if (userFavourites == null) {
+            userFavourites = new UserFavourites();
+            userFavourites.setUserId(userId);
+            userFavourites.setEntityId(contentId);
+            userFavourites.setEntityType(EntityType.CONTENT.getValue());
+            userFavourites.setCreated(new Date());
+
+            userFavouritesDao.save(userFavourites);
+        } else {
+            userFavouritesDao.delete(userFavourites);
+        }
     }
 
 }

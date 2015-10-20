@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Query;
 
@@ -72,5 +73,18 @@ public class NewsDaoImpl extends BaseDaoImpl<News, Long> implements INewsDao {
         }
 
         return query;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<News> findByNewsIds(Set<Long> newsIds) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("newsIds", newsIds);
+
+        Query query =
+                createQuery("FROM News WHERE id IN (:newsIds) ORDER BY created DESC",
+                        parameters);
+
+        return query.getResultList();
     }
 }

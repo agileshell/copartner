@@ -11,4 +11,6 @@ public interface IContentService {
     Pagination<ContentVO> listContents(ContentListRequest requestData);
 
     ContentDetailVO getContent(Long contentId) throws CException;
+
+    void likeOrUnlikeContent(Long contentId);
 }

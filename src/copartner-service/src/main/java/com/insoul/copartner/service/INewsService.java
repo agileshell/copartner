@@ -11,4 +11,6 @@ public interface INewsService {
     Pagination<NewsVO> listNews(NewsListRequest requestData);
 
     NewsDetailVO getNews(Long newsId) throws CException;
+
+    void likeOrUnlikeNews(Long newsId);
 }

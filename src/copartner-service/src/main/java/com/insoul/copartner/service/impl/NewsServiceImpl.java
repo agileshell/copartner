@@ -7,11 +7,15 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.insoul.copartner.constant.EntityType;
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.dao.INewsDao;
+import com.insoul.copartner.dao.IUserFavouritesDao;
 import com.insoul.copartner.dao.criteria.NewsCriteria;
 import com.insoul.copartner.domain.News;
+import com.insoul.copartner.domain.UserFavourites;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.service.INewsService;
@@ -27,6 +31,9 @@ public class NewsServiceImpl extends BaseServiceImpl implements INewsService {
     @Resource
     private INewsDao newsDao;
 
+    @Resource
+    private IUserFavouritesDao userFavouritesDao;
+
     @Override
     public Pagination<NewsVO> listNews(NewsListRequest requestData) {
         List<NewsVO> newsVOs = new ArrayList<NewsVO>();
@@ -35,7 +42,7 @@ public class NewsServiceImpl extends BaseServiceImpl implements INewsService {
         newsCriteria.setType(requestData.getType());
         newsCriteria.setOffset(requestData.getOffset());
         newsCriteria.setLimit(requestData.getLimit());
-        newsCriteria.setStatus(new String[] { "active" });
+        newsCriteria.setStatus(new String[] {"active"});
         newsCriteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData
                 .getFrom()) : null);
         newsCriteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
@@ -80,4 +87,22 @@ public class NewsServiceImpl extends BaseServiceImpl implements INewsService {
         return newsVO;
     }
 
+    @Override
+    @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+    public void likeOrUnlikeNews(Long newsId) {
+        long userId = getUserId();
+        UserFavourites userFavourites =
+                userFavouritesDao.getByUserIdAndEntity(userId, newsId, EntityType.NEWS.getValue());
+        if (userFavourites == null) {
+            userFavourites = new UserFavourites();
+            userFavourites.setUserId(userId);
+            userFavourites.setEntityId(newsId);
+            userFavourites.setEntityType(EntityType.NEWS.getValue());
+            userFavourites.setCreated(new Date());
+
+            userFavouritesDao.save(userFavourites);
+        } else {
+            userFavouritesDao.delete(userFavourites);
+        }
+    }
 }

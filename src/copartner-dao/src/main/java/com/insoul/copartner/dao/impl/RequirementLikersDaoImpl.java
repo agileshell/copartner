@@ -10,7 +10,6 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import com.insoul.copartner.dao.IRequirementLikersDao;
-import com.insoul.copartner.dao.criteria.PaginationCriteria;
 import com.insoul.copartner.domain.RequirementLikers;
 import com.insoul.copartner.domain.RequirementLikersId;
 
@@ -37,20 +36,24 @@ public class RequirementLikersDaoImpl extends BaseDaoImpl<RequirementLikers, Req
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<RequirementLikers> findByRequirementIdsAndPagination(Set<Long> requirementIds,
-            PaginationCriteria pagination) {
+    public List<RequirementLikers> findByRequirementIds(Set<Long> requirementIds) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("requirementIds", requirementIds);
 
         Query query =
                 createQuery("FROM RequirementLikers WHERE id.requirementId IN (:requirementIds) ORDER BY created DESC",
                         parameters);
-        if ((pagination.getLimit() != null) && (pagination.getLimit() != 0)) {
-            query.setMaxResults(pagination.getLimit());
-            if (pagination.getOffset() != null) {
-                query.setFirstResult(pagination.getOffset());
-            }
-        }
+
+        return query.getResultList();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<RequirementLikers> findByUserId(Long userId) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("userId", userId);
+
+        Query query = createQuery("FROM RequirementLikers WHERE id.userId = :userId", parameters);
 
         return query.getResultList();
     }

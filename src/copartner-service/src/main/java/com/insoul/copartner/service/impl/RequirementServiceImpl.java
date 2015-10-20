@@ -23,7 +23,6 @@ import com.insoul.copartner.dao.IRequirementDao;
 import com.insoul.copartner.dao.IRequirementLikersDao;
 import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.dao.IUserDao;
-import com.insoul.copartner.dao.criteria.PaginationCriteria;
 import com.insoul.copartner.dao.criteria.RequirementCommentCriteria;
 import com.insoul.copartner.dao.criteria.RequirementCriteria;
 import com.insoul.copartner.domain.IndustryDomain;
@@ -85,14 +84,14 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
         criteria.setUserId(requestData.getUserId());
-        criteria.setFrom(
-                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
+        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
+                : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
 
         if (null != requestData.getUserId() && requestData.getUserId().equals(getUserId())) {
-            criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue(), DemandStatus.INACTIVE.getValue() });
+            criteria.setStatus(new String[] {DemandStatus.ACTIVE.getValue(), DemandStatus.INACTIVE.getValue()});
         } else {
-            criteria.setStatus(new String[] { DemandStatus.ACTIVE.getValue() });
+            criteria.setStatus(new String[] {DemandStatus.ACTIVE.getValue()});
         }
 
         List<Requirement> requirements = requirementDao.queryRequirement(criteria);
@@ -126,16 +125,15 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
             userIdMapUserVO.put(user.getId(), userVO);
         }
 
-        PaginationCriteria pagination = new PaginationCriteria();
-        List<RequirementLikers> requirementLikers = requirementLikersDao
-                .findByRequirementIdsAndPagination(requirementIds, pagination);
+        List<RequirementLikers> requirementLikers = requirementLikersDao.findByRequirementIds(requirementIds);
         Set<Long> likerIds = new HashSet<Long>();
         Map<Long, Set<Long>> requirementIdMapLikerIds = new HashMap<Long, Set<Long>>();
         for (RequirementLikers requirementLiker : requirementLikers) {
             Long userId = requirementLiker.getId().getUserId();
             Long requirementId = requirementLiker.getId().getRequirementId();
-            Set<Long> ids = requirementIdMapLikerIds.containsKey(requirementId)
-                    ? requirementIdMapLikerIds.get(requirementId) : new HashSet<Long>();
+            Set<Long> ids =
+                    requirementIdMapLikerIds.containsKey(requirementId) ? requirementIdMapLikerIds.get(requirementId)
+                            : new HashSet<Long>();
             ids.add(userId);
             requirementIdMapLikerIds.put(requirementId, ids);
 
@@ -418,20 +416,13 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
             return vos;
         }
 
-        PaginationCriteria pagination = new PaginationCriteria();
-        List<RequirementLikers> requirementLikers = requirementLikersDao.findByRequirementIdsAndPagination(ids,
-                pagination);
-        Map<Long, Set<Long>> requirementIdMapLikerIds = new HashMap<Long, Set<Long>>();
-        for (RequirementLikers requirementLiker : requirementLikers) {
-            Long userId = requirementLiker.getId().getUserId();
-            Long requirementId = requirementLiker.getId().getRequirementId();
-            Set<Long> rids = requirementIdMapLikerIds.containsKey(requirementId)
-                    ? requirementIdMapLikerIds.get(requirementId) : new HashSet<Long>();
-            rids.add(userId);
-            requirementIdMapLikerIds.put(requirementId, rids);
-        }
-
         long currentUserId = getUserId();
+        List<RequirementLikers> requirementLikers = requirementLikersDao.findByUserId(currentUserId);
+        Set<Long> likedrequirementIds = new HashSet<Long>();
+        for (RequirementLikers requirementLiker : requirementLikers) {
+            Long requirementId = requirementLiker.getId().getRequirementId();
+            likedrequirementIds.add(requirementId);
+        }
 
         List<Requirement> requirements = requirementDao.findByIds(ids);
         for (Requirement requirement : requirements) {
@@ -439,11 +430,7 @@ public class RequirementServiceImpl extends BaseServiceImpl implements IRequirem
             vo.setId(requirement.getId());
             vo.setLikeCount(requirement.getLikeCount());
             vo.setCommentCount(requirement.getCommentCount());
-
-            Set<Long> likerids = requirementIdMapLikerIds.get(requirement.getId());
-            if (null != likerids) {
-                vo.setIsliked(likerids.contains(currentUserId));
-            }
+            vo.setIsliked(likedrequirementIds.contains(requirement.getId()));
 
             vos.add(vo);
         }

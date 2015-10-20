@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Set;
 
 import com.insoul.copartner.exception.CException;
+import com.insoul.copartner.vo.FavouriteEntityVO;
 import com.insoul.copartner.vo.LoginResponse;
 import com.insoul.copartner.vo.ResumeVO;
 import com.insoul.copartner.vo.UserDetailVO;
+import com.insoul.copartner.vo.request.FavouriteListRequest;
 import com.insoul.copartner.vo.request.ResumeRequest;
 import com.insoul.copartner.vo.request.SignInByThirdPartRequest;
 import com.insoul.copartner.vo.request.UserAddRequest;
@@ -41,4 +43,5 @@ public interface IUserService {
 
     LoginResponse loginUse3rdOauth(SignInByThirdPartRequest signInBy3rdPartRequest) throws CException;
 
+    List<FavouriteEntityVO> listFavourites(FavouriteListRequest requestData);
 }

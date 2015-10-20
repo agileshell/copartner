@@ -1,5 +1,6 @@
 package com.insoul.copartner.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,24 +16,30 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.insoul.copartner.constant.Channel;
 import com.insoul.copartner.constant.CommonConstant;
+import com.insoul.copartner.constant.EntityType;
 import com.insoul.copartner.constant.GlobalProperties;
 import com.insoul.copartner.constant.MessageType;
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.constant.UserStatus;
+import com.insoul.copartner.dao.IContentDao;
 import com.insoul.copartner.dao.IIndustryDomainDao;
 import com.insoul.copartner.dao.ILocationDao;
 import com.insoul.copartner.dao.IMessageDao;
+import com.insoul.copartner.dao.INewsDao;
 import com.insoul.copartner.dao.IResumeDao;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IStartupStatusDao;
 import com.insoul.copartner.dao.IUser3rdAccountAccessDao;
 import com.insoul.copartner.dao.IUserAccountConfirmationDao;
 import com.insoul.copartner.dao.IUserDao;
+import com.insoul.copartner.dao.IUserFavouritesDao;
 import com.insoul.copartner.dao.IUserFriendsDao;
 import com.insoul.copartner.dao.IUserPasswordResetDao;
+import com.insoul.copartner.domain.Content;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Location;
 import com.insoul.copartner.domain.Message;
+import com.insoul.copartner.domain.News;
 import com.insoul.copartner.domain.Resume;
 import com.insoul.copartner.domain.StartupRole;
 import com.insoul.copartner.domain.StartupStatus;
@@ -40,6 +47,7 @@ import com.insoul.copartner.domain.User;
 import com.insoul.copartner.domain.User3rdAccountAccess;
 import com.insoul.copartner.domain.UserAccountConfirmation;
 import com.insoul.copartner.domain.UserAccountConfirmationId;
+import com.insoul.copartner.domain.UserFavourites;
 import com.insoul.copartner.domain.UserFriends;
 import com.insoul.copartner.domain.UserFriendsId;
 import com.insoul.copartner.domain.UserPasswordReset;
@@ -53,12 +61,14 @@ import com.insoul.copartner.util.PasswordUtil;
 import com.insoul.copartner.util.ValidationUtil;
 import com.insoul.copartner.util.mail.MailUtil;
 import com.insoul.copartner.util.sms.SMSUtil;
+import com.insoul.copartner.vo.FavouriteEntityVO;
 import com.insoul.copartner.vo.IndustryDomainVO;
 import com.insoul.copartner.vo.LoginResponse;
 import com.insoul.copartner.vo.ResumeVO;
 import com.insoul.copartner.vo.StartupRoleVO;
 import com.insoul.copartner.vo.StartupStatusVO;
 import com.insoul.copartner.vo.UserDetailVO;
+import com.insoul.copartner.vo.request.FavouriteListRequest;
 import com.insoul.copartner.vo.request.ResumeRequest;
 import com.insoul.copartner.vo.request.SignInByThirdPartRequest;
 import com.insoul.copartner.vo.request.UserAddRequest;
@@ -100,6 +110,15 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
     @Resource
     private IUser3rdAccountAccessDao user3rdAccountAccessDao;
+
+    @Resource
+    private IUserFavouritesDao userFavouritesDao;
+
+    @Resource
+    private IContentDao contentDao;
+
+    @Resource
+    private INewsDao newsDao;
 
     @Override
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
@@ -143,8 +162,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
             }
 
             String code = userAddRequest.getCode();
-            UserAccountConfirmation userAccountConfirmation = userAccountConfirmationDao
-                    .getUserAccountConfirmation(CommonConstant.MOBILE, account, code);
+            UserAccountConfirmation userAccountConfirmation =
+                    userAccountConfirmationDao.getUserAccountConfirmation(CommonConstant.MOBILE, account, code);
             if (null != userAccountConfirmation) {
                 userAccountConfirmation.setIsConfirmed(true);
                 userAccountConfirmation.setConfirmed(new Date());
@@ -193,8 +212,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("userName", account);
-            String verifyEmailURL = new StringBuilder(GlobalProperties.VERIFY_EMAIL_URL).append("?account=")
-                    .append(account).append("&code=").append(code).toString();
+            String verifyEmailURL =
+                    new StringBuilder(GlobalProperties.VERIFY_EMAIL_URL).append("?account=").append(account)
+                            .append("&code=").append(code).toString();
             params.put("verifyEmailURL", verifyEmailURL);
 
             sendMail(userId, MessageType.REGISTER.getValue(), account, params);
@@ -292,8 +312,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("userName", account);
-            String retrievePwdCheck = new StringBuilder(GlobalProperties.RESET_PASSWORD_URL).append("?account=")
-                    .append(account).append("&code=").append(code).toString();
+            String retrievePwdCheck =
+                    new StringBuilder(GlobalProperties.RESET_PASSWORD_URL).append("?account=").append(account)
+                            .append("&code=").append(code).toString();
             params.put("retrievePwdCheck", retrievePwdCheck);
 
             sendMail(user.getId(), MessageType.RETRIEVE_PWD.getValue(), account, params);
@@ -713,5 +734,48 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         }
 
         return resumeVOs;
+    }
+
+    @Override
+    public List<FavouriteEntityVO> listFavourites(FavouriteListRequest requestData) {
+        List<FavouriteEntityVO> favourites = new ArrayList<FavouriteEntityVO>();
+
+        Set<Long> newsIds = new HashSet<Long>();
+        Set<Long> contentIds = new HashSet<Long>();
+
+        List<UserFavourites> userFavourites = userFavouritesDao.findByUserId(getUserId());
+        for (UserFavourites userFavourite : userFavourites) {
+            if (userFavourite.getEntityType().equals(EntityType.NEWS.getValue())) {
+                newsIds.add(userFavourite.getEntityId());
+            } else if (userFavourite.getEntityType().equals(EntityType.CONTENT.getValue())) {
+                contentIds.add(userFavourite.getEntityId());
+            }
+        }
+
+        List<News> newsList = newsDao.findByNewsIds(newsIds);
+        for (News entity : newsList) {
+            FavouriteEntityVO vo = new FavouriteEntityVO();
+            vo.setId(entity.getId());
+            vo.setCoverImg(CDNUtil.getFullPath(entity.getCoverImg()));
+            vo.setTitle(entity.getTitle());
+            vo.setCreated(entity.getCreated());
+            vo.setEntityType(EntityType.NEWS.getValue());
+
+            favourites.add(vo);
+        }
+
+        List<Content> contentList = contentDao.findByContentIds(contentIds);
+        for (Content entity : contentList) {
+            FavouriteEntityVO vo = new FavouriteEntityVO();
+            vo.setId(entity.getId());
+            vo.setCoverImg(CDNUtil.getFullPath(entity.getCoverImg()));
+            vo.setTitle(entity.getTitle());
+            vo.setCreated(entity.getCreated());
+            vo.setEntityType(EntityType.CONTENT.getValue());
+
+            favourites.add(vo);
+        }
+
+        return favourites;
     }
 }
