@@ -400,7 +400,9 @@ INSERT INTO `industry_domain` (`id`, `name`, `is_listed`, `created`) VALUES
 (8, '软件/工具', 1, NOW()),
 (9, '软硬件', 1, NOW()),
 (10, '数码电子', 1, NOW()),
-(11, '其它', 1, NOW());
+(11, '其它', 1, NOW()),
+(12, '农业', 1, NOW()),
+(13, '环保', 1, NOW());
 
 TRUNCATE `startup_role`;
 INSERT INTO `startup_role` (`id`, `name`, `is_listed`, `created`) VALUES
@@ -466,6 +468,17 @@ INSERT INTO `financing_phase` (`id`, `name`, `is_listed`, `created`) VALUES
 ('3', '私募股权投资', 1, NOW()),
 ('4', '首次公开募股', 1, NOW());
 
+TRUNCATE `question_category`;
+INSERT INTO `question_category` (`id`, `name`, `is_listed`, `created`) VALUES
+(1, '管理', 1, NOW()),
+(2, '投资', 1, NOW()),
+(3, '股权', 1, NOW()),
+(4, '工商', 1, NOW()),
+(5, '财务', 1, NOW()),
+(6, '税务', 1, NOW()),
+(7, '人资', 1, NOW()),
+(8, '营销', 1, NOW()),
+(9, '其他', 1, NOW());
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
