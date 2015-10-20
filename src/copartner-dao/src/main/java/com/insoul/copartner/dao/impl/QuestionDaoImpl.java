@@ -16,7 +16,7 @@ import com.insoul.copartner.dao.criteria.QuestionCriteria;
 import com.insoul.copartner.domain.Question;
 
 @Repository
-public class QuestionDaoImpl extends BaseDaoImpl<Question, Long> implements IQuestionDao {
+public class QuestionDaoImpl extends BaseDaoImpl<Question, Long>implements IQuestionDao {
 
     @SuppressWarnings("unchecked")
     @Override
@@ -58,11 +58,18 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question, Long> implements IQue
             conditionStr.append(" AND tutorId = :tutorId");
             params.put("tutorId", criteria.getTutorId());
         }
-        if (null != criteria.getUserId()) {
-            conditionStr.append(" AND (userId = :userId OR permission = 1)");
-            params.put("userId", criteria.getUserId());
+        if (criteria.isOnlyOwner()) {
+            if (null != criteria.getUserId()) {
+                conditionStr.append(" AND userId = :userId");
+                params.put("userId", criteria.getUserId());
+            }
         } else {
-            conditionStr.append(" AND permission = 1");
+            if (null != criteria.getUserId()) {
+                conditionStr.append(" AND (userId = :userId OR permission = 1)");
+                params.put("userId", criteria.getUserId());
+            } else {
+                conditionStr.append(" AND permission = 1");
+            }
         }
 
         Query query = null;

@@ -1,5 +1,6 @@
 package com.insoul.copartner.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,7 +18,7 @@ import com.insoul.copartner.dao.criteria.NewsCriteria;
 import com.insoul.copartner.domain.News;
 
 @Repository
-public class NewsDaoImpl extends BaseDaoImpl<News, Long> implements INewsDao {
+public class NewsDaoImpl extends BaseDaoImpl<News, Long>implements INewsDao {
 
     @SuppressWarnings("unchecked")
     @Override
@@ -78,12 +79,14 @@ public class NewsDaoImpl extends BaseDaoImpl<News, Long> implements INewsDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<News> findByNewsIds(Set<Long> newsIds) {
+        if (null == newsIds || newsIds.size() <= 0) {
+            return new ArrayList<News>();
+        }
+
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("newsIds", newsIds);
 
-        Query query =
-                createQuery("FROM News WHERE id IN (:newsIds) ORDER BY created DESC",
-                        parameters);
+        Query query = createQuery("FROM News WHERE id IN (:newsIds) ORDER BY created DESC", parameters);
 
         return query.getResultList();
     }

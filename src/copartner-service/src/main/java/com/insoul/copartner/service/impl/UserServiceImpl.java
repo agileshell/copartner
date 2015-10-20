@@ -35,6 +35,7 @@ import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.dao.IUserFavouritesDao;
 import com.insoul.copartner.dao.IUserFriendsDao;
 import com.insoul.copartner.dao.IUserPasswordResetDao;
+import com.insoul.copartner.dao.criteria.FavouriteCriteria;
 import com.insoul.copartner.domain.Content;
 import com.insoul.copartner.domain.IndustryDomain;
 import com.insoul.copartner.domain.Location;
@@ -162,8 +163,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
             }
 
             String code = userAddRequest.getCode();
-            UserAccountConfirmation userAccountConfirmation =
-                    userAccountConfirmationDao.getUserAccountConfirmation(CommonConstant.MOBILE, account, code);
+            UserAccountConfirmation userAccountConfirmation = userAccountConfirmationDao
+                    .getUserAccountConfirmation(CommonConstant.MOBILE, account, code);
             if (null != userAccountConfirmation) {
                 userAccountConfirmation.setIsConfirmed(true);
                 userAccountConfirmation.setConfirmed(new Date());
@@ -212,9 +213,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("userName", account);
-            String verifyEmailURL =
-                    new StringBuilder(GlobalProperties.VERIFY_EMAIL_URL).append("?account=").append(account)
-                            .append("&code=").append(code).toString();
+            String verifyEmailURL = new StringBuilder(GlobalProperties.VERIFY_EMAIL_URL).append("?account=")
+                    .append(account).append("&code=").append(code).toString();
             params.put("verifyEmailURL", verifyEmailURL);
 
             sendMail(userId, MessageType.REGISTER.getValue(), account, params);
@@ -312,9 +312,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("userName", account);
-            String retrievePwdCheck =
-                    new StringBuilder(GlobalProperties.RESET_PASSWORD_URL).append("?account=").append(account)
-                            .append("&code=").append(code).toString();
+            String retrievePwdCheck = new StringBuilder(GlobalProperties.RESET_PASSWORD_URL).append("?account=")
+                    .append(account).append("&code=").append(code).toString();
             params.put("retrievePwdCheck", retrievePwdCheck);
 
             sendMail(user.getId(), MessageType.RETRIEVE_PWD.getValue(), account, params);
@@ -743,7 +742,14 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         Set<Long> newsIds = new HashSet<Long>();
         Set<Long> contentIds = new HashSet<Long>();
 
-        List<UserFavourites> userFavourites = userFavouritesDao.findByUserId(getUserId());
+        FavouriteCriteria criteria = new FavouriteCriteria();
+        criteria.setUserId(getUserId());
+        criteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
+        criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
+        criteria.setOffset(requestData.getOffset());
+        criteria.setLimit(requestData.getLimit());
+        List<UserFavourites> userFavourites = userFavouritesDao.findByUserId(criteria);
         for (UserFavourites userFavourite : userFavourites) {
             if (userFavourite.getEntityType().equals(EntityType.NEWS.getValue())) {
                 newsIds.add(userFavourite.getEntityId());

@@ -14,6 +14,8 @@ public interface IQuestionService {
 
     Pagination<QuestionVO> listQuestions(QuestionListRequest requestData);
 
+    List<QuestionVO> listOwnQuestions(QuestionListRequest requestData);
+
     QuestionDetailVO getQuestion(Long questionId) throws CException;
 
     void createQuestion(QuestionAddRequest requestData) throws CException;

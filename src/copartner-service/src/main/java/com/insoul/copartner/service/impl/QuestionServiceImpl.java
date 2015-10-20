@@ -71,6 +71,29 @@ public class QuestionServiceImpl extends BaseServiceImpl implements IQuestionSer
         }
 
         List<Question> questions = questionDao.queryQuestion(criteria);
+
+        Long count = questionDao.countQuestion(criteria);
+        return new Pagination<QuestionVO>(format(questions), count);
+    }
+
+    @Override
+    public List<QuestionVO> listOwnQuestions(QuestionListRequest requestData) {
+        QuestionCriteria criteria = new QuestionCriteria();
+        criteria.setOffset(requestData.getOffset());
+        criteria.setLimit(requestData.getLimit());
+        criteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
+        criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
+        criteria.setUserId(getUserId());
+        criteria.setOnlyOwner(true);
+        criteria.setStatus(new String[] { "active", "inactive" });
+
+        List<Question> questions = questionDao.queryQuestion(criteria);
+
+        return format(questions);
+    }
+
+    private List<QuestionVO> format(List<Question> questions) {
         List<QuestionVO> questionVOs = new ArrayList<QuestionVO>();
         for (Question question : questions) {
             QuestionVO questionVO = new QuestionVO();
@@ -101,8 +124,7 @@ public class QuestionServiceImpl extends BaseServiceImpl implements IQuestionSer
             questionVOs.add(questionVO);
         }
 
-        Long count = questionDao.countQuestion(criteria);
-        return new Pagination<QuestionVO>(questionVOs, count);
+        return questionVOs;
     }
 
     @Override

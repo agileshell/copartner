@@ -18,6 +18,8 @@ public class QuestionCriteria extends PaginationCriteria {
 
     private String[] status;
 
+    private boolean onlyOwner;
+
     public String getKeyword() {
         return keyword;
     }
@@ -72,6 +74,14 @@ public class QuestionCriteria extends PaginationCriteria {
 
     public void setStatus(String[] status) {
         this.status = status;
+    }
+
+    public boolean isOnlyOwner() {
+        return onlyOwner;
+    }
+
+    public void setOnlyOwner(boolean onlyOwner) {
+        this.onlyOwner = onlyOwner;
     }
 
 }

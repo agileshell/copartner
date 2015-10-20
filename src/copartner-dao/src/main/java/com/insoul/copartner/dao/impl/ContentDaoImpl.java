@@ -1,5 +1,6 @@
 package com.insoul.copartner.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,7 +18,7 @@ import com.insoul.copartner.dao.criteria.ContentCriteria;
 import com.insoul.copartner.domain.Content;
 
 @Repository
-public class ContentDaoImpl extends BaseDaoImpl<Content, Long> implements IContentDao {
+public class ContentDaoImpl extends BaseDaoImpl<Content, Long>implements IContentDao {
 
     @SuppressWarnings("unchecked")
     @Override
@@ -40,7 +41,6 @@ public class ContentDaoImpl extends BaseDaoImpl<Content, Long> implements IConte
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private Query generateQuery(ContentCriteria criteria, boolean isCount) {
-        System.out.println(criteria.toString());
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
         if (null != criteria.getStatus()) {
@@ -86,12 +86,14 @@ public class ContentDaoImpl extends BaseDaoImpl<Content, Long> implements IConte
     @SuppressWarnings("unchecked")
     @Override
     public List<Content> findByContentIds(Set<Long> contentIds) {
+        if (null == contentIds || contentIds.size() <= 0) {
+            return new ArrayList<Content>();
+        }
+
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("contentIds", contentIds);
 
-        Query query =
-                createQuery("FROM Content WHERE id IN (:contentIds) ORDER BY created DESC",
-                        parameters);
+        Query query = createQuery("FROM Content WHERE id IN (:contentIds) ORDER BY created DESC", parameters);
 
         return query.getResultList();
     }

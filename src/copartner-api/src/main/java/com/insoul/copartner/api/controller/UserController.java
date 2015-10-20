@@ -21,10 +21,12 @@ import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
 import com.insoul.copartner.exception.DataValidationException;
 import com.insoul.copartner.service.IDeviceService;
+import com.insoul.copartner.service.IQuestionService;
 import com.insoul.copartner.service.IUserFriendsService;
 import com.insoul.copartner.service.IUserService;
 import com.insoul.copartner.util.ResponseUtil;
 import com.insoul.copartner.vo.request.FavouriteListRequest;
+import com.insoul.copartner.vo.request.QuestionListRequest;
 import com.insoul.copartner.vo.request.ResumeRequest;
 import com.insoul.copartner.vo.request.UserAuthenticateRequest;
 import com.insoul.copartner.vo.request.UserProfileUpdateRequest;
@@ -41,6 +43,9 @@ public class UserController extends BaseController {
 
     @Resource
     private IDeviceService deviceService;
+
+    @Resource
+    private IQuestionService questionService;
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     @ResponseBody
@@ -190,5 +195,16 @@ public class UserController extends BaseController {
         }
 
         return ResponseUtil.jsonSucceed(userService.listFavourites(requestData), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/questions", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> listOwnQuestions(@Valid QuestionListRequest requestData,
+            BindingResult result) throws CException {
+        if (result.hasErrors()) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+
+        return ResponseUtil.jsonSucceed(questionService.listOwnQuestions(requestData), HttpStatus.OK);
     }
 }
