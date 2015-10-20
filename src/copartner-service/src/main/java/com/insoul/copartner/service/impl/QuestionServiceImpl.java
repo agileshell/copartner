@@ -54,8 +54,8 @@ public class QuestionServiceImpl extends BaseServiceImpl implements IQuestionSer
         criteria.setCategoryId(requestData.getCategoryId());
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
-        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
-                : null);
+        criteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
         criteria.setKeyword(requestData.getKeyword());
         criteria.setStatus(new String[] { "active" });
@@ -197,6 +197,11 @@ public class QuestionServiceImpl extends BaseServiceImpl implements IQuestionSer
         Question question = questionDao.get(questionId);
         if (null == question || !question.getStatus().equals("active")) {
             throw CExceptionFactory.getException(CException.class, ResponseCode.QUESTION_NOT_EXIST);
+        }
+
+        long userId = getUserId();
+        if (question.getTutorId() != userId || question.getUserId() != userId) {
+            throw CExceptionFactory.getException(CException.class, ResponseCode.QUESTION_CANNOT_ANSWER);
         }
 
         Answer answer = new Answer();
