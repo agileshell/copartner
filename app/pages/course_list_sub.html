@@ -15,7 +15,6 @@
 				line-height: 20px;
 			}
 			.course-avatar {
-				border-radius: 10%;
 				width: 40px;
 				float: left;
 			}
@@ -53,16 +52,12 @@
 		</div>
 	</body>
 	<script id="course-template" type="text/x-handlebars-template">
-		<li id="course_{{id}}" class="mui-table-view-cell mui-media">
+		<li id="course_{{id}}" class="mui-table-view-cell">
 			<a class='mui-navigate-right' href="#" data-guid="{{id}}">
-				<div style="overflow: hidden;">
-						<img src="{{coverImg}}?imageView2/1/w/40/h/40" class="course-avatar">
-					<span class="course-info">{{name}}</span>
-				</div>
-				<div class="mui-media-body" style="padding-left: 45px;">
-					<span class="course-item">主讲人：{{speaker}}，时长：{{time}}分钟</span>
-					<span class="course-item">简介：{{synopsis}}</span>
-				</div>
+				<p style="color: #C15151; font-size: 15px;">{{name}}</p>
+				<p><img src="{{coverImg}}?imageView2/2/w/{{width}}"></p>
+				<p style="font-size: 12px;">主讲人：{{speaker}}，时长：{{time}}分钟</p>
+				<p class="mui-ellipsis-2" style="font-size: 12px;">简介：{{synopsis}}</p>
 			</a>
 		</li>
 	</script>
@@ -86,6 +81,7 @@
 			vipKeyword = '',
 			freeEl = document.getElementById("free-course-list"),
 			vipEl = document.getElementById("vip-course-list");
+		var clentW = document.body.clientWidth - 50;
 		mui.init({
 			pullRefresh: {
 				container: '#pullrefresh',
@@ -157,7 +153,9 @@
 							freeLatestLoadingRequestDate = Date.parse(courses[courses.length - 1].created);
 							freeLatestRefreshRequestDate = Date.parse(courses[0].created);
 							for (var i = courses.length - 1; i >= 0; i--) {
-								divEl.innerHTML = courseTemplate(app.processCourse(courses[i]));
+								course = app.processCourse(courses[i]);
+								course.width = clentW;
+								divEl.innerHTML = courseTemplate(course);
 								freeEl.insertBefore(divEl.firstElementChild, freeEl.firstElementChild);
 							}
 						}
@@ -179,7 +177,9 @@
 							vipLatestLoadingRequestDate = Date.parse(courses[courses.length - 1].created);
 							vipLatestRefreshRequestDate = Date.parse(courses[0].created);
 							for (var i = courses.length - 1; i >= 0; i--) {
-								divEl.innerHTML = courseTemplate(app.processCourse(courses[i]));
+								course = app.processCourse(courses[i]);
+								course.width = clentW;
+								divEl.innerHTML = courseTemplate(course);
 								vipEl.insertBefore(divEl.firstElementChild, vipEl.firstElementChild);
 							}
 						}
@@ -194,19 +194,27 @@
 		});
 		 //打开详情
 		mui('#pullrefresh').on('tap', 'a', function() {
-			open_course_detail(this.getAttribute('data-guid'));
+			var waiting = plus.nativeUI.showWaiting("　　 请等待...　　");
+			var succ = function(response) {
+				course = response.body;
+				playVedio(course.url);
+				waiting.close();
+			},
+			err = function(errorType) {
+				waiting.close();
+				mui.toast(app.ajaxErrorHandler(errorType));
+			};
+			app.getCourseByGuid(this.getAttribute('data-guid'), succ, err);
 		});
-		 //打开详情具体业务实现
-		var detailWebview = null; //详情页面子webview
-		function open_course_detail(id) {
-			if (!detailWebview) {
-				detailWebview = plus.webview.getWebviewById('course_detail');
-			}
-			//触发子窗口变更详情
-			mui.fire(detailWebview, 'mui.view.beforeshow', {
-				guid: id
-			});
-		};
+		function playVedio(url){
+			var Intent = plus.android.importClass("android.content.Intent");
+			var Uri = plus.android.importClass("android.net.Uri");
+			var main = plus.android.runtimeMainActivity();
+			var intent=new Intent(Intent.ACTION_VIEW);
+			var uri=Uri.parse(url);
+			intent.setDataAndType(uri,"video/*");
+			main.startActivity(intent);
+		}
 		 //下拉刷新具体业务实现
 		function pulldownRefresh() {
 			setTimeout(function() {
@@ -219,7 +227,9 @@
 								}
 								freeLatestRefreshRequestDate = Date.parse(courses[0].created);
 								for (var i = courses.length - 1; i >= 0; i--) {
-									divEl.innerHTML = courseTemplate(app.processCourse(courses[i]));
+									course = app.processCourse(courses[i]);
+									course.width = clentW;
+									divEl.innerHTML = courseTemplate(course);
 									freeEl.insertBefore(divEl.firstElementChild, freeEl.firstElementChild);
 								}
 							}
@@ -239,7 +249,9 @@
 								}
 								vipLatestRefreshRequestDate = Date.parse(courses[0].created);
 								for (var i = courses.length - 1; i >= 0; i--) {
-									divEl.innerHTML = courseTemplate(app.processCourse(courses[i]));
+									course = app.processCourse(courses[i]);
+									course.width = clentW;
+									divEl.innerHTML = courseTemplate(course);
 									vipEl.insertBefore(divEl.firstElementChild, vipEl.firstElementChild);
 								}
 							}
@@ -265,7 +277,9 @@
 								}
 								freeLatestLoadingRequestDate = Date.parse(courses[courses.length - 1].created);
 								for (var i = 0, len = courses.length; i < len; i++) {
-									divEl.innerHTML = courseTemplate(app.processCourse(courses[i]));
+									course = app.processCourse(courses[i]);
+									course.width = clentW;
+									divEl.innerHTML = courseTemplate(course);
 									freeEl.insertBefore(divEl.firstElementChild, freeEl.firstElementChild);
 								}
 								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
@@ -288,7 +302,9 @@
 								}
 								vipLatestLoadingRequestDate = Date.parse(courses[courses.length - 1].created);
 								for (var i = 0, len = courses.length; i < len; i++) {
-									divEl.innerHTML = courseTemplate(app.processCourse(courses[i]));
+									course = app.processCourse(courses[i]);
+									course.width = clentW;
+									divEl.innerHTML = courseTemplate(course);
 									vipEl.insertBefore(divEl.firstElementChild, vipEl.firstElementChild);
 								}
 								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
