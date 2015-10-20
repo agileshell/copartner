@@ -44,4 +44,12 @@ public class ContentController extends BaseController {
     public ResponseEntity<Map<String, Object>> getContent(@PathVariable Long contentId) throws CException {
         return ResponseUtil.jsonSucceed(contentService.getContent(contentId), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/content/{contentId}/like", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> likeOrUnlikeContent(@PathVariable Long contentId) throws CException {
+        contentService.likeOrUnlikeContent(contentId);
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
 }

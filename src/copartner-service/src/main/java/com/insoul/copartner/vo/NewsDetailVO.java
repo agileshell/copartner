@@ -27,8 +27,10 @@ public class NewsDetailVO implements Serializable {
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
-    
+
     private String shareUrl;
+
+    private boolean isliked;
 
     public String getShareUrl() {
         return shareUrl;
@@ -101,6 +103,14 @@ public class NewsDetailVO implements Serializable {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public boolean isIsliked() {
+        return isliked;
+    }
+
+    public void setIsliked(boolean isliked) {
+        this.isliked = isliked;
     }
 
 }

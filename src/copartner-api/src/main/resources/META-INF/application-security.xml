@@ -31,6 +31,9 @@
         <intercept-url pattern="/friend/**" access="isAuthenticated()" />
         <intercept-url pattern="/friends/**" access="isAuthenticated()" />
 
+        <intercept-url pattern="/content/{contentId}/like" method="POST" access="isAuthenticated()" />
+        <intercept-url pattern="/news/{newsId}/like" method="POST" access="isAuthenticated()" />
+
         <csrf disabled="true"/>
         <http-basic/>
         <logout logout-url="/account/signout" success-handler-ref="logoutHandler"/>

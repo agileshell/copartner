@@ -42,11 +42,11 @@ public class NewsServiceImpl extends BaseServiceImpl implements INewsService {
         newsCriteria.setType(requestData.getType());
         newsCriteria.setOffset(requestData.getOffset());
         newsCriteria.setLimit(requestData.getLimit());
-        newsCriteria.setStatus(new String[] {"active"});
-        newsCriteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData
-                .getFrom()) : null);
-        newsCriteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
-                : null);
+        newsCriteria.setStatus(new String[] { "active" });
+        newsCriteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
+        newsCriteria
+                .setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
         newsCriteria.setTitle(requestData.getKeyword());
 
         Long count = newsDao.countNews(newsCriteria);
@@ -84,6 +84,11 @@ public class NewsServiceImpl extends BaseServiceImpl implements INewsService {
         newsVO.setClicks(news.getClicks());
         newsVO.setCreated(news.getCreated());
 
+        long userId = getUserId();
+        UserFavourites userFavourites = userFavouritesDao.getByUserIdAndEntity(userId, newsId,
+                EntityType.NEWS.getValue());
+        newsVO.setIsliked(userFavourites != null);
+
         return newsVO;
     }
 
@@ -91,8 +96,8 @@ public class NewsServiceImpl extends BaseServiceImpl implements INewsService {
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
     public void likeOrUnlikeNews(Long newsId) {
         long userId = getUserId();
-        UserFavourites userFavourites =
-                userFavouritesDao.getByUserIdAndEntity(userId, newsId, EntityType.NEWS.getValue());
+        UserFavourites userFavourites = userFavouritesDao.getByUserIdAndEntity(userId, newsId,
+                EntityType.NEWS.getValue());
         if (userFavourites == null) {
             userFavourites = new UserFavourites();
             userFavourites.setUserId(userId);

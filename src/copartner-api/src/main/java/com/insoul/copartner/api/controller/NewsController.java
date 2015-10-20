@@ -44,4 +44,12 @@ public class NewsController extends BaseController {
     public ResponseEntity<Map<String, Object>> getNews(@PathVariable Long newsId) throws CException {
         return ResponseUtil.jsonSucceed(newsService.getNews(newsId), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/news/{newsId}/like", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> likeOrUnlikeNews(@PathVariable Long newsId) throws CException {
+        newsService.likeOrUnlikeNews(newsId);
+
+        return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
 }

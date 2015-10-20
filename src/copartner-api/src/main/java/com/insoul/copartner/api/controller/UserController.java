@@ -24,6 +24,7 @@ import com.insoul.copartner.service.IDeviceService;
 import com.insoul.copartner.service.IUserFriendsService;
 import com.insoul.copartner.service.IUserService;
 import com.insoul.copartner.util.ResponseUtil;
+import com.insoul.copartner.vo.request.FavouriteListRequest;
 import com.insoul.copartner.vo.request.ResumeRequest;
 import com.insoul.copartner.vo.request.UserAuthenticateRequest;
 import com.insoul.copartner.vo.request.UserProfileUpdateRequest;
@@ -162,7 +163,6 @@ public class UserController extends BaseController {
         return ResponseUtil.jsonSucceed(userFriendsService.listFriends(false), HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/device/{OS}", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> createCustomerDeviceToken(@PathVariable("OS") String deviceOs,
@@ -179,5 +179,16 @@ public class UserController extends BaseController {
         deviceService.deleteUserDeviceToken();
 
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/favourites", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> listFavourites(@Valid FavouriteListRequest requestData,
+            BindingResult result) throws CException {
+        if (result.hasErrors()) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+
+        return ResponseUtil.jsonSucceed(userService.listFavourites(requestData), HttpStatus.OK);
     }
 }

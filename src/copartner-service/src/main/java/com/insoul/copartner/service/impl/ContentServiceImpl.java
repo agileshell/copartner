@@ -41,11 +41,11 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
         ContentCriteria contentCriteria = new ContentCriteria();
         contentCriteria.setOffset(requestData.getOffset());
         contentCriteria.setLimit(requestData.getLimit());
-        contentCriteria.setStatus(new String[] {"active"});
-        contentCriteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData
-                .getFrom()) : null);
-        contentCriteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
-                : null);
+        contentCriteria.setStatus(new String[] { "active" });
+        contentCriteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
+        contentCriteria
+                .setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
         contentCriteria.setTitle(requestData.getKeyword());
 
         Long count = contentDao.countContent(contentCriteria);
@@ -81,6 +81,11 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
         contentVO.setClicks(content.getClicks());
         contentVO.setCreated(content.getCreated());
 
+        long userId = getUserId();
+        UserFavourites userFavourites = userFavouritesDao.getByUserIdAndEntity(userId, contentId,
+                EntityType.CONTENT.getValue());
+        contentVO.setIsliked(userFavourites != null);
+
         return contentVO;
     }
 
@@ -88,8 +93,8 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
     public void likeOrUnlikeContent(Long contentId) {
         long userId = getUserId();
-        UserFavourites userFavourites =
-                userFavouritesDao.getByUserIdAndEntity(userId, contentId, EntityType.CONTENT.getValue());
+        UserFavourites userFavourites = userFavouritesDao.getByUserIdAndEntity(userId, contentId,
+                EntityType.CONTENT.getValue());
         if (userFavourites == null) {
             userFavourites = new UserFavourites();
             userFavourites.setUserId(userId);
