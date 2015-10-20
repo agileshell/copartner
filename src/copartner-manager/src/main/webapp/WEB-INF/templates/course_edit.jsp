@@ -100,23 +100,11 @@
 														<input name="coverImg" id="coverImg" type="file" class="form-control" placeholder="封皮"></input>
 													</div>
 												</div>
-												<div class="form-group">
-													<label class="col-lg-2 control-label">视频:</label>
-													<div class="col-lg-10">
-													  <video id="cop.video.media" class="video-js vjs-default-skin" controls preload="none" width="500" height="300"
-													      poster="${cdnDomain}${course.url}?vframe/jpg/offset/0/w/600/h/600"
-													      data-setup="{}">
-													    <source src="${cdnDomain}${course.url}" type='video/mp4' />
-													    <source src="${cdnDomain}${course.url}" type='video/webm' />
-													    <source src="${cdnDomain}${course.url}" type='video/ogg' />
-													  </video>
-													</div>
-												</div>
 												
 												<div class="form-group">
 													<label class="col-lg-2 control-label" for="media">视频:</label>
 													<div class="col-lg-10">
-														<input name="media" id="media" type="file" class="form-control" placeholder="视频"></input>
+														<input name="media" id="media" type="text" class="form-control" value="${course.url}"></input>
 													</div>
 												</div>
 					                        </div>

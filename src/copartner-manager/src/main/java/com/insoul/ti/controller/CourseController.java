@@ -121,14 +121,14 @@ public class CourseController extends WebBase {
         course.setStatus(request.getStatus());
         course.setSynopsis(request.getSynopsis());
         course.setTime(request.getTime());
-        MultipartFile img = request.getCoverImg();
+        MultipartFile coverImg = request.getCoverImg();
         String url = StringUtils.EMPTY;
-        if (img != null) {
-            String fileType = FileUtil.getFileType(img.getOriginalFilename());
+        if (coverImg != null) {
+            String fileType = FileUtil.getFileType(coverImg.getOriginalFilename());
             if (StringUtils.isNotBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
-                    url = CDNUtil.uploadFile(img.getInputStream(), fileName);
+                    url = CDNUtil.uploadFile(coverImg.getInputStream(), fileName);
                     if (StringUtils.isNotBlank(url)) course.setCoverImg(url);
                 } catch (Exception e) {
                     log.error("UploadFile Media Error.", e);
@@ -157,14 +157,14 @@ public class CourseController extends WebBase {
 		course.setSynopsis(request.getSynopsis());
 		course.setTime(request.getTime());
 		course.setUpdated(date);
-		MultipartFile img = request.getCoverImg();
+		MultipartFile coverImg = request.getCoverImg();
 		String url = StringUtils.EMPTY;
-		if (img != null) {
-            String fileType = FileUtil.getFileType(img.getOriginalFilename());
+		if (coverImg != null) {
+            String fileType = FileUtil.getFileType(coverImg.getOriginalFilename());
             if (StringUtils.isNotBlank(fileType)) {
                 String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
                 try {
-                    url = CDNUtil.uploadFile(img.getInputStream(), fileName);
+                    url = CDNUtil.uploadFile(coverImg.getInputStream(), fileName);
                     if (StringUtils.isNotBlank(url)) course.setCoverImg(url);
                 } catch (Exception e) {
                     log.error("UploadFile Media Error.", e);
