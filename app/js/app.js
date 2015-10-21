@@ -143,7 +143,6 @@
 
 	owner.getRoleId = function() {
 		var state = owner.getState();
-		console.log(JSON.stringify(state));
 		if (state.roleId) {
 			return state.roleId;
 		} else {

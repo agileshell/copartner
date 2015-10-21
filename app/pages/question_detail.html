@@ -28,34 +28,19 @@
 				margin-bottom: 15px;
 			}
 			.c-article-title {
-				padding: 5px 10px 0 10px;
+				padding: 10px;
 			}
 			.c-article-meta {
 				padding: 0 10px 10px 10px;
 			}
-			.c-article-outline {
-				padding: 0 15px 0 35px;
-			}
-			.c-article-meta span {
-				display: block;
-				font-size: 15px;
-				color: gray;
-				font-weight: 600;
+			.question-item {
+				font-size: 14px;
+				line-height: 20px;
 			}
 			.c-article-article {
 				font-size: 15px;
 				padding: 5px 15px;
 				color: #000;
-			}
-			.avatar {
-				border-radius: 50%;
-				width: 30px;
-				float: left;
-				margin-top: 10px;
-			}
-			.c-article-meta .user-name {
-				color: #C15151;
-				font-size: 15px;
 			}
 			.undisplayed{
 				display: none;
@@ -110,11 +95,21 @@
 			<div class="c-article-content">
 				<h4 id="c-article-title" class="c-article-title"></h4>
 				<div class="c-article-meta">
-					<img id="user-avatar" src="" class="avatar">
-					<div class="c-article-outline">
-						<span id="user-name" class="user-name"></span>
-						<span id="category"><span>
-						<span id="created"><span>
+					<div>
+						<span class="mui-badge mui-badge-success">提问人</span>
+						<span  id="user-name" class="question-item"></span>
+					</div>
+					<div>
+						<span class="mui-badge mui-badge-success">导师</span>
+						<span  id="tutor-name" class="question-item"></span>
+					</div>
+					<div>
+						<span class="mui-badge mui-badge-warning">类别</span>
+						<span id="category" class="question-item"></span>
+					</div>
+					<div>
+						<span class="mui-badge mui-badge-primary">时间</span>
+						<span  id="created" class="question-item"></span>
 					</div>
 				</div>
 				<p class="border-bottom-1px"></p>
@@ -157,7 +152,7 @@
 			var titleEl = document.getElementById("c-article-title"),
 				articleEl = document.getElementById("c-article-article"),
 				nameEl = document.getElementById("user-name"),
-				avatarEl = document.getElementById("user-avatar"),
+				tutorNameEl = document.getElementById("tutor-name"),
 				categoryEl = document.getElementById("category"),
 				createdEl = document.getElementById("created"),
 				answerPadEl = document.getElementById("answer-pad"),
@@ -165,7 +160,8 @@
 				name = '',
 				avatar = '',
 				questionerId = 0,
-				tutorId = 0;
+				currentUserId = 0,
+				currentRoleId = 0;
 			var divEl = document.createElement("div"),
 				historyListEl = document.getElementById("message-list"),
 				replySource = document.getElementById("reply-template").innerText,
@@ -176,11 +172,18 @@
 					setTimeout(function() {
 						titleEl.innerText = '';
 						articleEl.innerText = '';
-						avatarEl.src = '';
 						categoryEl.innerText = '';
+						nameEl.innerText = '';
+						tutorNameEl.innerText = '';
 						createdEl.innerText = '';
 						answerPadEl.classList.add('undisplayed');
 						historyListEl.innerHTML = '';
+						questionId = 0;
+						name = '';
+						avatar = '';
+						questionerId = 0;
+						currentUserId = 0,
+						currentRoleId = 0;
 						document.body.classList.add('c-overlay');
 					}, 200);
 				}
@@ -201,14 +204,14 @@
 							titleEl.innerText = question.title;
 							articleEl.innerText = question.content;
 							nameEl.innerText = name;
-							avatarEl.src = avatar;
+							tutorNameEl.innerText = question.tutor.name;
 							categoryEl.innerText = question.categoryName;
 							createdEl.innerText = question.created;
 
 							currentUserId = app.getUserId();
+							currentRoleId = app.getRoleId();
 							questionerId = question.questioner.userId;
-							tutorId = question.tutor.userId;
-							if (currentUserId <= 0 || currentUserId == questionerId || currentUserId == tutorId) {
+							if (currentUserId <= 0 || currentRoleId > 1 || currentUserId == questionerId) {
 								answerPadEl.classList.remove('undisplayed');
 							}
 
@@ -244,7 +247,7 @@
 						return;
 					}
 
-					if (currentUserId != questionerId && currentUserId != tutorId) {
+					if (currentUserId != questionerId && currentRoleId <= 1) {
 						plus.nativeUI.toast('无权解答此问题');
 						return;
 					}

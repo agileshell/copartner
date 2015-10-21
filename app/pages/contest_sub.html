@@ -214,12 +214,6 @@
 						registrationBtnEl.innerText = '已报名';
 					}
 
-					var state = app.getState();
-					if (state.roleId > 1) {
-						registrationSliderEl.remove();
-						registrationDivEl.remove();
-					}
-
 					var tutorVoteRankings = contestEntity.tutorVoteRanking;
 					if (tutorVoteRankings.length > 0) {
 						for (var i = 0, len = tutorVoteRankings.length; i < len; i++) {
@@ -300,10 +294,15 @@
 						return;
 					}
 
-					var roleId = app.getRoleId();
-					if (roleId != 1 || isRegister) {
+					if (isRegister) {
 						return;
 					}
+					var roleId = app.getRoleId();
+					if (roleId != 1) {
+						mui.toast('只有创业者才能报名');
+						return;
+					}
+
 					if (ownProjectCount > 0) {
 						mui.openWindow({
 							url: 'contest_register.html', 

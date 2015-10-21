@@ -14,6 +14,10 @@
 				font-size: 12px;
 				line-height: 20px;
 			}
+			.question-item {
+				font-size: 12px;
+				line-height: 20px;
+			}
 			.tutor-avatar {
 				border-radius: 50%;
 				width: 40px;
@@ -84,9 +88,17 @@
 					</div>
 					<div class="mui-media-body" style="padding-left: 45px;">
 						<span class="question-name mui-ellipsis-2">{{title}}</span>
-						<span class="tutor-item">类别：{{categoryName}}</span>
-						<span class="tutor-item mui-ellipsis-2">问题：{{content}}</span>
-						<span class="tutor-item">提问时间：{{created}}</span>
+						<div>
+							<span class="mui-badge mui-badge-warning">类别</span>
+							<span class="question-item">{{categoryName}}</span>
+						</div>
+						<div>
+							<span class="mui-badge mui-badge-primary">时间</span>
+							<span class="question-item">{{created}}</span>
+						</div>
+						<div class="question-item mui-ellipsis-2">
+							<span class="mui-badge mui-badge-success">问题</span>&nbsp;{{content}}
+						</div>
 					</div>
 				</a>
 			</li>
