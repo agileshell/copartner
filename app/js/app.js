@@ -12,7 +12,7 @@
 			return (password.length >= 6 && password.length <= 16 && password.match(/^[0-9a-zA-Z]*$/));
 		};
 
-	owner.apiURL = 'http://123.57.55.59:8080/';
+	owner.apiURL = 'http://192.168.4.106:8080/copartner-api/';
 
 	/**
 	 * 用户登录
@@ -153,8 +153,21 @@
 	/**
 	 * DeviceToken
 	 **/
-	owner.addDeviceToken = function(token, os) {
-		//TODO
+	owner.addDeviceToken = function(token, os, successCallback) {
+		mui.ajax(owner.apiURL + 'user/device/' + os, {
+			data: {
+				deviceToken: token
+			},
+			dataType: 'json',
+			type: 'post',
+			timeout: 5000,
+			success: function(data) {
+				successCallback();
+			},
+			error: function(xhr, type, errorThrown) {
+				console.log(type);
+			}
+		})
 	};
 
 	/**
@@ -1915,6 +1928,24 @@
 		})
 	};
 
+	owner.listContestVotes = function(entryId, offset, limit, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'contestEntry/' + entryId + '/votes', {
+			data: {
+				offset: offset,
+				limit: limit
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+
 	owner.listFavourites = function(offset, limit, from, to, successCallback, errorCallback) {
 		mui.ajax(owner.apiURL + 'user/favourites', {
 			data: {
@@ -1974,4 +2005,5 @@
 			}
 		})
 	};
+
 }(mui, window.app = {}));

@@ -37,7 +37,7 @@
 				background-color: #efeff4;
 			}
 			.mui-page {
-				top: 45px;
+				top: 44px;
 			}
 			.mui-scroll-wrapper,
 			.mui-scroll {
@@ -72,6 +72,44 @@
 			.undisplayed {
 				display: none;
 			}
+
+			.comments-list ol, ul {
+				list-style: none;
+			}
+			.comments-list .comments-item {
+				margin-bottom: 9px;
+			}
+			.comments-list .comments-item .comments-item-bd {
+				padding: 0 0 0 30px;
+				position: relative;
+			}
+			.comments-list .ui-avatar {
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			.comments-list .ui-avatar img {
+				width: 30px;
+				height: 30px;
+				border-radius: 10%;
+			}
+			.comments-list .comments-content {
+				font-size: 13px;
+				position: relative;
+				line-height: 1.5;
+				padding-left: 5px;
+				color: #8f8f94;
+			}
+			.comments-list .comments-op {
+				line-height: 18px;
+				position: relative;
+			}
+			.comments-list .comments-op span {
+				margin-right: 10px;
+			}
+			.c_tx {
+				color: #f2c372;
+			}
 		</style>
 	</head>
 	<body class="c-overlay">
@@ -99,6 +137,11 @@
 					</ul>
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
+							参赛者<span class="mui-pull-right" id="owner"></span>
+						</li>
+					</ul>
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
 							导师投票数<span class="mui-pull-right" id="tutorVotes">111</span>
 						</li>
 						<li class="mui-table-view-cell">
@@ -108,11 +151,11 @@
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
 							实施条件
-							<textarea id="content" style="height:30px; color:  #bdbdbd; border: 0px; padding: 0px;" readonly="readonly"></textarea>
+							<div id="content" style="min-width: 30px; color: #bdbdbd; font-size: 14px;"><div>
 						</li>
 						<li class="mui-table-view-cell">
 							优势
-							<textarea id="advantage" style="height:30px;  color:  #bdbdbd; border: 0px; padding: 0px;" readonly="readonly"></textarea>
+							<div id="advantage" style="min-width: 30px; color: #bdbdbd; font-size: 14px;"><div>
 						</li>
 					</ul>
 					<ul class="mui-table-view" id="businessLicensePad">
@@ -123,15 +166,37 @@
 							<img class="coverImg" id="businessLicenseUrl"/>
 						</li>
 					</ul>
-					<ul class="mui-table-view">
+					<ul class="mui-table-view" id="businessLicensePad">
 						<li class="mui-table-view-cell">
-							参赛者<span class="mui-pull-right" id="owner"></span>
+							评语
+						</li>
+						<li class="mui-table-view-cell">
+							<div class="comments-list" style="height: 100%;">
+								<ul id="message-list" style="padding: 10px;">
+								</ul>
+							</div>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
 		<div id="loader" class="c-loader">加载中...</div>
+		<script id="reply-template" type="text/x-handlebars-template">
+			<li class="comments-item">
+				<div class="comments-item-bd">
+					<div class="ui-avatar">
+						<img class="q_namecard" src="{{votor.avatar}}">
+					</div>
+					<div class="comments-content">
+						<span class="c_tx">{{votor.name}}</span>: {{comment}}
+						<div class="comments-op">
+							<span class=" ui-mr10 state">{{created}}</span>
+						</div>
+					</div>
+				</div>
+			</li>
+		</script>
+		<script type="text/javascript" charset="UTF-8" src="../js/handlebars-v2.0.0.js"></script>
 		<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
 		<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
 		<script type="text/javascript">
@@ -152,6 +217,10 @@
 				voteMsgEl = document.getElementById('vote-msg'),
 				voteBtnEl = document.getElementById('vote');
 			var businessLicensePadEl = document.getElementById('businessLicensePad');
+			var divEl = document.createElement("div"),
+				historyListEl = document.getElementById("message-list"),
+				replySource = document.getElementById("reply-template").innerText,
+				replyTemplate = Handlebars.compile(replySource);
 			mui.init({
 				swipeBack: true,
 				beforeback: function() {
@@ -170,6 +239,7 @@
 						tutorVotesEl.innerText = '';
 						investorVotesEl.innerText = '';
 						voteMsgEl.innerText = '投票';
+						historyListEl.innerHTML = '';
 
 						document.body.classList.add('c-overlay');
 					}, 200);
@@ -214,6 +284,8 @@
 				};
 	
 				document.addEventListener('mui.view.beforeshow', function(event) {
+					historyListEl.innerHTML = '';
+
 					if (event.detail.$$type === 'back') {
 						setTimeout(function() {
 							document.body.classList.remove('c-overlay');
@@ -222,6 +294,16 @@
 					}
 					guid = event.detail.guid;
 					app.getContestEntry(event.detail.guid, success, error);
+
+					app.listContestVotes(guid, 0, 0, function(response) {
+						votes = response.body;
+						for (var i = votes.length - 1; i >= 0; i--) {
+							divEl.innerHTML = replyTemplate(votes[i]);
+							historyListEl.insertBefore(divEl.firstElementChild, historyListEl.firstElementChild);
+						}
+					}, function(errorType) {
+						mui.toast(app.ajaxErrorHandler(errorType));
+					});
 				});
 				voteBtnEl.addEventListener('tap', function(e) {
 					e.detail.gesture.preventDefault();

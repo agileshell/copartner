@@ -175,7 +175,7 @@
 						//关闭splash页面
 						setTimeout(function() {
 							plus.navigator.closeSplashscreen();
-						}, 3000);
+						}, 2000);
 						//预加载
 						preload();
 					} else {
@@ -195,10 +195,15 @@
 							//预加载
 							preload();
 						}, 200);
+					}
 
-						//push
+					//push
+					var setDeviceToken = plus.storage.getItem("setDeviceToken");
+					if (!setDeviceToken) {
 						var info = plus.push.getClientInfo();
-						app.addDeviceToken(info.token, plus.os.name);
+						app.addDeviceToken(info.token, plus.os.name, function(){
+							plus.storage.setItem("setDeviceToken", "true");
+						});
 					}
 				});
 				//初始化，并预加载webview

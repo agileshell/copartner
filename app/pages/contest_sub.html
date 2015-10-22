@@ -75,39 +75,39 @@
 				border-radius: 5px; 
 			}
 
-	        .table {
-	            width: 100%;
-	            max-width: 100%;
-	            margin-bottom: 20px;
-	        }
-	        .table tbody tr {
-	            color: #f47320;
-	        }
-	        .table td {
-	            border: none;
-	            padding: 5px 0px;
-	        }
-	        .ranking .font-size-1 {
-	            font-size: 14px;
-	        }
-	        .ranking .rank {
-	            background: url('../images/top_rank_bg.png') no-repeat;
-	            color: #ffffff;
-	        }
-	        .ranking .rank {
-	            width: 17px;
-	            height: 24px;
-	            display: inline-block;
-	            text-align: center;
-	            margin-left: 5px;
-	        }
-	        .ranking .name {
-	            display: inline-block;
-	            max-width: 120px;
-	            overflow: hidden;
-	            white-space: nowrap;
-	            text-overflow: ellipsis;
-	        }
+			.ranking.table {
+				width: 100%;
+				max-width: 100%;
+				margin-bottom: 20px;
+			}
+			.ranking.table tbody tr {
+				 color: #f47320;
+			}
+			.ranking.table td {
+				border: none;
+				padding: 5px 0px;
+			}
+			.ranking .font-size-1 {
+				font-size: 14px;
+			}
+			.ranking .rank {
+				background: url('../images/top_rank_bg.png') no-repeat;
+				color: #ffffff;
+			}
+			.ranking .rank {
+				width: 17px;
+				height: 24px;
+				display: inline-block;
+				text-align: center;
+				margin-left: 5px;
+			}
+			.ranking .name {
+				display: inline-block;
+				max-width: 120px;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
 
 			.undisplayed {
 				display: none;
@@ -160,7 +160,7 @@
 						<div class="c-content">
 							<div class="mui-scroll-wrapper">
 								<div class="mui-scroll">
-									<div id="ranking-content" class="item-content">
+									<div id="ranking-content" class="item-content" style="margin-top: 5px;">
 										<div style="float: left; position: relative; width: 50%;">
 											<div style="padding-left: 5px; font-size: 14px;">
 												<span><img src="../images/reward.gif" width="15" style="width: 15px;"/></span>
@@ -168,7 +168,7 @@
 											</div>
 											<div style="margin-right: 5px; border-bottom: 1px solid #c8c7cc;"></div>
 											<div>
-												<table class="ranking table">
+												<table class="ranking table" style="margin-top: 5px;">
 													<tbody id="tutorVoteRanking">
 													</tbody>
 												</table>
@@ -181,7 +181,7 @@
 											</div>
 											<div style="margin-right: 5px; border-bottom: 1px solid #c8c7cc;"></div>
 											<div>
-												<table class="ranking table">
+												<table class="ranking table" style="margin-top: 5px;">
 													<tbody id="investorVoteRanking">
 													</tbody>
 												</table>
@@ -207,7 +207,7 @@
 			</li>
 		</script>
 		<script id="project-template" type="text/x-handlebars-template">
-			<tr class="font-size-1">
+			<tr class="font-size-1" data-guid="{{id}}">
 				<td><span class="rank ng-binding">{{rank}}</span></td>
 				<td><span class="name ng-binding">{{project.name}}</span></td>
 			</tr>
@@ -311,7 +311,7 @@
 			mui('#entries-content').on('tap', 'a', function() {
 				open_detail(this.getAttribute('data-guid'));
 			});
-			mui('#ranking-content').on('tap', 'a', function() {
+			mui('#ranking-content').on('tap', 'tr', function() {
 				open_detail(this.getAttribute('data-guid'));
 			});
 

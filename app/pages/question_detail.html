@@ -100,7 +100,7 @@
 						<span  id="user-name" class="question-item"></span>
 					</div>
 					<div>
-						<span class="mui-badge mui-badge-success">导师</span>
+						<span class="mui-badge mui-badge-royal">导师</span>
 						<span  id="tutor-name" class="question-item"></span>
 					</div>
 					<div>
@@ -190,6 +190,20 @@
 			});
 			(function($) {
 				document.addEventListener('mui.view.beforeshow', function(event) {
+					titleEl.innerText = '';
+					articleEl.innerText = '';
+					categoryEl.innerText = '';
+					nameEl.innerText = '';
+					tutorNameEl.innerText = '';
+					createdEl.innerText = '';
+					historyListEl.innerHTML = '';
+					questionId = 0;
+					questionerId = 0;
+					currentUserId = 0;
+					currentRoleId = 0;
+					currentName = '';
+					currentAvatar = '';
+
 					if (event.detail.$$type === 'back') {
 						setTimeout(function() {
 							document.body.classList.remove('c-overlay');

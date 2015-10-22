@@ -2,7 +2,11 @@ package com.insoul.copartner.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -22,6 +26,7 @@ import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.dao.IUserDao;
 import com.insoul.copartner.dao.criteria.ContestCriteria;
 import com.insoul.copartner.dao.criteria.ContestEntryCriteria;
+import com.insoul.copartner.dao.criteria.PaginationCriteria;
 import com.insoul.copartner.dao.criteria.ProjectCriteria;
 import com.insoul.copartner.domain.Contest;
 import com.insoul.copartner.domain.ContestEntry;
@@ -40,6 +45,7 @@ import com.insoul.copartner.vo.ContestEntryDetailVO;
 import com.insoul.copartner.vo.ContestEntryLeanVO;
 import com.insoul.copartner.vo.ContestEntryVO;
 import com.insoul.copartner.vo.ContestVO;
+import com.insoul.copartner.vo.ContestVoteVO;
 import com.insoul.copartner.vo.Pagination;
 import com.insoul.copartner.vo.ProjectDetailVO;
 import com.insoul.copartner.vo.ProjectLeanVO;
@@ -47,6 +53,7 @@ import com.insoul.copartner.vo.UserLeanVO;
 import com.insoul.copartner.vo.request.ContestEntryListRequest;
 import com.insoul.copartner.vo.request.ContestListRequest;
 import com.insoul.copartner.vo.request.ContestRegisterRequest;
+import com.insoul.copartner.vo.request.PaginationRequest;
 
 @Service
 public class ContestServiceImpl extends BaseServiceImpl implements IContestService {
@@ -406,5 +413,40 @@ public class ContestServiceImpl extends BaseServiceImpl implements IContestServi
             contestEntry.setUpdated(new Date());
         }
 
+    }
+
+    @Override
+    public List<ContestVoteVO> listVoteInfo(long contestEntryId, PaginationRequest requestData) {
+        List<ContestVoteVO> contestVoteVOs = new ArrayList<ContestVoteVO>();
+        PaginationCriteria paginationCriteria = new PaginationCriteria();
+        paginationCriteria.setOffset(requestData.getOffset());
+        paginationCriteria.setLimit(requestData.getLimit());
+        List<ContestEntryVote> votes = contestEntryVoteDao.findByContestEntryId(contestEntryId, paginationCriteria);
+
+        Set<Long> userIds = new HashSet<Long>();
+        for (ContestEntryVote vote : votes) {
+            userIds.add(vote.getVotorId());
+        }
+        Map<Long, UserLeanVO> userIdMapUserVO = new HashMap<Long, UserLeanVO>();
+        List<User> users = userDao.getUserByIds(userIds);
+        for (User user : users) {
+            UserLeanVO userVO = new UserLeanVO();
+            userVO.setUserId(user.getId());
+            userVO.setName(user.getName());
+            userVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+
+            userIdMapUserVO.put(user.getId(), userVO);
+        }
+
+        for (ContestEntryVote vote : votes) {
+            ContestVoteVO vo = new ContestVoteVO();
+            vo.setVotor(userIdMapUserVO.get(vote.getVotorId()));
+            vo.setComment(vote.getComment());
+            vo.setCreated(vote.getCreated());
+
+            contestVoteVOs.add(vo);
+        }
+
+        return contestVoteVOs;
     }
 }

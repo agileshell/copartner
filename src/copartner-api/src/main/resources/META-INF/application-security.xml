@@ -16,6 +16,7 @@
         <intercept-url pattern="/user/*/profile" access="isAuthenticated() or isAnonymous()" />
         <intercept-url pattern="/user/*/demands" access="isAuthenticated() or isAnonymous()" />
         <intercept-url pattern="/user/*/projects" access="isAuthenticated() or isAnonymous()" />
+        <intercept-url pattern="/user/device/**" access="isAuthenticated() or isAnonymous()" />
         <intercept-url pattern="/user/**" access="isAuthenticated()" />
 
         <intercept-url pattern="/project/**" method="DELETE" access="isAuthenticated()" />

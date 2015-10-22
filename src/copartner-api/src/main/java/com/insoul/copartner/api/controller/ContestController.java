@@ -24,6 +24,7 @@ import com.insoul.copartner.util.ResponseUtil;
 import com.insoul.copartner.vo.request.ContestEntryListRequest;
 import com.insoul.copartner.vo.request.ContestListRequest;
 import com.insoul.copartner.vo.request.ContestRegisterRequest;
+import com.insoul.copartner.vo.request.PaginationRequest;
 
 @Controller
 public class ContestController extends BaseController {
@@ -89,5 +90,16 @@ public class ContestController extends BaseController {
         contestService.vote(contestEntryId, comment);
 
         return ResponseUtil.jsonSucceed(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/contestEntry/{contestEntryId}/votes", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> listVotes(@PathVariable Long contestEntryId,
+            @Valid PaginationRequest requestData, BindingResult result) throws CException {
+        if (result.hasErrors()) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+
+        return ResponseUtil.jsonSucceed(contestService.listVoteInfo(contestEntryId, requestData), HttpStatus.OK);
     }
 }
