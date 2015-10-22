@@ -66,8 +66,8 @@
 											<label class="col-lg-2 control-label">封皮:</label>
 											<div class="col-lg-10">
 												<div class="gallery">
-							                      	<a href="${cdnDomain}${content.coverImg}" class="prettyPhoto[pp_gal]">
-							                      		<img src="${cdnDomain}${content.coverImg}" alt="${content.title}" width="500">
+							                      	<a href="${cdnDomain}${course.coverImg}" class="prettyPhoto[pp_gal]">
+							                      		<img src="${cdnDomain}${course.coverImg}" alt="${course.title}" width="500">
 							                      	</a>
 							                      </div>
 											</div>
@@ -77,11 +77,11 @@
 											<label class="col-lg-2 control-label">视频:</label>
 											<div class="col-lg-10">
 											  <video id="cop.video.media" class="video-js vjs-default-skin" controls preload="none" width="500" height="300"
-											      poster="${cdnDomain}${course.url}?vframe/jpg/offset/0/w/600/h/600"
+											      poster="${course.url}?vframe/jpg/offset/0/w/600/h/600"
 											      data-setup="{}">
-											    <source src="${cdnDomain}${course.url}" type='video/mp4' />
-											    <source src="${cdnDomain}${course.url}" type='video/webm' />
-											    <source src="${cdnDomain}${course.url}" type='video/ogg' />
+											    <source src="${course.url}" type='video/mp4' />
+											    <source src="${course.url}" type='video/webm' />
+											    <source src="${course.url}" type='video/ogg' />
 											  </video>
 											</div>
 										</div>

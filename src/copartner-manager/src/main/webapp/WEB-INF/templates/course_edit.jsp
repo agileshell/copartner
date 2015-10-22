@@ -88,8 +88,8 @@
 													<label class="col-lg-2 control-label">封皮:</label>
 													<div class="col-lg-10">
 														<div class="gallery">
-									                      	<a href="${cdnDomain}${content.coverImg}" class="prettyPhoto[pp_gal]">
-									                      		<img src="${cdnDomain}${content.coverImg}" alt="${content.title}" width="500">
+									                      	<a href="${cdnDomain}${course.coverImg}" class="prettyPhoto[pp_gal]">
+									                      		<img src="${cdnDomain}${course.coverImg}" alt="${course.title}" width="500">
 									                      	</a>
 									                      </div>
 													</div>
