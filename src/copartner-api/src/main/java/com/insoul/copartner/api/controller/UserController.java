@@ -207,4 +207,15 @@ public class UserController extends BaseController {
 
         return ResponseUtil.jsonSucceed(questionService.listOwnQuestions(requestData), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/tutor/questions", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> listCurrentTutorQuestions(@Valid QuestionListRequest requestData,
+            BindingResult result) throws CException {
+        if (result.hasErrors()) {
+            throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
+        }
+
+        return ResponseUtil.jsonSucceed(questionService.listCurrentTutorQuestions(requestData), HttpStatus.OK);
+    }
 }

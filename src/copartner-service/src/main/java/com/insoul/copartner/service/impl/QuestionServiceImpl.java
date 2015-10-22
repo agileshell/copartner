@@ -63,16 +63,7 @@ public class QuestionServiceImpl extends BaseServiceImpl implements IQuestionSer
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
         criteria.setKeyword(requestData.getKeyword());
         criteria.setStatus(new String[] {"active"});
-
-        long currentUserId = getUserId();
-        if (0 != currentUserId) {
-            User user = userDao.get(currentUserId);
-            if (3 == user.getRoleId()) {// 3:导师
-                criteria.setTutorId(currentUserId);
-            } else {
-                criteria.setUserId(currentUserId);
-            }
-        }
+        criteria.setTutorId(requestData.getTutorId());
 
         List<Question> questions = questionDao.queryQuestion(criteria);
 
@@ -89,8 +80,25 @@ public class QuestionServiceImpl extends BaseServiceImpl implements IQuestionSer
                 : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
         criteria.setUserId(getUserId());
-        criteria.setOnlyOwner(true);
+        criteria.setIsCurrentUser(true);
         criteria.setStatus(new String[] {"active", "inactive"});
+
+        List<Question> questions = questionDao.queryQuestion(criteria);
+
+        return format(questions);
+    }
+
+    @Override
+    public List<QuestionVO> listCurrentTutorQuestions(QuestionListRequest requestData) {
+        QuestionCriteria criteria = new QuestionCriteria();
+        criteria.setOffset(requestData.getOffset());
+        criteria.setLimit(requestData.getLimit());
+        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
+                : null);
+        criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
+        criteria.setTutorId(getUserId());
+        criteria.setIsCurrentUser(true);
+        criteria.setStatus(new String[] {"active"});
 
         List<Question> questions = questionDao.queryQuestion(criteria);
 

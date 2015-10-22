@@ -16,6 +16,8 @@ public interface IQuestionService {
 
     List<QuestionVO> listOwnQuestions(QuestionListRequest requestData);
 
+    List<QuestionVO> listCurrentTutorQuestions(QuestionListRequest requestData);
+
     QuestionDetailVO getQuestion(Long questionId) throws CException;
 
     void createQuestion(QuestionAddRequest requestData) throws CException;

@@ -12,6 +12,8 @@ public class QuestionListRequest extends PaginationRequest {
 
     private Long to;
 
+    private Long tutorId;
+
     public String getKeyword() {
         return keyword;
     }
@@ -42,6 +44,14 @@ public class QuestionListRequest extends PaginationRequest {
 
     public void setTo(Long to) {
         this.to = to;
+    }
+
+    public Long getTutorId() {
+        return tutorId;
+    }
+
+    public void setTutorId(Long tutorId) {
+        this.tutorId = tutorId;
     }
 
 }
