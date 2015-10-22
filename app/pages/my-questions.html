@@ -155,7 +155,7 @@
 							questionLatestRefreshRequestDate = Date.parse(questions[0].created);
 						}
 						questionLatestLoadingRequestDate = Date.parse(questions[questions.length - 1].created);
-						for (var i = questions.length - 1; i >= 0; i--) {
+						for (var i = 0, len = questions.length; i < len; i++) {
 							divEl.innerHTML = questionTemplate(app.processQuestion(questions[i]));
 							questionEl.appendChild(divEl.firstElementChild);
 						}

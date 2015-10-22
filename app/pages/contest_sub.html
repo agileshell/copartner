@@ -75,6 +75,40 @@
 				border-radius: 5px; 
 			}
 
+	        .table {
+	            width: 100%;
+	            max-width: 100%;
+	            margin-bottom: 20px;
+	        }
+	        .table tbody tr {
+	            color: #f47320;
+	        }
+	        .table td {
+	            border: none;
+	            padding: 5px 0px;
+	        }
+	        .ranking .font-size-1 {
+	            font-size: 14px;
+	        }
+	        .ranking .rank {
+	            background: url('../images/top_rank_bg.png') no-repeat;
+	            color: #ffffff;
+	        }
+	        .ranking .rank {
+	            width: 17px;
+	            height: 24px;
+	            display: inline-block;
+	            text-align: center;
+	            margin-left: 5px;
+	        }
+	        .ranking .name {
+	            display: inline-block;
+	            max-width: 120px;
+	            overflow: hidden;
+	            white-space: nowrap;
+	            text-overflow: ellipsis;
+	        }
+
 			.undisplayed {
 				display: none;
 			}
@@ -128,20 +162,30 @@
 								<div class="mui-scroll">
 									<div id="ranking-content" class="item-content">
 										<div style="float: left; position: relative; width: 50%;">
-											<div style="color: #f47320;  padding-left: 15px;">
-												<span><img src="../images/reward.gif" width="18" style="width: 18px;"/></span>
-												<span>导师评比排名</span>
+											<div style="padding-left: 5px; font-size: 14px;">
+												<span><img src="../images/reward.gif" width="15" style="width: 15px;"/></span>
+												<span>导师评比排名Top10</span>
 											</div>
-											<ul id="tutorVoteRanking" class="mui-table-view" style="background-color: #efeff4;">
-											</ul>
+											<div style="margin-right: 5px; border-bottom: 1px solid #c8c7cc;"></div>
+											<div>
+												<table class="ranking table">
+													<tbody id="tutorVoteRanking">
+													</tbody>
+												</table>
+											</div>
 										</div>
 										<div style="float: left; position: relative; width: 50%;">
-											<div style="color: #f47320; padding-left: 15px;">
-												<span><img src="../images/reward.gif" width="18" style="width: 18px;"/></span>
-												<span>投资人评比排名</span>
+											<div style="padding-left: 5px; font-size: 14px;">
+												<span><img src="../images/reward.gif" width="15" style="width: 15px;"/></span>
+												<span>投资人评比排名Top10</span>
 											</div>
-											<ul id="investorVoteRanking" class="mui-table-view" style="background-color: #efeff4;">
-											</ul>
+											<div style="margin-right: 5px; border-bottom: 1px solid #c8c7cc;"></div>
+											<div>
+												<table class="ranking table">
+													<tbody id="investorVoteRanking">
+													</tbody>
+												</table>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -162,6 +206,12 @@
 				</a>
 			</li>
 		</script>
+		<script id="project-template" type="text/x-handlebars-template">
+			<tr class="font-size-1">
+				<td><span class="rank ng-binding">{{rank}}</span></td>
+				<td><span class="name ng-binding">{{project.name}}</span></td>
+			</tr>
+		</script>
 		<script src="../js/handlebars-v2.0.0.js"></script>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/app.js"></script>
@@ -180,6 +230,8 @@
 			var divEl = document.createElement("div"),
 				entrySource = document.getElementById("entry-template").innerText,
 				entryTemplate = Handlebars.compile(entrySource),
+				projectSource = document.getElementById("project-template").innerText,
+				projectTemplate = Handlebars.compile(projectSource),
 				entriesEl = document.getElementById("entries-content"),
 				tutorVoteRankingEl = document.getElementById("tutorVoteRanking"),
 				investorVoteRankingEl = document.getElementById("investorVoteRanking");
@@ -215,19 +267,25 @@
 					}
 
 					var tutorVoteRankings = contestEntity.tutorVoteRanking;
+					var tutorVoteRankingsHtml = '';
 					if (tutorVoteRankings.length > 0) {
 						for (var i = 0, len = tutorVoteRankings.length; i < len; i++) {
-							divEl.innerHTML = entryTemplate(tutorVoteRankings[i]);
-							tutorVoteRankingEl.appendChild(divEl.firstElementChild);
+							var entry = tutorVoteRankings[i];
+							entry.rank = i + 1;
+							tutorVoteRankingsHtml += projectTemplate(entry);
 						}
+						tutorVoteRankingEl.innerHTML = tutorVoteRankingsHtml;
 					}
 
 					var investorVoteRankings = contestEntity.investorVoteRanking;
+					var investorVoteRankingsHtml = '';
 					if (investorVoteRankings.length > 0) {
 						for (var i = 0, len = investorVoteRankings.length; i < len; i++) {
-							divEl.innerHTML = entryTemplate(investorVoteRankings[i]);
-							investorVoteRankingEl.appendChild(divEl.firstElementChild);
+							var entry = investorVoteRankings[i];
+							entry.rank = i + 1;
+							investorVoteRankingsHtml += projectTemplate(entry);
 						}
+						investorVoteRankingEl.innerHTML = investorVoteRankingsHtml;
 					}
 
 					var entryList = response.body.contestEntries;
@@ -247,19 +305,6 @@
 				}
 			},
 			error = function(errorType) {
-				mui.toast(app.ajaxErrorHandler(errorType));
-			};
-
-			var entryLoadSuccess = function(response) {
-				var items = response.body.list;
-				if (items.length > 0) {
-					for (var i = 0, len = items.length; i < len; i++) {
-						divEl.innerHTML = entryTemplate(items[i]);
-						entriesEl.appendChild(divEl.firstElementChild);
-					}
-				}
-			},
-			entryLoadError = function(errorType) {
 				mui.toast(app.ajaxErrorHandler(errorType));
 			};
 
