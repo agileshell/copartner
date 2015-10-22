@@ -67,7 +67,7 @@
 											<div class="col-lg-10">
 												<div class="gallery">
 							                      	<a href="${cdnDomain}${course.coverImg}" class="prettyPhoto[pp_gal]">
-							                      		<img src="${cdnDomain}${course.coverImg}" alt="${course.title}" width="500">
+							                      		<img src="${cdnDomain}${course.coverImg}" alt="${course.name}" width="500">
 							                      	</a>
 							                      </div>
 											</div>
