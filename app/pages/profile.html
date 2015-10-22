@@ -72,7 +72,7 @@
 				border-bottom: 1px solid #c8c7cc;
 			}
 			.new-item-b {
-				padding: 15px;
+				padding: 10px;
 				border-bottom: 1px solid #c8c7cc;
 			}
 			.project-item {
@@ -136,14 +136,18 @@
 				<div class="mui-slider-progress-bar mui-col-xs-4"></div>
 				<div class="mui-slider-group" id="pullrefresh">
 					<div id="myinfo" class="mui-slider-item mui-control-content mui-active">
-							<div class="new-item-b" id="my-favourites">
-								<span class="mui-icon mui-icon-star"></span>
-								<span>我的收藏</span>
-							</div>
-							<div class="new-item-b" id="my-questions">
-								<span class="mui-icon mui-icon-help"></span>
-								<span>我的提问</span>
-							</div>
+						<div class="new-item-b" id="my-favourites">
+							<span class="mui-icon mui-icon-star"></span>
+							<span>我的收藏</span>
+						</div>
+						<div class="new-item-b" id="my-questions">
+							<span class="mui-icon mui-icon-help"></span>
+							<span>我的提问</span>
+						</div>
+						<div class="new-item-b" id="my-answers">
+							<span class="mui-icon mui-icon-chatboxes"></span>
+							<span>我的答疑</span>
+						</div>
 					</div>
 					<div id="requirement" class="mui-slider-item mui-control-content">
 						<div class="mui-scroll-wrapper">
@@ -273,6 +277,10 @@
 						url: "my-questions.html",
 						id: "my-questions"
 					});
+					mui.preload({
+						url: "my-answers.html",
+						id: "my-answers"
+					});
 				}, 500);
 				document.addEventListener('mui.view.beforeshow', function(event) {
 					var needReflush = event.detail.needReflush;
@@ -377,6 +385,15 @@
 				}
 				mui.fire(myQuestionsWebview, 'mui.view.beforeshow', {});
 				myQuestionsWebview.show();
+			});
+
+			var myAnswersWebview = null;
+			document.getElementById('my-answers').addEventListener('tap', function() {
+				if (!myAnswersWebview) {
+					myAnswersWebview = plus.webview.getWebviewById('my-answers');
+				}
+				mui.fire(myAnswersWebview, 'mui.view.beforeshow', {});
+				myAnswersWebview.show();
 			});
 
 			loadingRequirementEl.addEventListener('tap', function() {

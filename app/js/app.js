@@ -1955,4 +1955,23 @@
 		})
 	};
 
+	owner.listCurrentTutorQuestions = function(offset, limit, from, to, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'user/tutor/questions', {
+			data: {
+				offset: offset,
+				limit: limit,
+				from: from,
+				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
 }(mui, window.app = {}));

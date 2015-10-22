@@ -117,7 +117,7 @@
 				</div>
 			</div>
 			<div class="comments-list" style="padding-bottom: 42px;">
-				<ul id="message-list">
+				<ul id="message-list" style="padding: 0 10px 0 10px;">
 				</ul>
 			</div>
 		</div>
@@ -157,11 +157,11 @@
 				createdEl = document.getElementById("created"),
 				answerPadEl = document.getElementById("answer-pad"),
 				questionId = 0,
-				name = '',
-				avatar = '',
 				questionerId = 0,
 				currentUserId = 0,
-				currentRoleId = 0;
+				currentRoleId = 0,
+				currentName = '',
+				currentAvatar = '';
 			var divEl = document.createElement("div"),
 				historyListEl = document.getElementById("message-list"),
 				replySource = document.getElementById("reply-template").innerText,
@@ -179,11 +179,11 @@
 						answerPadEl.classList.add('undisplayed');
 						historyListEl.innerHTML = '';
 						questionId = 0;
-						name = '';
-						avatar = '';
 						questionerId = 0;
-						currentUserId = 0,
+						currentUserId = 0;
 						currentRoleId = 0;
+						currentName = '';
+						currentAvatar = '';
 						document.body.classList.add('c-overlay');
 					}, 200);
 				}
@@ -199,17 +199,26 @@
 					document.body.classList.add('c-overlay');
 					var success = function(response) {
 							question = response.body;
-							name = question.questioner.name;
-							avatar = question.questioner.avatar;
 							titleEl.innerText = question.title;
 							articleEl.innerText = question.content;
-							nameEl.innerText = name;
+							nameEl.innerText = question.questioner.name;
 							tutorNameEl.innerText = question.tutor.name;
 							categoryEl.innerText = question.categoryName;
 							createdEl.innerText = question.created;
 
-							currentUserId = app.getUserId();
-							currentRoleId = app.getRoleId();
+                            var state = app.getState();
+                            if (state.userId) {
+                                currentUserId = state.userId;
+                                currentRoleId = state.roleId;
+                                currentName = state.name;
+                                currentAvatar = state.avatar;
+                            } else {
+                                currentUserId = 0;
+                                currentRoleId = 0;
+                                currentName = '';
+                                currentAvatar = '';
+                            }
+
 							questionerId = question.questioner.userId;
 							if (currentUserId <= 0 || currentRoleId > 1 || currentUserId == questionerId) {
 								answerPadEl.classList.remove('undisplayed');
@@ -264,8 +273,8 @@
 								contentEl.value = '';
 
 								var answer = {}, answeror={};
-								answeror.name = name;
-								answeror.avatar = avatar;
+								answeror.name = currentName;
+								answeror.avatar = currentAvatar;
 								answer.answeror = answeror;
 								answer.content = content;
 								answer.created = new Date().toLocaleTimeString();

@@ -35,7 +35,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 id="title" class="mui-title c-title">我的提问</h1>
+			<h1 id="title" class="mui-title c-title">问题列表</h1>
 		</header>
 		<div class="mui-content" style="padding-top: 44px;">
 			<div id="pullrefresh" class="mui-scroll-wrapper">
@@ -142,7 +142,7 @@
 					mui.toast(app.ajaxErrorHandler(errorType));
 					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
 				};
-				app.listOwnQuestions(0, 10, questionLatestRefreshRequestDate, 0, success, error);
+				app.listCurrentTutorQuestions(0, 10, questionLatestRefreshRequestDate, 0, success, error);
 			}, 1000);
 		};
 		 //上拉加载具体业务实现
@@ -168,7 +168,7 @@
 					mui.toast(app.ajaxErrorHandler(errorType));
 					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
 				};
-				app.listOwnQuestions(0, 10, 0, questionLatestLoadingRequestDate, success, error);
+				app.listCurrentTutorQuestions(0, 10, 0, questionLatestLoadingRequestDate, success, error);
 			}, 1000);
 		};
 	</script>

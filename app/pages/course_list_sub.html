@@ -280,7 +280,7 @@
 									course = app.processCourse(courses[i]);
 									course.width = clentW;
 									divEl.innerHTML = courseTemplate(course);
-									freeEl.insertBefore(divEl.firstElementChild, freeEl.firstElementChild);
+									freeEl.appendChild(divEl.firstElementChild);
 								}
 								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 							} else {
@@ -305,7 +305,7 @@
 									course = app.processCourse(courses[i]);
 									course.width = clentW;
 									divEl.innerHTML = courseTemplate(course);
-									vipEl.insertBefore(divEl.firstElementChild, vipEl.firstElementChild);
+									vipEl.appendChild(divEl.firstElementChild);
 								}
 								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 							} else {

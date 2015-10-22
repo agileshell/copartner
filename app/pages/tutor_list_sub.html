@@ -330,7 +330,7 @@
 									tutorLatestLoadingRequestDate = Date.parse(tutors[tutors.length - 1].created);
 									for (var i = 0, len = tutors.length; i < len; i++) {
 										divEl.innerHTML = tutorTemplate(app.processTutor(tutors[i]));
-										tutorEl.insertBefore(divEl.firstElementChild, tutorEl.firstElementChild);
+										tutorEl.appendChild(divEl.firstElementChild);
 									}
 									mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 								} else {
@@ -353,7 +353,7 @@
 									questionLatestLoadingRequestDate = Date.parse(questions[questions.length - 1].created);
 									for (var i = questions.length - 1; i >= 0; i--) {
 										divEl.innerHTML = questionTemplate(app.processQuestion(questions[i]));
-										questionEl.insertBefore(divEl.firstElementChild, questionEl.firstElementChild);
+										questionEl.appendChild(divEl.firstElementChild);
 									}
 									mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 								} else {
