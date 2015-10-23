@@ -12,7 +12,7 @@
 			return (password.length >= 6 && password.length <= 16 && password.match(/^[0-9a-zA-Z]*$/));
 		};
 
-	owner.apiURL = 'http://192.168.4.106:8080/copartner-api/';
+	owner.apiURL = 'http://123.57.55.59:8080/';
 
 	/**
 	 * 用户登录
