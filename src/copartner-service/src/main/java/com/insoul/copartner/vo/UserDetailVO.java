@@ -71,6 +71,12 @@ public class UserDetailVO implements Serializable {
 
     private String investmentStyle;// 投资风格
 
+    private String title; // 职务
+
+    private String startupExp;// 创业经验
+
+    private String managementExp;// 管理经验
+
     public Long getProfessionId() {
         return professionId;
     }
@@ -325,6 +331,30 @@ public class UserDetailVO implements Serializable {
 
     public void setInvestmentStyle(String investmentStyle) {
         this.investmentStyle = investmentStyle;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getStartupExp() {
+        return startupExp;
+    }
+
+    public void setStartupExp(String startupExp) {
+        this.startupExp = startupExp;
+    }
+
+    public String getManagementExp() {
+        return managementExp;
+    }
+
+    public void setManagementExp(String managementExp) {
+        this.managementExp = managementExp;
     }
 
 }

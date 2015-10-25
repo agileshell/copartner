@@ -42,8 +42,8 @@ public class TutorServiceImpl extends BaseServiceImpl implements ITutorService {
         criteria.setKeyword(requestData.getKeyword());
         criteria.setOffset(requestData.getOffset());
         criteria.setLimit(requestData.getLimit());
-        criteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom())
-                : null);
+        criteria.setFrom(
+                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
         criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
 
         List<User> users = userDao.queryTutor(criteria);
@@ -93,6 +93,9 @@ public class TutorServiceImpl extends BaseServiceImpl implements ITutorService {
         userDetailVO.setEmail(user.getEmail());
         userDetailVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
         userDetailVO.setIntroduction(user.getIntroduction());
+        userDetailVO.setTitle(user.getTitle());
+        userDetailVO.setStartupExp(user.getStartupExp());
+        userDetailVO.setManagementExp(user.getManagementExp());
 
         if (StringUtils.isNotBlank(user.getDomains())) {
             String domainIds[] = user.getDomains().split(",");

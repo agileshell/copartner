@@ -117,6 +117,12 @@ public class User extends BaseEntity {
     @Column(name = "investment_style")
     private String investmentStyle;// 投资风格
 
+    private String title; // 职务
+
+    private String startupExp;// 创业经验
+
+    private String managementExp;// 管理经验
+
     public Long getRoleId() {
         return roleId;
     }
@@ -365,6 +371,30 @@ public class User extends BaseEntity {
         this.investmentStyle = investmentStyle;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getStartupExp() {
+        return startupExp;
+    }
+
+    public void setStartupExp(String startupExp) {
+        this.startupExp = startupExp;
+    }
+
+    public String getManagementExp() {
+        return managementExp;
+    }
+
+    public void setManagementExp(String managementExp) {
+        this.managementExp = managementExp;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -391,6 +421,7 @@ public class User extends BaseEntity {
         result = prime * result + ((lastLogin == null) ? 0 : lastLogin.hashCode());
         result = prime * result + ((level == null) ? 0 : level.hashCode());
         result = prime * result + ((locationId == null) ? 0 : locationId.hashCode());
+        result = prime * result + ((managementExp == null) ? 0 : managementExp.hashCode());
         result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((password == null) ? 0 : password.hashCode());
@@ -398,8 +429,10 @@ public class User extends BaseEntity {
         result = prime * result + ((professionId == null) ? 0 : professionId.hashCode());
         result = prime * result + ((roleId == null) ? 0 : roleId.hashCode());
         result = prime * result + ((salt == null) ? 0 : salt.hashCode());
+        result = prime * result + ((startupExp == null) ? 0 : startupExp.hashCode());
         result = prime * result + ((startupRoleId == null) ? 0 : startupRoleId.hashCode());
         result = prime * result + ((status == null) ? 0 : status.hashCode());
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
         return result;
     }
 
@@ -522,6 +555,11 @@ public class User extends BaseEntity {
                 return false;
         } else if (!locationId.equals(other.locationId))
             return false;
+        if (managementExp == null) {
+            if (other.managementExp != null)
+                return false;
+        } else if (!managementExp.equals(other.managementExp))
+            return false;
         if (mobile == null) {
             if (other.mobile != null)
                 return false;
@@ -557,6 +595,11 @@ public class User extends BaseEntity {
                 return false;
         } else if (!salt.equals(other.salt))
             return false;
+        if (startupExp == null) {
+            if (other.startupExp != null)
+                return false;
+        } else if (!startupExp.equals(other.startupExp))
+            return false;
         if (startupRoleId == null) {
             if (other.startupRoleId != null)
                 return false;
@@ -566,6 +609,11 @@ public class User extends BaseEntity {
             if (other.status != null)
                 return false;
         } else if (!status.equals(other.status))
+            return false;
+        if (title == null) {
+            if (other.title != null)
+                return false;
+        } else if (!title.equals(other.title))
             return false;
         return true;
     }

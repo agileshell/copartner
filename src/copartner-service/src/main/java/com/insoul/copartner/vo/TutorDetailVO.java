@@ -20,6 +20,12 @@ public class TutorDetailVO implements Serializable {
 
     private String introduction;
 
+    private String title; // 职务
+
+    private String startupExp;// 创业经验
+
+    private String managementExp;// 管理经验
+
     public Long getTutorId() {
         return tutorId;
     }
@@ -74,6 +80,30 @@ public class TutorDetailVO implements Serializable {
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getStartupExp() {
+        return startupExp;
+    }
+
+    public void setStartupExp(String startupExp) {
+        this.startupExp = startupExp;
+    }
+
+    public String getManagementExp() {
+        return managementExp;
+    }
+
+    public void setManagementExp(String managementExp) {
+        this.managementExp = managementExp;
     }
 
 }

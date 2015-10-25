@@ -145,6 +145,15 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         if (StringUtils.isNotBlank(request.getInvestmentStyle())) {
             user.setInvestmentStyle(request.getInvestmentStyle());
         }
+        if (StringUtils.isNotBlank(request.getTitle())) {
+            user.setTitle(request.getTitle());
+        }
+        if (StringUtils.isNotBlank(request.getStartupExp())) {
+            user.setStartupExp(request.getStartupExp());
+        }
+        if (StringUtils.isNotBlank(request.getManagementExp())) {
+            user.setManagementExp(request.getManagementExp());
+        }
         user.setUpdated(new Date());
 
         userDao.update(user);
@@ -546,6 +555,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
         userDetailVO.setOriginIdPicture(user.getIdPicture());
         userDetailVO.setIdPicture(CDNUtil.getFullPath(user.getIdPicture()));
         userDetailVO.setAuthenticationInfo(user.getAuthenticationInfo());
+        userDetailVO.setTitle(user.getTitle());
+        userDetailVO.setStartupExp(user.getStartupExp());
+        userDetailVO.setManagementExp(user.getManagementExp());
 
         if (null != user.getStartupStatusId()) {
             StartupStatus startupStatus = startupStatusDao.get(user.getStartupStatusId());
