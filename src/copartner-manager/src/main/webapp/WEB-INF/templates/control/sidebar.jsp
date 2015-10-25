@@ -23,6 +23,10 @@
         <li>
 			<a <c:if test="${viewname == 'require_list'}"> class="open" </c:if> href="/require/list"><i class="icon-tint"></i>需求管理</a>
         </li>
+        
+        <li>
+			<a <c:if test="${viewname == 'campaign_list'}"> class="open" </c:if> href="/campaign/list"><i class="icon-tint"></i>活动管理</a>
+        </li>
 		
 		<li class="has_sub">
 			<a href="#" <c:if test="${viewname == 'pioneerpark_list' || viewname == 'investorg_list'}"> class="subdrop" </c:if>>

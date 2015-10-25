@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.insoul.copartner.constant.GlobalProperties;
 import com.insoul.copartner.dao.AdminDAO;
 import com.insoul.copartner.dao.IAnswerDao;
+import com.insoul.copartner.dao.ICampaignDao;
 import com.insoul.copartner.dao.IContentDao;
 import com.insoul.copartner.dao.IContestDAO;
 import com.insoul.copartner.dao.IContestEntryDAO;
@@ -153,6 +154,9 @@ public class WebBase implements ServletContextAware {
 
     @Resource
     protected IRequirementDao requireDAO;
+
+    @Resource
+    protected ICampaignDao campaignDAO;
     
     protected static final String COMMONS_RESOURCES_MANAGER_VIEW_NAME = "resources_manager";
     

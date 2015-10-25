@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.insoul.copartner.dao.ICampaignDao;
@@ -38,7 +39,14 @@ public class CampaignDaoImpl extends BaseDaoImpl<Campaign, Long>implements ICamp
             conditionStr.append(" AND status IN :status");
             params.put("status", new HashSet(Arrays.asList(criteria.getStatus())));
         }
-
+        if (null != criteria.getId() && criteria.getId() > 0L) {
+            conditionStr.append(" AND id = :id");
+            params.put("id", criteria.getId());
+        }
+        if (StringUtils.isNotBlank(criteria.getTitle())) {
+            conditionStr.append(" AND title like :title");
+            params.put("title", "%" + criteria.getTitle() + "%");
+        }
         Query query = null;
         StringBuilder hql = new StringBuilder();
         if (isCount) {
