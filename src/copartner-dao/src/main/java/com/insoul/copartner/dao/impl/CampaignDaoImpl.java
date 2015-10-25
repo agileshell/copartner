@@ -19,7 +19,7 @@ public class CampaignDaoImpl extends BaseDaoImpl<Campaign, Long>implements ICamp
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Campaign> queryContent(CampaignCriteria criteria) {
+    public List<Campaign> queryCampaign(CampaignCriteria criteria) {
         return generateQuery(criteria, false).getResultList();
     }
 

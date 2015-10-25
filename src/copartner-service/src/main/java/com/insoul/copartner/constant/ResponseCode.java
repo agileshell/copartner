@@ -100,6 +100,8 @@ public enum ResponseCode {
 
     CONTEST_ENTRY_NOT_EXIST(30800),
 
+    CAMPAIGN_NOT_EXIST(30900),
+
     ;
 
     private int value;
