@@ -7,7 +7,7 @@ import com.insoul.copartner.domain.Campaign;
 
 public interface ICampaignDao extends IBaseDao<Campaign, Long> {
 
-    List<Campaign> queryContent(CampaignCriteria criteria);
+    List<Campaign> queryCampaign(CampaignCriteria criteria);
 
     Long countCampaign(CampaignCriteria criteria);
 }
