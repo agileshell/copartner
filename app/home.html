@@ -22,14 +22,14 @@
 			height: 27%;
 		}
 		.list2 {
-			height: 27%;
+			height: 26%;
 		}
 		.list3 {
-			height: 27%;
+			height: 26%;
 		}
 		.list4 {
 			width: 32%;
-			height: 17%;
+			height: 16%;
 		}
 		.list1, .list2, .list3, .list4 {
 			margin: 1% 0 0 1%;
@@ -67,7 +67,7 @@
 			<h1 id="title" class="mui-title c-title"><span class="c-logo">创始人</span></h1>
 		</header>
 		<div class="mui-content">
-			<div id="slider" class="mui-slider">
+			<div id="slider" class="mui-slider" style="min-height: 213px;">
 				<div class="mui-slider-group mui-slider-loop">
 					<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
 					<div class="mui-slider-item">
@@ -147,8 +147,6 @@
 				slider.slider({
 					interval: 5000
 				});
-				var topHeight = document.getElementById("slider").offsetHeight;
-				document.getElementById('menus').style.top = topHeight + 45 + 'px';
 
 				mui.plusReady(function() {
 					//仅支持竖屏显示
@@ -208,6 +206,8 @@
 				});
 				//初始化，并预加载webview
 				function preload() {
+					var topHeight = document.getElementById("slider").offsetHeight + 45;
+					document.getElementById('menus').style.top = topHeight + 'px';
 					//内置浏览器
 					mui.preload({
 						url: "browser.html",

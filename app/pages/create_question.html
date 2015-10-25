@@ -11,6 +11,14 @@
 		<link href="../css/mui.listpicker.css" rel="stylesheet" />
 		<link href="../css/mui.poppicker.css" rel="stylesheet" />
 		<style>
+			.mui-bar-nav.mui-bar .c-icon-padded {
+				border: 1px solid #fff;
+				border-radius: 50%;
+				padding: 0px;
+				margin-top: 10px;
+				margin-right: 3px;
+			}
+
 			.mui-page-content {
 				margin-top: 44px;
 			}
@@ -41,7 +49,7 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title c-title">我要提问</h1>
-			<a id="create-question-a" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right"></a>
+			<a id="create-question-a" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right c-icon-padded"></a>
 		</header>
 		<div class="mui-content">
 			<div class="mui-page-content">
@@ -157,9 +165,13 @@
 						permission: permissionEl.value,
 						categoryId: categoryId.value
 					};
+					doc.getElementById('create-question-a').disabled = true;
+					doc.getElementById('create-question-b').disabled = true;
 					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
 					app.createQuestion(questionInfo, function(err) {
 						setTimeout(function() {
+							doc.getElementById('create-question-a').disabled = false;
+							doc.getElementById('create-question-b').disabled = false;
 							wait.close();
 							if (err) {
 								plus.nativeUI.toast(err);

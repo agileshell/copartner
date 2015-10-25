@@ -219,6 +219,7 @@
 			likebtnEl =document.getElementById('likebtn'),
 			likersEl = document.getElementById('likers');
 
+		var flag = false, spanEl = document.createElement("span");
 		var divEl = document.createElement("div"),
 			commentSource = document.getElementById("comment-template").innerText,
 			commentTemplate = Handlebars.compile(commentSource),
@@ -281,6 +282,7 @@
 				loginPage.show();
 				return;
 			}
+			var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
 			if (isliked) {
 				app.unlikeRequirement(requirementId, function(){
 					likecount--;
@@ -288,6 +290,9 @@
 					isliked = false;
 					document.getElementById('liker_' + state.userId).remove();
 					likeCountEl.innerText = '(' + likecount + ')';
+					setTimeout(function() {
+						wait.close();
+					}, 200);
 				});
 			} else {
 				app.likeRequirement(requirementId, function(){
@@ -295,11 +300,15 @@
 					likebtnEl.classList.add('selected');
 					isliked = true;
 					var likerSpan = "<span id='liker_" + state.userId + "' style='padding-left: 5px'>" + state.name  +"<span>";
-					if (likecount == 1) {
+					if (likecount == 1 && !flag) {
 						likerSpan = '<span class="like"></span>' + likerSpan;
 					}
 					likersEl.innerHTML += likerSpan;
 					likeCountEl.innerText = '(' + likecount + ')';
+					flag = true;
+					setTimeout(function() {
+						wait.close();
+					}, 200);
 				});
 			}
 		});
@@ -357,12 +366,15 @@
 				}
 
 				var likerusers = requirement.likers;
+				flag = false;
 				if (likerusers.length > 0) {
-					var likerSpans = '<span class="like"></span>';
-					for (var i = 0, len = likerusers.length; i < len; i++) {
-						likerSpans += "<span id='liker_" + likerusers[i].userId + "' style='padding-left: 5px'>" + likerusers[i].name  +"<span>";
+					flag = true;
+					spanEl.innerHTML = '<span class="like"></span>';
+					likersEl.appendChild(spanEl.firstElementChild);
+					for (var i = likerusers.length -1; i >= 0; i--) {
+						spanEl.innerHTML = "<span id='liker_" + likerusers[i].userId + "' style='padding-left: 5px'>" + likerusers[i].name  +"<span>";
+						likersEl.appendChild(spanEl.firstElementChild);
 					}
-					likersEl.innerHTML = likerSpans;
 				}
 
 				var commentlist = requirement.comments;
@@ -411,10 +423,12 @@
 				return;
 			}
 
+			document.getElementById("send-msg").disabled = true;
 			var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
 			var content = contentEl.value;
 			app.commentRequirement(requirementId, content, function(err) {
 				setTimeout(function() {
+					document.getElementById("send-msg").disabled = false;
 					wait.close();
 					if (err) {
 						plus.nativeUI.toast(err);

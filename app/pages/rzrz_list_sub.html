@@ -212,15 +212,24 @@
 				loginPage.show();
 				return;
 			}
+			var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
 			var sid = this.getAttribute('data-guid'), likecount = this.getAttribute('data-value');
 			if (this.classList.toString().indexOf("selected") > 0) {
 				likecount--;
 				this.classList.remove('selected');
-				app.unlikeRequirement(sid, function(){});
+				app.unlikeRequirement(sid, function(){
+					setTimeout(function() {
+						wait.close();
+					}, 200);
+				});
 			} else {
 				likecount++;
 				this.classList.add('selected');
-				app.likeRequirement(sid, function(){});
+				app.likeRequirement(sid, function(){
+					setTimeout(function() {
+						wait.close();
+					}, 200);
+				});
 			}
 			this.setAttribute('data-value', likecount);
 			document.getElementById("requirement_like_" + sid).innerText = '(' + likecount + ')';
@@ -235,15 +244,24 @@
 				loginPage.show();
 				return;
 			}
+			var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
 			var sid = this.getAttribute('data-guid'), likecount = this.getAttribute('data-value');
 			if (this.classList.toString().indexOf("selected") > 0) {
 				likecount--;
 				this.classList.remove('selected');
-				app.unlikeProject(sid, function(){});
+				app.unlikeProject(sid, function(){
+					setTimeout(function() {
+						wait.close();
+					}, 200);
+				});
 			} else {
 				likecount++;
 				this.classList.add('selected');
-				app.likeProject(sid, function(){});
+				app.likeProject(sid, function(){
+					setTimeout(function() {
+						wait.close();
+					}, 200);
+				});
 			}
 			this.setAttribute('data-value', likecount);
 			document.getElementById("project_like_" + sid).innerText = '(' + likecount + ')';

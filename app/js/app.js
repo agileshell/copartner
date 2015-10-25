@@ -435,6 +435,9 @@
 		info.investmentOrg = info.investmentOrg || '';
 		info.investmentStyle = info.investmentStyle || '';
 		info.professionId = info.professionId || 0;
+		info.title = info.title || '';
+		info.startupExp = info.startupExp || '';
+		info.managementExp = info.managementExp || '';
 
 		if (info.roleId == 0) {
 			return callback('角色不能为空');
@@ -451,8 +454,17 @@
 		if (info.roleId == 2 && info.investmentStyle.length <= 0) {
 			return callback('投机风格不能为空');
 		}
+		if (info.roleId != 1 && info.title.length <= 0) {
+			return callback('职务不能为空');
+		}
 		if (info.roleId == 3 && info.professionId == 0) {
 			return callback('导师类型不能为空');
+		}
+		if (info.roleId == 3 && info.startupExp.length <= 0) {
+			return callback('创业经验不能为空');
+		}
+		if (info.roleId == 3 && info.managementExp.length <= 0) {
+			return callback('管理经验不能为空');
 		}
 
 		if (info.authenticationInfo.length < 10) {
@@ -465,8 +477,13 @@
 			info.investmentOrg = '';
 			info.investmentStyle = '';
 			info.professionId = 0;
+			info.title = '';
+			info.startupExp = '';
+			info.managementExp = '';
 		} else if (info.roleId == 2) {
 			info.professionId = 0;
+			info.startupExp = '';
+			info.managementExp = '';
 		} else {
 			info.investmentOrg = '';
 			info.investmentStyle = '';
@@ -834,6 +851,7 @@
 			type: 'get',
 			timeout: 5000,
 			success: function(data) {
+				console.log(JSON.stringify(data));
 				if (data.status == 'SUCCEED') {
 					return successCallback(data);
 				} else {
@@ -841,6 +859,7 @@
 				}
 			},
 			error: function(xhr, type, errorThrown) {
+				console.log(JSON.stringify(xhr));
 				return errorCallback(owner.ajaxErrorHandler(type));
 			}
 		})
@@ -1993,6 +2012,25 @@
 				limit: limit,
 				from: from,
 				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+
+	owner.listTutorQuestions = function(tutorId, offset, limit, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'questions', {
+			data: {
+				tutorId: tutorId,
+				offset: offset,
+				limit: limit
 			},
 			dataType: 'json',
 			type: 'get',

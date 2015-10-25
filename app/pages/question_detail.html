@@ -275,10 +275,12 @@
 						return;
 					}
 
+					document.getElementById("send-msg").disabled = true;
 					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
 					var content = contentEl.value;
 					app.answerQuestion(questionId, content, function(err) {
 						setTimeout(function() {
+							document.getElementById("send-msg").disabled = false;
 							wait.close();
 							if (err) {
 								plus.nativeUI.toast(err);

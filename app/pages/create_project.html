@@ -375,9 +375,13 @@
 						bankAccount: doc.getElementById('bankAccount').value,
 						supportMoney: doc.getElementById('supportMoney').value
 					};
+					doc.getElementById('create-project-a').disabled = true;
+					doc.getElementById('create-project-b').disabled = true;
 					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
 					app.createProject(projectInfo, function(err) {
 						setTimeout(function() {
+							doc.getElementById('create-project-a').disabled = false;
+							doc.getElementById('create-project-b').disabled = false;
 							wait.close();
 							if (err) {
 								plus.nativeUI.toast(err);

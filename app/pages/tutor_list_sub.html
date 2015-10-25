@@ -149,10 +149,16 @@
 			});
 			 //打开详情
 			mui('#pullrefresh').on('tap', 'a', function() {
+				var id = this.getAttribute('data-guid');
 				if (type == 'tutor') {
-					open_tutor_detail(this.getAttribute('data-guid'));
+					mui.openWindow({
+						url: 'tutor_detail.html', 
+						id: 'tutor_detail',
+						extras:{tutorId: id}
+					});
+					open_tutor_detail();
 				} else {
-					open_question_detail(this.getAttribute('data-guid'));
+					open_question_detail(id);
 				}
 			});
 

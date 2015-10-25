@@ -84,6 +84,12 @@
 							<input id='investmentOrg' name='investmentOrg' type="text" value="" class="c-input">
 						</span>
 					</div>
+					<div class="mui-input-row" id="title-pad">
+						<label>职务</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='title' type="text" value="" class="c-input">
+						</span>
+					</div>
 					<div class="mui-input-row" id="investmentStyle-pad">
 						<label>投资风格</label>
 							<span class="mui-pull-right mui-navigate-right">
@@ -95,6 +101,18 @@
 						<span class="mui-pull-right mui-navigate-right">
 							<input id='professionId' name="professionId" type="hidden">
 							<input id='professionName' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row" id="startupExp-pad">
+						<label>创业经验</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='startupExp' type="text" value="" class="c-input">
+						</span>
+					</div>
+					<div class="mui-input-row" id="managementExp-pad">
+						<label>管理经验</label>
+						<span class="mui-pull-right mui-navigate-right">
+							<input id='managementExp' type="text" value="" class="c-input">
 						</span>
 					</div>
 				</form>
@@ -126,15 +144,29 @@
 			professionNameEl = document.getElementById('professionName'),
 			professionPadEl = document.getElementById("profession-pad"),
 			investmentOrgPadEl = document.getElementById("investmentOrg-pad"),
-			investmentStylePadEl = document.getElementById("investmentStyle-pad");
+			investmentStylePadEl = document.getElementById("investmentStyle-pad"),
+			titlePadEl = document.getElementById("title-pad"),
+			startupExpPadEl = document.getElementById("startupExp-pad"),
+			managementExpPadEl = document.getElementById("managementExp-pad"),
+			titleEl = document.getElementById('title'),
+			startupExpEl = document.getElementById('startupExp'),
+			managementExpEl = document.getElementById('managementExp');
 		(function($, doc) {
 			$.init({
 				beforeback: function() {
 					setTimeout(function() {
 						roleIdEl.value = 0;
 						roleNameEl.value = '';
+						idNumberEl.value = '';
 						idPictureEl.value = '';
 						authenticationInfoEl.value = '';
+						investmentOrgEl.value = '';
+						investmentStyleEl.value = '';
+						professionNameEl.value = '';
+						titleEl.value = '';
+						startupExpEl.value = '';
+						managementExpEl.value = '';
+
 					}, 200);
 				}
 			});
@@ -145,15 +177,28 @@
 				rolePicker.show(function(items) {
 					roleIdEl.value = items[0].value;
 					roleNameEl.value = items[0].text;
-					if(roleIdEl.value == 3) {
-						professionPadEl.classList.remove('undisplayed');
-					} else {
+
+					if(roleIdEl.value == 1) {
+						titlePadEl.classList.add('undisplayed');
 						professionPadEl.classList.add('undisplayed');
-					}
-					if(roleIdEl.value == 2) {
+						investmentOrgPadEl.classList.add('undisplayed');
+						investmentStylePadEl.classList.add('undisplayed');
+						startupExpPadEl.classList.add('undisplayed');
+						managementExpPadEl.classList.add('undisplayed');
+					} else if(roleIdEl.value == 2) {
+						titlePadEl.classList.remove('undisplayed');
 						investmentOrgPadEl.classList.remove('undisplayed');
 						investmentStylePadEl.classList.remove('undisplayed');
-					} else {
+
+						professionPadEl.classList.add('undisplayed');
+						startupExpPadEl.classList.add('undisplayed');
+						managementExpPadEl.classList.add('undisplayed');
+					} else if(roleIdEl.value == 3) {
+						titlePadEl.classList.remove('undisplayed');
+						professionPadEl.classList.remove('undisplayed');
+						startupExpPadEl.classList.remove('undisplayed');
+						managementExpPadEl.classList.remove('undisplayed');
+
 						investmentOrgPadEl.classList.add('undisplayed');
 						investmentStylePadEl.classList.add('undisplayed');
 					}
@@ -168,6 +213,22 @@
 					professionNameEl.value = items[0].text;
 				});
 			}, false);
+
+			var startupExpPicker = new $.PopPicker();
+			startupExpPicker.setData(expData);
+			startupExpEl.addEventListener('tap', function(event) {
+				startupExpPicker.show(function(items) {
+					startupExpEl.value = items[0].value;
+				});
+			}, false);
+			var managementExpPicker = new $.PopPicker();
+			managementExpPicker.setData(expData);
+			managementExpEl.addEventListener('tap', function(event) {
+				managementExpPicker.show(function(items) {
+					managementExpEl.value = items[0].value;
+				});
+			}, false);
+
 			//show data
 			doc.addEventListener('mui.view.beforeshow', function(event) {
 				var success = function(response) {
@@ -179,19 +240,37 @@
 						idPreviewEl.src = profile.idPicture;
 						authenticationInfoEl.value = profile.authenticationInfo;
 
-						if( profile.roleId == 3) {
-							professionEl.value = profile.professionId;
-							professionNameEl.value = profile.professionName;
-							professionPadEl.classList.remove('undisplayed');
-						} else {
+						if(roleIdEl.value == 1) {
+							titlePadEl.classList.add('undisplayed');
 							professionPadEl.classList.add('undisplayed');
-						}
-						if( profile.roleId == 2) {
-							investmentOrgEl.value = profile.investmentOrg;
-							investmentStyleEl.value = profile.investmentStyle;
+							investmentOrgPadEl.classList.add('undisplayed');
+							investmentStylePadEl.classList.add('undisplayed');
+							startupExpPadEl.classList.add('undisplayed');
+							managementExpPadEl.classList.add('undisplayed');
+						} else if (profile.roleId == 2) {
+							titlePadEl.classList.remove('undisplayed');
 							investmentOrgPadEl.classList.remove('undisplayed');
 							investmentStylePadEl.classList.remove('undisplayed');
-						} else {
+
+							investmentOrgEl.value = profile.investmentOrg;
+							investmentStyleEl.value = profile.investmentStyle;
+							titleEl.value = profile.title;
+	
+							professionPadEl.classList.add('undisplayed');
+							startupExpPadEl.classList.add('undisplayed');
+							managementExpPadEl.classList.add('undisplayed');
+						} else if (profile.roleId == 3) {
+							titlePadEl.classList.remove('undisplayed');
+							professionPadEl.classList.remove('undisplayed');
+							startupExpPadEl.classList.remove('undisplayed');
+							managementExpPadEl.classList.remove('undisplayed');
+	
+							professionEl.value = profile.professionId;
+							professionNameEl.value = profile.professionName;
+							titleEl.value = profile.title;
+							startupExpEl.value = profile.startupExp;
+							managementExpEl.value = profile.managementExp;
+
 							investmentOrgPadEl.classList.add('undisplayed');
 							investmentStylePadEl.classList.add('undisplayed');
 						}
@@ -224,7 +303,10 @@
 						authenticationInfo: authenticationInfoEl.value,
 						investmentOrg: investmentOrgEl.value,
 						investmentStyle: investmentStyleEl.value,
-						professionId: professionEl.value
+						professionId: professionEl.value,
+						title: titleEl.value,
+						startupExp: startupExpEl.value,
+						managementExp: managementExpEl.value
 					};
 					var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
 					app.submitAuthenticate(authenticateInfo, function(err) {

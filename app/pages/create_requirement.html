@@ -327,9 +327,11 @@
 					content: contentEl.value,
 					projectId: projectEl.value
 				};
+				document.getElementById("create-requirement").disabled = true;
 				var wait = plus.nativeUI.showWaiting("　　 请等待...　　");
 				app.createRequirement(reqInfo, function(err) {
 					setTimeout(function() {
+						document.getElementById("create-requirement").disabled = false;
 						wait.close();
 						if (err) {
 							plus.nativeUI.toast(err);

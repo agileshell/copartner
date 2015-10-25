@@ -231,3 +231,19 @@ var userCategoryData = [{
 	"value": "其他人员",
 	"text": "其他人员"
 }];
+var expData = [{
+	"value": "一年",
+	"text": "一年"
+},{
+	"value": "两年",
+	"text": "两年"
+},{
+	"value": "三年~五年",
+	"text": "三年~五年"
+},{
+	"value": "五年~十年",
+	"text": "五年~十年"
+},{
+	"value": "十年以上",
+	"text": "十年以上"
+}];

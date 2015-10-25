@@ -9,50 +9,76 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<style>
-		html, body {
-			background-color: #FFFFFF;
-		}
-		.head-img {
-			padding-top: 45px;
-			height: 160px;
-			width: 100%;
-			background: url(../images/profile_bg.png);
-			background-size: cover;
-			text-align: center;
-			color: #FFF;
-		}
-		.head-img .my-img {
-			width: 75px;
-			height: 75px;
-			border-radius: 75px;
-			box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.2);
-			margin-top: 5px;
-			margin-bottom: 5px;
-			display: inline-block;
-			overflow: hidden;
-			background-size: cover;
-		}
-		.head-img p {
-			font-size: 15px;
-			line-height: 15px;
-			color: #FFFFFF;
-		}
-		.c-item {
-			font-size: 12px;
-			line-height: 15px;
-			background-color: #FFFFFF;
-		}
-		.c-icon {
-			font-size: 14px;
-			color: #000;
-		}
-		.item-content {
-			font-size: 12px;
-			padding: 0 15px;
-			padding-top: 10px;
-			color: #999999;
-			background-color: #fff
-		}
+			html, body {
+				background-color: #FFFFFF;
+			}
+			.account-info {
+				margin-top: 44px;
+			}
+			.user-bg {
+				position: relative;
+				width: 100%;
+				max-height: 160px;
+				min-height: 160px;
+			}
+			.user-wrapper {
+				padding-left: 10px;
+				padding-top: 30px;
+			}
+			.user-avatar {
+				border-radius: 50%;
+				float: left;
+				width: 65px;
+			}
+			.user-info {
+				float: left;
+				margin-left: 10px;
+				color: #fff;
+			}
+			.user-name {
+				display: block;
+				font-size: 20px;
+				font-weight: bolder;
+			}
+			.user-item {
+				display: block;
+				font-size: 12px;
+				line-height: 20px;
+			}
+
+			.mui-bar~.mui-content .mui-fullscreen {
+				top: 200px;
+				height: auto;
+			}
+			.mui-control-content {
+				height: 100%;
+				background-color: white;
+			}
+			.item-content {
+				font-size: 14px;
+				padding: 15px;
+				color: #999999;
+				background-color: #fff;
+				white-space: normal!important;
+				word-wrap: break-word;
+			}
+
+			.tutor-item {
+				display: block;
+				font-size: 12px;
+				line-height: 20px;
+			}
+			.tutor-info {
+				float: left;
+				margin-top: 10px;
+				margin-left: 5px;
+				color: #C15151;
+				font-size: 15px;
+			}
+			.question-name {
+				color: #C15151;
+				font-size: 15px;
+			}
 		</style>
 	</head>
 
@@ -61,58 +87,148 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 id="title" class="mui-title c-title">导师详情</h1>
 		</header>
-		<div class="head-img">
-			<img id="user-avatar" class="my-img" src="../images/blank.jpg">
-			<p id="user-name"></p>
-		</div>
-		<div class="c-item">
-			<ul class="mui-table-view">
-				<li class="mui-table-view-cell">
-					<span class="c-icon">邮箱:</span>
-					<span id="user-email" style="padding-left: 5px; color: #999999;"></span>
-				</li>
-				<li class="mui-table-view-cell">
-					<span class="c-icon">领域:</span>
-					<span id="user-domain" style="padding-left: 5px; color: #999999;"></span>
-				</li>
-				<li class="mui-table-view-cell">
-					<span class="c-icon">类型:</span>
-					<span id="user-profession" style="padding-left: 5px; color: #999999;"></span>
-				</li>
-			</ul>
-			<div id="user-info" class="item-content">
+
+		<div class="mui-content account-info">
+			<div class="user-bg" style="background:url(../images/profile_bg.png) no-repeat; background-size:cover">
+				<div class="user-wrapper">
+					<img id="user-avatar" src="../images/blank.jpg" class="user-avatar">
+					<div class="user-info">
+						<span class="user-name"><span id="user-name"></span></span>
+						<span class="user-item"><span id="user-lean" ></span></span>
+						<span class="user-item">类型：<span id="user-profession"></span></span>
+						<span class="user-item">创业经验：<span id="user-startupExp"></span></span>
+						<span class="user-item">管理经验：<span id="user-managementExp"></span></span>
+					</div>
+				</div>
 			</div>
 		</div>
+		<div class="mui-content">
+			<div id="slider" class="mui-slider mui-fullscreen">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item mui-active" href="#myinfo">TA的介绍</a>
+					<a class="mui-control-item" href="#questions">TA的答疑</a>
+				</div>
+				<div class="mui-slider-progress-bar mui-col-xs-6"></div>
+				<div class="mui-slider-group" id="pullrefresh">
+					<div id="myinfo" class="mui-slider-item mui-control-content mui-active">
+						<div id="user-info" class="item-content">
+						</div>
+					</div>
+					<div id="questions" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div class="mui-loading"><div class="mui-spinner"></div></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script id="question-template" type="text/x-handlebars-template">
+			<li id="question_{{id}}" class="mui-table-view-cell mui-media">
+				<a class='mui-navigate-right' href="#" data-guid="{{id}}">
+					<div style="overflow: hidden;">
+						<img src="{{questioner.avatar}}" style="border-radius: 50%; width: 40px; float: left;">
+						<span class="tutor-info">{{questioner.name}}</span>
+					</div>
+					<div class="mui-media-body" style="padding-left: 45px;">
+						<span class="question-name mui-ellipsis-2">{{title}}</span>
+						<span class="tutor-item">类别：{{categoryName}}</span>
+						<span class="tutor-item mui-ellipsis-2">问题：{{content}}</span>
+						<span class="tutor-item">提问时间：{{created}}</span>
+					</div>
+				</a>
+			</li>
+		</script>
+		<script src="../js/handlebars-v2.0.0.js"></script>
 		<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
 		<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
 		<script type="text/javascript">
 			var nameEl = document.getElementById("user-name");
 			var avatarEl = document.getElementById("user-avatar");
-			var emailEl = document.getElementById("user-email");
-			var domainEl = document.getElementById("user-domain");
+			var leanEl = document.getElementById("user-lean");
 			var professionEl = document.getElementById("user-profession");
+			var startupExpEl = document.getElementById("user-startupExp");
+			var managementExpEl = document.getElementById("user-managementExp");
 			var infoEl = document.getElementById("user-info");
+			var itemQuestions = document.getElementById('questions');
+
+		var tutorId = 0;
+		var questionSource = document.getElementById("question-template").innerText,
+			questionTemplate = Handlebars.compile(questionSource);
+
 			mui.init({
 				swipeBack: true
 			});
-			(function() {
-				document.addEventListener('mui.view.beforeshow', function(event) {
-					var success = function(response) {
-							user = response.body;
-							nameEl.innerText = user.name;
-							emailEl.innerText = user.email ? user.email : '暂无';
-							domainEl.innerText = user.fullDomains ? user.fullDomains : '暂无';
-							professionEl.innerText = user.professionName;
-							infoEl.innerText = user.introduction;
-							avatarEl.src = user.avatar;
-							mui.currentWebview.show();
-						},
-						error = function(errorType) {
-							mui.toast(app.ajaxErrorHandler(errorType));
-						};
-					app.getUserProfile(event.detail.guid, success, error);
+			mui.plusReady(function() {
+				mui('.mui-scroll-wrapper').scroll({
+					indicators: true
 				});
-			})();
+
+				setTimeout(function() {
+					questionDetailWebview = mui.preload({
+						id: 'question_detail',
+						url: 'question_detail.html',
+						show: {
+							aniShow: 'none'
+						}
+					});
+				}, 500);
+
+				var self = plus.webview.currentWebview();
+				tutorId = self.tutorId;
+				var success = function(response) {
+						user = response.body;
+						nameEl.innerText = user.name;
+						avatarEl.src = user.avatar;
+						professionEl.innerText = user.professionName;
+						startupExpEl.innerText = user.startupExp;
+						managementExpEl.innerText = user.managementExp;
+						leanEl.innerText = user.title + '，' +  user.fullLocation + (user.fullDomains ? '，' + user.fullDomains : '');
+
+						infoEl.innerText = user.introduction;
+
+						mui.currentWebview.show(); 
+					},
+					error = function(errorType) {
+						mui.toast(app.ajaxErrorHandler(errorType));
+					};
+				app.getUserProfile(tutorId, success, error);
+
+				document.getElementById('slider').addEventListener('slide', function(e) {
+					if (e.detail.slideNumber === 1) {
+						if (itemQuestions.querySelector('.mui-loading')) {
+							setTimeout(function() {
+								var succ = function(response) {
+									var html = "<ul id='question-list' class='mui-table-view mui-table-view-chevron'>";
+									var questions = response.body.list;
+									if (questions.length > 0) {
+										for (var i = 0, len = questions.length; i < len; i++) {
+											html += questionTemplate(app.processQuestion(questions[i]));
+										}
+									}
+									itemQuestions.querySelector('.mui-scroll').innerHTML = html + '</ul>';
+								},
+								err = function(errorType) {
+									mui.toast(app.ajaxErrorHandler(errorType));
+								};
+								app.listTutorQuestions(tutorId, 0, 50, succ, err);
+							}, 1000);
+						}
+					}
+				});
+				mui('#questions').on('tap', 'a', function() {
+					open_question_detail(this.getAttribute('data-guid'));
+				});
+				function open_question_detail(id) {
+					if (!questionDetailWebview) {
+						questionDetailWebview = plus.webview.getWebviewById('question_detail');
+					}
+					mui.fire(questionDetailWebview, 'mui.view.beforeshow', {
+						guid: id
+					});
+				};
+			});
 		</script>
 	</body>
 </html>
