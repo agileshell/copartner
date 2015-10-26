@@ -2044,4 +2044,26 @@
 		})
 	};
 
+	owner.listCampaigns = function(successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'campaigns', {
+			data: {
+				offset: 0,
+				limit: 5
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				if (data.status == 'SUCCEED') {
+					return successCallback(data);
+				} else {
+					return errorCallback(owner.ajaxFailedHandler(data.body.error.code));
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				return errorCallback(owner.ajaxErrorHandler(type));
+			}
+		})
+	};
+
 }(mui, window.app = {}));
