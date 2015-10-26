@@ -60,9 +60,9 @@
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="col-lg-2 control-label" for="content">内容:</label>
+													<label class="col-lg-2 control-label" for="contentVal">内容:</label>
 													<div class="col-lg-10">
-														<textarea name="content" id="content" class="form-control" rows="3" placeholder="内容"></textarea>
+														<textarea name="contentVal" id="contentVal" class="form-control" rows="3" placeholder="内容"></textarea>
 													</div>
 												</div>
 					                        </div>
@@ -93,7 +93,7 @@
 	<script>
 		$(document).ready(function() {
 		    KindEditor.ready(function(K) {
-		        window.editor = K.create('#content', {
+		        window.editor = K.create('#contentVal', {
 		            langType : 'zh_CN',
 		            uploadJson : '/editor/file_upload',
 		            items : [

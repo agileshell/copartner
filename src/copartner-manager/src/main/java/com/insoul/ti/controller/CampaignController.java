@@ -129,7 +129,7 @@ public class CampaignController extends WebBase {
 	            }
 			}
 		}
-		campaign.setContent(request.getContent());
+		campaign.setContent(request.getContentVal());
 		campaign.setUpdated(new Date());
 		campaign.setStatus(request.getStatus());
 		campaign.setTitle(request.getTitle());
@@ -158,7 +158,7 @@ public class CampaignController extends WebBase {
 		Date time = new Date();
 		campaign.setCreated(time);
 		campaign.setUpdated(time);
-		campaign.setContent(request.getContent());
+		campaign.setContent(request.getContentVal());
         campaign.setStatus(request.getStatus());
         campaign.setTitle(request.getTitle());
 		campaignDAO.save(campaign);

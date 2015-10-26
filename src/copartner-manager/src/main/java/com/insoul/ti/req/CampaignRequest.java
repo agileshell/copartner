@@ -17,7 +17,7 @@ public class CampaignRequest {
 
 	private MultipartFile coverImg;// 封皮
 
-	private String content;// 内容
+	private String contentVal;// 内容
 
 	private String status;// 状态 active,inactive,deleted
 
@@ -37,12 +37,12 @@ public class CampaignRequest {
         this.coverImg = coverImg;
     }
 
-    public String getContent() {
-        return content;
+    public String getContentVal() {
+        return contentVal;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContentVal(String contentVal) {
+        this.contentVal = contentVal;
     }
 
     public String getStatus() {
