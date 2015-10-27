@@ -3,7 +3,7 @@
 	"id": "H53CA95E1",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "我是创始人",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.4.0",/*应用版本名称*/
+		"name": "1.4.1",/*应用版本名称*/
 		"code": "83"
 	},
 	"description": "创始人在路上，我们在身旁",/*应用描述信息*/
@@ -59,7 +59,8 @@
 		"popGesture": "close",/*设置应用默认侧滑返回关闭Webview窗口，none为无侧滑返回功能，hide为侧滑隐藏Webview窗口。参考ask.dcloud.net.cn/article/102*/
 		"splashscreen": {
 			"autoclose": false,
-			"waiting": true
+			"waiting": true,
+			"delay": "0"
 		},
 		"runmode": "normal",/*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
@@ -123,7 +124,7 @@
 				"hardwareAccelerated": true, /*配置硬件加速*/
 				"minSdkVersion": 14, /*应用可运行的Android最低版本*/
 				"custompermissions": true,
-				"permissions": ["<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>","<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>","<uses-permission android:name=\"android.permission.GET_TASKS\"/>","<uses-permission android:name=\"android.permission.VIBRATE\"/>","<uses-permission android:name=\"android.permission.READ_LOGS\"/>","<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>","<uses-feature android:name=\"android.hardware.camera.autofocus\"/>","<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>","<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\"/>","<uses-permission android:name=\"com.android.launcher.permission.UNINSTALL_SHORTCUT\"/>","<uses-permission android:name=\"android.permission.CAMERA\"/>","<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>","<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>","<uses-permission android:name=\"com.android.launcher.permission.INSTALL_SHORTCUT\"/>","<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>","<uses-permission android:name=\"android.permission.INTERNET\"/>","<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>","<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>","<uses-permission android:name=\"android.permission.CALL_PHONE\"/>","<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>","<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>","<uses-feature android:name=\"android.hardware.camera\"/>","<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>","<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>","<uses-permission android:name=\"android.permission.RECEIVE_USER_PRESENT\"/>","<uses-permission android:name=\"android.permission.ACCESS_MOCK_LOCATION\"/>","<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"]
+				"permissions": ["<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>", "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>", "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>", "<uses-permission android:name=\"android.permission.GET_TASKS\"/>", "<uses-permission android:name=\"android.permission.VIBRATE\"/>", "<uses-permission android:name=\"android.permission.READ_LOGS\"/>", "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>", "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>", "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>", "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>", "<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\"/>", "<uses-permission android:name=\"com.android.launcher.permission.UNINSTALL_SHORTCUT\"/>", "<uses-permission android:name=\"android.permission.CAMERA\"/>", "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>", "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>", "<uses-permission android:name=\"com.android.launcher.permission.INSTALL_SHORTCUT\"/>", "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>", "<uses-permission android:name=\"android.permission.INTERNET\"/>", "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>", "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>", "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>", "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>", "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>", "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>", "<uses-feature android:name=\"android.hardware.camera\"/>", "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>", "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>", "<uses-permission android:name=\"android.permission.RECEIVE_USER_PRESENT\"/>", "<uses-permission android:name=\"android.permission.ACCESS_MOCK_LOCATION\"/>", "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"]
 			},
 			"orientation": ["portrait-primary", "portrait-secondary"],/*应用支持的方向，portrait-primary：竖屏正方向；portrait-secondary：竖屏反方向；landscape-primary：横屏正方向；landscape-secondary：横屏反方向*/
 			"icons": {
@@ -190,7 +191,8 @@
 					"xhdpi": "icons/launch720x1242.png", /*720P高分屏启动图片，分辨率：720x1242*/
 					"xxhdpi": "icons/launch1080x1882.png"
 				}
-			},"debug":false
+			},
+			"debug": false
 		}
 	}
 }
