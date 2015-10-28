@@ -41,18 +41,21 @@ var industryDomainData = [{
 
 var teamSizeData = [{
 	"value": 1,
-	"text": "少于50人"
+	"text": "少于10人"
 }, {
 	"value": 2,
-	"text": "50-99人"
+	"text": "10-49人"
 }, {
 	"value": 3,
-	"text": "100-499人"
+	"text": "50-99人"
 }, {
 	"value": 4,
-	"text": "500-999人"
+	"text": "100-499人"
 }, {
 	"value": 5,
+	"text": "500-999人"
+}, {
+	"value": 6,
 	"text": "1000人以上"
 }];
 
@@ -87,6 +90,9 @@ var startupRoleData = [{
 	"text": "设计"
 }, {
 	"value": 6,
+	"text": "管理"
+}, {
+	"value": 7,
 	"text": "其它"
 }];
 

@@ -286,7 +286,7 @@
 					var needReflush = event.detail.needReflush;
 					var successCallback = function(data) {
 							var userInfo = data.body,
-								gender = ('F' == userInfo.gender ? '男' : '女');
+								gender = ('M' == userInfo.gender ? '男' : '女');
 							document.getElementById('user-avatar').src = userInfo.avatar;
 							document.getElementById('user-name').innerText = userInfo.name;
 							if(userInfo.roleId == 1) {

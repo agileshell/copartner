@@ -411,7 +411,8 @@ INSERT INTO `startup_role` (`id`, `name`, `is_listed`, `created`) VALUES
 (3, '运营', 1, NOW()),
 (4, '营销', 1, NOW()),
 (5, '设计', 1, NOW()),
-(6, '其它', 1, NOW());
+(6, '管理', 1, NOW()),
+(7, '其它', 1, NOW());
 
 TRUNCATE `startup_status`;
 INSERT INTO `startup_status` (`id`, `name`, `is_listed`, `created`) VALUES
@@ -455,11 +456,13 @@ INSERT INTO `project_phase` (`id`, `name`, `is_listed`, `created`) VALUES
 
 TRUNCATE `team_size`;
 INSERT INTO `team_size` (`id`, `name`, `is_listed`, `created`) VALUES
-(1, '少于50人', 1, NOW()),
-(2, '50-99人', 1, NOW()),
-(3, '100-499人', 1, NOW()),
-(4, '500-999人', 1, NOW()),
-(5, '1000人以上', 1, NOW());
+(1, '少于10人', 1, NOW()),
+(2, '10-49人', 1, NOW()),
+(3, '50-99人', 1, NOW()),
+(4, '100-499人', 1, NOW()),
+(5, '500-999人', 1, NOW()),
+(6, '1000人以上', 1, NOW());
+
 
 TRUNCATE `financing_phase`;
 INSERT INTO `financing_phase` (`id`, `name`, `is_listed`, `created`) VALUES

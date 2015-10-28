@@ -718,9 +718,9 @@
 		} else if (req.type == 2) {
 			res.typeInfo = '寻求搭档';
 		} else if (req.type == 3) {
-			res.typeInfo = '寻求融资';
+			res.typeInfo = '寻求资金';
 		} else if (req.type == 4) {
-			res.typeInfo = '寻求融智';
+			res.typeInfo = '寻求人才';
 		} else {
 			res.typeInfo = '投资项目';
 		}

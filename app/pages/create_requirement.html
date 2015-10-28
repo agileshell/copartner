@@ -133,11 +133,11 @@
 					</li>
 					<li class="type-list col-3" data-type="3">
 						<span class="need_find_money" id="type_finance"></span>
-						<div class="mui-media-body" id="type_font_finance">寻求融资</div>
+						<div class="mui-media-body" id="type_font_finance">寻求资金</div>
 					</li>
 					<li class="type-list col-3" data-type="4">
 						<span class="need_idea" id="type_idea"></span>
-						<div class="mui-media-body" id="type_font_idea">寻求融智</div>
+						<div class="mui-media-body" id="type_font_idea">寻求人才</div>
 					</li>
 					<li class="type-list col-3" data-type="5">
 						<span class="need_money disable" id="type_invest"></span>
@@ -312,7 +312,7 @@
 
 			var toProfilePage = function() {
 				var profilePage = plus.webview.getWebviewById('profile');
-				$.fire(profilePage, 'mui.view.beforeshow', {
+				mui.fire(profilePage, 'mui.view.beforeshow', {
 					needReflush: true
 				});
 				profilePage.show();
