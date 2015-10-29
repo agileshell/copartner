@@ -58,7 +58,7 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
             contentVO.setCoverImg(CDNUtil.getFullPath(content.getCoverImg()));
             contentVO.setClicks(content.getClicks());
             contentVO.setCreated(content.getCreated());
-
+            contentVO.setType(content.getType() == null ? 0 : content.getType());
             contentVOs.add(contentVO);
         }
 
@@ -80,6 +80,7 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
         contentVO.setArticle(content.getArticle());
         contentVO.setClicks(content.getClicks());
         contentVO.setCreated(content.getCreated());
+        contentVO.setType(content.getType() == null ? 0 : content.getType());
 
         long userId = getUserId();
         UserFavourites userFavourites = userFavouritesDao.getByUserIdAndEntity(userId, contentId,

@@ -134,6 +134,7 @@ public class ContentController extends WebBase {
 		content.setStatus(request.getStatus());
 		content.setSynopsis(request.getSynopsis());
 		content.setTitle(request.getTitle());
+		content.setType(request.getType() == null ? 0 : request.getType());
 		contentDAO.update(content);
 		return new ModelAndView("redirect:/content/detail/" + contentId);
 	}
@@ -165,6 +166,7 @@ public class ContentController extends WebBase {
 		content.setStatus(request.getStatus());
 		content.setSynopsis(request.getSynopsis());
 		content.setTitle(request.getTitle());
+        content.setType(request.getType() == null ? 0 : request.getType());
 		contentDAO.save(content);
 		return new ModelAndView("redirect:/content/detail/" + content.getId());
 	}

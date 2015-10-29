@@ -62,6 +62,7 @@
 										<tr>
 											<th>ID</th>
 											<th>标题</th>
+											<th>类型</th>
 											<th>摘要</th>
 											<th>状态</th>
 											<th>创建时间</th>
@@ -79,6 +80,10 @@
 												<tr>
 													<td>${c.id}</td>
 													<td><t:short content="${c.title}" length="10"></t:short></td>
+													<td>
+														<c:if test="${c.type == 0}"> 地方政策 </c:if>
+														<c:if test="${c.type == 1}"> 国家政策 </c:if>
+													</td>
 													<td><t:short content="${c.synopsis}" length="10"></t:short></td>
 													<td>
 														<jsp:include page="control/commons-status.jsp">

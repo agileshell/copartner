@@ -42,6 +42,16 @@
 													</div>
 												</div>
 												<div class="form-group">
+													<label class="col-lg-2 control-label" for="status">类型<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+														<jsp:include page="control/zclx.jsp">
+															<jsp:param value="0" name="type"/>
+															<jsp:param value="false" name="has_all"/>
+															<jsp:param value="false" name="update"/>
+														</jsp:include>
+													</div>
+												</div>
+												<div class="form-group">
 													<label class="col-lg-2 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
 													<div class="col-lg-10">
 														<jsp:include page="control/commons-status.jsp">

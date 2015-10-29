@@ -23,8 +23,18 @@ public class ContentRequest {
 	private String article;// 内容
 
 	private String status;// 状态 active,inactive,deleted
+	
+    private Byte type = 0;// 1:国家 0:地方 默认是0
 
-	public String getTitle() {
+	public Byte getType() {
+        return type;
+    }
+
+    public void setType(Byte type) {
+        this.type = type;
+    }
+
+    public String getTitle() {
 		return title;
 	}
 

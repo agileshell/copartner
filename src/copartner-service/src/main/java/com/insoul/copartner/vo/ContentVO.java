@@ -19,9 +19,19 @@ public class ContentVO implements Serializable {
     private String coverImg;// 封皮
 
     private Long clicks = 0L;// 浏览次数
+    
+    private byte type;// 1:国家 0:地方 默认是0
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
+
+    public byte getType() {
+        return type;
+    }
+
+    public void setType(byte type) {
+        this.type = type;
+    }
 
     public Long getContentId() {
         return contentId;

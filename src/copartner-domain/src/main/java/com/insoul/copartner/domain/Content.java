@@ -26,6 +26,9 @@ public class Content extends BaseEntity {
     @Lob
     @Column(name = "article", nullable = false, columnDefinition = "TEXT")
     private String article;// 内容
+    
+    @Column(name = "type", nullable = false)
+    private Byte type;// 1:国家 0:地方 默认是0
 
     @Column(name = "status", nullable = false)
     private String status;// 状态 active,inactive,deleted
@@ -35,6 +38,17 @@ public class Content extends BaseEntity {
 
     @Column(name = "admin_user_id", nullable = false)
     private Long adminUserId;// 创建人，后台admin用户的ID
+
+    public Byte getType() {
+        if (type == null) {
+            return 0;
+        }
+        return type;
+    }
+
+    public void setType(Byte type) {
+        this.type = type;
+    }
 
     public String getTitle() {
         return title;

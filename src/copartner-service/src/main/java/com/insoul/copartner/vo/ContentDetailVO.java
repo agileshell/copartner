@@ -25,10 +25,20 @@ public class ContentDetailVO implements Serializable {
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
+    
+    private byte type;// 1:国家 0:地方 默认是0
 
     private String shareUrl;
 
     private boolean isliked;
+
+    public byte getType() {
+        return type;
+    }
+
+    public void setType(byte type) {
+        this.type = type;
+    }
 
     public String getShareUrl() {
         return shareUrl;
