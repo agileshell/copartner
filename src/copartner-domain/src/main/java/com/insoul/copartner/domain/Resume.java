@@ -10,7 +10,7 @@ import javax.persistence.Table;
  * 履历
  */
 @Entity
-@Table(name = "resume")
+@Table(name = "resume", catalog = "copartner")
 @NamedQueries({
         @NamedQuery(name = "Resume.getByUserIdAndType", query = "FROM Resume WHERE userId = :userId AND type = :type"),
         @NamedQuery(name = "Resume.deleteByUserIdAndType", query = "DELETE FROM Resume WHERE userId = :userId AND type = :type") })

@@ -89,6 +89,7 @@ public class ContentController extends WebBase {
 		try {
 			Content content = contentDAO.get(contentId);
 			mv.addObject("content", content);
+            mv.addObject("srvArchList", getSrvArchList());
 			mv.addObject("success", content != null);
 		} catch (Exception e) {
 			mv.addObject("success", false);
@@ -108,6 +109,7 @@ public class ContentController extends WebBase {
 		ModelAndView mv = createModelView(CONTENT_EDIT, req);
 		Content content = contentDAO.get(contentId);
 		mv.addObject("content", content);
+        mv.addObject("srvArchList", getSrvArchList());
 		mv.addObject("viewname", CONTENT_LIST);
 		return mv;
 	}

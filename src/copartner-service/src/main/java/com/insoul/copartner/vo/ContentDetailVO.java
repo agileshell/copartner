@@ -31,6 +31,16 @@ public class ContentDetailVO implements Serializable {
     private String shareUrl;
 
     private boolean isliked;
+    
+    private ServiceArchVO serviceArch;
+
+    public ServiceArchVO getServiceArch() {
+        return serviceArch;
+    }
+
+    public void setServiceArch(ServiceArchVO serviceArch) {
+        this.serviceArch = serviceArch;
+    }
 
     public byte getType() {
         return type;

@@ -35,9 +35,20 @@ public class Content extends BaseEntity {
 
     @Column(name = "clicks", nullable = false)
     private Long clicks = 0L;// 浏览次数
+    
+    @Column(name = "srv_arch_id", nullable = false)
+    private Long srvArchId = 0L;// 服务结构编号
 
     @Column(name = "admin_user_id", nullable = false)
     private Long adminUserId;// 创建人，后台admin用户的ID
+
+    public Long getSrvArchId() {
+        return srvArchId;
+    }
+
+    public void setSrvArchId(Long srvArchId) {
+        this.srvArchId = srvArchId;
+    }
 
     public Byte getType() {
         if (type == null) {

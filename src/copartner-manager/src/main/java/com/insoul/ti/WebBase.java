@@ -50,7 +50,9 @@ import com.insoul.copartner.dao.IStartupStatusDao;
 import com.insoul.copartner.dao.ISystemSettingDao;
 import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.dao.IUserDao;
+import com.insoul.copartner.dao.ServiceArchDAO;
 import com.insoul.copartner.domain.Admin;
+import com.insoul.copartner.domain.ServiceArch;
 import com.insoul.copartner.domain.StartupRole;
 import com.insoul.ti.req.ViewRequest;
 import com.insoul.ti.utils.Utils;
@@ -157,8 +159,15 @@ public class WebBase implements ServletContextAware {
 
     @Resource
     protected ICampaignDao campaignDAO;
+
+    @Resource
+    protected ServiceArchDAO serviceArchDAO;
     
     protected static final String COMMONS_RESOURCES_MANAGER_VIEW_NAME = "resources_manager";
+    
+    protected List<ServiceArch> getSrvArchList() {
+        return serviceArchDAO.findAll();
+    }
     
     protected Map<Long, String> getStartupRoleMap() {
         List<StartupRole> list = startupRoleDAO.findAll();

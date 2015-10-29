@@ -98,6 +98,7 @@
 				<i class="icon-star"></i>系统配置<span class="pull-right"><i class="icon-chevron-right"></i></span>
 			</a>
 			<ul <c:if test="${viewname == 'resources_manager'}"> style="display: block;" </c:if>>
+			  <li><a href="/srvarch/list"><i class="icon-screenshot"></i>服务机构</a></li>
 			  <li><a href="/industry/list"><i class="icon-screenshot"></i>行业管理</a></li>
 			  <li><a href="/phase/list"><i class="icon-list"></i>项目阶段管理</a></li>
 			  <li><a href="/finaphase/list"><i class="icon-key"></i>融资阶段管理</a></li>

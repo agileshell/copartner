@@ -24,6 +24,16 @@ public class ContentVO implements Serializable {
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
+    
+    private ServiceArchVO serviceArch;
+
+    public ServiceArchVO getServiceArch() {
+        return serviceArch;
+    }
+
+    public void setServiceArch(ServiceArchVO serviceArch) {
+        this.serviceArch = serviceArch;
+    }
 
     public byte getType() {
         return type;

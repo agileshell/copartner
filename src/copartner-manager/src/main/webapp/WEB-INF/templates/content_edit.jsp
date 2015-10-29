@@ -53,6 +53,16 @@
 													</div>
 												</div>
 												<div class="form-group">
+													<label class="col-lg-2 control-label" for="srvarch">服务机构<span class="cofrequired">*</span>:</label>
+													<div class="col-lg-10">
+<select id="srvarch" class="form-control" name="srvarch">
+	<c:forEach var="c" items="${srvArchList}" varStatus="status">
+		<option value="${c.id}" <c:if test="${c.id == content.srvArchId}"> selected="selected" </c:if>>${c.name}</option>
+	</c:forEach>
+</select>
+													</div>
+												</div>
+												<div class="form-group">
 													<label class="col-lg-2 control-label" for="status">状态<span class="cofrequired">*</span>:</label>
 													<div class="col-lg-10">
 														<jsp:include page="control/commons-status.jsp">
