@@ -46,7 +46,7 @@
 													<td>${c.id}</td>
 													<td>${c.name}</td>
 													<td>
-														<t:short content="${c.description}" length="15"/>
+														<t:short content="${c.description}" length="15"></t:short>
 													</td>
 													<td>${c.gmtcreated}</td>
 													<td>
