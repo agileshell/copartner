@@ -6,6 +6,8 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import com.insoul.ti.utils.Utils;
 
 /**
@@ -26,7 +28,7 @@ public class ShortContentTag extends TagSupport {
 	public int doStartTag() throws JspException {
 		JspWriter out = pageContext.getOut();
 		try {
-			out.write(Utils.getShort(getContent(), getLength()));
+			out.write(StringEscapeUtils.escapeHtml4(Utils.getShort(getContent(), getLength())));
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
 		}
