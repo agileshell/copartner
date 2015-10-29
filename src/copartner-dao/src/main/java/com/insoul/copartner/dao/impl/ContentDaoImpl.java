@@ -51,6 +51,10 @@ public class ContentDaoImpl extends BaseDaoImpl<Content, Long>implements IConten
             conditionStr.append(" AND id  = :id");
             params.put("id", criteria.getId());
         }
+        if (null != criteria.getType()) {
+            conditionStr.append(" AND type  = :type");
+            params.put("type", criteria.getType());
+        }
         if (StringUtils.isNotBlank(criteria.getTitle())) {
             conditionStr.append(" AND title LIKE :title");
             params.put("title", "%" + criteria.getTitle() + "%");

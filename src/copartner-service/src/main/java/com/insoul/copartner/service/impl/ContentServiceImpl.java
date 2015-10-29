@@ -61,6 +61,7 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
         contentCriteria.setOffset(requestData.getOffset());
         contentCriteria.setLimit(requestData.getLimit());
         contentCriteria.setStatus(new String[] {"active"});
+        contentCriteria.setType(requestData.getType() == null ? 0 : requestData.getType());
         contentCriteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
         contentCriteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
         contentCriteria.setTitle(requestData.getKeyword());

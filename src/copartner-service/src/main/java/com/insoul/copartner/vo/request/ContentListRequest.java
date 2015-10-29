@@ -9,6 +9,16 @@ public class ContentListRequest extends PaginationRequest {
     private Long to;
 
     private String keyword;
+    
+    private Byte type;// 1:国家 0:地方 默认是0
+
+    public Byte getType() {
+        return type;
+    }
+
+    public void setType(Byte type) {
+        this.type = type;
+    }
 
     public Long getFrom() {
         return from;
