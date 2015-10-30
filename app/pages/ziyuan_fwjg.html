@@ -9,18 +9,12 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<style>
+			.item-logo {
+				width: 80px;
+			}
 			.item-name {
 				color: #C15151;
 				font-size: 15px;
-			}
-			.new-item {
-				font-size: 12px;
-				line-height: 20px;
-			}
-			.item-avatar {
-				width: 50px;
-				float: left;
-				padding: 5px 5px 5px 0;
 			}
 		</style>
 	</head>
@@ -28,24 +22,20 @@
 	<body>
 		<div  id="pullrefresh" class="mui-content">
 			<div>
-				<ul id="tzjg-list" class="mui-table-view">
+				<ul id="fwjg-list" class="mui-table-view">
 				</ul>
 			</div>
 		</div>
 	</body>
 
 	<script id="content-template" type="text/x-handlebars-template">
-		<li id="invest_{{id}}" class="mui-table-view-cell mui-media">
+		<li class="mui-table-view-cell mui-collapse mui-media mui-media-icon">
 			<a href="#" data-guid="{{id}}">
-				<img src="{{image}}" class="item-avatar">
+				<div class="mui-media-object mui-pull-left">
+					<img src="{{icon}}" class="item-logo">
+				</div>
 				<div class="mui-media-body">
 					<span class="item-name">{{name}}</span>
-					<div class="new-item mui-ellipsis-2">
-						<span class="mui-badge mui-badge-primary">特色</span>&nbsp;{{specials}}
-					</div>
-					<div class="new-item mui-ellipsis-2">
-						<span class="mui-badge mui-badge-warning">硬件</span>&nbsp;{{hardware}}
-					</div>
 				</div>
 			</a>
 		</li>
@@ -61,7 +51,7 @@
 		var divEl = document.createElement("div"),
 			contentSource = document.getElementById("content-template").innerText,
 			contentTemplate = Handlebars.compile(contentSource),
-			contentEl = document.getElementById("tzjg-list");
+			contentEl = document.getElementById("fwjg-list");
 		mui.init({
 			pullRefresh: {
 				container: '#pullrefresh',
@@ -89,7 +79,7 @@
 		var detailWebview = null; 
 		function open_detail(id) {
 			if (!detailWebview) {
-				detailWebview = plus.webview.getWebviewById('ziyuan_tzjg_detail');
+				detailWebview = plus.webview.getWebviewById('ziyuan_fwjg_detail');
 			}
 			mui.fire(detailWebview, 'mui.view.beforeshow', {
 				guid: id
@@ -100,14 +90,13 @@
 			setTimeout(function() {
 					var success = function(response) {
 							var contents = response.body.list;
-							console.log(JSON.stringify(contents));
 							if (contents.length > 0) {
 								if (contentLatestRefreshRequestDate == 0 && contentLatestLoadingRequestDate == 0) {
 									contentLatestRefreshRequestDate = Date.parse(contents[0].created);
 								}
 								contentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
 								for (var i = 0, len = contents.length; i < len; i++) {
-									divEl.innerHTML = contentTemplate(app.processInvestorg(contents[i]));
+									divEl.innerHTML = contentTemplate(app.processServiceorg(contents[i]));
 									contentEl.appendChild(divEl.firstElementChild);
 								}
 								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
@@ -119,7 +108,7 @@
 							mui.toast(app.ajaxErrorHandler(errorType));
 							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
 						};
-					app.listInvestorgs(0, 10, 0, contentLatestLoadingRequestDate, success, error);
+					app.listServiceorgs(0, 10, 0, contentLatestLoadingRequestDate, success, error);
 				}, 500);
 		};
 	</script>

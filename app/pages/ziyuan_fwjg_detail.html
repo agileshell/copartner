@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>创始人</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			html, body  {
+				background-color: #fff;
+			}
+			.c-content {
+				margin-top: 45px;
+				background-color: #fff
+			}
+			.item-content {
+				font-size: 12px;
+				padding: 0 15px;
+				padding-top: 10px;
+				color: #000;
+			}
+			.item-content ol {
+				margin: 0 0 0 20px;
+				padding: 0;
+			}
+			.item-content p {
+				color: #000;
+				font-size: 12px;
+			}
+			.item-content img,
+			.item-content iframe {
+				max-width: 100%;
+				width: 100%;
+				height: auto;
+			}
+			embed,
+			object {
+				display: none;
+			}
+			.c-overlay .c-loader {
+				display: block;
+			}
+			.c-overlay .mui-content {
+				display: none;
+			}
+			.act-mod-zhuanti-textTitle {
+				margin-bottom: -10px;
+				padding: 0 10px;
+				height: 30px;
+				line-height: 30px;
+				font-size: 14px;
+			}
+			.act-mod-zhuanti-textTitle p {
+				padding: 0 10px;
+				text-align: center;
+				background: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAABCAMAAADD/I+4AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRFzMzM////040VdgAAAAJ0Uk5T/wDltzBKAAAADUlEQVR42mJgYAQIMAAABAACy28YcwAAAABJRU5ErkJggg==) repeat-x center;
+			}
+			.act-mod-zhuanti-textTitle span {
+				padding: 0 5px;
+				color: #ff751a;
+				background: #fff;
+			}
+		</style>
+	</head>
+
+	<body class="c-overlay">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title c-title">服务机构</h1>
+		</header>
+		<div class="mui-content">
+			<div class="c-content">
+				<div style="width:100%; margin:0 auto; text-align: center;">
+					<img id="logo" src="../images/blank.jpg" style="max-width: 320px;"/>
+				</div>
+				<div class="tb-module act-mod-zhuanti-textTitle">
+					<p><span>简&nbsp;介</span></p>
+				</div>
+				<div id="content" class="item-content">
+				</div>
+			</div>
+		</div>
+		<div id="loader" class="c-loader">加载中...</div>
+	</body>
+	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
+	<script type="text/javascript">
+		var guid = 0, logoEl = document.getElementById('logo'), contentEl = document.getElementById('content');
+		mui.init({
+			swipeBack: true,
+			beforeback: function() {
+				setTimeout(function() {
+					logoEl.src = '../images/blank.jpg';
+					contentEl.innerHTML = '';
+					document.body.classList.add('c-overlay');
+				}, 200);
+			}
+		});
+		mui('#content').on('tap', 'a', function() {
+			var url = this.href;
+			var protocol = /^([\w-]+:)\/\//.test(url) ? RegExp.$1 : '';
+			if (protocol === 'http:' || protocol === 'https:') { //外部链接
+				var browserMainWebview = plus.webview.getWebviewById('browser_main');
+				var browserWebview = plus.webview.getWebviewById('browser');
+				mui.fire(browserMainWebview, 'mui.view.beforeshow');
+				browserWebview.loadURL(url);
+				browserMainWebview.show('slide-in-bottom', 200);
+			}
+		});
+		(function($) {
+			var success = function(response) {
+				var org = response.body;
+				logoEl.src = org.icon;
+				contentEl.innerHTML = org.description;
+
+				window.scrollTo(0, 0);
+				setTimeout(function() {
+					document.body.classList.remove('c-overlay');
+				}, 290);
+				mui.currentWebview.show();
+			},
+			error = function(errorType) {
+				mui.toast(app.ajaxErrorHandler(errorType));
+			};
+
+			document.addEventListener('mui.view.beforeshow', function(event) {
+				if (event.detail.$$type === 'back') {
+					setTimeout(function() {
+						document.body.classList.remove('c-overlay');
+					}, 500);
+					return;
+				}
+
+				app.getServiceorgByGuid(event.detail.guid, success, error);
+			});
+		})(mui);
+	</script>
+
+</html>

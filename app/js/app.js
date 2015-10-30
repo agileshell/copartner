@@ -1355,6 +1355,60 @@
 	};
 
 	/**
+	 * 获取Serviceorg列表
+	 **/
+	owner.listServiceorgs = function(offset, limit, from, to, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'serviceorgs', {
+			data: {
+				offset: offset,
+				limit: limit,
+				from: from,
+				to: to
+			},
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+	/**
+	 * 获取Serviceorg详情
+	 **/
+	owner.getServiceorgByGuid = function(guid, successCallback, errorCallback) {
+		mui.ajax(owner.apiURL + 'serviceorg/' + guid, {
+			dataType: 'json',
+			type: 'get',
+			timeout: 5000,
+			success: function(data) {
+				successCallback(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				errorCallback(type);
+			}
+		})
+	};
+	/**
+	 *Serviceorg对象包装
+	 **/
+	owner.processServiceorg = function(item) {
+		var info = {};
+		info.id = item.id;
+		info.name = item.name;
+		if (!item.icon) {
+			info.icon = 'images/blank.jpg';
+		} else {
+			info.icon = item.icon;
+		}
+
+		return info;
+	};
+
+	/**
 	 * 获取pioneerpark列表
 	 **/
 	owner.listPioneerparks = function(province, successCallback, errorCallback) {

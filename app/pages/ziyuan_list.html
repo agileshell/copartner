@@ -21,13 +21,14 @@
 				<div id="ziyuan-type" class="mui-segmented-control c-control">
 					<a id="cyy" class="mui-control-item mui-active">创业园</a>
 					<a id="tzjg" class="mui-control-item">投资机构</a>
+					<a id="fwjg" class="mui-control-item">服务机构</a>
 				</div>
 			</div>
 		</div>
 	</body>
 	<script src="../js/mui.min.js"></script>
 	<script type="text/javascript">
-		var parent = null, ziyuan_cyy = null, ziyuan_tzjg = null;
+		var parent = null, ziyuan_cyy = null, ziyuan_tzjg = null, ziyuan_fwjg = null, last_tap = null;
 		mui.init({
 			swipeBack: true,
 			preloadPages: [{
@@ -42,6 +43,12 @@
 				styles: {
 					popGesture: 'hide'
 				}
+			},{
+				id: 'ziyuan_fwjg_detail',
+				url: 'ziyuan_fwjg_detail.html',
+				styles: {
+					popGesture: 'hide'
+				}
 			}]
 		});
 		mui.plusReady(function() {
@@ -49,19 +56,42 @@
 
 			ziyuan_cyy = plus.webview.create('ziyuan_cyy.html', 'ziyuan_cyy',  {top: "80px", bottom: "0px", bounce: "vertical"});
 			parent.append(ziyuan_cyy);
+			last_tap = 'ziyuan_cyy';
 
 			mui('#ziyuan-type').on('tap', 'a', function() {
 				var id = this.getAttribute('id');
 				if (id == 'tzjg') {
-					ziyuan_cyy.hide();
+					if (last_tap == 'ziyuan_cyy') {
+						ziyuan_cyy.hide();
+					} else if(last_tap == 'ziyuan_fwjg') {
+						ziyuan_fwjg.hide();
+					}
 					if (!ziyuan_tzjg) {
 						ziyuan_tzjg = plus.webview.create('ziyuan_tzjg.html', 'ziyuan_tzjg',  {top: "80px", bottom: "0px", bounce: "vertical"});
 						parent.append(ziyuan_tzjg);
 					}
 					ziyuan_tzjg.show();
+					last_tap == 'ziyuan_tzjg';
+				} else if (id == 'fwjg') {
+					if (last_tap == 'ziyuan_cyy') {
+						ziyuan_cyy.hide();
+					} else if(last_tap == 'ziyuan_tzjg') {
+						ziyuan_tzjg.hide();
+					}
+					if (!ziyuan_fwjg) {
+						ziyuan_fwjg = plus.webview.create('ziyuan_fwjg.html', 'ziyuan_fwjg',  {top: "80px", bottom: "0px", bounce: "vertical"});
+						parent.append(ziyuan_fwjg);
+					}
+					ziyuan_fwjg.show();
+					last_tap == 'ziyuan_fwjg';
 				} else {
-					ziyuan_tzjg.hide();
+					if (last_tap == 'ziyuan_tzjg') {
+						ziyuan_tzjg.hide();
+					} else if(last_tap == 'ziyuan_fwjg') {
+						ziyuan_fwjg.hide();
+					}
 					ziyuan_cyy.show();
+					last_tap == 'ziyuan_cyy';
 				}
 			});
 		});
