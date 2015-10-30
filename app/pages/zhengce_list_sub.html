@@ -11,13 +11,22 @@
 	</head>
 
 	<body>
-		<div class="mui-input-row mui-search" style="height: 34px;">
-			<input id="search" type="search" name="keyword" class="mui-input-speech mui-input-clear" placeholder="请输入您要查询的关键字">
+		<div class="mui-content" style="padding: 0px 5px;">
+			<div id="content-type" class="mui-segmented-control c-control">
+				<a id="country" class="mui-control-item mui-active" href="#country-item">国家</a>
+				<a id="location" class="mui-control-item" href="#location-item">地方</a>
+			</div>
 		</div>
 		<div class="mui-content">
 			<div id="pullrefresh" class="mui-scroll-wrapper">
-				<ul id="content-list" class="mui-table-view">
-				</ul>
+				<div id="country-item" class="mui-control-content mui-active">
+					<ul id="country-content-list" class="mui-table-view">
+					</ul>
+				</div>
+				<div id="location-item" class="mui-control-content">
+					<ul id="location-content-list" class="mui-table-view">
+					</ul>
+				</div>
 			</div>
 		</div>
 	</body>
@@ -38,13 +47,15 @@
 	<script>
 		var contentLatestRefreshRequestDate = 0,
 			contentLatestLoadingRequestDate = 0,
-			contentLoadingNoData = false;
+			locationContentLatestRefreshRequestDate = 0,
+			locationContentLatestLoadingRequestDate = 0,
+			contentType = 1;
 		var divEl = document.createElement("div"),
 			contentSource = document.getElementById("content-template").innerText,
 			contentTemplate = Handlebars.compile(contentSource),
 			contentEl = document.getElementById("content-list"),
-			searchEl = document.getElementById("search"),
-			keyword = '';
+			countryContentEl = document.getElementById("country-content-list"),
+			locationContentEl = document.getElementById("location-content-list");
 		mui.init({
 			pullRefresh: {
 				container: '#pullrefresh',
@@ -58,6 +69,21 @@
 				}
 			}
 		});
+		mui('#content-type').on('tap', 'a', function() {
+			var id = this.getAttribute('id');
+			if (id == 'country') {
+				contentType = 1;
+			} else {
+				contentType = 2;
+			}
+			var w = plus.nativeUI.showWaiting("　　 请等待...　　");
+			setTimeout(function() {
+				w.close();
+			}, 1500);
+			setTimeout(function() {
+				mui('#pullrefresh').pullRefresh().pulldownLoading();
+			}, 200);
+		});
 		mui.plusReady(function() {
 			if (plus.networkinfo.getCurrentType() === plus.networkinfo.CONNECTION_NONE) {
 				plus.nativeUI.alert('无网络连接!');
@@ -66,32 +92,6 @@
 					mui('#pullrefresh').pullRefresh().pullupLoading();
 				}, 200);
 			}
-		});
-		 //search
-		searchEl.addEventListener('search', function() {
-			keyword = searchEl.value;
-			contentLatestRefreshRequestDate = 0;
-			contentLatestLoadingRequestDate = 0;
-			contentEl.innerHTML = '';
-			var success = function(response) {
-					var contents = response.body.list;
-					if (contents.length > 0) {
-						contentLatestRefreshRequestDate = Date.parse(contents[0].created);
-						contentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
-						for (var i = 0, len = contents.length; i < len; i++) {
-							divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
-							contentEl.appendChild(divEl.firstElementChild);
-						}
-						mui('#pullrefresh').pullRefresh().endPullupToRefresh();
-					} else {
-						mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
-					}
-				},
-				error = function(errorType) {
-					mui.toast(app.ajaxErrorHandler(errorType));
-					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
-				};
-			app.listContents(keyword, 0, 10, 0, contentLatestLoadingRequestDate, success, error);
 		});
 		 //打开详情
 		mui('#pullrefresh').on('tap', 'a', function() {
@@ -111,52 +111,94 @@
 		function pulldownRefresh() {
 			setTimeout(function() {
 				console.log('pulldown');
-				var success = function(response) {
-						var contents = response.body.list;
-						if (contents.length > 0) {
-							if (contentLatestRefreshRequestDate == 0 && contentLatestLoadingRequestDate == 0) {
-								contentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
+				if (contentType == 1) {
+					var success = function(response) {
+							var contents = response.body.list;
+							if (contents.length > 0) {
+								if (contentLatestRefreshRequestDate == 0 && contentLatestLoadingRequestDate == 0) {
+									contentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
+								}
+								contentLatestRefreshRequestDate = Date.parse(contents[0].created);
+								for (var i = contents.length - 1; i >= 0; i--) {
+									divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
+									countryContentEl.insertBefore(divEl.firstElementChild, countryContentEl.firstElementChild);
+								}
 							}
-							contentLatestRefreshRequestDate = Date.parse(contents[0].created);
-							for (var i = contents.length - 1; i >= 0; i--) {
-								divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
-								contentEl.insertBefore(divEl.firstElementChild, contentEl.firstElementChild);
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						};
+					app.listContents(contentType, 0, 10, contentLatestRefreshRequestDate, 0, success, error);
+				} else {
+					var success = function(response) {
+							var contents = response.body.list;
+							if (contents.length > 0) {
+								if (locationContentLatestRefreshRequestDate == 0 && locationContentLatestLoadingRequestDate == 0) {
+									locationContentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
+								}
+								locationContentLatestRefreshRequestDate = Date.parse(contents[0].created);
+								for (var i = contents.length - 1; i >= 0; i--) {
+									divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
+									locationContentEl.insertBefore(divEl.firstElementChild, locationContentEl.firstElementChild);
+								}
 							}
-						}
-						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
-					},
-					error = function(errorType) {
-						mui.toast(app.ajaxErrorHandler(errorType));
-						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
-					};
-				app.listContents(keyword, 0, 10, contentLatestRefreshRequestDate, 0, success, error);
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						},
+						error = function(errorType) {
+							mui.toast(app.ajaxErrorHandler(errorType));
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						};
+					app.listContents(contentType, 0, 10, locationContentLatestRefreshRequestDate, 0, success, error);
+				}
 			}, 1000);
 		};
 		 //上拉加载具体业务实现
 		function pullupRefresh() {
 			setTimeout(function() {
 					console.log('pullup');
-					var success = function(response) {
-							var contents = response.body.list;
-							if (contents.length > 0) {
-								if (contentLatestRefreshRequestDate == 0 && contentLatestLoadingRequestDate == 0) {
-									contentLatestRefreshRequestDate = Date.parse(contents[0].created);
-								}
-								contentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
-								for (var i = 0, len = contents.length; i < len; i++) {
-									divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
-									contentEl.appendChild(divEl.firstElementChild);
+					if (contentType == 1) {
+						var success = function(response) {
+								var contents = response.body.list;
+								if (contents.length > 0) {
+									if (contentLatestRefreshRequestDate == 0 && contentLatestLoadingRequestDate == 0) {
+										contentLatestRefreshRequestDate = Date.parse(contents[0].created);
+									}
+									contentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
+									for (var i = 0, len = contents.length; i < len; i++) {
+										divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
+										countryContentEl.appendChild(divEl.firstElementChild);
+									}
 								}
 								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
-							} else {
-								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
-							}
-						},
-						error = function(errorType) {
-							mui.toast(app.ajaxErrorHandler(errorType));
-							mui('#pullrefresh').pullRefresh().endPullupToRefresh();
-						};
-					app.listContents(keyword, 0, 10, 0, contentLatestLoadingRequestDate, success, error);
+							},
+							error = function(errorType) {
+								mui.toast(app.ajaxErrorHandler(errorType));
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+							};
+						app.listContents(contentType, 0, 10, 0, contentLatestLoadingRequestDate, success, error);
+					} else {
+						var success = function(response) {
+								var contents = response.body.list;
+								if (contents.length > 0) {
+									if (locationContentLatestRefreshRequestDate == 0 && locationContentLatestLoadingRequestDate == 0) {
+										locationContentLatestRefreshRequestDate = Date.parse(contents[0].created);
+									}
+									locationContentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
+									for (var i = 0, len = contents.length; i < len; i++) {
+										divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
+										locationContentEl.appendChild(divEl.firstElementChild);
+									}
+								}
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+							},
+							error = function(errorType) {
+								mui.toast(app.ajaxErrorHandler(errorType));
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+							};
+						app.listContents(contentType, 0, 10, 0,locationContentLatestLoadingRequestDate, success, error);
+					}
 				},
 				1000);
 		};

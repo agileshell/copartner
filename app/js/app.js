@@ -1223,10 +1223,10 @@
 	/**
 	 * 获取contents列表
 	 **/
-	owner.listContents = function(keyword, offset, limit, from, to, successCallback, errorCallback) {
+	owner.listContents = function(type, offset, limit, from, to, successCallback, errorCallback) {
 		mui.ajax(owner.apiURL + 'contents', {
 			data: {
-				keyword: keyword,
+				type: type,
 				offset: offset,
 				limit: limit,
 				from: from,

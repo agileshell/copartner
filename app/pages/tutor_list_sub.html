@@ -41,7 +41,7 @@
 		<div class="mui-content" style="padding: 0px 5px;">
 			<div id="type" class="mui-segmented-control c-control">
 				<a id="tutor" class="mui-control-item mui-active" href="#tutor-item">创业导师</a>
-				<a id="question" class="mui-control-item" href="#question-item">即时提问</a>
+				<a id="question" class="mui-control-item" href="#question-item">问题集锦</a>
 			</div>
 			<div class="mui-input-row mui-search" style="height: 34px;">
 				<input id="search" type="search" name="keyword" class="mui-input-speech mui-input-clear" placeholder="请输入您要查询的关键字">
@@ -151,12 +151,7 @@
 			mui('#pullrefresh').on('tap', 'a', function() {
 				var id = this.getAttribute('data-guid');
 				if (type == 'tutor') {
-					mui.openWindow({
-						url: 'tutor_detail.html', 
-						id: 'tutor_detail',
-						extras:{tutorId: id}
-					});
-					open_tutor_detail();
+					open_tutor_detail(id);
 				} else {
 					open_question_detail(id);
 				}
@@ -170,11 +165,10 @@
 					}
 					loginPage.show();
 				} else {
-					if (!tutorDetailWebview) {
-						tutorDetailWebview = plus.webview.getWebviewById('tutor_detail');
-					}
-					mui.fire(tutorDetailWebview, 'mui.view.beforeshow', {
-						guid: id
+					mui.openWindow({
+						url: 'tutor_detail.html', 
+						id: 'tutor_detail',
+						extras:{tutorId: id}
 					});
 				}
 			};
