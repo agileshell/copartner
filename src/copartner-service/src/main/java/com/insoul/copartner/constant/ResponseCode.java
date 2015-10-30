@@ -102,6 +102,8 @@ public enum ResponseCode {
 
     CAMPAIGN_NOT_EXIST(30900),
 
+    SERVICE_ORG_NOT_EXIST(31000),
+
     ;
 
     private int value;

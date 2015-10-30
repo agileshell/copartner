@@ -45,12 +45,12 @@ import com.insoul.copartner.dao.IProjectPhaseDao;
 import com.insoul.copartner.dao.IQuestionCategoryDao;
 import com.insoul.copartner.dao.IQuestionDao;
 import com.insoul.copartner.dao.IRequirementDao;
+import com.insoul.copartner.dao.IServiceArchDAO;
 import com.insoul.copartner.dao.IStartupRoleDao;
 import com.insoul.copartner.dao.IStartupStatusDao;
 import com.insoul.copartner.dao.ISystemSettingDao;
 import com.insoul.copartner.dao.ITeamSizeDao;
 import com.insoul.copartner.dao.IUserDao;
-import com.insoul.copartner.dao.ServiceArchDAO;
 import com.insoul.copartner.domain.Admin;
 import com.insoul.copartner.domain.ServiceArch;
 import com.insoul.copartner.domain.StartupRole;
@@ -65,61 +65,61 @@ import com.insoul.ti.utils.Utils;
  */
 public class WebBase implements ServletContextAware {
 
-	protected Log log = LogFactory.getLog(getClass());
-	
-	@Resource
-	protected IContentDao contentDAO;
-	
-	@Resource
-	protected INewsDao newsDAO;
-	
-	@Resource
-	protected ISystemSettingDao systemSettingDAO;
-	
-	@Resource
-	protected IUserDao userDAO;
-	
-	@Resource
-	protected IIndustryDomainDao industryDomainDAO;
-	
-	@Resource
-	protected IStartupRoleDao startupRoleDAO;
-	
-	@Resource
-	protected IStartupStatusDao startupStatusDAO;
-	
-	@Resource
-	protected IFeedbackDao feedbackDAO;
-	
-	@Resource
-	protected IProjectPhaseDao projectPhaseDAO;
-	
-	@Resource
-	protected IProjectDao projectDAO;
-	
-	@Resource
-	protected AdminDAO adminDAO;
-	
-	@Resource
-	protected ITeamSizeDao teamSizeDAO;
-	
-	@Resource
-	protected IProjectCommentsDao projectCommentsDao;
-	
-	@Resource
-	protected IDemandCommentsDao demandCommentsDao;
-
-	@Resource
-	protected IFinancingPhaseDao financingPhaseDAO;
-
-	@Resource
-	protected IDemandDao demandDAO;
-
-	@Resource
-	protected IFinancingDao financingDAO;
+    protected Log log = LogFactory.getLog(getClass());
 
     @Resource
-	protected IQuestionDao questionDAO;
+    protected IContentDao contentDAO;
+
+    @Resource
+    protected INewsDao newsDAO;
+
+    @Resource
+    protected ISystemSettingDao systemSettingDAO;
+
+    @Resource
+    protected IUserDao userDAO;
+
+    @Resource
+    protected IIndustryDomainDao industryDomainDAO;
+
+    @Resource
+    protected IStartupRoleDao startupRoleDAO;
+
+    @Resource
+    protected IStartupStatusDao startupStatusDAO;
+
+    @Resource
+    protected IFeedbackDao feedbackDAO;
+
+    @Resource
+    protected IProjectPhaseDao projectPhaseDAO;
+
+    @Resource
+    protected IProjectDao projectDAO;
+
+    @Resource
+    protected AdminDAO adminDAO;
+
+    @Resource
+    protected ITeamSizeDao teamSizeDAO;
+
+    @Resource
+    protected IProjectCommentsDao projectCommentsDao;
+
+    @Resource
+    protected IDemandCommentsDao demandCommentsDao;
+
+    @Resource
+    protected IFinancingPhaseDao financingPhaseDAO;
+
+    @Resource
+    protected IDemandDao demandDAO;
+
+    @Resource
+    protected IFinancingDao financingDAO;
+
+    @Resource
+    protected IQuestionDao questionDAO;
 
     @Resource
     protected IQuestionCategoryDao questionCategoryDAO;
@@ -127,15 +127,15 @@ public class WebBase implements ServletContextAware {
     @Resource
     protected IAnswerDao answerDAO;
 
-	@Autowired
-	@Qualifier("multipartResolver")
-	protected CommonsMultipartResolver multipartResolver;
+    @Autowired
+    @Qualifier("multipartResolver")
+    protected CommonsMultipartResolver multipartResolver;
 
-	private ServletContext servletContext;
-	
+    private ServletContext servletContext;
+
     @Autowired
     protected HttpServletRequest request;
-	
+
     @Autowired
     protected HttpServletResponse response;
 
@@ -161,14 +161,14 @@ public class WebBase implements ServletContextAware {
     protected ICampaignDao campaignDAO;
 
     @Resource
-    protected ServiceArchDAO serviceArchDAO;
-    
+    protected IServiceArchDAO serviceArchDAO;
+
     protected static final String COMMONS_RESOURCES_MANAGER_VIEW_NAME = "resources_manager";
-    
+
     protected List<ServiceArch> getSrvArchList() {
         return serviceArchDAO.findAll();
     }
-    
+
     protected Map<Long, String> getStartupRoleMap() {
         List<StartupRole> list = startupRoleDAO.findAll();
         Map<Long, String> map = new HashMap<Long, String>();
@@ -177,67 +177,67 @@ public class WebBase implements ServletContextAware {
         }
         return map;
     }
-    
-	protected ModelAndView createModelView(String viewName) {
-		ModelAndView mv = new ModelAndView(viewName);
-		mv.addObject("cdn", "/assets/");
+
+    protected ModelAndView createModelView(String viewName) {
+        ModelAndView mv = new ModelAndView(viewName);
+        mv.addObject("cdn", "/assets/");
         mv.addObject("cdnDomain", GlobalProperties.CDN_DOMAIN);
-		mv.addObject("viewname", viewName);
-		return mv;
-	}
+        mv.addObject("viewname", viewName);
+        return mv;
+    }
 
-	protected ModelAndView createModelView(String viewName, ViewRequest req) {
-		ModelAndView mv = new ModelAndView(viewName);
-		mv.addObject("cdn", "/assets/");
+    protected ModelAndView createModelView(String viewName, ViewRequest req) {
+        ModelAndView mv = new ModelAndView(viewName);
+        mv.addObject("cdn", "/assets/");
         mv.addObject("cdnDomain", GlobalProperties.CDN_DOMAIN);
-		mv.addObject("utils", new Utils());
-		mv.addObject("viewname", StringUtils.defaultIfBlank(req.getV(), viewName));
-		return mv;
-	}
-	
-	protected void returnJson(JSONObject json) {
-		PrintWriter out = null;
-		try {
-			response.setContentType("application/json; charset=UTF-8");
-			out = response.getWriter();
-			out.write(json.toString());
-			out.flush();
-		} catch (IOException e) {
-			log.error("Return JSON Error.", e);
-		} finally {
-			if(out != null) {
-				out.close();
-				out = null;
-			}
-		}
-	}
-	
-	protected void returnJson(boolean success, String code, String message) {
-		try {
-			JSONObject json = new JSONObject();
-			json.accumulate("success", success);
-			json.accumulate("code", code);
-			json.accumulate("message", message);
-			returnJson(json);
-		} catch (Throwable e) {
-			log.error("Return JSON Error.", e);
-		}
-	}
-	
-	protected long getAdminId() {
-		Object admin = SecurityUtils.getSubject().getPrincipal();
-		if (admin == null) {
-			return 0L;
-		}
-		return ((Admin) admin).getId();
-	}
+        mv.addObject("utils", new Utils());
+        mv.addObject("viewname", StringUtils.defaultIfBlank(req.getV(), viewName));
+        return mv;
+    }
 
-	public ServletContext getServletContext() {
-		return servletContext;
-	}
+    protected void returnJson(JSONObject json) {
+        PrintWriter out = null;
+        try {
+            response.setContentType("application/json; charset=UTF-8");
+            out = response.getWriter();
+            out.write(json.toString());
+            out.flush();
+        } catch (IOException e) {
+            log.error("Return JSON Error.", e);
+        } finally {
+            if (out != null) {
+                out.close();
+                out = null;
+            }
+        }
+    }
 
-	@Override
-	public void setServletContext(ServletContext servletContext) {
-		this.servletContext = servletContext;
-	}
+    protected void returnJson(boolean success, String code, String message) {
+        try {
+            JSONObject json = new JSONObject();
+            json.accumulate("success", success);
+            json.accumulate("code", code);
+            json.accumulate("message", message);
+            returnJson(json);
+        } catch (Throwable e) {
+            log.error("Return JSON Error.", e);
+        }
+    }
+
+    protected long getAdminId() {
+        Object admin = SecurityUtils.getSubject().getPrincipal();
+        if (admin == null) {
+            return 0L;
+        }
+        return ((Admin) admin).getId();
+    }
+
+    public ServletContext getServletContext() {
+        return servletContext;
+    }
+
+    @Override
+    public void setServletContext(ServletContext servletContext) {
+        this.servletContext = servletContext;
+    }
 }
