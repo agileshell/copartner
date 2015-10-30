@@ -13,10 +13,8 @@ import com.insoul.copartner.constant.EntityType;
 import com.insoul.copartner.constant.ResponseCode;
 import com.insoul.copartner.dao.IContentDao;
 import com.insoul.copartner.dao.IUserFavouritesDao;
-import com.insoul.copartner.dao.ServiceArchDAO;
 import com.insoul.copartner.dao.criteria.ContentCriteria;
 import com.insoul.copartner.domain.Content;
-import com.insoul.copartner.domain.ServiceArch;
 import com.insoul.copartner.domain.UserFavourites;
 import com.insoul.copartner.exception.CException;
 import com.insoul.copartner.exception.CExceptionFactory;
@@ -25,7 +23,6 @@ import com.insoul.copartner.util.CDNUtil;
 import com.insoul.copartner.vo.ContentDetailVO;
 import com.insoul.copartner.vo.ContentVO;
 import com.insoul.copartner.vo.Pagination;
-import com.insoul.copartner.vo.ServiceArchVO;
 import com.insoul.copartner.vo.request.ContentListRequest;
 
 @Service
@@ -37,22 +34,6 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
     @Resource
     private IUserFavouritesDao userFavouritesDao;
 
-    @Resource
-    private ServiceArchDAO serviceArchDAO;
-
-    private ServiceArchVO getSrvArch(Long id) {
-        ServiceArchVO vo = new ServiceArchVO();
-        ServiceArch sa = serviceArchDAO.get(id);
-        if (sa == null) {
-            return vo;
-        }
-        vo.setDescription(sa.getDescription());
-        vo.setIcon(CDNUtil.getFullPath(sa.getIcon()));
-        vo.setId(sa.getId());
-        vo.setName(sa.getName());
-        return vo;
-    }
-
     @Override
     public Pagination<ContentVO> listContents(ContentListRequest requestData) {
         List<ContentVO> contentVOs = new ArrayList<ContentVO>();
@@ -62,8 +43,10 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
         contentCriteria.setLimit(requestData.getLimit());
         contentCriteria.setStatus(new String[] {"active"});
         contentCriteria.setType(requestData.getType() == null ? 0 : requestData.getType());
-        contentCriteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
-        contentCriteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
+        contentCriteria.setFrom((null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData
+                .getFrom()) : null);
+        contentCriteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo())
+                : null);
         contentCriteria.setTitle(requestData.getKeyword());
 
         Long count = contentDao.countContent(contentCriteria);
@@ -77,7 +60,6 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
             contentVO.setClicks(content.getClicks());
             contentVO.setCreated(content.getCreated());
             contentVO.setType(content.getType() == null ? 0 : content.getType());
-            contentVO.setServiceArch(getSrvArch(content.getSrvArchId()));
             contentVOs.add(contentVO);
         }
 
@@ -100,9 +82,9 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
         contentVO.setClicks(content.getClicks());
         contentVO.setCreated(content.getCreated());
         contentVO.setType(content.getType() == null ? 0 : content.getType());
-        contentVO.setServiceArch(getSrvArch(content.getSrvArchId()));
         long userId = getUserId();
-        UserFavourites userFavourites = userFavouritesDao.getByUserIdAndEntity(userId, contentId, EntityType.CONTENT.getValue());
+        UserFavourites userFavourites =
+                userFavouritesDao.getByUserIdAndEntity(userId, contentId, EntityType.CONTENT.getValue());
         contentVO.setIsliked(userFavourites != null);
 
         return contentVO;
@@ -112,7 +94,8 @@ public class ContentServiceImpl extends BaseServiceImpl implements IContentServi
     @Transactional(value = "transactionManager", rollbackFor = Throwable.class)
     public void likeOrUnlikeContent(Long contentId) {
         long userId = getUserId();
-        UserFavourites userFavourites = userFavouritesDao.getByUserIdAndEntity(userId, contentId, EntityType.CONTENT.getValue());
+        UserFavourites userFavourites =
+                userFavouritesDao.getByUserIdAndEntity(userId, contentId, EntityType.CONTENT.getValue());
         if (userFavourites == null) {
             userFavourites = new UserFavourites();
             userFavourites.setUserId(userId);

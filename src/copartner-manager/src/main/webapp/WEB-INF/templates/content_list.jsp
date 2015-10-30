@@ -81,8 +81,8 @@
 													<td>${c.id}</td>
 													<td><t:short content="${c.title}" length="10"></t:short></td>
 													<td>
-														<c:if test="${c.type == 0}"> 地方政策 </c:if>
-														<c:if test="${c.type == 1}"> 国家政策 </c:if>
+													    <c:if test="${c.type == 1}"> 国家政策 </c:if>
+														<c:if test="${c.type == 2}"> 地方政策 </c:if>
 													</td>
 													<td><t:short content="${c.synopsis}" length="10"></t:short></td>
 													<td>

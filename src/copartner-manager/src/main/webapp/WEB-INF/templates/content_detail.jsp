@@ -43,7 +43,7 @@
 										<div class="form-group">
 											<label class="col-lg-2 control-label" >类型:</label>
 											<div class="col-lg-10">
-												<c:if test="${c.type == 0}"> 地方政策 </c:if>
+												<c:if test="${c.type == 2}"> 地方政策 </c:if>
 												<c:if test="${c.type == 1}"> 国家政策 </c:if>
 											</div>
 										</div>

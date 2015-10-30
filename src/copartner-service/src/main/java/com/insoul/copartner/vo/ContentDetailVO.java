@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.insoul.copartner.constant.GlobalProperties;
 import com.insoul.copartner.util.CustomDateSerializer;
 
 public class ContentDetailVO implements Serializable {
@@ -25,45 +24,18 @@ public class ContentDetailVO implements Serializable {
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
-    
-    private byte type;// 1:国家 0:地方 默认是0
+
+    private byte type;// 1:国家 2:地方
 
     private String shareUrl;
 
     private boolean isliked;
-    
-    private ServiceArchVO serviceArch;
-
-    public ServiceArchVO getServiceArch() {
-        return serviceArch;
-    }
-
-    public void setServiceArch(ServiceArchVO serviceArch) {
-        this.serviceArch = serviceArch;
-    }
-
-    public byte getType() {
-        return type;
-    }
-
-    public void setType(byte type) {
-        this.type = type;
-    }
-
-    public String getShareUrl() {
-        return shareUrl;
-    }
-
-    public void setShareUrl(String shareUrl) {
-        this.shareUrl = shareUrl;
-    }
 
     public Long getContentId() {
         return contentId;
     }
 
     public void setContentId(Long contentId) {
-        this.shareUrl = GlobalProperties.MOBILE_DOMAIN + "policy/" + contentId;
         this.contentId = contentId;
     }
 
@@ -115,7 +87,23 @@ public class ContentDetailVO implements Serializable {
         this.created = created;
     }
 
-    public boolean isIsliked() {
+    public byte getType() {
+        return type;
+    }
+
+    public void setType(byte type) {
+        this.type = type;
+    }
+
+    public String getShareUrl() {
+        return shareUrl;
+    }
+
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
+    }
+
+    public boolean getIsliked() {
         return isliked;
     }
 

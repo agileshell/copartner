@@ -19,21 +19,11 @@ public class ContentVO implements Serializable {
     private String coverImg;// 封皮
 
     private Long clicks = 0L;// 浏览次数
-    
-    private byte type;// 1:国家 0:地方 默认是0
+
+    private byte type;// 1:国家 2:地方
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date created;
-    
-    private ServiceArchVO serviceArch;
-
-    public ServiceArchVO getServiceArch() {
-        return serviceArch;
-    }
-
-    public void setServiceArch(ServiceArchVO serviceArch) {
-        this.serviceArch = serviceArch;
-    }
 
     public byte getType() {
         return type;

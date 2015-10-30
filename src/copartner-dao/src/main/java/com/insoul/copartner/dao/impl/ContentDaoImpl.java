@@ -18,7 +18,7 @@ import com.insoul.copartner.dao.criteria.ContentCriteria;
 import com.insoul.copartner.domain.Content;
 
 @Repository
-public class ContentDaoImpl extends BaseDaoImpl<Content, Long>implements IContentDao {
+public class ContentDaoImpl extends BaseDaoImpl<Content, Long> implements IContentDao {
 
     @SuppressWarnings("unchecked")
     @Override
@@ -39,7 +39,7 @@ public class ContentDaoImpl extends BaseDaoImpl<Content, Long>implements IConten
                 .getSingleResult()).longValue();
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private Query generateQuery(ContentCriteria criteria, boolean isCount) {
         StringBuilder conditionStr = new StringBuilder();
         Map<String, Object> params = new HashMap<String, Object>();
@@ -51,7 +51,7 @@ public class ContentDaoImpl extends BaseDaoImpl<Content, Long>implements IConten
             conditionStr.append(" AND id  = :id");
             params.put("id", criteria.getId());
         }
-        if (null != criteria.getType()) {
+        if (null != criteria.getType() && criteria.getType() != 0) {
             conditionStr.append(" AND type  = :type");
             params.put("type", criteria.getType());
         }
