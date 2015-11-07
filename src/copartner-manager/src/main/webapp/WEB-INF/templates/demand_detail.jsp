@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="/WEB-INF/ti-tags.tld" prefix="t"%>
 <head>
 	<title>融智详情</title>
 </head>
@@ -79,7 +80,7 @@
 <div class="form-group">
 	<label class="col-lg-2 control-label">商业计划书:</label>
 	<div class="col-lg-10">
-		<a href="${cdnDomain}${demand.businessPlan}" target="_blank">查看</a>
+		<a href="<t:cdn domain="${cdnDomain}" path="${demand.businessPlan}"></t:cdn>" target="_blank">查看</a>
 	</div>
 </div>
 <hr />

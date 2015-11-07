@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="/WEB-INF/ti-tags.tld" prefix="t"%>
 <head>
 	<title>服务机构编辑</title>
 	<link href="${cdn}js/kindeditor/themes/default/default.css" rel="stylesheet" />
@@ -38,8 +39,8 @@
 											<label class="col-lg-2 control-label">图标:</label>
 											<div class="col-lg-10">
 											<div class="gallery">
-						                      	<a href="${cdnDomain}${srvarch.icon}" class="prettyPhoto[pp_gal]">
-						                      		<img src="${cdnDomain}${srvarch.icon}" alt="${srvarch.name}" width="100">
+						                      	<a href="<t:cdn domain="${cdnDomain}" path="${srvarch.icon}"></t:cdn>" class="prettyPhoto[pp_gal]">
+						                      		<img src="<t:cdn domain="${cdnDomain}" path="${srvarch.icon}"></t:cdn>" alt="${srvarch.name}" width="100">
 						                      	</a>
 						                      </div>
 											</div>

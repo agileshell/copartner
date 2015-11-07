@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="/WEB-INF/ti-tags.tld" prefix="t"%>
 <head>
 	<title>融资编辑</title>
 </head>
@@ -86,7 +87,7 @@
 		<input name="businessPlan" id="businessPlan" type="file" class="form-control" placeholder="商业计划书"></input>
 	</div>
 	<div class="col-lg-4">
-		<a href="${cdnDomain}${finance.businessPlan}" target="_blank">查看商业计划书</a>
+		<a href="<t:cdn domain="${cdnDomain}" path="${finance.businessPlan}"></t:cdn>" target="_blank">查看商业计划书</a>
 	</div>
 </div>
 <hr />

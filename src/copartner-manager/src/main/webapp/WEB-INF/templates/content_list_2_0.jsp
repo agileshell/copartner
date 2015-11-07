@@ -78,8 +78,8 @@
 															<ul class="task">
 											                	<li>
 											                      <div class="gallery">
-											                      	<a href="${cdnDomain}${c.coverImg}" class="prettyPhoto[pp_gal]">
-											                      		<img src="${cdnDomain}${c.coverImg}" alt="${c.title}">
+											                      	<a href="<t:cdn domain="${cdnDomain}" path="${c.coverImg}"></t:cdn>" class="prettyPhoto[pp_gal]">
+											                      		<img src="<t:cdn domain="${cdnDomain}" path="${c.coverImg}"></t:cdn>" alt="${c.title}">
 											                      	</a>
 											                      </div>
 											                	</li>

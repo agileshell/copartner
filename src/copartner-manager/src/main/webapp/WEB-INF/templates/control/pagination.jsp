@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="/WEB-INF/ti-tags.tld" prefix="t"%>
 <div class="widget-foot" id="pagination_footer">
 	<ul class="pagination pull-right">
 		<li><a href="#">共${query.page}/${query.lastPageNum}页${query.count}条数据</a></li>
