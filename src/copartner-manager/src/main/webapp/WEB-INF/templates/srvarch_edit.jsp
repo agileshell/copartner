@@ -28,7 +28,7 @@
 							</div>
 							<div class="widget-content">
 								<div class="padd">
-									<form id="edit_srvarch_form" class="form-horizontal" role="form" action="/srvarch/update/${srvarch.id}" method="post">
+									<form id="edit_srvarch_form" class="form-horizontal" role="form" action="/srvarch/update/${srvarch.id}" method="post" enctype="multipart/form-data">
 										<div class="form-group">
 											<label class="col-lg-2 control-label" for="name">服务机构名称<span class="cofrequired">*</span>:</label>
 											<div class="col-lg-10">
