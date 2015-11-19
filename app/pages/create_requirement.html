@@ -276,7 +276,7 @@
 				}
 			} else {
 					var req = {
-						'text': '无可用的项目',
+						'text': '请先创建一个项目',
 						'value': 0
 					}
 					projects[0] = req;
@@ -287,6 +287,9 @@
 				projectPicker.show(function(items) {
 					projectId.value = items[0].value;
 					projectName.innerText = items[0].text;
+					if (items[0].value == 0) {
+						plus.nativeUI.toast("请先创建一个项目");
+					}
 				});
 			}, false);
 		});

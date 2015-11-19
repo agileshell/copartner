@@ -29,6 +29,7 @@
 			return callback('密码最短为 6 个字符');
 		}
 		localStorage.setItem('$account', loginInfo.account);
+		localStorage.setItem('$password', loginInfo.password);
 
 		mui.ajax(owner.apiURL + 'account/signin', {
 			data: {
@@ -578,7 +579,7 @@
 		req.content = req.content || '';
 
 		if ((req.type == 2 && req.projectId == 0) || (req.type == 3 && req.projectId == 0)) {
-			return callback('请选择关联的项目');
+			return callback('请选择关联的项目，若无请先创建');
 		}
 		if (req.content.length <= 0) {
 			return callback('需求信息不能为空');
