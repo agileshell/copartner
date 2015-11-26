@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="/WEB-INF/ti-tags.tld" prefix="t"%>
 <head>
 	<title>创业大赛详情</title>
 	<link href="${cdn}js/kindeditor/themes/default/default.css" rel="stylesheet" />
@@ -40,8 +41,8 @@
 										<label class="col-lg-2 control-label">封皮:</label>
 										<div class="col-lg-10">
 										<div class="gallery">
-					                      	<a href="${cdnDomain}${contest.coverImg}" class="prettyPhoto[pp_gal]">
-					                      		<img src="${cdnDomain}${contest.coverImg}" alt="${contest.title}" width="500">
+					                      	<a href="<t:cdn domain="${cdnDomain}" path="${contest.coverImg}"></t:cdn>" class="prettyPhoto[pp_gal]">
+					                      		<img src="<t:cdn domain="${cdnDomain}" path="${contest.coverImg}"></t:cdn>" alt="${contest.title}" width="500">
 					                      	</a>
 					                      </div>
 										</div>

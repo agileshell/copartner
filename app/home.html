@@ -67,13 +67,13 @@
 			<h1 id="title" class="mui-title c-title"><span class="c-logo">创始人</span></h1>
 		</header>
 		<div class="mui-content">
-			<div id="slider" class="mui-slider" style="min-height: 213px;">
+			<div id="slider" class="mui-slider">
 				<div id="slider-items" class="mui-slider-group mui-slider-loop">
 				</div>
 				<div id="slider-indicators" class="mui-slider-indicator mui-text-right">
 				</div>
 			</div>
-			<div id="menus" class="home-menu">
+			<div id="menus" class="home-menu" style="padding-top: 225px;">
 				<div class="list1" id="rzrz_list"  data-url="pages/rzrz_list.html" align="center" data-name="融资融智" style="background-color: #94ce6d; width: 58.5%;">
 					<img src="images/rzrz.png"/>
 					<span>融资融智</span>
@@ -123,9 +123,9 @@
 					if (len >= 0) {
 						var ht = "<div class='mui-slider-item mui-slider-item-duplicate'><a href='#'><img src='" + campaigns[len-1].coverImg + "'><p class='mui-slider-title'>" + campaigns[len-1].title + "</p></a></div>";
 						for (var i = 0; i < len; i++) {
-							ht += "<div class='mui-slider-item'><a href='#'><img src='" + campaigns[i].coverImg + "'><p class='mui-slider-title'>" + campaigns[i].title + "</p></a></div>";
+							ht += "<div class='mui-slider-item'><a href='#'><img src='" + campaigns[i].coverImg + "?imageView2/2/h/180' height='180'><p class='mui-slider-title'>" + campaigns[i].title + "</p></a></div>";
 						}
-						ht += "<div class='mui-slider-item'><a href='#'><img src='" + campaigns[0].coverImg + "'><p class='mui-slider-title'>" + campaigns[0].title + "</p></a></div>";
+						ht += "<div class='mui-slider-item'><a href='#'><img src='" + campaigns[0].coverImg + "?imageView2/2/h/180' height='180'><p class='mui-slider-title'>" + campaigns[0].title + "</p></a></div>";
 						sliderItems.innerHTML = ht;
 						var hi = "<div class='mui-indicator mui-active'></div>";
 						for (var i = 0; i < len-1; i++) {
@@ -202,8 +202,6 @@
 				});
 				//初始化，并预加载webview
 				function preload() {
-					var topHeight = document.getElementById("slider").offsetHeight + 45;
-					document.getElementById('menus').style.top = topHeight + 'px';
 					//内置浏览器
 					mui.preload({
 						url: "browser.html",

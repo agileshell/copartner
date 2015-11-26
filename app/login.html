@@ -101,8 +101,10 @@
 		<script>
 			(function($, doc) {
 				var accountBox = doc.getElementById('account');
+				var passwordBox = doc.getElementById('password');
 				//从localStorage中获取账号
 				accountBox.value = localStorage.getItem('$account');
+				passwordBox.value = localStorage.getItem('$password');
 				mui.init({
 					keyEventBind: {
 						backbutton: false
@@ -160,7 +162,6 @@
 						plus.nativeUI.toast("获取登录认证失败：" + e.message);
 					});
 					var loginButton = doc.getElementById('login');
-					var passwordBox = doc.getElementById('password');
 					var regButton = doc.getElementById('reg');
 					var forgetButton = doc.getElementById('forgetPassword');
 					loginButton.addEventListener('tap', function() {

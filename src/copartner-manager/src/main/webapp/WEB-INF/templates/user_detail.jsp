@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="/WEB-INF/ti-tags.tld" prefix="t"%>
 <head>
 	<title>用户详情</title>
 	<link rel="stylesheet" href="${cdn}css/prettyPhoto.css"></link>
@@ -64,8 +65,8 @@
 											<label class="col-lg-2 control-label">头像:</label>
 											<div class="col-lg-10">
 												<div class="gallery">
-							                      	<a href="${cdnDomain}${user.avatar}" class="prettyPhoto[pp_gal]">
-							                      		<img src="${cdnDomain}${user.avatar}" alt="${user.name}" width="100">
+							                      	<a href="<t:cdn domain="${cdnDomain}" path="${user.avatar}"></t:cdn>" class="prettyPhoto[pp_gal]">
+							                      		<img src="<t:cdn domain="${cdnDomain}" path="${user.avatar}"></t:cdn>" alt="${user.name}" width="100">
 							                      	</a>
 							                      </div>
 											</div>

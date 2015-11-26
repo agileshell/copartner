@@ -21,4 +21,19 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
+	<tag>
+		<name>cdn</name>
+		<tag-class>com.insoul.ti.tags.CdnTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>domain</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>path</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
 </taglib>
