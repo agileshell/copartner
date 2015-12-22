@@ -8,6 +8,11 @@
 
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			.mui-scroll-wrapper {
+				top: 35px;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -18,14 +23,16 @@
 			</div>
 		</div>
 		<div class="mui-content">
-			<div id="pullrefresh">
-				<div id="country-item" class="mui-control-content mui-active">
-					<ul id="country-content-list" class="mui-table-view">
-					</ul>
-				</div>
-				<div id="location-item" class="mui-control-content">
-					<ul id="location-content-list" class="mui-table-view">
-					</ul>
+			<div id="pullrefresh" class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<div id="country-item" class="mui-control-content mui-active">
+						<ul id="country-content-list" class="mui-table-view">
+						</ul>
+					</div>
+					<div id="location-item" class="mui-control-content">
+						<ul id="location-content-list" class="mui-table-view">
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -116,9 +123,9 @@
 							var contents = response.body.list;
 							if (contents.length > 0) {
 								if (contentLatestRefreshRequestDate == 0 && contentLatestLoadingRequestDate == 0) {
-									contentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
+									contentLatestLoadingRequestDate = app.getDateTimestamp(contents[contents.length - 1].created);
 								}
-								contentLatestRefreshRequestDate = Date.parse(contents[0].created);
+								contentLatestRefreshRequestDate = app.getDateTimestamp(contents[0].created);
 								for (var i = contents.length - 1; i >= 0; i--) {
 									divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
 									countryContentEl.insertBefore(divEl.firstElementChild, countryContentEl.firstElementChild);
@@ -136,9 +143,9 @@
 							var contents = response.body.list;
 							if (contents.length > 0) {
 								if (locationContentLatestRefreshRequestDate == 0 && locationContentLatestLoadingRequestDate == 0) {
-									locationContentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
+									locationContentLatestLoadingRequestDate = app.getDateTimestamp(contents[contents.length - 1].created);
 								}
-								locationContentLatestRefreshRequestDate = Date.parse(contents[0].created);
+								locationContentLatestRefreshRequestDate = app.getDateTimestamp(contents[0].created);
 								for (var i = contents.length - 1; i >= 0; i--) {
 									divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
 									locationContentEl.insertBefore(divEl.firstElementChild, locationContentEl.firstElementChild);
@@ -163,9 +170,9 @@
 								var contents = response.body.list;
 								if (contents.length > 0) {
 									if (contentLatestRefreshRequestDate == 0 && contentLatestLoadingRequestDate == 0) {
-										contentLatestRefreshRequestDate = Date.parse(contents[0].created);
+										contentLatestRefreshRequestDate = app.getDateTimestamp(contents[0].created);
 									}
-									contentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
+									contentLatestLoadingRequestDate = app.getDateTimestamp(contents[contents.length - 1].created);
 									for (var i = 0, len = contents.length; i < len; i++) {
 										divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
 										countryContentEl.appendChild(divEl.firstElementChild);
@@ -183,9 +190,9 @@
 								var contents = response.body.list;
 								if (contents.length > 0) {
 									if (locationContentLatestRefreshRequestDate == 0 && locationContentLatestLoadingRequestDate == 0) {
-										locationContentLatestRefreshRequestDate = Date.parse(contents[0].created);
+										locationContentLatestRefreshRequestDate = app.getDateTimestamp(contents[0].created);
 									}
-									locationContentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
+									locationContentLatestLoadingRequestDate = app.getDateTimestamp(contents[contents.length - 1].created);
 									for (var i = 0, len = contents.length; i < len; i++) {
 										divEl.innerHTML = contentTemplate(app.processContent(contents[i]));
 										locationContentEl.appendChild(divEl.firstElementChild);

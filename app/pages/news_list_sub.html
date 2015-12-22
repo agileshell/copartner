@@ -8,6 +8,11 @@
 
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
+		<style>
+			.mui-scroll-wrapper {
+				top: 68px;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -21,14 +26,16 @@
 			</div>
 		</div>
 		<div class="mui-content">
-			<div id="pullrefresh">
-				<div id="industry-item" class="mui-control-content mui-active">
-					<ul id="industry-news-list" class="mui-table-view">
-					</ul>
-				</div>
-				<div id="location-item" class="mui-control-content">
-					<ul id="location-news-list" class="mui-table-view">
-					</ul>
+			<div id="pullrefresh" class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<div id="industry-item" class="mui-control-content mui-active">
+						<ul id="industry-news-list" class="mui-table-view">
+						</ul>
+					</div>
+					<div id="location-item" class="mui-control-content">
+						<ul id="location-news-list" class="mui-table-view">
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -52,7 +59,6 @@
 			industryNewsLatestLoadingRequestDate = 0,
 			locationNewsLatestRefreshRequestDate = 0,
 			locationNewsLatestLoadingRequestDate = 0,
-			locationNewsIsFirstLoad = false,
 			industryNewsLoadingNoData = false,
 			locationNewsLoadingNoData = false;
 		var divEl = document.createElement("div"),
@@ -78,6 +84,7 @@
 			}
 		});
 		mui('#news-type').on('tap', 'a', function() {
+			mui('#pullrefresh').pullRefresh().scrollTo(0,0,100)
 			var id = this.getAttribute('id');
 			if (id == 'industry') {
 				newsType = 1;
@@ -89,6 +96,15 @@
 					mui('.mui-placeholder')[0].classList.add('mui-hidden');
 					mui('.mui-icon-clear')[0].classList.remove('mui-hidden');
 				}
+
+				var w = plus.nativeUI.showWaiting("　　 请等待...　　");
+				setTimeout(function() {
+					w.close();
+				}, 1500);
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().pulldownLoading();
+				}, 200);
+
 				if (!industryNewsLoadingNoData) {
 					mui('#pullrefresh').pullRefresh().refresh(true);
 				}
@@ -102,12 +118,15 @@
 					mui('.mui-placeholder')[0].classList.add('mui-hidden');
 					mui('.mui-icon-clear')[0].classList.remove('mui-hidden');
 				}
-				if (!locationNewsIsFirstLoad) {
-					locationNewsIsFirstLoad = true;
-					setTimeout(function() {
-						mui('#pullrefresh').pullRefresh().pullupLoading();
-					}, 200);
-				}
+
+				var w = plus.nativeUI.showWaiting("　　 请等待...　　");
+				setTimeout(function() {
+					w.close();
+				}, 1500);
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().pulldownLoading();
+				}, 200);
+
 				if (!locationNewsLoadingNoData) {
 					mui('#pullrefresh').pullRefresh().refresh(true);
 				}
@@ -132,8 +151,8 @@
 				var success = function(response) {
 						var news = response.body.list;
 						if (news.length > 0) {
-							industryNewsLatestRefreshRequestDate = Date.parse(news[0].created);
-							industryNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
+							industryNewsLatestRefreshRequestDate = app.getDateTimestamp(news[0].created);
+							industryNewsLatestLoadingRequestDate = app.getDateTimestamp(news[news.length - 1].created);
 							for (var i = 0, len = news.length; i < len; i++) {
 								divEl.innerHTML = newsTemplate(app.processNews(news[i]));
 								industryNewsEl.appendChild(divEl.firstElementChild);
@@ -157,8 +176,8 @@
 				var success = function(response) {
 						var news = response.body.list;
 						if (news.length > 0) {
-							locationNewsLatestRefreshRequestDate = Date.parse(news[0].created);
-							locationNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
+							locationNewsLatestRefreshRequestDate = app.getDateTimestamp(news[0].created);
+							locationNewsLatestLoadingRequestDate = app.getDateTimestamp(news[news.length - 1].created);
 							for (var i = 0, len = news.length; i < len; i++) {
 								divEl.innerHTML = newsTemplate(app.processNews(news[i]));
 								locationNewsEl.appendChild(divEl.firstElementChild);
@@ -200,9 +219,9 @@
 							var news = response.body.list;
 							if (news.length > 0) {
 								if (industryNewsLatestRefreshRequestDate == 0 && industryNewsLatestLoadingRequestDate == 0) {
-									industryNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
+									industryNewsLatestLoadingRequestDate = app.getDateTimestamp(news[news.length - 1].created);
 								}
-								industryNewsLatestRefreshRequestDate = Date.parse(news[0].created);
+								industryNewsLatestRefreshRequestDate = app.getDateTimestamp(news[0].created);
 								for (var i = news.length - 1; i >= 0; i--) {
 									divEl.innerHTML = newsTemplate(app.processNews(news[i]));
 									industryNewsEl.insertBefore(divEl.firstElementChild, industryNewsEl.firstElementChild);
@@ -220,9 +239,9 @@
 							var news = response.body.list;
 							if (news.length > 0) {
 								if (locationNewsLatestRefreshRequestDate == 0 && locationNewsLatestLoadingRequestDate == 0) {
-									locationNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
+									locationNewsLatestLoadingRequestDate = app.getDateTimestamp(news[news.length - 1].created);
 								}
-								locationNewsLatestRefreshRequestDate = Date.parse(news[0].created);
+								locationNewsLatestRefreshRequestDate = app.getDateTimestamp(news[0].created);
 								for (var i = news.length - 1; i >= 0; i--) {
 									divEl.innerHTML = newsTemplate(app.processNews(news[i]));
 									locationNewsEl.insertBefore(divEl.firstElementChild, locationNewsEl.firstElementChild);
@@ -247,9 +266,9 @@
 							var news = response.body.list;
 							if (news.length > 0) {
 								if (industryNewsLatestLoadingRequestDate == 0 && industryNewsLatestRefreshRequestDate == 0) {
-									industryNewsLatestRefreshRequestDate = Date.parse(news[0].created);
+									industryNewsLatestRefreshRequestDate = app.getDateTimestamp(news[0].created);
 								}
-								industryNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
+								industryNewsLatestLoadingRequestDate = app.getDateTimestamp(news[news.length - 1].created);
 								for (var i = 0, len = news.length; i < len; i++) {
 									divEl.innerHTML = newsTemplate(app.processNews(news[i]));
 									industryNewsEl.appendChild(divEl.firstElementChild);
@@ -270,9 +289,9 @@
 							var news = response.body.list;
 							if (news.length > 0) {
 								if (locationNewsLatestLoadingRequestDate == 0 && locationNewsLatestRefreshRequestDate == 0) {
-									locationNewsLatestRefreshRequestDate = Date.parse(news[0].created);
+									locationNewsLatestRefreshRequestDate = app.getDateTimestamp(news[0].created);
 								}
-								locationNewsLatestLoadingRequestDate = Date.parse(news[news.length - 1].created);
+								locationNewsLatestLoadingRequestDate = app.getDateTimestamp(news[news.length - 1].created);
 								for (var i = 0, len = news.length; i < len; i++) {
 									divEl.innerHTML = newsTemplate(app.processNews(news[i]));
 									locationNewsEl.appendChild(divEl.firstElementChild);

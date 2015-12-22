@@ -55,9 +55,7 @@
 	<script type="text/javascript" charset="UTF-8" src="../js/mui.min.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="../js/app.js"></script>
 	<script>
-		var contentLatestRefreshRequestDate = 0,
-			contentLatestLoadingRequestDate = 0,
-			contentLoadingNoData = false;
+		var contentLatestLoadingRequestDate = 0;
 		var divEl = document.createElement("div"),
 			contentSource = document.getElementById("content-template").innerText,
 			contentTemplate = Handlebars.compile(contentSource),
@@ -102,10 +100,7 @@
 							var contents = response.body.list;
 							console.log(JSON.stringify(contents));
 							if (contents.length > 0) {
-								if (contentLatestRefreshRequestDate == 0 && contentLatestLoadingRequestDate == 0) {
-									contentLatestRefreshRequestDate = Date.parse(contents[0].created);
-								}
-								contentLatestLoadingRequestDate = Date.parse(contents[contents.length - 1].created);
+								contentLatestLoadingRequestDate = app.getDateTimestamp(contents[contents.length - 1].created);
 								for (var i = 0, len = contents.length; i < len; i++) {
 									divEl.innerHTML = contentTemplate(app.processInvestorg(contents[i]));
 									contentEl.appendChild(divEl.firstElementChild);

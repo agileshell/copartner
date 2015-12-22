@@ -9,6 +9,9 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<style>
+			.mui-scroll-wrapper {
+				top: 35px;
+			}
 			.new-item {
 				padding: 15px 0 0 15px;
 				border-bottom: 1px solid #c8c7cc;
@@ -83,14 +86,16 @@
 			</div>
 		</div>
 		<div class="mui-content">
-			<div id="pullrefresh">
-				<div id="requirement-item" class="mui-control-content mui-active">
-					<ul id="requirement-list" class="mui-table-view">
-					</ul>
-				</div>
-				<div id="project-item" class="mui-control-content">
-					<ul id="project-list" class="mui-table-view">
-					</ul>
+			<div id="pullrefresh"class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<div id="requirement-item" class="mui-control-content mui-active">
+						<ul id="requirement-list" class="mui-table-view">
+						</ul>
+					</div>
+					<div id="project-item" class="mui-control-content">
+						<ul id="project-list" class="mui-table-view">
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -179,7 +184,6 @@
 			requirementLatestLoadingRequestDate = 0,
 			projectLatestRefreshRequestDate = 0,
 			projectLatestLoadingRequestDate = 0,
-			projectIsFirstLoad = false,
 			requirementLoadingNoData = false,
 			projectLoadingNoData = false;
 		var divEl = document.createElement("div"),
@@ -335,17 +339,29 @@
 				plus.webview.currentWebview().parent().evalJS("changeAction('"+ id + "')");
 				if (id == 'requirement') {
 					rzrzType = 1;
+
+					var w = plus.nativeUI.showWaiting("　　 请等待...　　");
+					setTimeout(function() {
+						w.close();
+					}, 1500);
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pulldownLoading();
+					}, 200);
+
 					if (!requirementLoadingNoData) {
 						mui('#pullrefresh').pullRefresh().refresh(true);
 					}
 				} else {
 					rzrzType = 2;
-					if (!projectIsFirstLoad) {
-						projectIsFirstLoad = true;
-						setTimeout(function() {
-							mui('#pullrefresh').pullRefresh().pullupLoading();
-						}, 200);
-					}
+
+					var w = plus.nativeUI.showWaiting("　　 请等待...　　");
+					setTimeout(function() {
+						w.close();
+					}, 1500);
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pulldownLoading();
+					}, 200);
+
 					if (!projectLoadingNoData) {
 						mui('#pullrefresh').pullRefresh().refresh(true);
 					}
@@ -362,9 +378,9 @@
 							if (items.length > 0) {
 								//数据是按时间倒叙排列的
 								if (requirementLatestRefreshRequestDate == 0 && requirementLatestLoadingRequestDate == 0) {
-									requirementLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+									requirementLatestLoadingRequestDate = app.getDateTimestamp(items[items.length - 1].created);
 								}
-								requirementLatestRefreshRequestDate = Date.parse(items[0].created);
+								requirementLatestRefreshRequestDate = app.getDateTimestamp(items[0].created);
 								for (var i = items.length - 1; i >= 0; i--) {
 									if (ids != '') {
 										ids = ids + ',' + items[i].id;
@@ -388,9 +404,9 @@
 							if (items.length > 0) {
 								//数据是按时间倒叙排列的
 								if (projectLatestRefreshRequestDate == 0 && projectLatestLoadingRequestDate == 0) {
-									projectLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+									projectLatestLoadingRequestDate = app.getDateTimestamp(items[items.length - 1].created);
 								}
-								projectLatestRefreshRequestDate = Date.parse(items[0].created);
+								projectLatestRefreshRequestDate = app.getDateTimestamp(items[0].created);
 								for (var i = items.length - 1; i >= 0; i--) {
 									if (items[i].isliked) {
 										items[i].liked = 'selected';
@@ -421,9 +437,9 @@
 							if (items.length > 0) {
 								//数据是按时间倒叙排列的
 								if (requirementLatestRefreshRequestDate == 0 && requirementLatestLoadingRequestDate == 0) {
-									requirementLatestRefreshRequestDate = Date.parse(items[0].created);
+									requirementLatestRefreshRequestDate = app.getDateTimestamp(items[0].created);
 								}
-								requirementLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+								requirementLatestLoadingRequestDate = app.getDateTimestamp(items[items.length - 1].created);
 								for (var i = 0, len = items.length; i < len; i++) {
 									if (ids != '') {
 										ids = ids + ',' + items[i].id;
@@ -450,9 +466,9 @@
 							if (items.length > 0) {
 								//数据是按时间倒叙排列的
 								if (projectLatestRefreshRequestDate == 0 && projectLatestLoadingRequestDate == 0) {
-									projectLatestRefreshRequestDate = Date.parse(items[0].created);
+									projectLatestRefreshRequestDate = app.getDateTimestamp(items[0].created);
 								}
-								projectLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+								projectLatestLoadingRequestDate = app.getDateTimestamp(items[items.length - 1].created);
 								for (var i = 0, len = items.length; i < len; i++) {
 									if (items[i].isliked) {
 										items[i].liked = 'selected';

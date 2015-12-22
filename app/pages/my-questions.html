@@ -9,6 +9,9 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<style>
+			.mui-scroll-wrapper {
+				top: 45px;
+			}
 			.tutor-item {
 				display: block;
 				font-size: 12px;
@@ -38,9 +41,11 @@
 			<h1 id="title" class="mui-title c-title">我的提问</h1>
 		</header>
 		<div class="mui-content" style="padding-top: 44px;">
-			<div id="pullrefresh">
-				<ul id="question-list" class="mui-table-view mui-table-view-chevron">
-				</ul>
+			<div id="pullrefresh" class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul id="question-list" class="mui-table-view mui-table-view-chevron">
+					</ul>
+				</div>
 			</div>
 		</div>
 	</body>
@@ -128,9 +133,9 @@
 					var questions = response.body;
 					if (questions.length > 0) {
 						if (questionLatestRefreshRequestDate == 0 && questionLatestLoadingRequestDate == 0) {
-							questionLatestLoadingRequestDate = Date.parse(questions[questions.length - 1].created);
+							questionLatestLoadingRequestDate = app.getDateTimestamp(questions[questions.length - 1].created);
 						}
-						questionLatestRefreshRequestDate = Date.parse(questions[0].created);
+						questionLatestRefreshRequestDate = app.getDateTimestamp(questions[0].created);
 						for (var i = questions.length - 1; i >= 0; i--) {
 							divEl.innerHTML = questionTemplate(app.processQuestion(questions[i]));
 							questionEl.insertBefore(divEl.firstElementChild, questionEl.firstElementChild);
@@ -152,9 +157,9 @@
 					var questions = response.body;
 					if (questions.length > 0) {
 						if (questionLatestLoadingRequestDate == 0 && questionLatestRefreshRequestDate == 0) {
-							questionLatestRefreshRequestDate = Date.parse(questions[0].created);
+							questionLatestRefreshRequestDate = app.getDateTimestamp(questions[0].created);
 						}
-						questionLatestLoadingRequestDate = Date.parse(questions[questions.length - 1].created);
+						questionLatestLoadingRequestDate = app.getDateTimestamp(questions[questions.length - 1].created);
 						for (var i = 0, len = questions.length; i < len; i++) {
 							divEl.innerHTML = questionTemplate(app.processQuestion(questions[i]));
 							questionEl.appendChild(divEl.firstElementChild);

@@ -9,6 +9,9 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/app.css" />
 		<style>
+			.mui-scroll-wrapper {
+				top: 68px;
+			}
 			.tutor-item {
 				display: block;
 				font-size: 12px;
@@ -48,14 +51,16 @@
 			</div>
 		</div>
 		<div class="mui-content">
-			<div id="pullrefresh">
-				<div id="tutor-item" class="mui-control-content mui-active">
-					<ul id="tutor-list" class="mui-table-view mui-table-view-chevron">
-					</ul>
-				</div>
-				<div id="question-item" class="mui-control-content">
-					<ul id="question-list" class="mui-table-view mui-table-view-chevron">
-					</ul>
+			<div id="pullrefresh" class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<div id="tutor-item" class="mui-control-content mui-active">
+						<ul id="tutor-list" class="mui-table-view mui-table-view-chevron">
+						</ul>
+					</div>
+					<div id="question-item" class="mui-control-content">
+						<ul id="question-list" class="mui-table-view mui-table-view-chevron">
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -228,8 +233,8 @@
 					var success = function(response) {
 							var tutors = response.body;
 							if (tutors.length > 0) {
-								tutorLatestRefreshRequestDate = Date.parse(tutors[0].created);
-								tutorLatestLoadingRequestDate = Date.parse(tutors[tutors.length - 1].created);
+								tutorLatestRefreshRequestDate = app.getDateTimestamp(tutors[0].created);
+								tutorLatestLoadingRequestDate = app.getDateTimestamp(tutors[tutors.length - 1].created);
 								for (var i = 0, len = tutors.length; i < len; i++) {
 									divEl.innerHTML = tutorTemplate(app.processTutor(tutors[i]));
 									tutorEl.insertBefore(divEl.firstElementChild, tutorEl.firstElementChild);
@@ -253,8 +258,8 @@
 					var success = function(response) {
 							var questions = response.body.list;
 							if (questions.length > 0) {
-								questionLatestRefreshRequestDate = Date.parse(questions[0].created);
-								questionLatestLoadingRequestDate = Date.parse(questions[questions.length - 1].created);
+								questionLatestRefreshRequestDate = app.getDateTimestamp(questions[0].created);
+								questionLatestLoadingRequestDate = app.getDateTimestamp(questions[questions.length - 1].created);
 								for (var i = questions.length - 1; i >= 0; i--) {
 									divEl.innerHTML = questionTemplate(app.processQuestion(questions[i]));
 									questionEl.insertBefore(divEl.firstElementChild, questionEl.firstElementChild);
@@ -278,9 +283,9 @@
 								var tutors = response.body;
 								if (tutors.length > 0) {
 									if (tutorLatestRefreshRequestDate == 0 && tutorLatestLoadingRequestDate == 0) {
-										tutorLatestLoadingRequestDate = Date.parse(tutors[tutors.length - 1].created);
+										tutorLatestLoadingRequestDate = app.getDateTimestamp(tutors[tutors.length - 1].created);
 									}
-									tutorLatestRefreshRequestDate = Date.parse(tutors[0].created);
+									tutorLatestRefreshRequestDate = app.getDateTimestamp(tutors[0].created);
 									for (var i = tutors.length - 1; i >= 0; i--) {
 										divEl.innerHTML = tutorTemplate(app.processTutor(tutors[i]));
 										tutorEl.insertBefore(divEl.firstElementChild, tutorEl.firstElementChild);
@@ -298,9 +303,9 @@
 								var questions = response.body.list;
 								if (questions.length > 0) {
 									if (questionLatestRefreshRequestDate == 0 && questionLatestLoadingRequestDate == 0) {
-										questionLatestLoadingRequestDate = Date.parse(questions[questions.length - 1].created);
+										questionLatestLoadingRequestDate = app.getDateTimestamp(questions[questions.length - 1].created);
 									}
-									questionLatestRefreshRequestDate = Date.parse(questions[0].created);
+									questionLatestRefreshRequestDate = app.getDateTimestamp(questions[0].created);
 									for (var i = questions.length - 1; i >= 0; i--) {
 										divEl.innerHTML = questionTemplate(app.processQuestion(questions[i]));
 										questionEl.insertBefore(divEl.firstElementChild, questionEl.firstElementChild);
@@ -325,9 +330,9 @@
 								var tutors = response.body;
 								if (tutors.length > 0) {
 									if (tutorLatestLoadingRequestDate == 0 && tutorLatestRefreshRequestDate == 0) {
-										tutorLatestRefreshRequestDate = Date.parse(tutors[0].created);
+										tutorLatestRefreshRequestDate = app.getDateTimestamp(tutors[0].created);
 									}
-									tutorLatestLoadingRequestDate = Date.parse(tutors[tutors.length - 1].created);
+									tutorLatestLoadingRequestDate = app.getDateTimestamp(tutors[tutors.length - 1].created);
 									for (var i = 0, len = tutors.length; i < len; i++) {
 										divEl.innerHTML = tutorTemplate(app.processTutor(tutors[i]));
 										tutorEl.appendChild(divEl.firstElementChild);
@@ -348,9 +353,9 @@
 								var questions = response.body.list;
 								if (questions.length > 0) {
 									if (questionLatestLoadingRequestDate == 0 && questionLatestRefreshRequestDate == 0) {
-										questionLatestRefreshRequestDate = Date.parse(questions[0].created);
+										questionLatestRefreshRequestDate = app.getDateTimestamp(questions[0].created);
 									}
-									questionLatestLoadingRequestDate = Date.parse(questions[questions.length - 1].created);
+									questionLatestLoadingRequestDate = app.getDateTimestamp(questions[questions.length - 1].created);
 									for (var i = 0, len = questions.length; i < len; i++) {
 										divEl.innerHTML = questionTemplate(app.processQuestion(questions[i]));
 										questionEl.appendChild(divEl.firstElementChild);

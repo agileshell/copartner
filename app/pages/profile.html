@@ -410,7 +410,7 @@
 				var success = function(response) {
 						var items = response.body.list;
 						if (items.length > 0) {
-							requirementLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+							requirementLatestLoadingRequestDate = app.getDateTimestamp(items[items.length - 1].created);
 							for (var i = 0, len = items.length; i < len; i++) {
 								requirementDivEl.innerHTML = requirementTemplate(app.processRequirement(items[i]));
 								requirementEl.appendChild(requirementDivEl.firstElementChild);
@@ -431,7 +431,7 @@
 				var success = function(response) {
 						var items = response.body.list;
 						if (items.length > 0) {
-							projectLatestLoadingRequestDate = Date.parse(items[items.length - 1].created);
+							projectLatestLoadingRequestDate = app.getDateTimestamp(items[items.length - 1].created);
 							for (var i = 0, len = items.length; i < len; i++) {
 								projectDivEl.innerHTML = projectTemplate(items[i]);
 								projectEl.appendChild(projectDivEl.firstElementChild);

@@ -12,6 +12,13 @@
 			return (password.length >= 6 && password.length <= 16 && password.match(/^[0-9a-zA-Z]*$/));
 		};
 
+	owner.getDateTimestamp = function(dateStr) {
+		var arr = dateStr.split(/[- :]/);
+		var dateObj = new Date(arr[0], arr[1]-1, arr[2], arr[3], arr[4], arr[5]);
+
+		return dateObj.getTime();
+	};
+
 	owner.apiURL = 'http://123.57.55.59:8080/';
 
 	/**
