@@ -39,7 +39,14 @@
 					top: '45px',
 					bottom: '0px',
 				}
-			}]
+			}],
+			preloadPages: [{
+				id: 'course_detail',
+				url: 'course_detail.html',
+				styles: {
+					popGesture: 'hide'
+				}
+ 			}]
 		});
 		var newsWebview = null;
 		document.querySelector('header').addEventListener('doubletap', function() {
