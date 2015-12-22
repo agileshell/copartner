@@ -19,7 +19,7 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
@@ -43,7 +43,6 @@ import com.insoul.ti.vo.ContestEntryVO;
  * @version 1.0.0
  * @since 2015年7月4日 下午11:37:15
  */
-@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/contestproject")
 @Permission("authc")
