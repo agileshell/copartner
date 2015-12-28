@@ -13,60 +13,66 @@ import com.insoul.copartner.constant.ResponseStatus;
 
 public class ResponseUtil {
 
+	public static final String RESPONSE_BODY = "body";
 
-    public static final String RESPONSE_BODY = "body";
+	public static final String RESPONSE_STATUS = "status";
 
-    public static final String RESPONSE_STATUS = "status";
+	public static final String RESPONSE_ERROR = "error";
 
-    public static final String RESPONSE_ERROR = "error";
+	public static final String RESPONSE_ERROR_CODE = "code";
 
-    public static final String RESPONSE_ERROR_CODE = "code";
+	public static final String RESPONSE_ERROR_MSG = "msg";
 
-    public static final String RESPONSE_ERROR_MSG = "msg";
+	public static ResponseEntity<Object> json(Object object, HttpStatus statusCode) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", CommonConstant.APPLICATION_JSON);
 
-    public static ResponseEntity<Map<String, Object>> jsonSucceed(Object object, HttpStatus statusCode) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", CommonConstant.APPLICATION_JSON);
+		return new ResponseEntity<Object>(object, headers, statusCode);
+	}
 
-        Map<String, Object> map = jsonSucceed(object);
+	public static ResponseEntity<Map<String, Object>> jsonSucceed(Object object, HttpStatus statusCode) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", CommonConstant.APPLICATION_JSON);
 
-        return new ResponseEntity<Map<String, Object>>(map, headers, statusCode);
-    }
+		Map<String, Object> map = jsonSucceed(object);
 
-    public static Map<String, Object> jsonSucceed(Object object) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put(RESPONSE_BODY, object);
-        map.put(RESPONSE_STATUS, ResponseStatus.SUCCEED.toString());
+		return new ResponseEntity<Map<String, Object>>(map, headers, statusCode);
+	}
 
-        return map;
-    }
+	public static Map<String, Object> jsonSucceed(Object object) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(RESPONSE_BODY, object);
+		map.put(RESPONSE_STATUS, ResponseStatus.SUCCEED.toString());
 
-    public static ResponseEntity<Map<String, Object>> jsonFailed(String errorMessage, HttpStatus statusCode) {
-        return jsonFailed(errorMessage, ResponseCode.SERVER_ERROR, statusCode);
-    }
+		return map;
+	}
 
-    public static ResponseEntity<Map<String, Object>> jsonFailed(Object errorMessage, ResponseCode code,
-            HttpStatus statusCode) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", CommonConstant.APPLICATION_JSON);
+	public static ResponseEntity<Map<String, Object>> jsonFailed(String errorMessage, HttpStatus statusCode) {
+		return jsonFailed(errorMessage, ResponseCode.SERVER_ERROR, statusCode);
+	}
 
-        Map<String, Object> map = jsonFailed(errorMessage, code);
+	public static ResponseEntity<Map<String, Object>> jsonFailed(Object errorMessage, ResponseCode code,
+			HttpStatus statusCode) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", CommonConstant.APPLICATION_JSON);
 
-        return new ResponseEntity<Map<String, Object>>(map, headers, statusCode);
-    }
+		Map<String, Object> map = jsonFailed(errorMessage, code);
 
-    public static Map<String, Object> jsonFailed(Object errorMessage, ResponseCode code) {
-        Map<String, Object> errorObj = new HashMap<String, Object>();
-        errorObj.put(RESPONSE_ERROR_CODE, code.getValue());
-        errorObj.put(RESPONSE_ERROR_MSG, errorMessage);
+		return new ResponseEntity<Map<String, Object>>(map, headers, statusCode);
+	}
 
-        Map<String, Object> error = new HashMap<String, Object>();
-        error.put(RESPONSE_ERROR, errorObj);
+	public static Map<String, Object> jsonFailed(Object errorMessage, ResponseCode code) {
+		Map<String, Object> errorObj = new HashMap<String, Object>();
+		errorObj.put(RESPONSE_ERROR_CODE, code.getValue());
+		errorObj.put(RESPONSE_ERROR_MSG, errorMessage);
 
-        Map<String, Object> body = new HashMap<String, Object>();
-        body.put(RESPONSE_BODY, error);
-        body.put(RESPONSE_STATUS, ResponseStatus.FAILED.toString());
+		Map<String, Object> error = new HashMap<String, Object>();
+		error.put(RESPONSE_ERROR, errorObj);
 
-        return body;
-    }
+		Map<String, Object> body = new HashMap<String, Object>();
+		body.put(RESPONSE_BODY, error);
+		body.put(RESPONSE_STATUS, ResponseStatus.FAILED.toString());
+
+		return body;
+	}
 }
