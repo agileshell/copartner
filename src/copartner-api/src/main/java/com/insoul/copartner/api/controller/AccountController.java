@@ -116,7 +116,7 @@ public class AccountController extends BaseController {
     public ResponseEntity<Map<String, Object>> signInAccount(@PathVariable("providerId") Integer providerId,
             @Valid SignInByThirdPartRequest signInBy3rdPartRequest, BindingResult validResult,
             HttpServletRequest request, HttpServletResponse response, HttpSession session) throws CException {
-        if (providerId > 3 || providerId < 1 || validResult.hasErrors()) {
+        if (providerId > 3 || providerId < 1 || validResult.hasErrors() || signInBy3rdPartRequest.getUid().equalsIgnoreCase("undefined") ) {
             throw CExceptionFactory.getException(DataValidationException.class, ResponseCode.INVALID_PARAMETER);
         }
         signInBy3rdPartRequest.setProviderId(providerId);

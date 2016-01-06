@@ -82,6 +82,7 @@ public class OrderServiceImpl extends BaseServiceImpl implements IOrderService {
 		order.setUserQuestion(requestData.getUserQuestion());
 		order.setPaymentType("wechat");
 		// TODO
+		order.setStatus("paid");
 		order.setMinutes(5);
 		order.setAmount(new BigDecimal(0.00));
 		order.setCreated(new Date());
