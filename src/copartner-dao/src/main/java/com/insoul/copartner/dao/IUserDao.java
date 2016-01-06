@@ -23,6 +23,8 @@ public interface IUserDao extends IBaseDao<User, Long> {
 
     List<User> queryTutor(TutorCriteria criteria);
 
+    Long countTutor(TutorCriteria criteria);
+
     List<User> findUsers(String keyword);
     
     String getUserName(Long id);

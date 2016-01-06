@@ -14,6 +14,9 @@
 			<a <c:if test="${viewname == 'user_list'}"> class="open" </c:if> href="/user/list"><i class="icon-user"></i>用户列表</a>
 		</li>
 		<li>
+            <a <c:if test="${viewname == 'tutor_list'}"> class="open" </c:if> href="/tutor/list"><i class="icon-user"></i>导师管理</a>
+        </li>
+		<li>
 			<a <c:if test="${viewname == 'content_list'}"> class="open" </c:if> href="/content/list"><i class="icon-book"></i>政策解读</a>
 		</li>
         

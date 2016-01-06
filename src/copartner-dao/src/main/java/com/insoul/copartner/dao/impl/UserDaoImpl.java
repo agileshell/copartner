@@ -151,6 +151,34 @@ public class UserDaoImpl extends BaseDaoImpl<User, Long> implements IUserDao {
         return query.getResultList();
     }
 
+	@Override
+	public Long countTutor(TutorCriteria criteria) {
+		StringBuilder conditionStr = new StringBuilder();
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (null != criteria.getStatus() && criteria.getStatus().length > 0) {
+			conditionStr.append(" AND status IN(:status)");
+			params.put("status", Arrays.asList(criteria.getStatus()));
+		}
+		if (StringUtils.isNotBlank(criteria.getKeyword())) {
+			conditionStr.append(" AND name LIKE :name");
+			params.put("name", "%" + criteria.getKeyword() + "%");
+		}
+		if (null != criteria.getFrom()) {
+			conditionStr.append(" AND created > :from");
+			params.put("from", criteria.getFrom());
+		}
+		if (null != criteria.getTo()) {
+			conditionStr.append(" AND created < :to");
+			params.put("to", criteria.getTo());
+		}
+
+		StringBuilder hql = new StringBuilder("SELECT COUNT(*) FROM User WHERE status = 'active' AND roleId = 3");
+		hql.append(conditionStr);
+		Query query = createQuery(hql.toString(), params);
+
+		return (Long) query.getSingleResult();
+	}
+
     @SuppressWarnings("unchecked")
     @Override
     public List<User> findUsers(String keyword) {
