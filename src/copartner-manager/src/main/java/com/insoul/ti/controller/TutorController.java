@@ -144,6 +144,7 @@ public class TutorController extends WebBase {
 		}
 
 		User tutor = new User();
+		tutor.setRoleId(3L);
 		tutor.setName(request.getName());
 		tutor.setMobile(mobile);
 		tutor.setAvatar(path);
@@ -159,6 +160,7 @@ public class TutorController extends WebBase {
 		tutor.setPassword(PasswordUtil.encodePassword(password, salt));
 
 		setDefaultValue(tutor);
+		tutor.setClientIp(0L);
 
 		userDao.save(tutor);
 

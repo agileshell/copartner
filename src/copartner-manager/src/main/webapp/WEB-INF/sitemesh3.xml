@@ -19,6 +19,7 @@
 	<mapping path="/status/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
 	<mapping path="/team/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
 	<mapping path="/user/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
+	<mapping path="/tutor/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
 	
 	<mapping path="/pioneerpark/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>
 	<mapping path="/investorg/*" decorator="/WEB-INF/templates/decorators/default.jsp"/>

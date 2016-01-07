@@ -10,8 +10,8 @@
 		<div class="page-head">
 			<h2 class="pull-left">导师管理</h2>
 			<div class="bread-crumb pull-right">
-				<a href="/home"><i class="icon-home"></i>首页</a><span class="divider">/</span>导师列表
-			</div>
+                <a class="btn btn-default btn-sm" href="/tutor/add">新建导师</a>
+            </div>
 			<div class="clearfix"></div>
 		</div>
 		<div class="matter">
