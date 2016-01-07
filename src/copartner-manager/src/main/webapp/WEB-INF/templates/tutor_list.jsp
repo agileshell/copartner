@@ -54,7 +54,7 @@
 													<td>${c.startupExp}</td>
 													<td>
 														<div class="btn-group">
-															<a class="btn btn-xs btn-default" href="javascript:void(0);">
+															<a class="btn btn-xs btn-default" href="edit/${c.tutorId}">
 																编辑
 															</a>
 														</div>

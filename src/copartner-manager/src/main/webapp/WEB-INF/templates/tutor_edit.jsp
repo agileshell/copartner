@@ -26,8 +26,8 @@
                             </div>
                             <div class="widget-content">
                                 <div class="padd">
-                                    <form id="add_form" class="form-horizontal" role="form" action="/tutor/update" method="post" enctype="multipart/form-data">
-                                        <input name="tutorId" id="tutorId" type="hidden" value="${tutor.tutorId}"></input>
+                                    <form id="add_form" class="form-horizontal" role="form" action="/tutor/update/${tutor.id}" method="post" enctype="multipart/form-data">
+                                        <input name="tutorId" id="tutorId" type="hidden" value="${tutor.id}"></input>
                                         <div class="form-group">
                                             <label class="col-lg-2 control-label">名称<span class="cofrequired">*</span>:</label>
                                             <div class="col-lg-10">
@@ -41,7 +41,17 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-2 control-label">头像:</label>
+                                            <label class="col-lg-2 control-label">原头像:</label>
+                                            <div class="col-lg-10">
+	                                            <div class="gallery">
+	                                                <a href="<t:cdn domain="${cdnDomain}" path="${tutor.avatar}"></t:cdn>" class="prettyPhoto[pp_gal]">
+	                                                    <img src="<t:cdn domain="${cdnDomain}" path="${tutor.avatar}"></t:cdn>" width="500">
+	                                                </a>
+	                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">新头像:</label>
                                             <div class="col-lg-10">
                                                 <input name="avatar" id="avatar" type="file" class="form-control" placeholder="LOGO"></input>
                                             </div>

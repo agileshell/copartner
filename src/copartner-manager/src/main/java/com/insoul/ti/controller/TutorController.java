@@ -11,6 +11,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -79,6 +80,7 @@ public class TutorController extends WebBase {
 			TutorListVO tutorVO = new TutorListVO();
 			tutorVO.setTutorId(user.getId());
 			tutorVO.setName(user.getName());
+			tutorVO.setMobile(user.getMobile());
 			tutorVO.setTitle(user.getTitle());
 			tutorVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
 			tutorVO.setManagementExp(user.getManagementExp());
@@ -119,6 +121,15 @@ public class TutorController extends WebBase {
 		return mv;
 	}
 
+	@RequestMapping("/edit/{tutorId}")
+	public ModelAndView edit(@PathVariable Long tutorId, ViewRequest req) {
+		ModelAndView mv = createModelView("tutor_edit", req);
+		User tutor = userDao.get(tutorId);
+		mv.addObject("tutor", tutor);
+		mv.addObject("viewname", "tutor_list");
+		return mv;
+	}
+
 	@RequestMapping("/save")
 	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
 	public ModelAndView save(TutorAddRequest request) throws CException {
@@ -152,6 +163,7 @@ public class TutorController extends WebBase {
 		tutor.setTitle(request.getTitle());
 		tutor.setStartupExp(request.getStartupExp());
 		tutor.setManagementExp(request.getManagementExp());
+		tutor.setDomains(request.getDomains());
 		tutor.setCreated(now);
 
 		String salt = PasswordUtil.genSalt();
@@ -163,6 +175,46 @@ public class TutorController extends WebBase {
 		tutor.setClientIp(0L);
 
 		userDao.save(tutor);
+
+		return new ModelAndView("redirect:/tutor/list");
+	}
+
+	@RequestMapping("/update/{tutorId}")
+	@Transactional(value = "transactionManager", rollbackFor = Throwable.class)
+	public ModelAndView update(@PathVariable Long tutorId, TutorAddRequest request) throws CException {
+		User tutor = userDao.get(tutorId);
+		if (null == tutor) {
+			return new ModelAndView("redirect:/tutor/list");
+		}
+
+		String mobile = request.getMobile();
+		User existedUser = userDao.getUserByMobile(mobile);
+		if (null != existedUser && !existedUser.getId().equals(tutorId)) {
+			throw CExceptionFactory.getException(CException.class, ResponseCode.MOBILE_REGISTERED);
+		}
+
+		MultipartFile image = request.getAvatar();
+		if (image != null) {
+			String fileType = FileUtil.getFileType(image.getOriginalFilename());
+			if (StringUtils.isNotBlank(fileType)) {
+				String fileName = new StringBuilder().append(UUID.randomUUID()).append(".").append(fileType).toString();
+				try {
+					String path = CDNUtil.uploadFile(image.getInputStream(), fileName);
+					tutor.setAvatar(path);
+				} catch (Exception e) {
+					log.error("UploadFile Error.", e);
+				}
+			}
+		}
+
+		tutor.setName(request.getName());
+		tutor.setMobile(mobile);
+		tutor.setIntroduction(request.getIntroduction());
+		tutor.setTitle(request.getTitle());
+		tutor.setStartupExp(request.getStartupExp());
+		tutor.setManagementExp(request.getManagementExp());
+		tutor.setDomains(request.getDomains());
+		tutor.setUpdated(new Date());
 
 		return new ModelAndView("redirect:/tutor/list");
 	}
