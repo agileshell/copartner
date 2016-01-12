@@ -27,89 +27,95 @@ import com.insoul.copartner.vo.request.TutorListRequest;
 @Service
 public class TutorServiceImpl extends BaseServiceImpl implements ITutorService {
 
-    @Resource
-    private IUserDao userDao;
+	@Resource
+	private IUserDao userDao;
 
-    @Resource
-    private IIndustryDomainDao industryDomainDao;
+	@Resource
+	private IIndustryDomainDao industryDomainDao;
 
-    @Override
-    public List<TutorVO> listTutors(TutorListRequest requestData) {
-        List<TutorVO> tutorVOs = new ArrayList<TutorVO>();
+	@Override
+	public List<TutorVO> listTutors(TutorListRequest requestData) {
+		List<TutorVO> tutorVOs = new ArrayList<TutorVO>();
 
-        TutorCriteria criteria = new TutorCriteria();
-        criteria.setStatus(new String[] { "active" });
-        criteria.setKeyword(requestData.getKeyword());
-        criteria.setOffset(requestData.getOffset());
-        criteria.setLimit(requestData.getLimit());
-        criteria.setFrom(
-                (null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
-        criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
+		TutorCriteria criteria = new TutorCriteria();
+		criteria.setStatus(new String[] { "active" });
+		criteria.setKeyword(requestData.getKeyword());
+		criteria.setOffset(requestData.getOffset());
+		criteria.setLimit(requestData.getLimit());
+		criteria.setFrom(
+				(null != requestData.getFrom() && requestData.getFrom() > 0) ? new Date(requestData.getFrom()) : null);
+		criteria.setTo((null != requestData.getTo() && requestData.getTo() > 0) ? new Date(requestData.getTo()) : null);
 
-        List<User> users = userDao.queryTutor(criteria);
-        for (User user : users) {
-            TutorVO tutorVO = new TutorVO();
-            tutorVO.setTutorId(user.getId());
-            tutorVO.setName(user.getName());
-            tutorVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
-            Long professionId = user.getProfessionId();
-            tutorVO.setProfessionId(professionId);
-            if (professionId == 1) {
-                tutorVO.setProfessionName("学术型");
-            } else if (professionId == 2) {
-                tutorVO.setProfessionName("实业型");
-            }
-            tutorVO.setCreated(user.getCreated());
+		List<User> users = userDao.queryTutor(criteria);
+		for (User user : users) {
+			TutorVO tutorVO = new TutorVO();
+			tutorVO.setTutorId(user.getId());
+			tutorVO.setName(user.getName());
+			tutorVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+			Long professionId = user.getProfessionId();
+			tutorVO.setProfessionId(professionId);
+			if (professionId == 1) {
+				tutorVO.setProfessionName("学术型");
+			} else if (professionId == 2) {
+				tutorVO.setProfessionName("实业型");
+			}
+			tutorVO.setCreated(user.getCreated());
 
-            if (StringUtils.isNotBlank(user.getDomains())) {
-                String domainIds[] = user.getDomains().split(",");
-                IndustryDomain industryDomain = industryDomainDao.get(Long.valueOf(domainIds[0]));
-                if (null != industryDomain) {
-                    IndustryDomainVO industryDomainVO = new IndustryDomainVO();
-                    industryDomainVO.setId(industryDomain.getId());
-                    industryDomainVO.setName(industryDomain.getName());
+			if (StringUtils.isNotBlank(user.getDomains())) {
+				String domainIds[] = user.getDomains().split(",");
+				IndustryDomain industryDomain = industryDomainDao.get(Long.valueOf(domainIds[0]));
+				if (null != industryDomain) {
+					IndustryDomainVO industryDomainVO = new IndustryDomainVO();
+					industryDomainVO.setId(industryDomain.getId());
+					industryDomainVO.setName(industryDomain.getName());
 
-                    tutorVO.setDomain(industryDomainVO);
-                }
-            }
+					tutorVO.setDomain(industryDomainVO);
+				}
+			}
 
-            tutorVOs.add(tutorVO);
-        }
+			tutorVOs.add(tutorVO);
+		}
 
-        return tutorVOs;
-    }
+		return tutorVOs;
+	}
 
-    @Override
-    public TutorDetailVO getTutor(Long tutorId) throws CException {
-        User user = userDao.get(tutorId);
-        if (null == user || user.getRoleId() != 3) {
-            throw CExceptionFactory.getException(CException.class, ResponseCode.TUTOR_NOT_EXIST);
-        }
+	@Override
+	public TutorDetailVO getTutor(Long tutorId) throws CException {
+		User user = userDao.get(tutorId);
+		if (null == user || user.getRoleId() != 3) {
+			throw CExceptionFactory.getException(CException.class, ResponseCode.TUTOR_NOT_EXIST);
+		}
 
-        TutorDetailVO userDetailVO = new TutorDetailVO();
-        userDetailVO.setTutorId(user.getId());
-        userDetailVO.setName(user.getName());
-        userDetailVO.setMobile(user.getMobile());
-        userDetailVO.setEmail(user.getEmail());
-        userDetailVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
-        userDetailVO.setIntroduction(user.getIntroduction());
-        userDetailVO.setTitle(user.getTitle());
-        userDetailVO.setStartupExp(user.getStartupExp());
-        userDetailVO.setManagementExp(user.getManagementExp());
+		TutorDetailVO userDetailVO = new TutorDetailVO();
+		userDetailVO.setTutorId(user.getId());
+		userDetailVO.setName(user.getName());
+		userDetailVO.setMobile(user.getMobile());
+		userDetailVO.setEmail(user.getEmail());
+		userDetailVO.setAvatar(CDNUtil.getFullPath(user.getAvatar()));
+		userDetailVO.setIntroduction(user.getIntroduction());
+		userDetailVO.setTitle(user.getTitle());
+		userDetailVO.setStartupExp(user.getStartupExp());
+		userDetailVO.setManagementExp(user.getManagementExp());
+		userDetailVO.setTopic(user.getTopic());
+		// TODO
+		userDetailVO.setPrice(0 + "");
+		userDetailVO.setMinutes(5);
+		userDetailVO.setLikeCount(0);
+		userDetailVO.setOrderCount(0);
 
-        if (StringUtils.isNotBlank(user.getDomains())) {
-            String domainIds[] = user.getDomains().split(",");
-            IndustryDomain industryDomain = industryDomainDao.get(Long.valueOf(domainIds[0]));
-            if (null != industryDomain) {
-                IndustryDomainVO industryDomainVO = new IndustryDomainVO();
-                industryDomainVO.setId(industryDomain.getId());
-                industryDomainVO.setName(industryDomain.getName());
+		if (StringUtils.isNotBlank(user.getDomains())) {
+			String domainIds[] = user.getDomains().split(",");
+			IndustryDomain industryDomain = industryDomainDao.get(Long.valueOf(domainIds[0]));
+			if (null != industryDomain) {
+				IndustryDomainVO industryDomainVO = new IndustryDomainVO();
+				industryDomainVO.setId(industryDomain.getId());
+				industryDomainVO.setName(industryDomain.getName());
 
-                userDetailVO.setDomain(industryDomainVO);
-            }
-        }
+				userDetailVO.setDomain(industryDomainVO);
+			}
+		}
 
-        return userDetailVO;
-    }
+		return userDetailVO;
+	}
 
 }

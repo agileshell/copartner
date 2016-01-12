@@ -164,6 +164,7 @@ public class TutorController extends WebBase {
 		tutor.setStartupExp(request.getStartupExp());
 		tutor.setManagementExp(request.getManagementExp());
 		tutor.setDomains(request.getDomains());
+		tutor.setTopic(request.getTopic());
 		tutor.setCreated(now);
 
 		String salt = PasswordUtil.genSalt();
@@ -214,6 +215,7 @@ public class TutorController extends WebBase {
 		tutor.setStartupExp(request.getStartupExp());
 		tutor.setManagementExp(request.getManagementExp());
 		tutor.setDomains(request.getDomains());
+		tutor.setTopic(request.getTopic());
 		tutor.setUpdated(new Date());
 
 		return new ModelAndView("redirect:/tutor/list");

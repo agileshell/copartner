@@ -20,6 +20,8 @@ public class TutorAddRequest {
 
 	private String domains;// 行业
 
+	private String topic;
+
 	public String getName() {
 		return name;
 	}
@@ -82,6 +84,14 @@ public class TutorAddRequest {
 
 	public void setDomains(String domains) {
 		this.domains = domains;
+	}
+
+	public String getTopic() {
+		return topic;
+	}
+
+	public void setTopic(String topic) {
+		this.topic = topic;
 	}
 
 }

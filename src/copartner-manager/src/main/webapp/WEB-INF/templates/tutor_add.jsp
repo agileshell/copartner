@@ -4,6 +4,7 @@
 <%@taglib uri="/WEB-INF/ti-tags.tld" prefix="t"%>
 <head>
     <title>新建导师</title>
+    <link href="${cdn}js/kindeditor/themes/default/default.css" rel="stylesheet" />
 </head>
 <body>
     <div class="mainbar">
@@ -96,6 +97,12 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label class="col-lg-2 control-label">话题:</label>
+                                            <div class="col-lg-10">
+                                                <textarea name="topic" id="topic" class="form-control" rows="10" placeholder="话题">${tutor.topic}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label class="col-lg-2 control-label">简介:</label>
                                             <div class="col-lg-10">
                                                 <textarea name="introduction" id="introduction" class="form-control" rows="3" placeholder="简介"></textarea>
@@ -117,8 +124,61 @@
             </div>
         </div>
     </div>
+
+    <script charset="utf-8" src="${cdn}js/kindeditor/kindeditor-all-min.js"></script>
+    <script charset="utf-8" src="${cdn}js/kindeditor/lang/zh_CN.js"></script>
+    <script charset="utf-8" src="${cdn}js/kindeditor/plugins/autoheight/autoheight.js"></script>
     <script>
         $(document).ready(function() {
+            KindEditor.ready(function(K) {
+                window.editor = K.create('#topic', {
+                    langType : 'zh_CN',
+                    uploadJson : '/editor/file_upload',
+                    items : [
+                             'source', '|', 'undo', 'redo', '|', 'preview', 'template', 'code', 'cut', 'copy', 'paste',
+                             'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                             'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                             'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+                             'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                             'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
+                             'flash', 'media', 'insertfile', 'table', 'hr', 'baidumap', 'pagebreak',
+                             'anchor', 'link', 'unlink'
+                    ],
+                    minHeight : 300,
+                    width: "100%",
+                    minWidth: 300,
+                    autoHeightMode : true,
+                    afterCreate : function() {
+                        this.loadPlugin('autoheight');
+                    },
+                    afterBlur: function(){this.sync();}
+                });
+            });
+            KindEditor.ready(function(K) {
+                window.editor = K.create('#introduction', {
+                    langType : 'zh_CN',
+                    uploadJson : '/editor/file_upload',
+                    items : [
+                             'source', '|', 'undo', 'redo', '|', 'preview', 'template', 'code', 'cut', 'copy', 'paste',
+                             'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                             'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                             'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+                             'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                             'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
+                             'flash', 'media', 'insertfile', 'table', 'hr', 'baidumap', 'pagebreak',
+                             'anchor', 'link', 'unlink'
+                    ],
+                    minHeight : 300,
+                    width: "100%",
+                    minWidth: 300,
+                    autoHeightMode : true,
+                    afterCreate : function() {
+                        this.loadPlugin('autoheight');
+                    },
+                    afterBlur: function(){this.sync();}
+                });
+            });
+
         	$.validator.addMethod("isMobile", function(value, element) {
                 var length = value.length;
                 var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/;
@@ -149,10 +209,11 @@
                     avatar: {
                         required: true
                     },
+                    topic: {
+                        required: true
+                    },
                     introduction: {
-                        required: true,
-                        minlength: 2,
-                        maxlength: 255
+                        required: true
                     }
                 },
                 messages: {
@@ -173,10 +234,11 @@
                     avatar: {
                         required: "请上传头像"
                     },
+                    topic: {
+                        required: '话题不能为空'
+                    },
                     introduction: {
-                        required: '简介不能为空',
-                        minlength: "简介长度不能小于2个字符",
-                        maxlength: "简介长度不能大于255个字符"
+                        required: '简介不能为空'
                     }
                 },
                 submitHandler: function(form) {

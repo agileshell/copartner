@@ -17,5 +17,12 @@
             <artifactId>copartner-dao</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.yuntongxun</groupId>
+            <artifactId>ccp-rest</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/CCP_REST_SDK_JAVA_v2.7r.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

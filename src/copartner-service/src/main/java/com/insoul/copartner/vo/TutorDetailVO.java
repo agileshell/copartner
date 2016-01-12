@@ -4,106 +4,156 @@ import java.io.Serializable;
 
 public class TutorDetailVO implements Serializable {
 
-    private static final long serialVersionUID = -7843640491980037840L;
+	private static final long serialVersionUID = -7843640491980037840L;
 
-    private Long tutorId;
+	private Long tutorId;
 
-    private String name;
+	private String name;
 
-    private String avatar;
+	private String avatar;
 
-    private IndustryDomainVO domain;
+	private IndustryDomainVO domain;
 
-    private String email;
+	private String email;
 
-    private String mobile;
+	private String mobile;
 
-    private String introduction;
+	private String introduction;
 
-    private String title; // 职务
+	private String title; // 职务
 
-    private String startupExp;// 创业经验
+	private String startupExp;// 创业经验
 
-    private String managementExp;// 管理经验
+	private String managementExp;// 管理经验
 
-    public Long getTutorId() {
-        return tutorId;
-    }
+	private String topic; // 话题
 
-    public void setTutorId(Long tutorId) {
-        this.tutorId = tutorId;
-    }
+	private String price;// 价格
 
-    public String getName() {
-        return name;
-    }
+	private int minutes;// 分钟
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	private int orderCount;// 预约人数
 
-    public String getAvatar() {
-        return avatar;
-    }
+	private int likeCount;// 赞人数
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
+	public Long getTutorId() {
+		return tutorId;
+	}
 
-    public IndustryDomainVO getDomain() {
-        return domain;
-    }
+	public void setTutorId(Long tutorId) {
+		this.tutorId = tutorId;
+	}
 
-    public void setDomain(IndustryDomainVO domain) {
-        this.domain = domain;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public String getAvatar() {
+		return avatar;
+	}
 
-    public String getMobile() {
-        return mobile;
-    }
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
+	public IndustryDomainVO getDomain() {
+		return domain;
+	}
 
-    public String getIntroduction() {
-        return introduction;
-    }
+	public void setDomain(IndustryDomainVO domain) {
+		this.domain = domain;
+	}
 
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public String getMobile() {
+		return mobile;
+	}
 
-    public String getStartupExp() {
-        return startupExp;
-    }
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
 
-    public void setStartupExp(String startupExp) {
-        this.startupExp = startupExp;
-    }
+	public String getIntroduction() {
+		return introduction;
+	}
 
-    public String getManagementExp() {
-        return managementExp;
-    }
+	public void setIntroduction(String introduction) {
+		this.introduction = introduction;
+	}
 
-    public void setManagementExp(String managementExp) {
-        this.managementExp = managementExp;
-    }
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getStartupExp() {
+		return startupExp;
+	}
+
+	public void setStartupExp(String startupExp) {
+		this.startupExp = startupExp;
+	}
+
+	public String getManagementExp() {
+		return managementExp;
+	}
+
+	public void setManagementExp(String managementExp) {
+		this.managementExp = managementExp;
+	}
+
+	public String getTopic() {
+		return topic;
+	}
+
+	public void setTopic(String topic) {
+		this.topic = topic;
+	}
+
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
+
+	public int getMinutes() {
+		return minutes;
+	}
+
+	public void setMinutes(int minutes) {
+		this.minutes = minutes;
+	}
+
+	public int getOrderCount() {
+		return orderCount;
+	}
+
+	public void setOrderCount(int orderCount) {
+		this.orderCount = orderCount;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
 
 }
